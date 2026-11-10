@@ -1,0 +1,335 @@
+
+<style>
+.du-page{width:100%}
+.du-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.du-head h2{font-size:21px}
+.du-head p{font-size:12px;color:var(--muted);margin-top:5px}
+.du-back{padding:10px 15px;border:0;border-radius:8px;background:var(--primary);color:white;font-size:12px;font-weight:700;cursor:pointer}
+.du-card{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;box-shadow:var(--shadow)}
+.du-toolbar{padding:16px;border-bottom:1px solid var(--border)}
+.du-search{width:100%;max-width:350px;padding:11px 13px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);outline:none;font-size:13px}
+.du-wrap{width:100%;overflow-x:auto}
+.du-table{width:100%;min-width:850px;border-collapse:collapse}
+.du-table th{background:var(--bg);color:var(--muted);font-size:10px;text-transform:uppercase;text-align:left;padding:14px}
+.du-table td{padding:13px 14px;border-top:1px solid var(--border);font-size:12px}
+.du-actions{display:flex;gap:6px}
+.du-action{padding:7px 10px;border:0;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer}
+.du-restore{background:#e8f7ef;color:#087f5b}
+.du-permanent{background:#fff0f0;color:#d04444}
+.du-empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+.du-count{font-size:11px;color:var(--muted);padding:12px 16px}
+</style>
+
+<div class="du-page">
+
+  <div class="du-head">
+    <div>
+      <h2>Deleted Users</h2>
+      <p>Restore deleted users or permanently remove them</p>
+    </div>
+
+    <button class="du-back" onclick="window.loadPage('user-list')">
+      ← Active Users
+    </button>
+  </div>
+
+  <div class="du-card">
+
+    <div class="du-toolbar">
+      <input id="duSearch" class="du-search"
+        placeholder="Search deleted users...">
+    </div>
+
+    <div class="du-wrap">
+
+      <table class="du-table">
+
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Phone</th>
+            <th>Gmail</th>
+            <th>Area</th>
+            <th>Deleted At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="duBody">
+          <tr>
+            <td colspan="7" class="du-empty">Loading...</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <div class="du-count" id="duCount">Loading...</div>
+
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+
+  const body = document.getElementById("duBody");
+  const search = document.getElementById("duSearch");
+  const count = document.getElementById("duCount");
+
+  let users = [];
+
+  function escapeHTML(value){
+
+    return String(value == null ? "" : value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+
+  function render(list){
+
+    count.textContent = "Total Deleted Users: " + list.length;
+
+    if(!list.length){
+
+      body.innerHTML = `
+        <tr>
+          <td colspan="7" class="du-empty">
+            No deleted users found
+          </td>
+        </tr>
+      `;
+
+      return;
+
+    }
+
+
+    body.innerHTML = list.map(function(u){
+
+      return `
+        <tr>
+
+          <td>${escapeHTML(u.userId)}</td>
+
+          <td>${escapeHTML(u.userName)}</td>
+
+          <td>${escapeHTML(u.phone)}</td>
+
+          <td>${escapeHTML(u.gmail)}</td>
+
+          <td>${escapeHTML(u.area)}</td>
+
+          <td>${escapeHTML(u.deletedAt)}</td>
+
+          <td>
+
+            <div class="du-actions">
+
+              <button class="du-action du-restore"
+                data-restore="${escapeHTML(u.userId)}">
+                Restore
+              </button>
+
+              <button class="du-action du-permanent"
+                data-permanent="${escapeHTML(u.userId)}">
+                Delete Forever
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+
+  }
+
+
+  async function loadDeletedUsers(){
+
+    body.innerHTML = `
+      <tr>
+        <td colspan="7" class="du-empty">
+          Loading deleted users...
+        </td>
+      </tr>
+    `;
+
+    try{
+
+      const response = await fetch(API_URL + "?api=deleted");
+
+      const result = await response.json();
+
+      if(!result.success){
+        throw new Error(result.message || "Could not load deleted users");
+      }
+
+      users = result.users || [];
+
+      render(users);
+
+    }catch(error){
+
+      body.innerHTML = `
+        <tr>
+          <td colspan="7" class="du-empty">
+            ${escapeHTML(error.message)}
+          </td>
+        </tr>
+      `;
+
+      count.textContent = "Unable to load deleted users";
+
+    }
+
+  }
+
+
+  search.addEventListener("input",function(){
+
+    const keyword = this.value.toLowerCase().trim();
+
+    const filtered = users.filter(function(u){
+
+      return [
+        u.userId,
+        u.userName,
+        u.phone,
+        u.gmail,
+        u.area
+      ].some(function(v){
+
+        return String(v || "")
+          .toLowerCase()
+          .includes(keyword);
+
+      });
+
+    });
+
+    render(filtered);
+
+  });
+
+
+  body.addEventListener("click",async function(e){
+
+    const restoreButton = e.target.closest("[data-restore]");
+
+    const permanentButton = e.target.closest("[data-permanent]");
+
+
+    // RESTORE USER
+
+    if(restoreButton){
+
+      const id = restoreButton.dataset.restore;
+
+      if(!confirm("Restore this user to Active User List?")){
+        return;
+      }
+
+      restoreButton.disabled = true;
+      restoreButton.textContent = "Restoring...";
+
+      try{
+
+        const response = await fetch(API_URL,{
+          method:"POST",
+          body:JSON.stringify({
+            action:"restore",
+            userId:id
+          })
+        });
+
+        const result = await response.json();
+
+        if(!result.success){
+          throw new Error(result.message || "Restore failed");
+        }
+
+        alert(result.message);
+
+        await loadDeletedUsers();
+
+      }catch(error){
+
+        alert(error.message);
+
+        restoreButton.disabled = false;
+        restoreButton.textContent = "Restore";
+
+      }
+
+      return;
+
+    }
+
+
+    // PERMANENT DELETE
+
+    if(permanentButton){
+
+      const id = permanentButton.dataset.permanent;
+
+      const confirmed = confirm(
+        "WARNING!\n\nThis user will be permanently deleted.\nThis action cannot be undone.\n\nContinue?"
+      );
+
+      if(!confirmed) return;
+
+      permanentButton.disabled = true;
+      permanentButton.textContent = "Deleting...";
+
+      try{
+
+        const response = await fetch(API_URL,{
+          method:"POST",
+          body:JSON.stringify({
+            action:"permanentDelete",
+            userId:id
+          })
+        });
+
+        const result = await response.json();
+
+        if(!result.success){
+          throw new Error(result.message || "Permanent delete failed");
+        }
+
+        alert(result.message);
+
+        await loadDeletedUsers();
+
+      }catch(error){
+
+        alert(error.message);
+
+        permanentButton.disabled = false;
+        permanentButton.textContent = "Delete Forever";
+
+      }
+
+    }
+
+  });
+
+
+  loadDeletedUsers();
+
+})();
+</script>
