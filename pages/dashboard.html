@@ -1,1 +1,876 @@
-hi
+
+<div id="dashboardPage">
+
+<style>
+#dashboardPage{
+  color:var(--text);
+  width:100%;
+}
+
+#dashboardPage *{
+  box-sizing:border-box;
+}
+
+#dashboardPage .dash-welcome{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:23px;
+  flex-wrap:wrap;
+}
+
+#dashboardPage .welcome-title{
+  font-size:23px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+#dashboardPage .welcome-desc{
+  font-size:13px;
+  color:var(--muted);
+}
+
+#dashboardPage .date-label{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:11px 15px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+#dashboardPage .wallet{
+  background:linear-gradient(115deg,#087f5b,#10a879);
+  border-radius:15px;
+  padding:22px 25px;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:23px;
+  box-shadow:0 7px 20px rgba(8,127,91,.15);
+  flex-wrap:wrap;
+}
+
+#dashboardPage .wallet-label{
+  font-size:12px;
+  opacity:.85;
+  margin-bottom:10px;
+}
+
+#dashboardPage .wallet-amount{
+  font-size:29px;
+  font-weight:800;
+}
+
+#dashboardPage .wallet-info{
+  font-size:11px;
+  opacity:.8;
+  margin-top:8px;
+}
+
+#dashboardPage .wallet-icon{
+  width:57px;
+  height:57px;
+  border-radius:15px;
+  background:rgba(255,255,255,.17);
+  display:grid;
+  place-items:center;
+  font-size:27px;
+}
+
+#dashboardPage .section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:25px 0 14px;
+  gap:10px;
+}
+
+#dashboardPage .section-heading h3{
+  font-size:15px;
+  font-weight:800;
+}
+
+#dashboardPage .section-heading span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+#dashboardPage .stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+
+#dashboardPage .stat-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:17px;
+  min-width:0;
+  transition:.2s;
+  box-shadow:var(--shadow);
+}
+
+#dashboardPage .stat-card:hover{
+  transform:translateY(-3px);
+}
+
+#dashboardPage .stat-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:17px;
+}
+
+#dashboardPage .stat-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:18px;
+}
+
+#dashboardPage .green{
+  background:#e6f5ef;
+  color:#087f5b;
+}
+
+#dashboardPage .blue{
+  background:#eaf2ff;
+  color:#2874d0;
+}
+
+#dashboardPage .orange{
+  background:#fff1df;
+  color:#db8b20;
+}
+
+#dashboardPage .purple{
+  background:#f1eaff;
+  color:#8355cf;
+}
+
+#dashboardPage .red{
+  background:#ffe9e9;
+  color:#db4d4d;
+}
+
+#dashboardPage .stat-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+
+#dashboardPage .stat-value{
+  font-size:23px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+#dashboardPage .stat-note{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+#dashboardPage .quick-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+#dashboardPage .quick-btn{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--panel);
+  color:var(--text);
+  text-align:left;
+  transition:.2s;
+  min-width:0;
+}
+
+#dashboardPage .quick-btn:hover{
+  border-color:var(--primary);
+  background:var(--primary-light);
+}
+
+#dashboardPage .quick-icon{
+  width:38px;
+  height:38px;
+  flex-shrink:0;
+  border-radius:9px;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-size:19px;
+}
+
+#dashboardPage .quick-text{
+  font-size:12px;
+  font-weight:700;
+}
+
+#dashboardPage .quick-sub{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+#dashboardPage .tables-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+#dashboardPage .table-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+
+#dashboardPage .table-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px;
+  border-bottom:1px solid var(--border);
+  gap:10px;
+}
+
+#dashboardPage .table-head h3{
+  font-size:13px;
+}
+
+#dashboardPage .view-all{
+  color:var(--primary);
+  font-size:11px;
+  font-weight:700;
+  background:none;
+}
+
+#dashboardPage .table-scroll{
+  overflow-x:auto;
+}
+
+#dashboardPage table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:350px;
+}
+
+#dashboardPage th{
+  padding:12px 14px;
+  background:var(--bg);
+  color:var(--muted);
+  font-size:10px;
+  text-align:left;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+#dashboardPage td{
+  padding:13px 14px;
+  border-top:1px solid var(--border);
+  font-size:11px;
+  white-space:nowrap;
+}
+
+#dashboardPage .empty{
+  text-align:center;
+  padding:30px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+#dashboardPage .status{
+  display:inline-block;
+  border-radius:20px;
+  padding:5px 9px;
+  font-size:9px;
+  font-weight:700;
+}
+
+#dashboardPage .status-paid{
+  color:#087f5b;
+  background:#e6f5ef;
+}
+
+#dashboardPage .status-pending{
+  color:#c27b19;
+  background:#fff2df;
+}
+
+#dashboardPage .dashboard-footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+  padding:25px 0 5px;
+}
+
+@media(max-width:1100px){
+  #dashboardPage .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  #dashboardPage .quick-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:650px){
+  #dashboardPage .tables-grid{
+    grid-template-columns:1fr;
+  }
+
+  #dashboardPage .welcome-title{
+    font-size:20px;
+  }
+
+  #dashboardPage .wallet-amount{
+    font-size:25px;
+  }
+
+  #dashboardPage .stat-card{
+    padding:13px;
+  }
+
+  #dashboardPage .stat-value{
+    font-size:19px;
+  }
+}
+
+@media(max-width:380px){
+  #dashboardPage .stats-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  #dashboardPage .quick-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  #dashboardPage .quick-btn{
+    padding:10px;
+    gap:7px;
+  }
+}
+</style>
+
+<!-- WELCOME -->
+<div class="dash-welcome">
+
+  <div>
+    <div class="welcome-title">Dashboard Overview</div>
+    <div class="welcome-desc">
+      Welcome back! Here's your company overview.
+    </div>
+  </div>
+
+  <div class="date-label" id="dashDate">
+    Loading Date...
+  </div>
+
+</div>
+
+<!-- WALLET -->
+<div class="wallet">
+
+  <div>
+    <div class="wallet-label">Company Wallet Balance</div>
+    <div class="wallet-amount" id="walletBalance">৳ 0.00</div>
+    <div class="wallet-info">
+      Total Wage - Total Payment
+    </div>
+  </div>
+
+  <div class="wallet-icon">৳</div>
+
+</div>
+
+<!-- OVERALL STATISTICS -->
+<div class="section-heading">
+  <h3>Overall Statistics</h3>
+  <span>All Time</span>
+</div>
+
+<div class="stats-grid">
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon blue">♙</div>
+    </div>
+    <div class="stat-label">Total User</div>
+    <div class="stat-value" id="totalUsers">0</div>
+    <div class="stat-note">Registered users</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon green">৳</div>
+    </div>
+    <div class="stat-label">Total User Payment</div>
+    <div class="stat-value" id="totalUserPayment">৳ 0</div>
+    <div class="stat-note">All payment records</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon purple">▤</div>
+    </div>
+    <div class="stat-label">Total Wages</div>
+    <div class="stat-value" id="totalWages">৳ 0</div>
+    <div class="stat-note">All wage records</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon orange">↗</div>
+    </div>
+    <div class="stat-label">Total Earn</div>
+    <div class="stat-value" id="totalEarn">৳ 0</div>
+    <div class="stat-note">Wages minus payments</div>
+  </div>
+
+</div>
+
+<!-- MONTHLY STATISTICS -->
+<div class="section-heading">
+  <h3>Current Month Overview</h3>
+  <span id="currentMonth">This Month</span>
+</div>
+
+<div class="stats-grid">
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon green">▤</div>
+    </div>
+    <div class="stat-label">Current Month Wage</div>
+    <div class="stat-value" id="monthWage">৳ 0</div>
+    <div class="stat-note">This month's wages</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon blue">৳</div>
+    </div>
+    <div class="stat-label">Current Month Payment</div>
+    <div class="stat-value" id="monthPayment">৳ 0</div>
+    <div class="stat-note">This month's payments</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon purple">↗</div>
+    </div>
+    <div class="stat-label">Current Month Earn</div>
+    <div class="stat-value" id="monthEarn">৳ 0</div>
+    <div class="stat-note">Monthly wage minus payment</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon orange">♙</div>
+    </div>
+    <div class="stat-label">Payment User</div>
+    <div class="stat-value" id="monthPaidUsers">0</div>
+    <div class="stat-note">Users paid this month</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon red">♙</div>
+    </div>
+    <div class="stat-label">Non Payment User</div>
+    <div class="stat-value" id="monthUnpaidUsers">0</div>
+    <div class="stat-note">Users without payment this month</div>
+  </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="section-heading">
+  <h3>Quick Actions</h3>
+  <span>Frequently used</span>
+</div>
+
+<div class="quick-grid">
+
+  <button class="quick-btn" onclick="dashNavigate('add-user')">
+    <div class="quick-icon">＋</div>
+    <div>
+      <div class="quick-text">Add User</div>
+      <div class="quick-sub">Create new user</div>
+    </div>
+  </button>
+
+  <button class="quick-btn" onclick="dashNavigate('add-wage')">
+    <div class="quick-icon">৳</div>
+    <div>
+      <div class="quick-text">Add Wage</div>
+      <div class="quick-sub">Add company wage</div>
+    </div>
+  </button>
+
+  <button class="quick-btn" onclick="dashNavigate('payment')">
+    <div class="quick-icon">↗</div>
+    <div>
+      <div class="quick-text">Make Payment</div>
+      <div class="quick-sub">Pay a user</div>
+    </div>
+  </button>
+
+  <button class="quick-btn" onclick="dashNavigate('report')">
+    <div class="quick-icon">▥</div>
+    <div>
+      <div class="quick-text">View Report</div>
+      <div class="quick-sub">Check company report</div>
+    </div>
+  </button>
+
+</div>
+
+<!-- RECENT RECORDS -->
+<div class="section-heading">
+  <h3>Recent Activity</h3>
+  <span>Latest records</span>
+</div>
+
+<div class="tables-grid">
+
+  <div class="table-card">
+
+    <div class="table-head">
+      <h3>Recent Payments</h3>
+      <button class="view-all"
+        onclick="dashNavigate('payment-history')">
+        View All →
+      </button>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="recentPayments">
+          <tr>
+            <td colspan="3" class="empty">
+              No payment records yet
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="table-card">
+
+    <div class="table-head">
+      <h3>Recent Wages</h3>
+      <button class="view-all"
+        onclick="dashNavigate('wage-history')">
+        View All →
+      </button>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="recentWages">
+          <tr>
+            <td colspan="3" class="empty">
+              No wage records yet
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="dashboard-footer">
+  Wage Management System · Dashboard
+</div>
+
+</div>
+
+<script>
+
+/*
+  DASHBOARD DATA
+
+  Currently Demo Mode.
+  Later Google Sheets API will provide real data.
+
+  Expected data format:
+
+  {
+    users: [],
+    wages: [],
+    payments: []
+  }
+*/
+
+function dashNavigate(page){
+
+  if(typeof window.loadPage === "function"){
+    window.loadPage(page);
+  }
+
+}
+
+/* DATE */
+
+function dashboardDate(){
+
+  const now = new Date();
+
+  const date = now.toLocaleDateString("en-GB",{
+    day:"2-digit",
+    month:"long",
+    year:"numeric"
+  });
+
+  const month = now.toLocaleDateString("en-US",{
+    month:"long",
+    year:"numeric"
+  });
+
+  document.getElementById("dashDate").textContent = date;
+
+  document.getElementById("currentMonth").textContent = month;
+
+}
+
+/* CURRENCY */
+
+function dashboardMoney(amount,currency="৳"){
+
+  return currency + " " +
+    Number(amount || 0).toLocaleString("en-IN",{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+}
+
+/* DATE HELPERS */
+
+function dashboardIsCurrentMonth(dateValue){
+
+  if(!dateValue) return false;
+
+  const date = new Date(dateValue);
+
+  if(isNaN(date.getTime())) return false;
+
+  const now = new Date();
+
+  return (
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+
+}
+
+/* RENDER DASHBOARD */
+
+function renderDashboard(data){
+
+  const users = data.users || [];
+  const wages = data.wages || [];
+  const payments = data.payments || [];
+
+  const activeUsers = users.filter(user=>
+    String(user.status || "active").toLowerCase() !== "deleted"
+  );
+
+  const totalWage = wages.reduce((sum,item)=>
+    sum + Number(item.amount || 0),0
+  );
+
+  const totalPayment = payments.reduce((sum,item)=>
+    sum + Number(item.amount || 0),0
+  );
+
+  const monthWages = wages.filter(item=>
+    dashboardIsCurrentMonth(item.date)
+  );
+
+  const monthPayments = payments.filter(item=>
+    dashboardIsCurrentMonth(item.date)
+  );
+
+  const currentWage = monthWages.reduce((sum,item)=>
+    sum + Number(item.amount || 0),0
+  );
+
+  const currentPayment = monthPayments.reduce((sum,item)=>
+    sum + Number(item.amount || 0),0
+  );
+
+  const paidIds = new Set(
+    monthPayments.map(item=>String(item.userId || ""))
+  );
+
+  const paidUsers = activeUsers.filter(user=>
+    paidIds.has(String(user.id || user.userId || ""))
+  ).length;
+
+  const unpaidUsers = activeUsers.length - paidUsers;
+
+  document.getElementById("totalUsers").textContent =
+    activeUsers.length;
+
+  document.getElementById("totalUserPayment").textContent =
+    dashboardMoney(totalPayment);
+
+  document.getElementById("totalWages").textContent =
+    dashboardMoney(totalWage);
+
+  document.getElementById("totalEarn").textContent =
+    dashboardMoney(totalWage-totalPayment);
+
+  document.getElementById("walletBalance").textContent =
+    dashboardMoney(totalWage-totalPayment);
+
+  document.getElementById("monthWage").textContent =
+    dashboardMoney(currentWage);
+
+  document.getElementById("monthPayment").textContent =
+    dashboardMoney(currentPayment);
+
+  document.getElementById("monthEarn").textContent =
+    dashboardMoney(currentWage-currentPayment);
+
+  document.getElementById("monthPaidUsers").textContent =
+    paidUsers;
+
+  document.getElementById("monthUnpaidUsers").textContent =
+    unpaidUsers;
+
+  renderRecentPayments(payments);
+  renderRecentWages(wages);
+
+}
+
+/* RECENT PAYMENT TABLE */
+
+function renderRecentPayments(payments){
+
+  const tbody =
+    document.getElementById("recentPayments");
+
+  const latest = [...payments].reverse().slice(0,5);
+
+  if(!latest.length){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" class="empty">
+          No payment records yet
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = latest.map(item=>`
+
+    <tr>
+      <td>${dashEscape(item.userName || item.userId || "User")}</td>
+      <td>${dashboardMoney(item.amount,item.currency || "৳")}</td>
+      <td>${dashEscape(item.date || "-")}</td>
+    </tr>
+
+  `).join("");
+
+}
+
+/* RECENT WAGE TABLE */
+
+function renderRecentWages(wages){
+
+  const tbody =
+    document.getElementById("recentWages");
+
+  const latest = [...wages].reverse().slice(0,5);
+
+  if(!latest.length){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" class="empty">
+          No wage records yet
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = latest.map(item=>`
+
+    <tr>
+      <td>${dashEscape(item.companyName || "Company")}</td>
+      <td>${dashboardMoney(item.amount,item.currency || "৳")}</td>
+      <td>${dashEscape(item.date || "-")}</td>
+    </tr>
+
+  `).join("");
+
+}
+
+/* SAFE HTML */
+
+function dashEscape(value){
+
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+
+}
+
+/* INITIALIZE */
+
+dashboardDate();
+
+/* Empty demo data */
+renderDashboard({
+  users:[],
+  wages:[],
+  payments:[]
+});
+
+</script>
