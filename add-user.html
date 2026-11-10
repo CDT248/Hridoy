@@ -1,274 +1,243 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Add User | Wage Management</title>
 <style>
-.user-page{max-width:900px;margin:auto}
-.user-page-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
-.user-page-head h2{font-size:21px}
-.user-page-head p{font-size:12px;color:var(--muted);margin-top:5px}
-.user-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow)}
-.user-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.user-field{display:flex;flex-direction:column;gap:8px}
-.user-field.full{grid-column:1/-1}
-.user-field label{font-size:12px;font-weight:700}
-.user-field input,.user-field textarea{width:100%;padding:12px 13px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px;outline:none;font:inherit;font-size:13px}
-.user-field input:focus,.user-field textarea:focus{border-color:var(--primary)}
-.user-field textarea{min-height:90px;resize:vertical}
-.user-hint{font-size:10px;color:var(--muted)}
-.user-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
-.user-btn{border:0;border-radius:8px;padding:11px 19px;font-weight:700;font-size:12px;cursor:pointer}
-.user-btn.primary{background:var(--primary);color:white}
-.user-btn.secondary{background:var(--bg);color:var(--text);border:1px solid var(--border)}
-.user-message{display:none;padding:12px;border-radius:8px;font-size:12px;margin-bottom:16px}
-.user-message.success{display:block;background:#e8f7ef;color:#087f5b}
-.user-message.error{display:block;background:#fff0f0;color:#c0392b}
-@media(max-width:600px){.user-grid{grid-template-columns:1fr}.user-field.full{grid-column:auto}.user-card{padding:16px}}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7f5;font-family:Arial,sans-serif;color:#172b25}
+.container{max-width:850px;margin:30px auto;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+h2{margin:0;color:#116149}
+.sub{color:#718078;font-size:13px;margin-top:7px}
+.card{background:#fff;border:1px solid #e2ebe6;border-radius:16px;padding:25px;box-shadow:0 5px 20px #163d2b0b}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700;color:#40574d}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid #dce6e0;border-radius:9px;background:#fff;font-size:14px;outline:none;color:#203b30}
+input:focus,select:focus,textarea:focus{border-color:#15966d;box-shadow:0 0 0 3px #15966d15}
+textarea{min-height:85px;resize:vertical}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+button,.btn{border:0;border-radius:9px;padding:12px 20px;font-weight:700;cursor:pointer;text-decoration:none;font-size:14px}
+.primary{background:#087f5b;color:#fff}
+.secondary{background:#eaf2ed;color:#315b49}
+button:disabled{opacity:.6;cursor:wait}
+.message{padding:12px;border-radius:9px;margin-bottom:15px;display:none;font-size:14px}
+.success{display:block;background:#e7f8ef;color:#087443}
+.error{display:block;background:#fff0ed;color:#b42318}
+.hint{font-size:12px;color:#829087}
+@media(max-width:600px){.container{padding:13px;margin:12px auto}.card{padding:17px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
-
-<div class="user-page">
-
-  <div class="user-page-head">
+</head>
+<body>
+<div class="container">
+  <div class="top">
     <div>
-      <h2 id="userFormTitle">Add New User</h2>
-      <p>Create and manage user information</p>
+      <h2 id="pageTitle">Add New User</h2>
+      <div class="sub">Create and manage user information</div>
     </div>
-    <button class="user-btn secondary" onclick="window.loadPage('user-list')">
-      ← Back to Users
-    </button>
+    <a class="btn secondary" href="user-list.html">← User List</a>
   </div>
 
-  <div class="user-card">
-
-    <div id="userFormMessage" class="user-message"></div>
+  <div class="card">
+    <div id="message" class="message"></div>
 
     <form id="userForm">
+      <div class="grid">
 
-      <div class="user-grid">
-
-        <div class="user-field">
-          <label>User ID</label>
-          <input id="u_userId" placeholder="Auto Generate">
-          <span class="user-hint">Leave blank to generate automatically</span>
-        </div>
-
-        <div class="user-field">
+        <div class="field">
           <label>User Name *</label>
-          <input id="u_userName" required placeholder="Enter user name">
+          <input id="userName" required placeholder="Enter user name">
         </div>
 
-        <div class="user-field">
+        <div class="field">
+          <label>User ID</label>
+          <input id="userId" placeholder="Auto generated if empty">
+          <div class="hint" id="idHint">Leave empty to generate automatically.</div>
+        </div>
+
+        <div class="field">
           <label>Password <span id="passwordRequired">*</span></label>
-          <input id="u_password" type="password" placeholder="Minimum 8 characters">
-          <span class="user-hint" id="passwordHint">Required for new users</span>
+          <input id="password" type="password" minlength="8" placeholder="Minimum 8 characters">
+          <div class="hint" id="passwordHint">Required for a new user.</div>
         </div>
 
-        <div class="user-field">
-          <label>Phone Number *</label>
-          <input id="u_phone" required placeholder="Enter phone number">
+        <div class="field">
+          <label>Phone</label>
+          <input id="phone" type="tel" placeholder="Phone number">
         </div>
 
-        <div class="user-field">
+        <div class="field">
           <label>Gmail</label>
-          <input id="u_gmail" type="email" placeholder="example@gmail.com">
+          <input id="gmail" type="email" placeholder="user@gmail.com">
         </div>
 
-        <div class="user-field">
+        <div class="field">
           <label>Area</label>
-          <input id="u_area" placeholder="Enter area">
+          <input id="area" placeholder="Enter area">
         </div>
 
-        <div class="user-field">
+        <div class="field">
           <label>Active Date</label>
-          <input id="u_activeDate" type="date">
+          <input id="activeDate" type="date">
         </div>
 
-        <div class="user-field">
+        <div class="field">
+          <label>Status</label>
+          <select id="status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+
+        <div class="field full">
           <label>Profile Picture URL</label>
-          <input id="u_profilePicture" type="url" placeholder="https://example.com/photo.jpg">
+          <input id="picture" type="url" placeholder="https://example.com/photo.jpg">
         </div>
 
-        <div class="user-field full">
+        <div class="field full">
           <label>Comment</label>
-          <textarea id="u_comment" placeholder="Write user notes..."></textarea>
+          <textarea id="comment" placeholder="Write user notes..."></textarea>
         </div>
 
       </div>
 
-      <div class="user-actions">
-        <button type="button" class="user-btn secondary"
-          onclick="window.loadPage('user-list')">
-          Cancel
-        </button>
-
-        <button type="submit" class="user-btn primary" id="userSubmitBtn">
-          Save User
-        </button>
+      <div class="actions">
+        <button class="primary" id="saveBtn" type="submit">Save User</button>
+        <button class="secondary" type="reset">Reset</button>
+        <a class="btn secondary" href="user-list.html">Cancel</a>
       </div>
-
     </form>
   </div>
 </div>
 
 <script>
-(function(){
+const API_URL = window.WAGE_API ||
+"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+const params = new URLSearchParams(location.search);
+const editUserId = params.get("userId");
+const $ = id => document.getElementById(id);
 
-  const form = document.getElementById("userForm");
-  const message = document.getElementById("userFormMessage");
+async function apiGet(query) {
+  const response = await fetch(API_URL + "?api=" + encodeURIComponent(query.api) +
+    (query.userId ? "&userId=" + encodeURIComponent(query.userId) : ""));
+  return response.json();
+}
 
-  let editId = window.__wageEditUserId || "";
-
-  const params = new URLSearchParams(location.search);
-
-  if(!editId){
-    editId = params.get("edit") || "";
-  }
-
-  function showMessage(text,type){
-
-    message.textContent = text;
-    message.className = "user-message " + type;
-
-  }
-
-  function setValue(id,value){
-
-    document.getElementById(id).value = value || "";
-
-  }
-
-  async function loadEditUser(){
-
-    if(!editId) return;
-
-    document.getElementById("userFormTitle").textContent =
-      "Edit User";
-
-    document.getElementById("userSubmitBtn").textContent =
-      "Update User";
-
-    document.getElementById("passwordRequired").textContent = "";
-
-    document.getElementById("passwordHint").textContent =
-      "Leave blank to keep current password";
-
-    document.getElementById("u_userId").readOnly = true;
-
-    try{
-
-      const response = await fetch(
-        API_URL + "?api=profile&userId=" +
-        encodeURIComponent(editId)
-      );
-
-      const result = await response.json();
-
-      if(!result.success){
-        throw new Error(result.message || "User not found");
-      }
-
-      const u = result.user;
-
-      setValue("u_userId",u.userId);
-      setValue("u_userName",u.userName);
-      setValue("u_phone",u.phone);
-      setValue("u_gmail",u.gmail);
-      setValue("u_area",u.area);
-      setValue("u_activeDate",u.activeDate);
-      setValue("u_profilePicture",u.profilePicture);
-      setValue("u_comment",u.comment);
-
-    }catch(error){
-
-      showMessage(error.message,"error");
-
-    }
-
-  }
-
-
-  form.addEventListener("submit",async function(e){
-
-    e.preventDefault();
-
-    const password =
-      document.getElementById("u_password").value;
-
-    if(!editId && password.length < 8){
-      showMessage("Password must be at least 8 characters","error");
-      return;
-    }
-
-    if(editId && password && password.length < 8){
-      showMessage("Password must be at least 8 characters","error");
-      return;
-    }
-
-    const data = {
-
-      action: editId ? "edit" : "add",
-
-      userId: document.getElementById("u_userId").value.trim(),
-
-      userName: document.getElementById("u_userName").value.trim(),
-
-      password: password,
-
-      phone: document.getElementById("u_phone").value.trim(),
-
-      gmail: document.getElementById("u_gmail").value.trim(),
-
-      area: document.getElementById("u_area").value.trim(),
-
-      activeDate: document.getElementById("u_activeDate").value,
-
-      profilePicture: document.getElementById("u_profilePicture").value.trim(),
-
-      comment: document.getElementById("u_comment").value.trim()
-
-    };
-
-    const button = document.getElementById("userSubmitBtn");
-
-    button.disabled = true;
-    button.textContent = "Please wait...";
-
-    try{
-
-      const response = await fetch(API_URL,{
-        method:"POST",
-        body:JSON.stringify(data)
-      });
-
-      const result = await response.json();
-
-      if(!result.success){
-        throw new Error(result.message || "Operation failed");
-      }
-
-      showMessage(result.message,"success");
-
-      button.textContent = "Success";
-
-      window.__wageEditUserId = "";
-
-      setTimeout(function(){
-        window.loadPage("user-list");
-      },900);
-
-    }catch(error){
-
-      showMessage(error.message,"error");
-
-      button.disabled = false;
-      button.textContent = editId ? "Update User" : "Save User";
-
-    }
-
+async function apiPost(data) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(data)
   });
+  return response.json();
+}
 
+function showMessage(text, type) {
+  $("message").textContent = text;
+  $("message").className = "message " + type;
+}
 
-  loadEditUser();
+function setValue(id, value) {
+  $(id).value = value || "";
+}
 
-})();
+async function loadEditUser() {
+  if (!editUserId) return;
+
+  $("pageTitle").textContent = "Edit User";
+  $("saveBtn").textContent = "Update User";
+  $("userId").readOnly = true;
+  $("idHint").textContent = "User ID cannot be changed.";
+  $("passwordRequired").textContent = "(Optional)";
+  $("password").removeAttribute("required");
+  $("passwordHint").textContent = "Leave empty to keep the current password.";
+
+  try {
+    const result = await apiGet({api:"profile",userId:editUserId});
+    if (!result.success || !result.user) {
+      showMessage(result.message || "User not found","error");
+      return;
+    }
+
+    const u = result.user;
+    setValue("userName",u.userName);
+    setValue("userId",u.userId);
+    setValue("phone",u.phone);
+    setValue("gmail",u.gmail);
+    setValue("area",u.area);
+    setValue("activeDate",u.activeDate);
+    setValue("picture",u.picture);
+    setValue("status",u.status);
+    setValue("comment",u.comment);
+
+  } catch(error) {
+    showMessage("Could not load user: " + error.message,"error");
+  }
+}
+
+$("userForm").addEventListener("submit",async function(event) {
+  event.preventDefault();
+
+  const password = $("password").value;
+
+  if (!editUserId && password.length < 8) {
+    showMessage("Password must be at least 8 characters.","error");
+    return;
+  }
+
+  if (editUserId && password && password.length < 8) {
+    showMessage("New password must be at least 8 characters.","error");
+    return;
+  }
+
+  const data = {
+    action: editUserId ? "editUser" : "addUser",
+    userId: $("userId").value.trim(),
+    userName: $("userName").value.trim(),
+    password: password,
+    phone: $("phone").value.trim(),
+    gmail: $("gmail").value.trim(),
+    area: $("area").value.trim(),
+    activeDate: $("activeDate").value,
+    picture: $("picture").value.trim(),
+    status: $("status").value,
+    comment: $("comment").value.trim()
+  };
+
+  $("saveBtn").disabled = true;
+  $("saveBtn").textContent = "Saving...";
+
+  try {
+    const result = await apiPost(data);
+
+    if (!result.success) {
+      throw new Error(result.message || "Operation failed");
+    }
+
+    showMessage(result.message || "Saved successfully","success");
+
+    if (!editUserId) {
+      $("userForm").reset();
+      setTimeout(() => location.href="user-list.html",900);
+    } else {
+      $("password").value = "";
+    }
+
+  } catch(error) {
+    showMessage(error.message,"error");
+  } finally {
+    $("saveBtn").disabled = false;
+    $("saveBtn").textContent = editUserId ? "Update User" : "Save User";
+  }
+});
+
+loadEditUser();
 </script>
+</body>
+</html>
