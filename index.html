@@ -8,15 +8,28 @@
 
 <style>
 :root{
-  --bg:#f4f7fb;
-  --panel:#ffffff;
-  --text:#172033;
-  --muted:#788399;
-  --border:#e6eaf0;
   --primary:#087f5b;
-  --primary-light:#e6f5ef;
+  --primary-light:#e8f7ef;
+  --bg:#f5f7fb;
+  --card:#ffffff;
   --sidebar:#ffffff;
-  --shadow:0 4px 18px rgba(20,35,60,.05);
+  --text:#172033;
+  --muted:#8490a3;
+  --border:#e8edf3;
+  --hover:#f1f8f5;
+  --shadow:0 3px 15px rgba(20,35,60,.045);
+}
+
+body.dark{
+  --bg:#101722;
+  --card:#192432;
+  --sidebar:#151f2c;
+  --text:#edf2f7;
+  --muted:#9aa8b9;
+  --border:#293748;
+  --hover:#203329;
+  --primary-light:#17392e;
+  --shadow:0 3px 15px rgba(0,0,0,.15);
 }
 
 *{
@@ -26,32 +39,22 @@
 }
 
 body{
-  font-family:Arial, sans-serif;
+  font-family:Inter,Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-}
-
-body.dark{
-  --bg:#101827;
-  --panel:#192538;
-  --text:#edf2f7;
-  --muted:#a0aec0;
-  --border:#2b3a50;
-  --primary:#20a879;
-  --primary-light:#183c35;
-  --sidebar:#192538;
-  --shadow:0 4px 18px rgba(0,0,0,.15);
+  transition:background .2s,color .2s;
 }
 
 button{
   font-family:inherit;
-  cursor:pointer;
-  border:0;
 }
 
+/* =========================
+   MAIN LAYOUT
+========================= */
+
 .app{
-  display:flex;
   min-height:100vh;
 }
 
@@ -60,19 +63,19 @@ button{
 .sidebar{
   width:255px;
   height:100vh;
-  background:var(--sidebar);
-  border-right:1px solid var(--border);
   position:fixed;
   top:0;
   left:0;
-  z-index:100;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  z-index:1000;
   display:flex;
   flex-direction:column;
-  transition:.25s;
+  transition:transform .25s,background .2s;
 }
 
 .brand{
-  height:72px;
+  height:76px;
   padding:0 22px;
   display:flex;
   align-items:center;
@@ -81,20 +84,22 @@ button{
 }
 
 .brand-logo{
-  width:38px;
-  height:38px;
-  border-radius:11px;
+  width:39px;
+  height:39px;
+  border-radius:12px;
   background:var(--primary);
   color:white;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:17px;
 }
 
 .brand-name{
   font-size:17px;
   font-weight:800;
+  letter-spacing:-.4px;
 }
 
 .brand-sub{
@@ -106,42 +111,45 @@ button{
 
 .sidebar-content{
   flex:1;
-  padding:18px 13px;
   overflow-y:auto;
+  padding:20px 13px;
 }
 
-.nav-title{
+.nav-label{
   font-size:10px;
   color:var(--muted);
-  font-weight:700;
+  font-weight:800;
   letter-spacing:1.2px;
   padding:12px 12px 9px;
 }
 
-.nav-btn{
+.nav-item{
   width:100%;
   display:flex;
   align-items:center;
   gap:12px;
   padding:12px 13px;
-  margin:3px 0;
+  border:0;
+  border-radius:9px;
   background:transparent;
   color:var(--muted);
-  border-radius:9px;
-  text-align:left;
   font-size:13px;
   font-weight:600;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:4px;
   transition:.2s;
 }
 
-.nav-btn:hover{
-  background:var(--bg);
+.nav-item:hover{
+  background:var(--hover);
   color:var(--primary);
 }
 
-.nav-btn.active{
+.nav-item.active{
   background:var(--primary-light);
   color:var(--primary);
+  font-weight:800;
 }
 
 .nav-icon{
@@ -151,141 +159,141 @@ button{
 }
 
 .sidebar-bottom{
-  padding:15px;
   border-top:1px solid var(--border);
+  padding:15px;
 }
 
-.version{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-}
-
-/* MAIN */
-
-.main{
-  flex:1;
-  min-width:0;
-  margin-left:255px;
-}
-
-/* HEADER */
-
-.header{
-  height:72px;
-  background:var(--panel);
-  border-bottom:1px solid var(--border);
+.sidebar-user{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 27px;
-  position:sticky;
-  top:0;
-  z-index:50;
+  gap:11px;
 }
 
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.menu-toggle{
-  width:38px;
-  height:38px;
-  border-radius:9px;
-  background:var(--bg);
-  color:var(--text);
-  font-size:19px;
-  display:none;
-}
-
-.page-heading{
-  font-size:17px;
-  font-weight:750;
-}
-
-.page-subtitle{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.icon-btn{
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--text);
-  border-radius:9px;
-  font-size:17px;
-}
-
-.profile{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding-left:12px;
-  border-left:1px solid var(--border);
-}
-
-.profile-avatar{
+.sidebar-avatar{
   width:36px;
   height:36px;
   border-radius:50%;
   background:var(--primary-light);
   color:var(--primary);
-  display:grid;
-  place-items:center;
-  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
 }
 
-.profile-name{
+.sidebar-user-name{
   font-size:12px;
-  font-weight:700;
+  font-weight:800;
 }
 
-.profile-role{
-  font-size:10px;
+.sidebar-user-role{
   color:var(--muted);
+  font-size:10px;
   margin-top:3px;
+}
+
+/* =========================
+   MAIN AREA
+========================= */
+
+.main{
+  margin-left:255px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+
+.topbar{
+  height:76px;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:500;
+}
+
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.page-heading{
+  font-size:18px;
+  font-weight:800;
+}
+
+.page-breadcrumb{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.icon-btn{
+  width:39px;
+  height:39px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  cursor:pointer;
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.icon-btn:hover{
+  background:var(--hover);
+  color:var(--primary);
+}
+
+.menu-toggle{
+  display:none;
 }
 
 /* CONTENT */
 
 .content{
-  padding:25px;
-  min-height:calc(100vh - 72px);
+  padding:27px;
+  flex:1;
+  min-width:0;
 }
 
 #pageContainer{
   width:100%;
-  min-height:500px;
+  min-height:300px;
 }
 
-.loading{
-  min-height:350px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  gap:14px;
+.loading-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:50px 20px;
+  text-align:center;
   color:var(--muted);
 }
 
-.spinner{
-  width:35px;
-  height:35px;
+.loading-spinner{
+  width:30px;
+  height:30px;
   border:3px solid var(--border);
   border-top-color:var(--primary);
   border-radius:50%;
   animation:spin .7s linear infinite;
+  margin:0 auto 15px;
 }
 
 @keyframes spin{
@@ -293,101 +301,115 @@ button{
 }
 
 .error-box{
-  max-width:600px;
-  margin:70px auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:30px;
+  background:var(--card);
+  border:1px solid #f3b9b9;
+  border-radius:14px;
+  padding:25px;
   text-align:center;
-  box-shadow:var(--shadow);
+  color:var(--text);
 }
 
-.error-icon{
-  font-size:40px;
-  margin-bottom:15px;
-}
-
-.error-box h2{
-  font-size:19px;
-  margin-bottom:10px;
+.error-box h3{
+  margin-bottom:9px;
+  color:#d64545;
 }
 
 .error-box p{
   font-size:13px;
   color:var(--muted);
-  line-height:1.7;
+  margin-bottom:16px;
 }
 
-.retry-btn{
+.error-box button{
+  padding:10px 18px;
+  border:0;
   background:var(--primary);
   color:white;
-  padding:11px 20px;
   border-radius:8px;
-  margin-top:18px;
-  font-weight:600;
+  cursor:pointer;
+  font-weight:700;
 }
 
-/* MOBILE */
+/* FOOTER */
 
-.overlay{
+.footer{
+  padding:15px 27px;
+  border-top:1px solid var(--border);
+  font-size:11px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+/* MOBILE OVERLAY */
+
+.mobile-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:900;
   display:none;
 }
 
-@media(max-width:800px){
+.mobile-overlay.show{
+  display:block;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
 
   .sidebar{
     transform:translateX(-100%);
-    width:265px;
   }
 
   .sidebar.open{
     transform:translateX(0);
   }
 
-  .overlay.show{
-    display:block;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.4);
-    z-index:90;
-  }
-
   .main{
     margin-left:0;
-    width:100%;
   }
 
   .menu-toggle{
-    display:block;
-  }
-
-  .header{
-    padding:0 15px;
+    display:flex;
   }
 
   .content{
-    padding:15px;
+    padding:20px;
   }
 
-  .profile-info{
-    display:none;
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    height:65px;
+    padding:0 14px;
   }
 
   .page-heading{
-    font-size:15px;
-  }
-}
-
-@media(max-width:420px){
-  .header-right{
-    gap:7px;
+    font-size:16px;
   }
 
   .content{
-    padding:11px;
+    padding:14px;
   }
+
+  .footer{
+    padding:13px;
+    font-size:10px;
+  }
+
+  .brand{
+    height:68px;
+  }
+
 }
+
 </style>
 </head>
 
@@ -395,178 +417,173 @@ button{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
+
       <div class="brand-logo">W</div>
+
       <div>
         <div class="brand-name">WAGE MANAGER</div>
         <div class="brand-sub">MANAGEMENT SYSTEM</div>
       </div>
+
     </div>
+
 
     <div class="sidebar-content">
 
-      <div class="nav-title">MAIN MENU</div>
+      <div class="nav-label">MAIN MENU</div>
 
-      <button class="nav-btn active"
-        data-page="dashboard"
-        onclick="loadPage('dashboard')">
+      <button class="nav-item active"
+        data-page="dashboard">
         <span class="nav-icon">▦</span>
         Dashboard
       </button>
 
-      <div class="nav-title">USER MANAGEMENT</div>
 
-      <button class="nav-btn"
-        data-page="add-user"
-        onclick="loadPage('add-user')">
+      <div class="nav-label">USER MANAGEMENT</div>
+
+      <button class="nav-item"
+        data-page="add-user">
         <span class="nav-icon">＋</span>
         Add User
       </button>
 
-      <button class="nav-btn"
-        data-page="user-list"
-        onclick="loadPage('user-list')">
+      <button class="nav-item"
+        data-page="user-list">
         <span class="nav-icon">♙</span>
         User List
       </button>
 
-      <button class="nav-btn"
-        data-page="deleted-user"
-        onclick="loadPage('deleted-user')">
-        <span class="nav-icon">♲</span>
-        Deleted User
+      <button class="nav-item"
+        data-page="deleted-user">
+        <span class="nav-icon">▤</span>
+        Deleted Users
       </button>
 
-      <div class="nav-title">WAGE MANAGEMENT</div>
 
-      <button class="nav-btn"
-        data-page="add-wage"
-        onclick="loadPage('add-wage')">
+      <div class="nav-label">WAGE MANAGEMENT</div>
+
+      <button class="nav-item"
+        data-page="add-wage">
         <span class="nav-icon">＋</span>
         Add Wage
       </button>
 
-      <button class="nav-btn"
-        data-page="wage-history"
-        onclick="loadPage('wage-history')">
-        <span class="nav-icon">▤</span>
+      <button class="nav-item"
+        data-page="wage-history">
+        <span class="nav-icon">◷</span>
         Wage History
       </button>
 
-      <button class="nav-btn"
-        data-page="undo-wage"
-        onclick="loadPage('undo-wage')">
-        <span class="nav-icon">↶</span>
-        Undo Wage
-      </button>
 
-      <div class="nav-title">PAYMENT MANAGEMENT</div>
+      <div class="nav-label">PAYMENT MANAGEMENT</div>
 
-      <button class="nav-btn"
-        data-page="payment"
-        onclick="loadPage('payment')">
+      <button class="nav-item"
+        data-page="payment">
         <span class="nav-icon">৳</span>
-        Make Payment
+        User Payment
       </button>
 
-      <button class="nav-btn"
-        data-page="payment-history"
-        onclick="loadPage('payment-history')">
+      <button class="nav-item"
+        data-page="payment-history">
         <span class="nav-icon">▤</span>
         Payment History
       </button>
 
-      <button class="nav-btn"
-        data-page="undo-payment"
-        onclick="loadPage('undo-payment')">
-        <span class="nav-icon">↶</span>
-        Undo Payment
-      </button>
-
-      <div class="nav-title">REPORT & SETTINGS</div>
-
-      <button class="nav-btn"
-        data-page="report"
-        onclick="loadPage('report')">
-        <span class="nav-icon">▥</span>
-        Report
-      </button>
-
-      <button class="nav-btn"
-        data-page="currency"
-        onclick="loadPage('currency')">
-        <span class="nav-icon">◉</span>
-        Currency Setting
-      </button>
-
-      <button class="nav-btn"
-        data-page="settings"
-        onclick="loadPage('settings')">
-        <span class="nav-icon">⚙</span>
-        Settings
-      </button>
-
     </div>
+
 
     <div class="sidebar-bottom">
-      <div class="version">Wage Management v1.0</div>
-    </div>
 
-  </aside>
+      <div class="sidebar-user">
 
-  <div class="overlay" id="overlay"
-       onclick="closeSidebar()"></div>
-
-  <!-- MAIN AREA -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <header class="header">
-
-      <div class="header-left">
-
-        <button class="menu-toggle"
-          onclick="toggleSidebar()">☰</button>
+        <div class="sidebar-avatar">W</div>
 
         <div>
-          <div class="page-heading" id="pageTitle">
-            Dashboard
+          <div class="sidebar-user-name">
+            Administrator
           </div>
-          <div class="page-subtitle">
-            Welcome to Wage Management System
+
+          <div class="sidebar-user-role">
+            System Admin
           </div>
         </div>
 
       </div>
 
-      <div class="header-right">
+    </div>
+
+  </aside>
+
+
+  <!-- MOBILE OVERLAY -->
+
+  <div class="mobile-overlay"
+    id="mobileOverlay"></div>
+
+
+  <!-- =========================
+       MAIN SECTION
+  ========================== -->
+
+  <main class="main">
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button class="icon-btn menu-toggle"
+          id="menuToggle"
+          aria-label="Open menu">
+          ☰
+        </button>
+
+        <div>
+
+          <div class="page-heading"
+            id="pageTitle">
+            Dashboard
+          </div>
+
+          <div class="page-breadcrumb"
+            id="pageBreadcrumb">
+            Home / Dashboard
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="topbar-right">
 
         <button class="icon-btn"
-          onclick="toggleTheme()"
-          title="Change Theme">◐</button>
-
-        <div class="profile">
-          <div class="profile-avatar">A</div>
-          <div class="profile-info">
-            <div class="profile-name">Administrator</div>
-            <div class="profile-role">Admin Account</div>
-          </div>
-        </div>
+          id="themeToggle"
+          title="Change Theme">
+          ☾
+        </button>
 
       </div>
 
     </header>
 
 
+    <!-- PAGE CONTENT -->
+
     <section class="content">
 
       <div id="pageContainer">
 
-        <div class="loading">
-          <div class="spinner"></div>
+        <div class="loading-box">
+          <div class="loading-spinner"></div>
           Loading Dashboard...
         </div>
 
@@ -574,148 +591,349 @@ button{
 
     </section>
 
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <span>Wage Management System</span>
+
+      <span>© 2026 All Rights Reserved</span>
+
+    </footer>
+
   </main>
 
 </div>
 
+
+<!-- =========================
+     APPLICATION SCRIPT
+========================== -->
+
 <script>
 
-
-const PAGE_FOLDER = "./pages/";
+/* =====================================
+   ROOT DIRECTORY PAGE CONFIGURATION
+===================================== */
 
 const PAGE_CONFIG = {
 
   "dashboard": {
     file: "dashboard.html",
-    title: "Dashboard"
+    title: "Dashboard",
+    section: "Main Menu"
   },
 
   "add-user": {
     file: "add-user.html",
-    title: "Add User"
+    title: "Add User",
+    section: "User Management"
   },
 
   "user-list": {
     file: "user-list.html",
-    title: "User List"
+    title: "User List",
+    section: "User Management"
   },
 
   "deleted-user": {
     file: "deleted-user.html",
-    title: "Deleted User"
+    title: "Deleted Users",
+    section: "User Management"
   },
 
   "add-wage": {
     file: "add-wage.html",
-    title: "Add Wage"
+    title: "Add Wage",
+    section: "Wage Management"
   },
 
   "wage-history": {
     file: "wage-history.html",
-    title: "Wage History"
-  },
-
-  "undo-wage": {
-    file: "undo-wage.html",
-    title: "Undo Wage"
+    title: "Wage History",
+    section: "Wage Management"
   },
 
   "payment": {
     file: "payment.html",
-    title: "Make Payment"
+    title: "User Payment",
+    section: "Payment Management"
   },
 
   "payment-history": {
     file: "payment-history.html",
-    title: "Payment History"
-  },
-
-  "undo-payment": {
-    file: "undo-payment.html",
-    title: "Undo Payment"
-  },
-
-  "report": {
-    file: "report.html",
-    title: "Report"
-  },
-
-  "currency": {
-    file: "currency.html",
-    title: "Currency Setting"
-  },
-
-  "settings": {
-    file: "settings.html",
-    title: "Settings"
+    title: "Payment History",
+    section: "Payment Management"
   }
 
 };
 
-let currentPage = "";
 
-async function loadPage(page, addHistory = true){
+/* =====================================
+   ELEMENTS
+===================================== */
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("mobileOverlay");
+const pageContainer = document.getElementById("pageContainer");
+const pageTitle = document.getElementById("pageTitle");
+const pageBreadcrumb = document.getElementById("pageBreadcrumb");
+
+
+/* =====================================
+   THEME SYSTEM
+===================================== */
+
+function applyTheme(theme){
+
+  document.body.classList.toggle(
+    "dark",
+    theme === "dark"
+  );
+
+  document.getElementById("themeToggle").textContent =
+    theme === "dark" ? "☀" : "☾";
+
+  localStorage.setItem("wage_theme",theme);
+
+}
+
+
+const savedTheme =
+  localStorage.getItem("wage_theme") || "light";
+
+applyTheme(savedTheme);
+
+
+document.getElementById("themeToggle")
+.addEventListener("click",function(){
+
+  const isDark =
+    document.body.classList.contains("dark");
+
+  applyTheme(isDark ? "light" : "dark");
+
+});
+
+
+/* =====================================
+   MOBILE SIDEBAR
+===================================== */
+
+function openSidebar(){
+
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+
+}
+
+
+function closeSidebar(){
+
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+
+}
+
+
+document.getElementById("menuToggle")
+.addEventListener("click",openSidebar);
+
+
+overlay.addEventListener("click",closeSidebar);
+
+
+/* =====================================
+   PAGE ROUTING
+===================================== */
+
+function getPageFromHash(){
+
+  let page = location.hash.replace("#","");
+
+  if(!page) return "dashboard";
+
+  page = decodeURIComponent(page);
+
+  if(!PAGE_CONFIG[page]){
+    return "dashboard";
+  }
+
+  return page;
+
+}
+
+
+/* =====================================
+   ACTIVE SIDEBAR MENU
+===================================== */
+
+function updateActiveMenu(page){
+
+  document.querySelectorAll(".nav-item")
+  .forEach(item=>{
+
+    item.classList.toggle(
+      "active",
+      item.dataset.page === page
+    );
+
+  });
+
+}
+
+
+/* =====================================
+   HEADER TITLE
+===================================== */
+
+function updatePageHeader(page){
 
   const config = PAGE_CONFIG[page];
 
-  if(!config){
-    showError("Page configuration not found.");
-    return;
-  }
+  pageTitle.textContent = config.title;
 
-  currentPage = page;
-
-
-  document.querySelectorAll(".nav-btn").forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      btn.dataset.page === page
-    );
-  });
-
-
-  document.getElementById("pageTitle").textContent =
+  pageBreadcrumb.textContent =
+    "Home / " +
+    config.section +
+    " / " +
     config.title;
 
+}
+
+
+/* =====================================
+   EXECUTE LOADED PAGE SCRIPTS
+===================================== */
+
+async function executePageScripts(container){
+
+  const scripts = Array.from(
+    container.querySelectorAll("script")
+  );
+
+  for(const oldScript of scripts){
+
+    const newScript = document.createElement("script");
+
+    Array.from(oldScript.attributes).forEach(attr=>{
+      newScript.setAttribute(attr.name,attr.value);
+    });
+
+    if(oldScript.src){
+
+      newScript.src = new URL(
+        oldScript.getAttribute("src"),
+        location.href
+      ).href;
+
+      await new Promise((resolve,reject)=>{
+
+        newScript.onload = resolve;
+
+        newScript.onerror = ()=>{
+          reject(
+            new Error("Could not load script: "+newScript.src)
+          );
+        };
+
+        oldScript.replaceWith(newScript);
+
+      });
+
+    }else{
+
+      newScript.textContent = oldScript.textContent;
+
+      oldScript.replaceWith(newScript);
+
+    }
+
+  }
+
+}
+
+
+/* =====================================
+   MAIN PAGE LOADER
+   All HTML files are in ROOT DIRECTORY
+===================================== */
+
+let currentPage = "";
+let loadCounter = 0;
+
+
+async function loadPage(page,addHistory=true){
+
+  if(!PAGE_CONFIG[page]){
+    page = "dashboard";
+  }
+
+  const config = PAGE_CONFIG[page];
+
+  const thisLoad = ++loadCounter;
 
   closeSidebar();
 
-  // Loading state
-  const container =
-    document.getElementById("pageContainer");
+  updateActiveMenu(page);
+  updatePageHeader(page);
 
-  container.innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
+  if(addHistory){
+
+    const newHash = "#" + page;
+
+    if(location.hash !== newHash){
+
+      history.pushState(
+        {page:page},
+        "",
+        newHash
+      );
+
+    }
+
+  }
+
+  pageContainer.innerHTML = `
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
       Loading ${config.title}...
     </div>
   `;
 
-
-  if(addHistory){
-    history.pushState(
-      {page:page},
-      "",
-      "#" + page
-    );
-  }
-
   try{
 
-    const url = PAGE_FOLDER + config.file;
+    /*
+      IMPORTANT:
+      Files are loaded directly from ROOT.
+      No pages/ folder.
+    */
 
-    const response = await fetch(url, {
-      cache:"no-store"
-    });
+    const response = await fetch(
+      "./" + config.file,
+      {
+        method:"GET",
+        cache:"no-store"
+      }
+    );
 
     if(!response.ok){
+
       throw new Error(
-        "HTTP Error: " + response.status
+        config.file+" not found. HTTP "+response.status
       );
+
     }
 
     const html = await response.text();
 
+    if(thisLoad !== loadCounter) return;
+
+    /*
+      Extract body content.
+      Also supports HTML fragments.
+    */
 
     const parser = new DOMParser();
 
@@ -724,182 +942,129 @@ async function loadPage(page, addHistory = true){
       "text/html"
     );
 
-
     const bodyContent = doc.body.innerHTML;
 
-    if(!bodyContent.trim()){
-      throw new Error("HTML page is empty.");
-    }
+    pageContainer.innerHTML = bodyContent;
 
+    /*
+      Execute inline and external scripts
+      inside the newly loaded page.
+    */
 
-    container.innerHTML = bodyContent;
+    await executePageScripts(pageContainer);
 
+    if(thisLoad !== loadCounter) return;
 
-    const scripts = Array.from(
-      doc.querySelectorAll("script")
-    );
+    currentPage = page;
 
-    for(const oldScript of scripts){
-
-      const newScript =
-        document.createElement("script");
-
-      if(oldScript.src){
-
-        newScript.src = new URL(
-          oldScript.getAttribute("src"),
-          url
-        ).href;
-
-        newScript.async = false;
-
-        await new Promise((resolve,reject)=>{
-
-          newScript.onload = resolve;
-
-          newScript.onerror = ()=>reject(
-            new Error("Script load failed: "+newScript.src)
-          );
-
-          document.body.appendChild(newScript);
-
-        });
-
-      }else{
-
-        newScript.textContent =
-          oldScript.textContent;
-
-        document.body.appendChild(newScript);
-
-      }
-
-    }
-
-    if(typeof window.onPageLoaded === "function"){
-      window.onPageLoaded(page);
-    }
-
-    window.scrollTo({
-      top:0,
-      behavior:"instant"
-    });
+    window.currentPage = page;
 
   }catch(error){
 
-    console.error(error);
+    if(thisLoad !== loadCounter) return;
 
-    showError(
-      "Could not load " + config.file +
-      ". Check that the file exists inside the pages folder."
-    );
+    console.error("Page loading error:",error);
+
+    pageContainer.innerHTML = `
+      <div class="error-box">
+
+        <h3>Unable to Load Page</h3>
+
+        <p>
+          ${config.file} could not be loaded.
+          Make sure this file exists in the
+          GitHub repository root directory.
+        </p>
+
+        <p>
+          ${String(error.message)}
+        </p>
+
+        <button onclick="window.loadPage('${page}',false)">
+          Try Again
+        </button>
+
+      </div>
+    `;
 
   }
 
 }
 
-function showError(message){
 
-  document.getElementById("pageContainer").innerHTML = `
+/* =====================================
+   GLOBAL NAVIGATION
+   Child HTML pages can call:
+   window.loadPage('user-list')
+===================================== */
 
-    <div class="error-box">
+window.loadPage = loadPage;
 
-      <div class="error-icon">⚠️</div>
 
-      <h2>Page Load Failed</h2>
+/* =====================================
+   SIDEBAR CLICK EVENTS
+===================================== */
 
-      <p>${message}</p>
+document.querySelectorAll(".nav-item")
+.forEach(item=>{
 
-      <button class="retry-btn"
-        onclick="loadPage(currentPage,false)">
-        Try Again
-      </button>
+  item.addEventListener("click",function(){
 
-    </div>
+    const page = this.dataset.page;
 
-  `;
+    loadPage(page,true);
 
-}
-
-window.addEventListener("popstate",function(event){
-
-  const page = location.hash.replace("#","")
-    || "dashboard";
-
-  loadPage(
-    PAGE_CONFIG[page] ? page : "dashboard",
-    false
-  );
+  });
 
 });
 
 
-function toggleSidebar(){
+/* =====================================
+   BROWSER BACK / FORWARD
+===================================== */
 
-  document.getElementById("sidebar")
-    .classList.toggle("open");
+window.addEventListener("popstate",function(){
 
-  document.getElementById("overlay")
-    .classList.toggle("show");
+  const page = getPageFromHash();
 
-}
+  loadPage(page,false);
 
-function closeSidebar(){
-
-  document.getElementById("sidebar")
-    .classList.remove("open");
-
-  document.getElementById("overlay")
-    .classList.remove("show");
-
-}
+});
 
 
-function toggleTheme(){
+window.addEventListener("hashchange",function(){
 
-  document.body.classList.toggle("dark");
+  const page = getPageFromHash();
 
-  const theme =
-    document.body.classList.contains("dark")
-    ? "dark"
-    : "light";
+  if(page !== currentPage){
 
-  localStorage.setItem(
-    "wage_manager_theme",
-    theme
-  );
+    loadPage(page,false);
 
-}
-
-(function(){
-
-  const theme =
-    localStorage.getItem("wage_manager_theme");
-
-  if(theme === "dark"){
-    document.body.classList.add("dark");
   }
 
-})();
+});
 
-(function(){
 
-  let initialPage =
-    location.hash.replace("#","");
+/* =====================================
+   GLOBAL USER EDIT SUPPORT
 
-  if(!PAGE_CONFIG[initialPage]){
-    initialPage = "dashboard";
-  }
+   User List page can call:
 
-  history.replaceState(
-    {page:initialPage},
-    "",
-    "#" + initialPage
-  );
+   window.__wageEditUserId = id;
+   window.loadPage('add-user');
 
-  loadPage(initialPage,false);
+===================================== */
 
-})();
+window.__wageEditUserId = "";
+
+
+/* =====================================
+   INITIAL PAGE
+===================================== */
+
+const initialPage = getPageFromHash();
+
+loadPage(initialPage,false);
 
 </script>
 
