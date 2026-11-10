@@ -3,241 +3,483 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Add User | Wage Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add User</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f7f5;font-family:Arial,sans-serif;color:#172b25}
-.container{max-width:850px;margin:30px auto;padding:20px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-h2{margin:0;color:#116149}
-.sub{color:#718078;font-size:13px;margin-top:7px}
-.card{background:#fff;border:1px solid #e2ebe6;border-radius:16px;padding:25px;box-shadow:0 5px 20px #163d2b0b}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.field{display:flex;flex-direction:column;gap:7px}
-.field.full{grid-column:1/-1}
-label{font-size:13px;font-weight:700;color:#40574d}
-input,select,textarea{width:100%;padding:12px 13px;border:1px solid #dce6e0;border-radius:9px;background:#fff;font-size:14px;outline:none;color:#203b30}
-input:focus,select:focus,textarea:focus{border-color:#15966d;box-shadow:0 0 0 3px #15966d15}
-textarea{min-height:85px;resize:vertical}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-button,.btn{border:0;border-radius:9px;padding:12px 20px;font-weight:700;cursor:pointer;text-decoration:none;font-size:14px}
-.primary{background:#087f5b;color:#fff}
-.secondary{background:#eaf2ed;color:#315b49}
-button:disabled{opacity:.6;cursor:wait}
-.message{padding:12px;border-radius:9px;margin-bottom:15px;display:none;font-size:14px}
-.success{display:block;background:#e7f8ef;color:#087443}
-.error{display:block;background:#fff0ed;color:#b42318}
-.hint{font-size:12px;color:#829087}
-@media(max-width:600px){.container{padding:13px;margin:12px auto}.card{padding:17px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+.au-page{
+  color:var(--text,#172033);
+  font-family:Inter,Arial,sans-serif;
+}
+.au-page *{box-sizing:border-box}
+.au-page .au-card{
+  background:var(--card,#fff);
+  border:1px solid var(--border,#e8edf3);
+  border-radius:15px;
+  padding:23px;
+  box-shadow:var(--shadow,0 3px 15px rgba(20,35,60,.04));
+}
+.au-page .au-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.au-page h2{font-size:20px;margin-bottom:5px}
+.au-page .au-sub{font-size:12px;color:var(--muted,#8490a3)}
+.au-page .au-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+.au-page .au-field{display:flex;flex-direction:column;gap:7px}
+.au-page label{font-size:12px;font-weight:700}
+.au-page input,
+.au-page select,
+.au-page textarea{
+  width:100%;
+  padding:12px 13px;
+  border:1px solid var(--border,#e8edf3);
+  border-radius:9px;
+  background:var(--bg,#f5f7fb);
+  color:var(--text,#172033);
+  outline:none;
+  font:inherit;
+  font-size:13px;
+}
+.au-page input:focus,
+.au-page select:focus,
+.au-page textarea:focus{
+  border-color:var(--primary,#087f5b);
+}
+.au-page textarea{min-height:85px;resize:vertical}
+.au-page .full{grid-column:1/-1}
+.au-page .au-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+.au-page button{
+  border:0;
+  border-radius:9px;
+  padding:12px 18px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:12px;
+}
+.au-page .primary{
+  background:var(--primary,#087f5b);
+  color:white;
+}
+.au-page .secondary{
+  background:var(--hover,#f1f8f5);
+  color:var(--text,#172033);
+}
+.au-page .au-message{
+  display:none;
+  padding:12px;
+  border-radius:9px;
+  font-size:12px;
+  margin-bottom:15px;
+}
+.au-page .success{
+  display:block;
+  color:#087f5b;
+  background:#e8f7ef;
+}
+.au-page .error{
+  display:block;
+  color:#c0392b;
+  background:#fff0ee;
+}
+.au-page .hint{
+  font-size:10px;
+  color:var(--muted,#8490a3);
+}
+.au-page .required{color:#e05252}
+.au-page .au-photo{
+  width:65px;height:65px;border-radius:50%;
+  object-fit:cover;background:var(--hover);
+  border:1px solid var(--border);
+  display:none;
+}
+@media(max-width:650px){
+  .au-page .au-grid{grid-template-columns:1fr}
+  .au-page .full{grid-column:auto}
+  .au-page .au-card{padding:16px}
+}
 </style>
 </head>
+
 <body>
-<div class="container">
-  <div class="top">
+
+<div class="au-page">
+
+  <div class="au-heading">
     <div>
-      <h2 id="pageTitle">Add New User</h2>
-      <div class="sub">Create and manage user information</div>
+      <h2 id="auTitle">Add New User</h2>
+      <div class="au-sub">Create and manage user profile information</div>
     </div>
-    <a class="btn secondary" href="user-list.html">← User List</a>
+    <button class="secondary" type="button"
+      onclick="window.loadPage('user-list')">
+      View Users
+    </button>
   </div>
 
-  <div class="card">
-    <div id="message" class="message"></div>
+  <div class="au-card">
 
-    <form id="userForm">
-      <div class="grid">
+    <div id="auMessage" class="au-message"></div>
 
-        <div class="field">
-          <label>User Name *</label>
-          <input id="userName" required placeholder="Enter user name">
+    <form id="auForm">
+
+      <div class="au-grid">
+
+        <div class="au-field">
+          <label>User ID <span class="required">*</span></label>
+          <input id="auUserId" required
+            placeholder="Enter permanent User ID">
+          <span class="hint">User ID cannot be changed after creation.</span>
         </div>
 
-        <div class="field">
-          <label>User ID</label>
-          <input id="userId" placeholder="Auto generated if empty">
-          <div class="hint" id="idHint">Leave empty to generate automatically.</div>
+        <div class="au-field">
+          <label>User Name <span class="required">*</span></label>
+          <input id="auUserName" required
+            placeholder="Enter user name">
         </div>
 
-        <div class="field">
-          <label>Password <span id="passwordRequired">*</span></label>
-          <input id="password" type="password" minlength="8" placeholder="Minimum 8 characters">
-          <div class="hint" id="passwordHint">Required for a new user.</div>
+        <div class="au-field">
+          <label>Password <span id="auPasswordRequired" class="required">*</span></label>
+          <input id="auPassword" type="password"
+            placeholder="Minimum 8 characters">
+          <span class="hint" id="auPasswordHint">
+            Password is required for a new user.
+          </span>
         </div>
 
-        <div class="field">
-          <label>Phone</label>
-          <input id="phone" type="tel" placeholder="Phone number">
+        <div class="au-field">
+          <label>Phone Number</label>
+          <input id="auPhone" type="tel"
+            placeholder="Enter phone number">
         </div>
 
-        <div class="field">
+        <div class="au-field">
           <label>Gmail</label>
-          <input id="gmail" type="email" placeholder="user@gmail.com">
+          <input id="auGmail" type="email"
+            placeholder="example@gmail.com">
         </div>
 
-        <div class="field">
+        <div class="au-field">
           <label>Area</label>
-          <input id="area" placeholder="Enter area">
+          <input id="auArea" placeholder="Enter area">
         </div>
 
-        <div class="field">
+        <div class="au-field">
           <label>Active Date</label>
-          <input id="activeDate" type="date">
+          <input id="auActiveDate" type="date">
         </div>
 
-        <div class="field">
+        <div class="au-field">
           <label>Status</label>
-          <select id="status">
+          <select id="auStatus">
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
-            <option value="Pending">Pending</option>
           </select>
         </div>
 
-        <div class="field full">
+        <div class="au-field full">
           <label>Profile Picture URL</label>
-          <input id="picture" type="url" placeholder="https://example.com/photo.jpg">
+          <input id="auPicture"
+            placeholder="https://example.com/photo.jpg">
+          <img id="auPreview" class="au-photo" alt="Profile preview">
+          <span class="hint">Optional: paste a publicly accessible image URL.</span>
         </div>
 
-        <div class="field full">
-          <label>Comment</label>
-          <textarea id="comment" placeholder="Write user notes..."></textarea>
+        <div class="au-field full">
+          <label>Comment / Note</label>
+          <textarea id="auComment"
+            placeholder="Write any additional information..."></textarea>
         </div>
 
       </div>
 
-      <div class="actions">
-        <button class="primary" id="saveBtn" type="submit">Save User</button>
-        <button class="secondary" type="reset">Reset</button>
-        <a class="btn secondary" href="user-list.html">Cancel</a>
+      <div class="au-actions">
+
+        <button class="primary" id="auSubmit" type="submit">
+          Save User
+        </button>
+
+        <button class="secondary" type="button" id="auReset">
+          Reset Form
+        </button>
+
+        <button class="secondary" type="button"
+          onclick="window.loadPage('user-list')">
+          Cancel
+        </button>
+
       </div>
+
     </form>
+
   </div>
 </div>
 
 <script>
-const API_URL = window.WAGE_API ||
-"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+(function(){
 
-const params = new URLSearchParams(location.search);
-const editUserId = params.get("userId");
-const $ = id => document.getElementById(id);
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
-async function apiGet(query) {
-  const response = await fetch(API_URL + "?api=" + encodeURIComponent(query.api) +
-    (query.userId ? "&userId=" + encodeURIComponent(query.userId) : ""));
-  return response.json();
-}
+  const $ = id => document.getElementById(id);
 
-async function apiPost(data) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {"Content-Type":"text/plain;charset=utf-8"},
-    body: JSON.stringify(data)
+  let editing = false;
+  let originalUserId = "";
+
+  function showMessage(message,type){
+
+    const box = $("auMessage");
+    box.textContent = message;
+    box.className = "au-message " + type;
+
+  }
+
+  function getValue(obj,keys){
+
+    for(const key of keys){
+      if(obj && obj[key] !== undefined && obj[key] !== null){
+        return obj[key];
+      }
+    }
+
+    return "";
+  }
+
+  function setForm(user){
+
+    $("auUserId").value =
+      getValue(user,["userId","userID","User ID","id"]);
+
+    $("auUserName").value =
+      getValue(user,["userName","name","User Name"]);
+
+    $("auPhone").value =
+      getValue(user,["phone","Phone"]);
+
+    $("auGmail").value =
+      getValue(user,["gmail","email","Gmail"]);
+
+    $("auArea").value =
+      getValue(user,["area","Area"]);
+
+    $("auActiveDate").value =
+      String(getValue(user,["activeDate","Active Date"]) || "").slice(0,10);
+
+    $("auPicture").value =
+      getValue(user,["profilePicture","picture","Profile Picture"]);
+
+    $("auStatus").value =
+      getValue(user,["status","Status"]) || "Active";
+
+    $("auComment").value =
+      getValue(user,["comment","Comment"]);
+
+    $("auUserId").readOnly = true;
+
+    $("auPassword").required = false;
+
+    $("auPasswordRequired").textContent = "(Optional)";
+
+    $("auPasswordHint").textContent =
+      "Leave blank to keep the existing password.";
+
+    $("auTitle").textContent = "Edit User";
+
+    $("auSubmit").textContent = "Update User";
+
+    const image = $("auPicture").value;
+
+    if(image){
+      $("auPreview").src = image;
+      $("auPreview").style.display = "block";
+    }
+
+  }
+
+  async function loadEditUser(){
+
+    const userId =
+      new URLSearchParams(location.search).get("userId") ||
+      window.__wageEditUserId ||
+      "";
+
+    if(!userId) return;
+
+    editing = true;
+    originalUserId = userId;
+
+    $("auTitle").textContent = "Loading User...";
+    $("auSubmit").disabled = true;
+
+    try{
+
+      const response = await fetch(
+        API_URL + "?api=profile&userId=" +
+        encodeURIComponent(userId),
+        {cache:"no-store"}
+      );
+
+      const data = await response.json();
+
+      if(!data.success){
+        throw new Error(data.message || "User not found.");
+      }
+
+      const user = data.user || data.profile || data.data;
+
+      if(!user){
+        throw new Error("User information not found in API response.");
+      }
+
+      setForm(user);
+
+      window.__wageEditUserId = "";
+
+    }catch(error){
+
+      showMessage(error.message,"error");
+
+    }finally{
+
+      $("auSubmit").disabled = false;
+
+    }
+
+  }
+
+  $("auPicture").addEventListener("input",function(){
+
+    const url = this.value.trim();
+
+    if(url){
+      $("auPreview").src = url;
+      $("auPreview").style.display = "block";
+    }else{
+      $("auPreview").style.display = "none";
+    }
+
   });
-  return response.json();
-}
 
-function showMessage(text, type) {
-  $("message").textContent = text;
-  $("message").className = "message " + type;
-}
+  $("auPreview").addEventListener("error",function(){
+    this.style.display = "none";
+  });
 
-function setValue(id, value) {
-  $(id).value = value || "";
-}
+  $("auReset").addEventListener("click",function(){
 
-async function loadEditUser() {
-  if (!editUserId) return;
+    if(editing){
+      loadEditUser();
+    }else{
+      $("auForm").reset();
+      $("auMessage").className = "au-message";
+      $("auPreview").style.display = "none";
+    }
 
-  $("pageTitle").textContent = "Edit User";
-  $("saveBtn").textContent = "Update User";
-  $("userId").readOnly = true;
-  $("idHint").textContent = "User ID cannot be changed.";
-  $("passwordRequired").textContent = "(Optional)";
-  $("password").removeAttribute("required");
-  $("passwordHint").textContent = "Leave empty to keep the current password.";
+  });
 
-  try {
-    const result = await apiGet({api:"profile",userId:editUserId});
-    if (!result.success || !result.user) {
-      showMessage(result.message || "User not found","error");
+  $("auForm").addEventListener("submit",async function(event){
+
+    event.preventDefault();
+
+    const userId = $("auUserId").value.trim();
+    const userName = $("auUserName").value.trim();
+    const password = $("auPassword").value;
+
+    if(!userId || !userName){
+      showMessage("User ID and User Name are required.","error");
       return;
     }
 
-    const u = result.user;
-    setValue("userName",u.userName);
-    setValue("userId",u.userId);
-    setValue("phone",u.phone);
-    setValue("gmail",u.gmail);
-    setValue("area",u.area);
-    setValue("activeDate",u.activeDate);
-    setValue("picture",u.picture);
-    setValue("status",u.status);
-    setValue("comment",u.comment);
-
-  } catch(error) {
-    showMessage("Could not load user: " + error.message,"error");
-  }
-}
-
-$("userForm").addEventListener("submit",async function(event) {
-  event.preventDefault();
-
-  const password = $("password").value;
-
-  if (!editUserId && password.length < 8) {
-    showMessage("Password must be at least 8 characters.","error");
-    return;
-  }
-
-  if (editUserId && password && password.length < 8) {
-    showMessage("New password must be at least 8 characters.","error");
-    return;
-  }
-
-  const data = {
-    action: editUserId ? "editUser" : "addUser",
-    userId: $("userId").value.trim(),
-    userName: $("userName").value.trim(),
-    password: password,
-    phone: $("phone").value.trim(),
-    gmail: $("gmail").value.trim(),
-    area: $("area").value.trim(),
-    activeDate: $("activeDate").value,
-    picture: $("picture").value.trim(),
-    status: $("status").value,
-    comment: $("comment").value.trim()
-  };
-
-  $("saveBtn").disabled = true;
-  $("saveBtn").textContent = "Saving...";
-
-  try {
-    const result = await apiPost(data);
-
-    if (!result.success) {
-      throw new Error(result.message || "Operation failed");
+    if(!editing && password.length < 8){
+      showMessage("Password must be at least 8 characters.","error");
+      return;
     }
 
-    showMessage(result.message || "Saved successfully","success");
-
-    if (!editUserId) {
-      $("userForm").reset();
-      setTimeout(() => location.href="user-list.html",900);
-    } else {
-      $("password").value = "";
+    if(editing && userId !== originalUserId){
+      showMessage("User ID cannot be changed.","error");
+      return;
     }
 
-  } catch(error) {
-    showMessage(error.message,"error");
-  } finally {
-    $("saveBtn").disabled = false;
-    $("saveBtn").textContent = editUserId ? "Update User" : "Save User";
-  }
-});
+    const payload = {
 
-loadEditUser();
+      action: editing ? "editUser" : "addUser",
+
+      userId:userId,
+      userName:userName,
+      password:password,
+
+      phone:$("auPhone").value.trim(),
+      gmail:$("auGmail").value.trim(),
+      area:$("auArea").value.trim(),
+      activeDate:$("auActiveDate").value,
+      profilePicture:$("auPicture").value.trim(),
+      status:$("auStatus").value,
+      comment:$("auComment").value.trim()
+
+    };
+
+    const button = $("auSubmit");
+
+    button.disabled = true;
+    button.textContent = "Saving...";
+
+    try{
+
+      const response = await fetch(API_URL,{
+        method:"POST",
+        body:JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if(!data.success){
+        throw new Error(data.message || "Unable to save user.");
+      }
+
+      showMessage(
+        data.message || (editing ? "User updated successfully." : "User added successfully."),
+        "success"
+      );
+
+      if(!editing){
+
+        $("auForm").reset();
+        $("auPreview").style.display = "none";
+
+      }else{
+
+        $("auPassword").value = "";
+
+      }
+
+    }catch(error){
+
+      showMessage(error.message,"error");
+
+    }finally{
+
+      button.disabled = false;
+      button.textContent = editing ? "Update User" : "Save User";
+
+    }
+
+  });
+
+  loadEditUser();
+
+})();
 </script>
+
 </body>
 </html>
