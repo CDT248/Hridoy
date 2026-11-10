@@ -1,1 +1,216 @@
-HI
+
+<div id="userAddPage">
+  <style>
+    #userAddPage{font-family:Inter,Arial,sans-serif;color:var(--text,#172033)}
+    #userAddPage .ua-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+    #userAddPage .ua-title{font-size:24px;font-weight:800;margin:0}
+    #userAddPage .ua-sub{color:var(--muted,#7b8494);font-size:13px;margin-top:6px}
+    #userAddPage .ua-card{background:var(--card,#fff);border:1px solid var(--border,#e5e9f0);border-radius:15px;padding:22px;max-width:900px}
+    #userAddPage .ua-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+    #userAddPage .ua-field{display:flex;flex-direction:column;gap:7px}
+    #userAddPage label{font-size:13px;font-weight:700}
+    #userAddPage input,#userAddPage select,#userAddPage textarea{width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid var(--border,#dce2ea);border-radius:9px;background:var(--input-bg,#fff);color:var(--text,#172033);font:inherit;font-size:14px;outline:none}
+    #userAddPage input:focus,#userAddPage select:focus,#userAddPage textarea:focus{border-color:#087f5b;box-shadow:0 0 0 3px #087f5b18}
+    #userAddPage textarea{min-height:85px;resize:vertical}
+    #userAddPage .ua-full{grid-column:1/-1}
+    #userAddPage .ua-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    #userAddPage button{border:0;border-radius:9px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:14px}
+    #userAddPage .ua-primary{background:#087f5b;color:#fff}
+    #userAddPage .ua-secondary{background:#eef2f6;color:#344054}
+    #userAddPage button:disabled{opacity:.6;cursor:not-allowed}
+    #userAddPage .ua-message{display:none;margin-bottom:16px;padding:12px;border-radius:9px;font-size:13px}
+    #userAddPage .ua-message.ok{display:block;background:#e8f7ef;color:#087443}
+    #userAddPage .ua-message.err{display:block;background:#fff0f0;color:#c62828}
+    #userAddPage .ua-note{font-size:12px;color:var(--muted,#7b8494);margin-top:5px}
+    @media(max-width:600px){#userAddPage .ua-grid{grid-template-columns:1fr}#userAddPage .ua-card{padding:16px}#userAddPage .ua-title{font-size:21px}}
+  </style>
+
+  <div class="ua-head">
+    <div>
+      <h2 class="ua-title" id="uaHeading">Add New User</h2>
+      <div class="ua-sub">Create and save a user in your Google Spreadsheet.</div>
+    </div>
+    <button class="ua-secondary" type="button" onclick="window.loadPage('user-list')">View Users</button>
+  </div>
+
+  <div class="ua-card">
+    <div id="uaMessage" class="ua-message"></div>
+
+    <form id="uaForm">
+      <div class="ua-grid">
+        <div class="ua-field">
+          <label for="uaId">User ID (Optional)</label>
+          <input id="uaId" placeholder="Auto generated if empty">
+          <div class="ua-note">Leave empty to generate automatically.</div>
+        </div>
+
+        <div class="ua-field">
+          <label for="uaName">User Name *</label>
+          <input id="uaName" required placeholder="Enter user name">
+        </div>
+
+        <div class="ua-field">
+          <label for="uaPassword">Password <span id="uaPasswordHint">(Required)</span></label>
+          <input id="uaPassword" type="password" minlength="8" placeholder="Minimum 8 characters">
+          <div class="ua-note">Edit করার সময় নতুন Password না দিলে আগের Password থাকবে।</div>
+        </div>
+
+        <div class="ua-field">
+          <label for="uaPhone">Phone Number</label>
+          <input id="uaPhone" type="tel" placeholder="Enter phone number">
+        </div>
+
+        <div class="ua-field">
+          <label for="uaGmail">Gmail</label>
+          <input id="uaGmail" type="email" placeholder="example@gmail.com">
+        </div>
+
+        <div class="ua-field">
+          <label for="uaArea">Area</label>
+          <input id="uaArea" placeholder="Enter area">
+        </div>
+
+        <div class="ua-field">
+          <label for="uaDate">Active Date</label>
+          <input id="uaDate" type="date">
+        </div>
+
+        <div class="ua-field">
+          <label for="uaPicture">Profile Picture URL</label>
+          <input id="uaPicture" type="url" placeholder="https://example.com/photo.jpg">
+        </div>
+
+        <div class="ua-field ua-full">
+          <label for="uaComment">Comment</label>
+          <textarea id="uaComment" placeholder="Write a note about this user..."></textarea>
+        </div>
+      </div>
+
+      <div class="ua-actions">
+        <button type="submit" class="ua-primary" id="uaSubmit">Save User</button>
+        <button type="reset" class="ua-secondary" id="uaReset">Clear Form</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const API = "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+  const root = document.getElementById("userAddPage");
+  if(!root || root.dataset.ready) return;
+  root.dataset.ready = "1";
+
+  const $ = id => root.querySelector("#"+id);
+  let editingId = new URLSearchParams(location.search).get("edit") || "";
+
+  function message(text,type){
+    const el=$("uaMessage");
+    el.textContent=text;
+    el.className="ua-message "+type;
+  }
+
+  async function post(data){
+    const response=await fetch(API,{
+      method:"POST",
+      body:JSON.stringify(data)
+    });
+    return response.json();
+  }
+
+  function setBusy(busy){
+    $("uaSubmit").disabled=busy;
+    $("uaSubmit").textContent=busy?"Please wait...":(editingId?"Update User":"Save User");
+  }
+
+  async function loadForEdit(){
+    if(!editingId) return;
+    $("uaHeading").textContent="Edit User";
+    $("uaPasswordHint").textContent="(Optional)";
+    $("uaPassword").required=false;
+    $("uaSubmit").textContent="Update User";
+
+    try{
+      const res=await fetch(API+"?api=profile&userId="+encodeURIComponent(editingId));
+      const data=await res.json();
+      if(!data.success) throw new Error(data.message||"User not found");
+
+      const u=data.user;
+      $("uaId").value=u["User ID"]||"";
+      $("uaId").disabled=true;
+      $("uaName").value=u["User Name"]||"";
+      $("uaPhone").value=u["Phone"]||"";
+      $("uaGmail").value=u["Gmail"]||"";
+      $("uaArea").value=u["Area"]||"";
+      $("uaDate").value=u["Active Date"]||"";
+      $("uaPicture").value=u["Profile Picture"]||"";
+      $("uaComment").value=u["Comment"]||"";
+    }catch(err){
+      message("Could not load user: "+err.message,"err");
+    }
+  }
+
+  $("uaForm").addEventListener("submit",async function(e){
+    e.preventDefault();
+
+    const payload={
+      action:editingId?"edit":"add",
+      userId:$("uaId").value.trim(),
+      name:$("uaName").value.trim(),
+      password:$("uaPassword").value,
+      phone:$("uaPhone").value.trim(),
+      gmail:$("uaGmail").value.trim(),
+      area:$("uaArea").value.trim(),
+      activeDate:$("uaDate").value,
+      profilePicture:$("uaPicture").value.trim(),
+      comment:$("uaComment").value.trim()
+    };
+
+    if(!payload.name){
+      message("User Name is required.","err");
+      return;
+    }
+
+    if(!editingId && payload.password.length<8){
+      message("Password must be at least 8 characters.","err");
+      return;
+    }
+
+    if(editingId && payload.password && payload.password.length<8){
+      message("New Password must be at least 8 characters.","err");
+      return;
+    }
+
+    setBusy(true);
+
+    try{
+      const result=await post(payload);
+      if(!result.success) throw new Error(result.message||"Request failed");
+
+      message(result.message+" User ID: "+(result.userId||payload.userId),"ok");
+
+      if(!editingId){
+        $("uaForm").reset();
+      }else{
+        $("uaPassword").value="";
+      }
+    }catch(err){
+      message("Save failed: "+err.message,"err");
+    }finally{
+      setBusy(false);
+    }
+  });
+
+  $("uaReset").addEventListener("click",function(){
+    editingId="";
+    $("uaId").disabled=false;
+    $("uaHeading").textContent="Add New User";
+    $("uaPassword").required=true;
+    $("uaPasswordHint").textContent="(Required)";
+    $("uaSubmit").textContent="Save User";
+    $("uaMessage").className="ua-message";
+  });
+
+  loadForEdit();
+})();
+</script>
