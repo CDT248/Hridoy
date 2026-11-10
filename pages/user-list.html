@@ -1,1 +1,184 @@
-HI
+
+<div id="userListPage">
+  <style>
+    #userListPage{font-family:Inter,Arial,sans-serif;color:var(--text,#172033)}
+    #userListPage .ul-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+    #userListPage h2{font-size:24px;margin:0;font-weight:800}
+    #userListPage .ul-sub{font-size:13px;color:var(--muted,#7b8494);margin-top:6px}
+    #userListPage .ul-btn{border:0;border-radius:9px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer}
+    #userListPage .ul-green{background:#087f5b;color:#fff}
+    #userListPage .ul-gray{background:#eef2f6;color:#344054}
+    #userListPage .ul-red{background:#fff0f0;color:#c62828}
+    #userListPage .ul-card{background:var(--card,#fff);border:1px solid var(--border,#e5e9f0);border-radius:14px;padding:17px;margin-bottom:17px}
+    #userListPage .ul-toolbar{display:flex;gap:10px;flex-wrap:wrap}
+    #userListPage .ul-search{flex:1;min-width:180px;padding:11px 13px;border:1px solid var(--border,#dce2ea);border-radius:9px;background:var(--input-bg,#fff);color:var(--text,#172033);font-size:14px}
+    #userListPage .ul-table-wrap{overflow-x:auto}
+    #userListPage table{width:100%;border-collapse:collapse;min-width:750px}
+    #userListPage th,#userListPage td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--border,#edf0f4);font-size:13px;white-space:nowrap}
+    #userListPage th{color:var(--muted,#7b8494);font-weight:700;background:var(--surface,#f8fafc)}
+    #userListPage .ul-person{display:flex;align-items:center;gap:10px}
+    #userListPage .ul-avatar{width:37px;height:37px;border-radius:50%;object-fit:cover;background:#e6f4ee;display:flex;align-items:center;justify-content:center;color:#087f5b;font-weight:800;overflow:hidden}
+    #userListPage .ul-name{font-weight:700}
+    #userListPage .ul-muted{font-size:11px;color:var(--muted,#7b8494);margin-top:3px}
+    #userListPage .ul-status{padding:5px 9px;border-radius:20px;background:#e8f7ef;color:#087443;font-size:11px;font-weight:700}
+    #userListPage .ul-actions{display:flex;gap:6px}
+    #userListPage .ul-actions button{padding:7px 9px;border:0;border-radius:7px;cursor:pointer;font-weight:700;font-size:12px}
+    #userListPage .ul-message{padding:12px;border-radius:9px;font-size:13px;margin-bottom:14px;display:none}
+    #userListPage .ul-message.err{display:block;background:#fff0f0;color:#c62828}
+    #userListPage .ul-empty{text-align:center;padding:35px;color:var(--muted,#7b8494)}
+    #userListPage .ul-count{font-size:13px;color:var(--muted,#7b8494);margin:12px 0}
+    @media(max-width:600px){#userListPage h2{font-size:21px}#userListPage .ul-card{padding:12px}}
+  </style>
+
+  <div class="ul-head">
+    <div>
+      <h2>Active Users</h2>
+      <div class="ul-sub">Manage your registered users.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="ul-btn ul-gray" onclick="window.loadPage('deleted-user')">Deleted Users</button>
+      <button class="ul-btn ul-green" onclick="window.loadPage('add-user')">+ Add User</button>
+    </div>
+  </div>
+
+  <div id="ulMessage" class="ul-message"></div>
+
+  <div class="ul-card">
+    <div class="ul-toolbar">
+      <input id="ulSearch" class="ul-search" placeholder="Search name, ID, phone, Gmail or area...">
+      <button class="ul-btn ul-gray" id="ulRefresh">Refresh</button>
+    </div>
+    <div class="ul-count" id="ulCount">Loading users...</div>
+    <div class="ul-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>User ID</th>
+            <th>Phone</th>
+            <th>Gmail</th>
+            <th>Area</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ulRows">
+          <tr><td colspan="7" class="ul-empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const API="https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+  const root=document.getElementById("userListPage");
+  if(!root || root.dataset.ready) return;
+  root.dataset.ready="1";
+
+  const $=id=>root.querySelector("#"+id);
+  let users=[];
+  let searchTimer;
+
+  function esc(v){
+    return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function showError(text){
+    $("ulMessage").textContent=text;
+    $("ulMessage").className="ul-message err";
+  }
+
+  async function post(data){
+    const res=await fetch(API,{method:"POST",body:JSON.stringify(data)});
+    return res.json();
+  }
+
+  async function loadUsers(){
+    $("ulRows").innerHTML='<tr><td colspan="7" class="ul-empty">Loading users...</td></tr>';
+    try{
+      const res=await fetch(API+"?api=active");
+      const data=await res.json();
+      if(!data.success) throw new Error(data.message||"Could not load users");
+      users=data.users||[];
+      render();
+      $("ulMessage").className="ul-message";
+    }catch(err){
+      $("ulRows").innerHTML='<tr><td colspan="7" class="ul-empty">Unable to load users.</td></tr>';
+      showError("Loading failed: "+err.message);
+      $("ulCount").textContent="Could not load user list";
+    }
+  }
+
+  function render(){
+    const q=$("ulSearch").value.trim().toLowerCase();
+    const filtered=users.filter(u=>[
+      u["User ID"],u["User Name"],u["Phone"],u["Gmail"],u["Area"]
+    ].join(" ").toLowerCase().includes(q));
+
+    $("ulCount").textContent="Showing "+filtered.length+" of "+users.length+" active users";
+
+    if(!filtered.length){
+      $("ulRows").innerHTML='<tr><td colspan="7" class="ul-empty">No users found.</td></tr>';
+      return;
+    }
+
+    $("ulRows").innerHTML=filtered.map(u=>{
+      const id=esc(u["User ID"]);
+      const name=esc(u["User Name"]||"Unnamed");
+      const picture=esc(u["Profile Picture"]||"");
+      const avatar=picture
+        ? '<img class="ul-avatar" src="'+picture+'" alt="" onerror="this.style.display=\'none\'">'
+        : '<div class="ul-avatar">'+name.charAt(0).toUpperCase()+'</div>';
+
+      return '<tr>'+
+        '<td><div class="ul-person">'+avatar+'<div><div class="ul-name">'+name+'</div><div class="ul-muted">'+esc(u["Active Date"]||"")+'</div></div></div></td>'+
+        '<td>'+id+'</td>'+
+        '<td>'+esc(u["Phone"]||"-")+'</td>'+
+        '<td>'+esc(u["Gmail"]||"-")+'</td>'+
+        '<td>'+esc(u["Area"]||"-")+'</td>'+
+        '<td><span class="ul-status">Active</span></td>'+
+        '<td><div class="ul-actions">'+
+        '<button class="ul-gray" data-edit="'+id+'">Edit</button>'+
+        '<button class="ul-red" data-delete="'+id+'">Delete</button>'+
+        '</div></td>'+
+        '</tr>';
+    }).join("");
+  }
+
+  $("ulRows").addEventListener("click",async function(e){
+    const edit=e.target.closest("[data-edit]");
+    const del=e.target.closest("[data-delete]");
+
+    if(edit){
+      const id=edit.dataset.edit;
+      window.loadPage("add-user?edit="+encodeURIComponent(id));
+      return;
+    }
+
+    if(del){
+      const id=del.dataset.delete;
+      const user=users.find(u=>String(u["User ID"])===id);
+      if(!confirm('Are you sure you want to move "'+(user?.["User Name"]||id)+'" to Deleted Users?')) return;
+
+      del.disabled=true;
+      del.textContent="Moving...";
+      try{
+        const result=await post({action:"delete",userId:id});
+        if(!result.success) throw new Error(result.message||"Delete failed");
+        await loadUsers();
+      }catch(err){
+        showError("Delete failed: "+err.message);
+        del.disabled=false;
+        del.textContent="Delete";
+      }
+    }
+  });
+
+  $("ulSearch").addEventListener("input",render);
+  $("ulRefresh").addEventListener("click",loadUsers);
+
+  loadUsers();
+})();
+</script>
