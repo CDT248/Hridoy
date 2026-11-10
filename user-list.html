@@ -3,448 +3,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>User List</title>
-
 <style>
-.ul-page{
-  color:var(--text,#172033);
-  font-family:Inter,Arial,sans-serif;
-}
+.ul-page{color:var(--text);font-family:Arial,sans-serif}
 .ul-page *{box-sizing:border-box}
-.ul-page .ul-top{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:12px;flex-wrap:wrap;
-  margin-bottom:18px;
-}
-.ul-page h2{font-size:20px;margin-bottom:5px}
-.ul-page .muted{font-size:12px;color:var(--muted,#8490a3)}
-.ul-page .ul-btn{
-  border:0;border-radius:8px;padding:10px 14px;
-  cursor:pointer;font-size:12px;font-weight:700;
-}
-.ul-page .primary{background:var(--primary,#087f5b);color:white}
-.ul-page .secondary{background:var(--hover,#f1f8f5);color:var(--text)}
-.ul-page .danger{background:#fff0ee;color:#c0392b}
-.ul-page .ul-stats{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:13px;margin-bottom:18px;
-}
-.ul-page .ul-stat{
-  background:var(--card,#fff);
-  border:1px solid var(--border);
-  border-radius:12px;padding:16px;
-}
-.ul-page .ul-stat span{font-size:11px;color:var(--muted)}
-.ul-page .ul-stat strong{display:block;font-size:23px;margin-top:7px}
-.ul-page .ul-panel{
-  background:var(--card,#fff);
-  border:1px solid var(--border);
-  border-radius:14px;padding:17px;
-}
-.ul-page .ul-tools{
-  display:flex;gap:10px;flex-wrap:wrap;
-  margin-bottom:15px;
-}
-.ul-page input,.ul-page select{
-  padding:11px 12px;border:1px solid var(--border);
-  border-radius:8px;background:var(--bg);
-  color:var(--text);font-size:12px;outline:none;
-}
-.ul-page input{flex:1;min-width:180px}
-.ul-page .ul-table-wrap{overflow-x:auto}
+.ul-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.ul-head h2{font-size:20px;margin:0 0 5px}
+.ul-muted{font-size:12px;color:var(--muted)}
+.ul-btn{border:0;border-radius:8px;padding:10px 13px;cursor:pointer;font-size:11px;font-weight:700}
+.ul-primary{background:var(--primary);color:white}
+.ul-secondary{background:var(--hover);color:var(--text)}
+.ul-danger{background:#fff0ee;color:#c0392b}
+.ul-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.ul-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px}
+.ul-stat span{font-size:11px;color:var(--muted)}
+.ul-stat strong{display:block;font-size:23px;margin-top:7px}
+.ul-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px}
+.ul-tools{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.ul-tools input,.ul-tools select{padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:12px}
+.ul-tools input{flex:1;min-width:180px}
+.ul-table-wrap{overflow-x:auto}
 .ul-page table{width:100%;border-collapse:collapse;min-width:760px}
-.ul-page th,.ul-page td{
-  padding:13px 11px;text-align:left;
-  border-bottom:1px solid var(--border);
-  font-size:12px;white-space:nowrap;
-}
-.ul-page th{color:var(--muted);font-size:10px;text-transform:uppercase}
-.ul-page .user-cell{display:flex;align-items:center;gap:9px}
-.ul-page .avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:var(--primary-light);color:var(--primary);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;overflow:hidden;flex-shrink:0;
-}
-.ul-page .avatar img{width:100%;height:100%;object-fit:cover}
-.ul-page .status{
-  padding:5px 9px;border-radius:20px;
-  font-size:10px;font-weight:700;
-  background:#e8f7ef;color:#087f5b;
-}
-.ul-page .inactive{background:#fff0ee;color:#c0392b}
-.ul-page .actions{display:flex;gap:6px}
-.ul-page .actions button{padding:7px 9px;font-size:10px}
-.ul-page .empty{
-  text-align:center;padding:35px;color:var(--muted);
-  font-size:13px;
-}
-.ul-page .message{
-  display:none;padding:11px;border-radius:8px;
-  font-size:12px;margin-bottom:12px;
-}
-.ul-page .error{display:block;background:#fff0ee;color:#c0392b}
-.ul-page .success{display:block;background:#e8f7ef;color:#087f5b}
-.ul-page .ul-modal{
-  display:none;position:fixed;inset:0;z-index:5000;
-  background:rgba(0,0,0,.5);align-items:center;
-  justify-content:center;padding:15px;
-}
-.ul-page .ul-modal.show{display:flex}
-.ul-page .modal-box{
-  width:100%;max-width:430px;background:var(--card);
-  border:1px solid var(--border);border-radius:15px;
-  padding:22px;
-}
-.ul-page .modal-box h3{font-size:17px;margin-bottom:10px}
-.ul-page .modal-box p{font-size:12px;color:var(--muted);line-height:1.6}
-.ul-page .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
-@media(max-width:650px){
-  .ul-page .ul-stats{grid-template-columns:1fr}
-  .ul-page .ul-panel{padding:12px}
-}
+.ul-page th,.ul-page td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;white-space:nowrap}
+.ul-page th{font-size:10px;color:var(--muted);text-transform:uppercase}
+.ul-user{display:flex;align-items:center;gap:9px}
+.ul-avatar{width:38px;height:38px;flex-shrink:0;border-radius:50%;overflow:hidden;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800}
+.ul-avatar img{width:100%;height:100%;object-fit:cover}
+.ul-status{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f7ef;color:#087f5b;font-size:10px;font-weight:700}
+.ul-inactive{background:#fff0ee;color:#c0392b}
+.ul-actions{display:flex;gap:6px}
+.ul-empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.ul-message{display:none;padding:11px;border-radius:8px;margin-bottom:12px;font-size:12px}
+.ul-message.ok{display:block;background:#e8f7ef;color:#087f5b}
+.ul-message.err{display:block;background:#fff0ee;color:#c0392b}
+.ul-modal{display:none;position:fixed;inset:0;background:#0008;z-index:5000;align-items:center;justify-content:center;padding:15px}
+.ul-modal.show{display:flex}
+.ul-modal-box{width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.ul-modal-box h3{margin:0 0 10px;font-size:17px}
+.ul-modal-box p{font-size:12px;color:var(--muted);line-height:1.6}
+.ul-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:650px){.ul-stats{grid-template-columns:1fr}.ul-panel{padding:12px}}
 </style>
 </head>
-
 <body>
-
 <div class="ul-page">
 
-  <div class="ul-top">
+  <div class="ul-head">
     <div>
       <h2>User Management</h2>
-      <div class="muted">Manage all active user profiles</div>
+      <div class="ul-muted">Manage all active users</div>
     </div>
-
-    <button class="ul-btn primary"
-      onclick="window.loadPage('add-user')">
-      + Add New User
-    </button>
+    <button class="ul-btn ul-primary" onclick="window.loadPage('add-user')">+ Add New User</button>
   </div>
 
   <div class="ul-stats">
-    <div class="ul-stat">
-      <span>Total Active Users</span>
-      <strong id="ulTotal">0</strong>
-    </div>
-    <div class="ul-stat">
-      <span>Active</span>
-      <strong id="ulActive">0</strong>
-    </div>
-    <div class="ul-stat">
-      <span>Inactive</span>
-      <strong id="ulInactive">0</strong>
-    </div>
+    <div class="ul-stat"><span>Total Users</span><strong id="ulTotal">0</strong></div>
+    <div class="ul-stat"><span>Active Users</span><strong id="ulActive">0</strong></div>
+    <div class="ul-stat"><span>Inactive Users</span><strong id="ulInactive">0</strong></div>
   </div>
 
   <div class="ul-panel">
-
-    <div id="ulMessage" class="message"></div>
+    <div id="ulMessage" class="ul-message"></div>
 
     <div class="ul-tools">
-      <input id="ulSearch" placeholder="Search by name, ID, phone or Gmail...">
-
-      <select id="ulStatusFilter">
+      <input id="ulSearch" placeholder="Search name, ID, phone, Gmail or area...">
+      <select id="ulFilter">
         <option value="">All Status</option>
         <option value="Active">Active</option>
         <option value="Inactive">Inactive</option>
       </select>
-
-      <button class="ul-btn secondary" id="ulRefresh">
-        ↻ Refresh
-      </button>
+      <button class="ul-btn ul-secondary" id="ulRefresh">↻ Refresh</button>
     </div>
 
     <div class="ul-table-wrap">
       <table>
         <thead>
           <tr>
-            <th>User</th>
-            <th>User ID</th>
-            <th>Phone</th>
-            <th>Gmail</th>
-            <th>Area</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>User</th><th>User ID</th><th>Phone</th><th>Gmail</th>
+            <th>Area</th><th>Status</th><th>Actions</th>
           </tr>
         </thead>
         <tbody id="ulBody">
-          <tr><td colspan="7" class="empty">Loading users...</td></tr>
+          <tr><td colspan="7" class="ul-empty">Loading users...</td></tr>
         </tbody>
       </table>
     </div>
-
   </div>
 
   <div class="ul-modal" id="ulModal">
-    <div class="modal-box">
-      <h3>Delete User?</h3>
-      <p id="ulModalText">
-        This user will move to Deleted Users. Wage and Payment history will remain.
-      </p>
-
-      <div class="modal-actions">
-        <button class="ul-btn secondary" id="ulCancel">Cancel</button>
-        <button class="ul-btn danger" id="ulConfirm">Delete User</button>
+    <div class="ul-modal-box">
+      <h3>Move User to Deleted?</h3>
+      <p id="ulModalText">The profile will move to Deleted Users. Wage and Payment history will remain.</p>
+      <div class="ul-modal-actions">
+        <button class="ul-btn ul-secondary" id="ulCancel">Cancel</button>
+        <button class="ul-btn ul-danger" id="ulConfirm">Delete User</button>
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
 (function(){
+  const API_URL="https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+  const $=id=>document.getElementById(id);
+  let users=[];
+  let deleteId="";
 
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
-
-  const $ = id => document.getElementById(id);
-
-  let users = [];
-  let deleteId = "";
-
-  function val(user,keys){
-
-    for(const key of keys){
-      if(user && user[key] !== undefined && user[key] !== null){
-        return user[key];
-      }
-    }
-
+  function val(u,keys){
+    for(const k of keys)if(u&&u[k]!==undefined&&u[k]!==null)return u[k];
     return "";
   }
 
-  function escapeHTML(value){
-
-    return String(value ?? "").replace(/[&<>"']/g,char=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[char]));
-
+  function esc(v){
+    return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
 
-  function showMessage(message,type){
-
-    $("ulMessage").textContent = message;
-    $("ulMessage").className = "message " + type;
-
+  function msg(text,type){
+    $("ulMessage").textContent=text;
+    $("ulMessage").className="ul-message "+type;
   }
 
   async function loadUsers(){
-
-    $("ulBody").innerHTML =
-      '<tr><td colspan="7" class="empty">Loading users...</td></tr>';
-
-    $("ulMessage").className = "message";
+    $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty">Loading users...</td></tr>';
+    $("ulMessage").className="ul-message";
 
     try{
-
-      const response = await fetch(
-        API_URL + "?api=active",
-        {cache:"no-store"}
-      );
-
-      const data = await response.json();
-
-      if(!data.success){
-        throw new Error(data.message || "Unable to load users.");
-      }
-
-      users = Array.isArray(data.users)
-        ? data.users
-        : Array.isArray(data.data) ? data.data : [];
-
-      renderUsers();
-
-    }catch(error){
-
-      $("ulBody").innerHTML =
-        '<tr><td colspan="7" class="empty">Could not load users: '+
-        escapeHTML(error.message)+'</td></tr>';
-
-      showMessage(error.message,"error");
-
+      const response=await fetch(API_URL+"?api=active",{cache:"no-store"});
+      const data=await response.json();
+      if(!data.success)throw new Error(data.message||"Unable to load users.");
+      users=Array.isArray(data.users)?data.users:[];
+      render();
+    }catch(err){
+      $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty">'+esc(err.message)+'</td></tr>';
+      msg(err.message,"err");
     }
-
   }
 
-  function renderUsers(){
+  function render(){
+    const active=users.filter(u=>String(val(u,["status"])||"Active").toLowerCase()==="active");
+    $("ulTotal").textContent=users.length;
+    $("ulActive").textContent=active.length;
+    $("ulInactive").textContent=users.length-active.length;
 
-    const active = users.filter(user=>
-      String(val(user,["status","Status"]) || "Active").toLowerCase() === "active"
-    );
+    const search=$("ulSearch").value.trim().toLowerCase();
+    const filter=$("ulFilter").value.toLowerCase();
 
-    const inactive = users.length - active.length;
-
-    $("ulTotal").textContent = users.length;
-    $("ulActive").textContent = active.length;
-    $("ulInactive").textContent = inactive;
-
-    const search = $("ulSearch").value.trim().toLowerCase();
-    const filter = $("ulStatusFilter").value.toLowerCase();
-
-    const filtered = users.filter(user=>{
-
-      const name = val(user,["userName","name","User Name"]);
-      const id = val(user,["userId","id","User ID"]);
-      const phone = val(user,["phone","Phone"]);
-      const gmail = val(user,["gmail","email","Gmail"]);
-      const area = val(user,["area","Area"]);
-      const status = val(user,["status","Status"]) || "Active";
-
-      const text = [name,id,phone,gmail,area].join(" ").toLowerCase();
-
-      return text.includes(search) &&
-        (!filter || String(status).toLowerCase() === filter);
-
+    const list=users.filter(u=>{
+      const name=val(u,["userName"]);
+      const id=val(u,["userId"]);
+      const phone=val(u,["phone"]);
+      const gmail=val(u,["gmail"]);
+      const area=val(u,["area"]);
+      const status=val(u,["status"])||"Active";
+      return [name,id,phone,gmail,area].join(" ").toLowerCase().includes(search)
+        &&(!filter||String(status).toLowerCase()===filter);
     });
 
-    if(!filtered.length){
-
-      $("ulBody").innerHTML =
-        '<tr><td colspan="7" class="empty">No users found.</td></tr>';
-
+    if(!list.length){
+      $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty">No users found.</td></tr>';
       return;
-
     }
 
-    $("ulBody").innerHTML = filtered.map(user=>{
+    $("ulBody").innerHTML=list.map(u=>{
+      const name=val(u,["userName"]);
+      const id=val(u,["userId"]);
+      const status=val(u,["status"])||"Active";
+      const picture=val(u,["profilePicture"]);
+      const avatar=picture
+        ?'<img src="'+esc(picture)+'" alt="" referrerpolicy="no-referrer">'
+        :esc(String(name||"U").charAt(0).toUpperCase());
 
-      const name = val(user,["userName","name","User Name"]);
-      const id = val(user,["userId","id","User ID"]);
-      const phone = val(user,["phone","Phone"]);
-      const gmail = val(user,["gmail","email","Gmail"]);
-      const area = val(user,["area","Area"]);
-      const picture = val(user,["profilePicture","picture","Profile Picture"]);
-      const status = val(user,["status","Status"]) || "Active";
-
-      const avatar = picture
-        ? '<img src="'+escapeHTML(picture)+'" alt="">'
-        : escapeHTML(String(name || "U").charAt(0).toUpperCase());
-
-      return `
-        <tr>
-          <td>
-            <div class="user-cell">
-              <div class="avatar">${avatar}</div>
-              <strong>${escapeHTML(name)}</strong>
-            </div>
-          </td>
-
-          <td>${escapeHTML(id)}</td>
-          <td>${escapeHTML(phone || "—")}</td>
-          <td>${escapeHTML(gmail || "—")}</td>
-          <td>${escapeHTML(area || "—")}</td>
-
-          <td>
-            <span class="status ${
-              String(status).toLowerCase() === "inactive" ? "inactive" : ""
-            }">${escapeHTML(status)}</span>
-          </td>
-
-          <td>
-            <div class="actions">
-              <button class="ul-btn secondary" data-edit="${escapeHTML(id)}">Edit</button>
-              <button class="ul-btn danger" data-delete="${escapeHTML(id)}">Delete</button>
-            </div>
-          </td>
-        </tr>
-      `;
-
+      return `<tr>
+        <td><div class="ul-user"><div class="ul-avatar">${avatar}</div><strong>${esc(name)}</strong></div></td>
+        <td>${esc(id)}</td>
+        <td>${esc(val(u,["phone"])||"—")}</td>
+        <td>${esc(val(u,["gmail"])||"—")}</td>
+        <td>${esc(val(u,["area"])||"—")}</td>
+        <td><span class="ul-status ${String(status).toLowerCase()==="inactive"?"ul-inactive":""}">${esc(status)}</span></td>
+        <td><div class="ul-actions">
+          <button class="ul-btn ul-secondary" data-edit="${esc(id)}">Edit</button>
+          <button class="ul-btn ul-danger" data-delete="${esc(id)}">Delete</button>
+        </div></td>
+      </tr>`;
     }).join("");
 
-    $("ulBody").querySelectorAll("[data-edit]").forEach(button=>{
-
-      button.addEventListener("click",function(){
-
-        const id = this.dataset.edit;
-
-        window.__wageEditUserId = id;
-
+    $("ulBody").querySelectorAll("[data-edit]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        window.__wageEditUserId=btn.dataset.edit;
         window.loadPage("add-user");
-
       });
-
     });
 
-    $("ulBody").querySelectorAll("[data-delete]").forEach(button=>{
-
-      button.addEventListener("click",function(){
-
-        deleteId = this.dataset.delete;
-
-        $("ulModalText").textContent =
-          "User ID " + deleteId +
-          " will move to Deleted Users. Wage and Payment history will remain.";
-
+    $("ulBody").querySelectorAll("[data-delete]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        deleteId=btn.dataset.delete;
+        $("ulModalText").textContent="User ID "+deleteId+" will move to Deleted Users. Wage and Payment history will remain.";
         $("ulModal").classList.add("show");
-
       });
-
     });
-
   }
 
-  $("ulSearch").addEventListener("input",renderUsers);
-  $("ulStatusFilter").addEventListener("change",renderUsers);
+  $("ulSearch").addEventListener("input",render);
+  $("ulFilter").addEventListener("change",render);
   $("ulRefresh").addEventListener("click",loadUsers);
-
-  $("ulCancel").addEventListener("click",function(){
+  $("ulCancel").addEventListener("click",()=>{
     $("ulModal").classList.remove("show");
-    deleteId = "";
+    deleteId="";
   });
 
   $("ulConfirm").addEventListener("click",async function(){
-
-    if(!deleteId) return;
-
-    this.disabled = true;
-    this.textContent = "Deleting...";
+    if(!deleteId)return;
+    this.disabled=true;
+    this.textContent="Deleting...";
 
     try{
-
-      const response = await fetch(API_URL,{
+      const response=await fetch(API_URL,{
         method:"POST",
-        body:JSON.stringify({
-          action:"deleteUser",
-          userId:deleteId
-        })
+        body:JSON.stringify({action:"deleteUser",userId:deleteId})
       });
-
-      const data = await response.json();
-
-      if(!data.success){
-        throw new Error(data.message || "Delete failed.");
-      }
+      const data=await response.json();
+      if(!data.success)throw new Error(data.message||"Delete failed.");
 
       $("ulModal").classList.remove("show");
-      showMessage(data.message || "User moved to Deleted Users.","success");
-
-      deleteId = "";
-
+      msg(data.message||"User moved to Deleted Users.","ok");
+      deleteId="";
       await loadUsers();
-
-    }catch(error){
-
-      showMessage(error.message,"error");
-
+    }catch(err){
+      msg(err.message,"err");
     }finally{
-
-      this.disabled = false;
-      this.textContent = "Delete User";
-
+      this.disabled=false;
+      this.textContent="Delete User";
     }
-
   });
 
   loadUsers();
-
 })();
 </script>
-
 </body>
 </html>
