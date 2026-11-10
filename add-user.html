@@ -3,177 +3,89 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Add User</title>
-
 <style>
-.au-page{
-  color:var(--text,#172033);
-  font-family:Inter,Arial,sans-serif;
-}
+.au-page{color:var(--text);font-family:Arial,sans-serif}
 .au-page *{box-sizing:border-box}
-.au-page .au-card{
-  background:var(--card,#fff);
-  border:1px solid var(--border,#e8edf3);
-  border-radius:15px;
-  padding:23px;
-  box-shadow:var(--shadow,0 3px 15px rgba(20,35,60,.04));
+.au-card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:22px}
+.au-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.au-head h2{font-size:20px;margin:0 0 5px}
+.au-muted,.au-hint{color:var(--muted);font-size:12px}
+.au-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.au-field{display:flex;flex-direction:column;gap:7px}
+.au-field label{font-size:12px;font-weight:700}
+.au-field input,.au-field select,.au-field textarea{
+ width:100%;padding:12px;border:1px solid var(--border);
+ border-radius:9px;background:var(--bg);color:var(--text);
+ font:inherit;font-size:13px;outline:none
 }
-.au-page .au-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-.au-page h2{font-size:20px;margin-bottom:5px}
-.au-page .au-sub{font-size:12px;color:var(--muted,#8490a3)}
-.au-page .au-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:17px;
-}
-.au-page .au-field{display:flex;flex-direction:column;gap:7px}
-.au-page label{font-size:12px;font-weight:700}
-.au-page input,
-.au-page select,
-.au-page textarea{
-  width:100%;
-  padding:12px 13px;
-  border:1px solid var(--border,#e8edf3);
-  border-radius:9px;
-  background:var(--bg,#f5f7fb);
-  color:var(--text,#172033);
-  outline:none;
-  font:inherit;
-  font-size:13px;
-}
-.au-page input:focus,
-.au-page select:focus,
-.au-page textarea:focus{
-  border-color:var(--primary,#087f5b);
-}
-.au-page textarea{min-height:85px;resize:vertical}
-.au-page .full{grid-column:1/-1}
-.au-page .au-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:22px;
-}
-.au-page button{
-  border:0;
-  border-radius:9px;
-  padding:12px 18px;
-  cursor:pointer;
-  font-weight:700;
-  font-size:12px;
-}
-.au-page .primary{
-  background:var(--primary,#087f5b);
-  color:white;
-}
-.au-page .secondary{
-  background:var(--hover,#f1f8f5);
-  color:var(--text,#172033);
-}
-.au-page .au-message{
-  display:none;
-  padding:12px;
-  border-radius:9px;
-  font-size:12px;
-  margin-bottom:15px;
-}
-.au-page .success{
-  display:block;
-  color:#087f5b;
-  background:#e8f7ef;
-}
-.au-page .error{
-  display:block;
-  color:#c0392b;
-  background:#fff0ee;
-}
-.au-page .hint{
-  font-size:10px;
-  color:var(--muted,#8490a3);
-}
-.au-page .required{color:#e05252}
-.au-page .au-photo{
-  width:65px;height:65px;border-radius:50%;
-  object-fit:cover;background:var(--hover);
-  border:1px solid var(--border);
-  display:none;
-}
-@media(max-width:650px){
-  .au-page .au-grid{grid-template-columns:1fr}
-  .au-page .full{grid-column:auto}
-  .au-page .au-card{padding:16px}
-}
+.au-field textarea{min-height:85px;resize:vertical}
+.au-field input:focus,.au-field select:focus,.au-field textarea:focus{border-color:var(--primary)}
+.au-full{grid-column:1/-1}
+.au-btn{padding:11px 16px;border:0;border-radius:9px;cursor:pointer;font-weight:700;font-size:12px}
+.au-primary{background:var(--primary);color:white}
+.au-secondary{background:var(--hover);color:var(--text)}
+.au-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.au-message{display:none;padding:11px;border-radius:8px;margin-bottom:14px;font-size:12px}
+.au-message.ok{display:block;background:#e8f7ef;color:#087f5b}
+.au-message.err{display:block;background:#fff0ee;color:#c0392b}
+.au-photo-area{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.au-preview{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid var(--border);background:var(--bg);display:none}
+.au-upload-label{display:inline-flex;align-items:center;gap:8px;background:var(--primary-light);color:var(--primary);padding:12px 15px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:800}
+.au-upload-label input{display:none}
+.au-remove{font-size:11px;color:#c0392b;background:transparent;border:0;cursor:pointer}
+.au-progress{height:6px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:9px;display:none}
+.au-progress span{display:block;height:100%;width:0;background:var(--primary);transition:width .2s}
+@media(max-width:650px){.au-grid{grid-template-columns:1fr}.au-full{grid-column:auto}.au-card{padding:15px}}
 </style>
 </head>
-
 <body>
-
 <div class="au-page">
-
-  <div class="au-heading">
+  <div class="au-head">
     <div>
       <h2 id="auTitle">Add New User</h2>
-      <div class="au-sub">Create and manage user profile information</div>
+      <div class="au-muted">Create or update a user profile</div>
     </div>
-    <button class="secondary" type="button"
-      onclick="window.loadPage('user-list')">
-      View Users
-    </button>
+    <button class="au-btn au-secondary" type="button" onclick="window.loadPage('user-list')">View Users</button>
   </div>
 
   <div class="au-card">
-
     <div id="auMessage" class="au-message"></div>
 
     <form id="auForm">
-
       <div class="au-grid">
 
         <div class="au-field">
-          <label>User ID <span class="required">*</span></label>
-          <input id="auUserId" required
-            placeholder="Enter permanent User ID">
-          <span class="hint">User ID cannot be changed after creation.</span>
+          <label>User ID *</label>
+          <input id="auUserId" required placeholder="Permanent User ID">
+          <span class="au-hint">User ID cannot be changed later.</span>
         </div>
 
         <div class="au-field">
-          <label>User Name <span class="required">*</span></label>
-          <input id="auUserName" required
-            placeholder="Enter user name">
+          <label>User Name *</label>
+          <input id="auUserName" required placeholder="Enter user name">
         </div>
 
         <div class="au-field">
-          <label>Password <span id="auPasswordRequired" class="required">*</span></label>
-          <input id="auPassword" type="password"
-            placeholder="Minimum 8 characters">
-          <span class="hint" id="auPasswordHint">
-            Password is required for a new user.
-          </span>
+          <label>Password <span id="auPassLabel">*</span></label>
+          <input id="auPassword" type="password" placeholder="Minimum 8 characters">
+          <span class="au-hint" id="auPassHint">Required for a new user.</span>
         </div>
 
         <div class="au-field">
-          <label>Phone Number</label>
-          <input id="auPhone" type="tel"
-            placeholder="Enter phone number">
+          <label>Phone</label>
+          <input id="auPhone" type="tel" placeholder="Phone number">
         </div>
 
         <div class="au-field">
           <label>Gmail</label>
-          <input id="auGmail" type="email"
-            placeholder="example@gmail.com">
+          <input id="auGmail" type="email" placeholder="example@gmail.com">
         </div>
 
         <div class="au-field">
           <label>Area</label>
-          <input id="auArea" placeholder="Enter area">
+          <input id="auArea" placeholder="User area">
         </div>
 
         <div class="au-field">
@@ -189,297 +101,259 @@
           </select>
         </div>
 
-        <div class="au-field full">
-          <label>Profile Picture URL</label>
-          <input id="auPicture"
-            placeholder="https://example.com/photo.jpg">
-          <img id="auPreview" class="au-photo" alt="Profile preview">
-          <span class="hint">Optional: paste a publicly accessible image URL.</span>
+        <div class="au-field au-full">
+          <label>Profile Picture</label>
+          <div class="au-photo-area">
+            <img id="auPreview" class="au-preview" alt="Profile preview">
+            <div>
+              <label class="au-upload-label">
+                <span>📷 Choose Picture</span>
+                <input id="auPhoto" type="file" accept="image/*">
+              </label>
+              <div class="au-hint" style="margin-top:8px">Phone Gallery বা Camera থেকে ছবি নির্বাচন করো। JPG, PNG, WEBP সমর্থিত।</div>
+              <button type="button" class="au-remove" id="auRemovePhoto">Remove selected picture</button>
+            </div>
+          </div>
+          <div class="au-progress" id="auProgress"><span id="auProgressBar"></span></div>
+          <div class="au-hint" id="auPhotoStatus"></div>
         </div>
 
-        <div class="au-field full">
+        <div class="au-field au-full">
           <label>Comment / Note</label>
-          <textarea id="auComment"
-            placeholder="Write any additional information..."></textarea>
+          <textarea id="auComment" placeholder="Additional information..."></textarea>
         </div>
 
       </div>
 
       <div class="au-actions">
-
-        <button class="primary" id="auSubmit" type="submit">
-          Save User
-        </button>
-
-        <button class="secondary" type="button" id="auReset">
-          Reset Form
-        </button>
-
-        <button class="secondary" type="button"
-          onclick="window.loadPage('user-list')">
-          Cancel
-        </button>
-
+        <button class="au-btn au-primary" id="auSubmit" type="submit">Save User</button>
+        <button class="au-btn au-secondary" type="button" id="auReset">Reset</button>
+        <button class="au-btn au-secondary" type="button" onclick="window.loadPage('user-list')">Cancel</button>
       </div>
-
     </form>
-
   </div>
 </div>
 
 <script>
 (function(){
+  const API_URL="https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+  const $=id=>document.getElementById(id);
 
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+  let editing=false;
+  let originalUserId="";
+  let existingPicture="";
+  let selectedFile=null;
+  let removePicture=false;
 
-  const $ = id => document.getElementById(id);
-
-  let editing = false;
-  let originalUserId = "";
-
-  function showMessage(message,type){
-
-    const box = $("auMessage");
-    box.textContent = message;
-    box.className = "au-message " + type;
-
+  function message(text,type){
+    $("auMessage").textContent=text;
+    $("auMessage").className="au-message "+type;
   }
 
-  function getValue(obj,keys){
-
-    for(const key of keys){
-      if(obj && obj[key] !== undefined && obj[key] !== null){
-        return obj[key];
-      }
-    }
-
+  function field(obj,keys){
+    for(const k of keys) if(obj && obj[k]!==undefined && obj[k]!==null) return obj[k];
     return "";
   }
 
-  function setForm(user){
-
-    $("auUserId").value =
-      getValue(user,["userId","userID","User ID","id"]);
-
-    $("auUserName").value =
-      getValue(user,["userName","name","User Name"]);
-
-    $("auPhone").value =
-      getValue(user,["phone","Phone"]);
-
-    $("auGmail").value =
-      getValue(user,["gmail","email","Gmail"]);
-
-    $("auArea").value =
-      getValue(user,["area","Area"]);
-
-    $("auActiveDate").value =
-      String(getValue(user,["activeDate","Active Date"]) || "").slice(0,10);
-
-    $("auPicture").value =
-      getValue(user,["profilePicture","picture","Profile Picture"]);
-
-    $("auStatus").value =
-      getValue(user,["status","Status"]) || "Active";
-
-    $("auComment").value =
-      getValue(user,["comment","Comment"]);
-
-    $("auUserId").readOnly = true;
-
-    $("auPassword").required = false;
-
-    $("auPasswordRequired").textContent = "(Optional)";
-
-    $("auPasswordHint").textContent =
-      "Leave blank to keep the existing password.";
-
-    $("auTitle").textContent = "Edit User";
-
-    $("auSubmit").textContent = "Update User";
-
-    const image = $("auPicture").value;
-
-    if(image){
-      $("auPreview").src = image;
-      $("auPreview").style.display = "block";
-    }
-
+  function showPicture(url){
+    const img=$("auPreview");
+    if(url){img.src=url;img.style.display="block";}
+    else{img.removeAttribute("src");img.style.display="none";}
   }
+
+  async function request(payload){
+    const response=await fetch(API_URL,{
+      method:"POST",
+      body:JSON.stringify(payload)
+    });
+    const data=await response.json();
+    if(!data.success) throw new Error(data.message||"Request failed.");
+    return data;
+  }
+
+  function compressImage(file){
+    return new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onerror=()=>reject(new Error("Could not read image."));
+      reader.onload=()=>{
+        const img=new Image();
+        img.onerror=()=>reject(new Error("Invalid image file."));
+        img.onload=()=>{
+          const max=1000;
+          const scale=Math.min(1,max/Math.max(img.width,img.height));
+          const canvas=document.createElement("canvas");
+          canvas.width=Math.round(img.width*scale);
+          canvas.height=Math.round(img.height*scale);
+          const ctx=canvas.getContext("2d");
+          ctx.drawImage(img,0,0,canvas.width,canvas.height);
+          resolve(canvas.toDataURL("image/jpeg",0.82));
+        };
+        img.src=reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  $("auPhoto").addEventListener("change",function(){
+    const file=this.files[0];
+    if(!file)return;
+    if(!file.type.startsWith("image/")){
+      message("Please select an image file.","err");
+      this.value="";
+      return;
+    }
+    selectedFile=file;
+    removePicture=false;
+    showPicture(URL.createObjectURL(file));
+    $("auPhotoStatus").textContent=file.name+" selected. It will upload when you save.";
+  });
+
+  $("auRemovePhoto").addEventListener("click",function(){
+    selectedFile=null;
+    removePicture=true;
+    $("auPhoto").value="";
+    showPicture("");
+    $("auPhotoStatus").textContent="Picture removed. Save to update profile.";
+  });
 
   async function loadEditUser(){
+    const id=new URLSearchParams(location.search).get("userId")||window.__wageEditUserId||"";
+    if(!id)return;
 
-    const userId =
-      new URLSearchParams(location.search).get("userId") ||
-      window.__wageEditUserId ||
-      "";
-
-    if(!userId) return;
-
-    editing = true;
-    originalUserId = userId;
-
-    $("auTitle").textContent = "Loading User...";
-    $("auSubmit").disabled = true;
+    editing=true;
+    originalUserId=id;
+    $("auTitle").textContent="Loading User...";
+    $("auSubmit").disabled=true;
 
     try{
+      const response=await fetch(API_URL+"?api=profile&userId="+encodeURIComponent(id),{cache:"no-store"});
+      const data=await response.json();
+      if(!data.success)throw new Error(data.message||"User not found.");
 
-      const response = await fetch(
-        API_URL + "?api=profile&userId=" +
-        encodeURIComponent(userId),
-        {cache:"no-store"}
-      );
+      const u=data.user||data.profile||data.data;
+      if(!u)throw new Error("User information missing.");
 
-      const data = await response.json();
+      $("auUserId").value=field(u,["userId","User ID"]);
+      $("auUserName").value=field(u,["userName","User Name"]);
+      $("auPhone").value=field(u,["phone","Phone"]);
+      $("auGmail").value=field(u,["gmail","Gmail"]);
+      $("auArea").value=field(u,["area","Area"]);
+      $("auActiveDate").value=String(field(u,["activeDate","Active Date"])||"").slice(0,10);
+      $("auStatus").value=field(u,["status","Status"])||"Active";
+      $("auComment").value=field(u,["comment","Comment"]);
 
-      if(!data.success){
-        throw new Error(data.message || "User not found.");
-      }
+      existingPicture=field(u,["profilePicture","Profile Picture"]);
+      showPicture(existingPicture);
 
-      const user = data.user || data.profile || data.data;
+      $("auUserId").readOnly=true;
+      $("auPassword").required=false;
+      $("auPassLabel").textContent="(Optional)";
+      $("auPassHint").textContent="Leave blank to keep the current password.";
+      $("auTitle").textContent="Edit User";
+      $("auSubmit").textContent="Update User";
+      window.__wageEditUserId="";
 
-      if(!user){
-        throw new Error("User information not found in API response.");
-      }
-
-      setForm(user);
-
-      window.__wageEditUserId = "";
-
-    }catch(error){
-
-      showMessage(error.message,"error");
-
+    }catch(err){
+      message(err.message,"err");
     }finally{
-
-      $("auSubmit").disabled = false;
-
+      $("auSubmit").disabled=false;
     }
-
   }
 
-  $("auPicture").addEventListener("input",function(){
-
-    const url = this.value.trim();
-
-    if(url){
-      $("auPreview").src = url;
-      $("auPreview").style.display = "block";
-    }else{
-      $("auPreview").style.display = "none";
-    }
-
+  $("auReset").addEventListener("click",()=>{
+    if(editing){loadEditUser();return;}
+    $("auForm").reset();
+    selectedFile=null;
+    removePicture=false;
+    existingPicture="";
+    showPicture("");
+    $("auPhotoStatus").textContent="";
+    $("auMessage").className="au-message";
   });
 
-  $("auPreview").addEventListener("error",function(){
-    this.style.display = "none";
-  });
-
-  $("auReset").addEventListener("click",function(){
-
-    if(editing){
-      loadEditUser();
-    }else{
-      $("auForm").reset();
-      $("auMessage").className = "au-message";
-      $("auPreview").style.display = "none";
-    }
-
-  });
-
-  $("auForm").addEventListener("submit",async function(event){
-
+  $("auForm").addEventListener("submit",async event=>{
     event.preventDefault();
 
-    const userId = $("auUserId").value.trim();
-    const userName = $("auUserName").value.trim();
-    const password = $("auPassword").value;
+    const id=$("auUserId").value.trim();
+    const name=$("auUserName").value.trim();
+    const password=$("auPassword").value;
 
-    if(!userId || !userName){
-      showMessage("User ID and User Name are required.","error");
-      return;
-    }
+    if(!id||!name){message("User ID and User Name are required.","err");return;}
+    if(!editing&&password.length<8){message("Password must be at least 8 characters.","err");return;}
+    if(editing&&id!==originalUserId){message("User ID cannot be changed.","err");return;}
 
-    if(!editing && password.length < 8){
-      showMessage("Password must be at least 8 characters.","error");
-      return;
-    }
-
-    if(editing && userId !== originalUserId){
-      showMessage("User ID cannot be changed.","error");
-      return;
-    }
-
-    const payload = {
-
-      action: editing ? "editUser" : "addUser",
-
-      userId:userId,
-      userName:userName,
-      password:password,
-
-      phone:$("auPhone").value.trim(),
-      gmail:$("auGmail").value.trim(),
-      area:$("auArea").value.trim(),
-      activeDate:$("auActiveDate").value,
-      profilePicture:$("auPicture").value.trim(),
-      status:$("auStatus").value,
-      comment:$("auComment").value.trim()
-
-    };
-
-    const button = $("auSubmit");
-
-    button.disabled = true;
-    button.textContent = "Saving...";
+    const button=$("auSubmit");
+    button.disabled=true;
 
     try{
+      let picture=removePicture?"":existingPicture;
 
-      const response = await fetch(API_URL,{
-        method:"POST",
-        body:JSON.stringify(payload)
-      });
+      if(selectedFile){
+        button.textContent="Preparing Picture...";
+        $("auProgress").style.display="block";
+        $("auProgressBar").style.width="25%";
 
-      const data = await response.json();
+        const imageData=await compressImage(selectedFile);
 
-      if(!data.success){
-        throw new Error(data.message || "Unable to save user.");
+        $("auProgressBar").style.width="55%";
+        button.textContent="Uploading Picture...";
+
+        const uploaded=await request({
+          action:"uploadProfilePicture",
+          userId:id,
+          imageData:imageData
+        });
+
+        picture=uploaded.profilePicture;
+        $("auProgressBar").style.width="100%";
+        $("auPhotoStatus").textContent="Picture uploaded successfully.";
       }
 
-      showMessage(
-        data.message || (editing ? "User updated successfully." : "User added successfully."),
-        "success"
-      );
+      button.textContent=editing?"Updating User...":"Saving User...";
+
+      const payload={
+        action:editing?"editUser":"addUser",
+        userId:id,
+        userName:name,
+        password:password,
+        phone:$("auPhone").value.trim(),
+        gmail:$("auGmail").value.trim(),
+        area:$("auArea").value.trim(),
+        activeDate:$("auActiveDate").value,
+        profilePicture:picture,
+        status:$("auStatus").value,
+        comment:$("auComment").value.trim()
+      };
+
+      const result=await request(payload);
+      message(result.message||"User saved successfully.","ok");
 
       if(!editing){
-
         $("auForm").reset();
-        $("auPreview").style.display = "none";
-
+        selectedFile=null;
+        existingPicture="";
+        removePicture=false;
+        showPicture("");
+        $("auPhotoStatus").textContent="";
+        $("auProgress").style.display="none";
       }else{
-
-        $("auPassword").value = "";
-
+        existingPicture=picture;
+        selectedFile=null;
+        removePicture=false;
+        $("auPassword").value="";
       }
 
-    }catch(error){
-
-      showMessage(error.message,"error");
-
+    }catch(err){
+      message(err.message,"err");
     }finally{
-
-      button.disabled = false;
-      button.textContent = editing ? "Update User" : "Save User";
-
+      button.disabled=false;
+      button.textContent=editing?"Update User":"Save User";
+      setTimeout(()=>{$("auProgress").style.display="none";},1000);
     }
-
   });
 
   loadEditUser();
-
 })();
 </script>
-
 </body>
 </html>
