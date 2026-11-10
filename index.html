@@ -50,10 +50,6 @@ button{
   font-family:inherit;
 }
 
-/* =========================
-   MAIN LAYOUT
-========================= */
-
 .app{
   min-height:100vh;
 }
@@ -192,9 +188,7 @@ button{
   margin-top:3px;
 }
 
-/* =========================
-   MAIN AREA
-========================= */
+/* MAIN AREA */
 
 .main{
   margin-left:255px;
@@ -356,9 +350,7 @@ button{
   display:block;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
 @media(max-width:900px){
 
@@ -381,7 +373,6 @@ button{
   .content{
     padding:20px;
   }
-
 }
 
 @media(max-width:600px){
@@ -407,9 +398,7 @@ button{
   .brand{
     height:68px;
   }
-
 }
-
 </style>
 </head>
 
@@ -417,124 +406,91 @@ button{
 
 <div class="app">
 
-  <!-- =========================
-       SIDEBAR
-  ========================== -->
+  <!-- SIDEBAR -->
 
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
-
       <div class="brand-logo">W</div>
 
       <div>
         <div class="brand-name">WAGE MANAGER</div>
         <div class="brand-sub">MANAGEMENT SYSTEM</div>
       </div>
-
     </div>
-
 
     <div class="sidebar-content">
 
       <div class="nav-label">MAIN MENU</div>
 
-      <button class="nav-item active"
-        data-page="dashboard">
+      <button class="nav-item active" data-page="dashboard">
         <span class="nav-icon">▦</span>
         Dashboard
       </button>
 
-
       <div class="nav-label">USER MANAGEMENT</div>
 
-      <button class="nav-item"
-        data-page="add-user">
+      <button class="nav-item" data-page="add-user">
         <span class="nav-icon">＋</span>
         Add User
       </button>
 
-      <button class="nav-item"
-        data-page="user-list">
+      <button class="nav-item" data-page="user-list">
         <span class="nav-icon">♙</span>
         User List
       </button>
 
-      <button class="nav-item"
-        data-page="deleted-user">
+      <button class="nav-item" data-page="deleted-user">
         <span class="nav-icon">▤</span>
         Deleted Users
       </button>
 
-
       <div class="nav-label">WAGE MANAGEMENT</div>
 
-      <button class="nav-item"
-        data-page="add-wage">
+      <button class="nav-item" data-page="add-wage">
         <span class="nav-icon">＋</span>
         Add Wage
       </button>
 
-      <button class="nav-item"
-        data-page="wage-history">
+      <button class="nav-item" data-page="wage-history">
         <span class="nav-icon">◷</span>
         Wage History
       </button>
 
-
       <div class="nav-label">PAYMENT MANAGEMENT</div>
 
-      <button class="nav-item"
-        data-page="payment">
+      <button class="nav-item" data-page="payment">
         <span class="nav-icon">৳</span>
         User Payment
       </button>
 
-      <button class="nav-item"
-        data-page="payment-history">
+      <button class="nav-item" data-page="payment-history">
         <span class="nav-icon">▤</span>
         Payment History
       </button>
 
     </div>
 
-
     <div class="sidebar-bottom">
-
       <div class="sidebar-user">
 
         <div class="sidebar-avatar">W</div>
 
         <div>
-          <div class="sidebar-user-name">
-            Administrator
-          </div>
-
-          <div class="sidebar-user-role">
-            System Admin
-          </div>
+          <div class="sidebar-user-name">Administrator</div>
+          <div class="sidebar-user-role">System Admin</div>
         </div>
 
       </div>
-
     </div>
 
   </aside>
 
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <!-- MOBILE OVERLAY -->
-
-  <div class="mobile-overlay"
-    id="mobileOverlay"></div>
-
-
-  <!-- =========================
-       MAIN SECTION
-  ========================== -->
+  <!-- MAIN SECTION -->
 
   <main class="main">
-
-    <!-- HEADER -->
 
     <header class="topbar">
 
@@ -547,124 +503,99 @@ button{
         </button>
 
         <div>
-
-          <div class="page-heading"
-            id="pageTitle">
+          <div class="page-heading" id="pageTitle">
             Dashboard
           </div>
 
-          <div class="page-breadcrumb"
-            id="pageBreadcrumb">
+          <div class="page-breadcrumb" id="pageBreadcrumb">
             Home / Dashboard
           </div>
-
         </div>
 
       </div>
 
-
       <div class="topbar-right">
-
         <button class="icon-btn"
           id="themeToggle"
           title="Change Theme">
           ☾
         </button>
-
       </div>
 
     </header>
 
-
-    <!-- PAGE CONTENT -->
-
     <section class="content">
-
       <div id="pageContainer">
-
         <div class="loading-box">
           <div class="loading-spinner"></div>
           Loading Dashboard...
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- FOOTER -->
-
     <footer class="footer">
-
       <span>Wage Management System</span>
-
       <span>© 2026 All Rights Reserved</span>
-
     </footer>
 
   </main>
 
 </div>
 
-
-<!-- =========================
-     APPLICATION SCRIPT
-========================== -->
-
 <script>
 
 /* =====================================
-   ROOT DIRECTORY PAGE CONFIGURATION
+   PAGE CONFIGURATION
 ===================================== */
 
 const PAGE_CONFIG = {
 
-  "dashboard": {
-    file: "dashboard.html",
-    title: "Dashboard",
-    section: "Main Menu"
+  "dashboard":{
+    file:"dashboard.html",
+    title:"Dashboard",
+    section:"Main Menu"
   },
 
-  "add-user": {
-    file: "add-user.html",
-    title: "Add User",
-    section: "User Management"
+  "add-user":{
+    file:"add-user.html",
+    title:"Add User",
+    section:"User Management"
   },
 
-  "user-list": {
-    file: "user-list.html",
-    title: "User List",
-    section: "User Management"
+  "user-list":{
+    file:"user-list.html",
+    title:"User List",
+    section:"User Management"
   },
 
-  "deleted-user": {
-    file: "deleted-user.html",
-    title: "Deleted Users",
-    section: "User Management"
+  "deleted-user":{
+    file:"deleted-user.html",
+    title:"Deleted Users",
+    section:"User Management"
   },
 
-  "add-wage": {
-    file: "add-wage.html",
-    title: "Add Wage",
-    section: "Wage Management"
+  "add-wage":{
+    file:"add-wage.html",
+    title:"Add Wage",
+    section:"Wage Management"
   },
 
-  "wage-history": {
-    file: "wage-history.html",
-    title: "Wage History",
-    section: "Wage Management"
+  "wage-history":{
+    file:"wage-history.html",
+    title:"Wage History",
+    section:"Wage Management"
   },
 
-  "payment": {
-    file: "payment.html",
-    title: "User Payment",
-    section: "Payment Management"
+  "payment":{
+    file:"payment.html",
+    title:"User Payment",
+    section:"Payment Management"
   },
 
-  "payment-history": {
-    file: "payment-history.html",
-    title: "Payment History",
-    section: "Payment Management"
+  "payment-history":{
+    file:"payment-history.html",
+    title:"Payment History",
+    section:"Payment Management"
   }
 
 };
@@ -699,12 +630,10 @@ function applyTheme(theme){
 
 }
 
-
 const savedTheme =
   localStorage.getItem("wage_theme") || "light";
 
 applyTheme(savedTheme);
-
 
 document.getElementById("themeToggle")
 .addEventListener("click",function(){
@@ -722,24 +651,17 @@ document.getElementById("themeToggle")
 ===================================== */
 
 function openSidebar(){
-
   sidebar.classList.add("open");
   overlay.classList.add("show");
-
 }
-
 
 function closeSidebar(){
-
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
-
 }
-
 
 document.getElementById("menuToggle")
 .addEventListener("click",openSidebar);
-
 
 overlay.addEventListener("click",closeSidebar);
 
@@ -761,12 +683,11 @@ function getPageFromHash(){
   }
 
   return page;
-
 }
 
 
 /* =====================================
-   ACTIVE SIDEBAR MENU
+   ACTIVE MENU
 ===================================== */
 
 function updateActiveMenu(page){
@@ -804,7 +725,194 @@ function updatePageHeader(page){
 
 
 /* =====================================
-   EXECUTE LOADED PAGE SCRIPTS
+   CHILD CSS SCOPING
+===================================== */
+
+// Child CSS is restricted to #pageContainer.
+// It cannot overwrite the main dashboard layout.
+
+function scopeChildCSS(css, scope){
+
+  css = css.replace(/\/\*[\s\S]*?\*\//g,"");
+
+  function processRules(source){
+
+    let output = "";
+    let position = 0;
+
+    while(position < source.length){
+
+      const open = source.indexOf("{",position);
+
+      if(open === -1){
+        output += source.slice(position);
+        break;
+      }
+
+      const selector = source.slice(position,open).trim();
+
+      let depth = 1;
+      let close = open + 1;
+
+      while(close < source.length && depth > 0){
+
+        if(source[close] === "{") depth++;
+        if(source[close] === "}") depth--;
+
+        close++;
+      }
+
+      const body = source.slice(open + 1,close - 1);
+
+      if(
+        selector.startsWith("@media") ||
+        selector.startsWith("@supports") ||
+        selector.startsWith("@container") ||
+        selector.startsWith("@layer")
+      ){
+
+        output += selector + "{" +
+          processRules(body) +
+          "}";
+
+      }else if(
+        selector.startsWith("@keyframes") ||
+        selector.startsWith("@-webkit-keyframes")
+      ){
+
+        output += selector + "{" + body + "}";
+
+      }else if(selector.startsWith("@")){
+
+        output += selector + "{" + body + "}";
+
+      }else{
+
+        const scopedSelectors = selector
+          .split(",")
+          .map(part=>{
+
+            let s = part.trim();
+
+            if(!s) return "";
+
+            s = s.replace(
+              /^(html|body|:root)(?=$|[\s.#:[>+~])/,
+              scope
+            );
+
+            if(s === "*"){
+              return scope + " *";
+            }
+
+            if(s.startsWith(scope)){
+              return s;
+            }
+
+            return scope + " " + s;
+
+          })
+          .join(",");
+
+        output += scopedSelectors + "{" + body + "}";
+
+      }
+
+      position = close;
+    }
+
+    return output;
+  }
+
+  return processRules(css);
+}
+
+
+/* =====================================
+   CLEAR OLD CHILD CSS
+===================================== */
+
+function clearPageStyles(){
+
+  document.querySelectorAll(
+    "[data-child-page-style]"
+  ).forEach(style=>{
+    style.remove();
+  });
+
+}
+
+
+/* =====================================
+   LOAD CHILD CSS
+===================================== */
+
+async function loadPageStyles(doc,pageFile){
+
+  clearPageStyles();
+
+  const stylePromises = [];
+
+  // Inline styles from child HTML.
+  doc.head.querySelectorAll("style").forEach(oldStyle=>{
+
+    const newStyle = document.createElement("style");
+
+    newStyle.setAttribute(
+      "data-child-page-style",
+      pageFile
+    );
+
+    newStyle.textContent = scopeChildCSS(
+      oldStyle.textContent,
+      "#pageContainer"
+    );
+
+    document.head.appendChild(newStyle);
+
+  });
+
+  // External CSS files from child HTML.
+  doc.head.querySelectorAll(
+    'link[rel="stylesheet"]'
+  ).forEach(oldLink=>{
+
+    const newLink = document.createElement("link");
+
+    newLink.rel = "stylesheet";
+
+    newLink.href = new URL(
+      oldLink.getAttribute("href"),
+      new URL("./" + pageFile,location.href)
+    ).href;
+
+    newLink.setAttribute(
+      "data-child-page-style",
+      pageFile
+    );
+
+    const promise = new Promise((resolve,reject)=>{
+
+      newLink.onload = resolve;
+
+      newLink.onerror = ()=>{
+        reject(new Error("CSS could not load: " + newLink.href));
+      };
+
+    });
+
+    document.head.appendChild(newLink);
+
+    stylePromises.push(promise);
+
+  });
+
+  await Promise.all(stylePromises);
+}
+
+
+/* =====================================
+   EXECUTE CHILD PAGE SCRIPTS
 ===================================== */
 
 async function executePageScripts(container){
@@ -834,7 +942,7 @@ async function executePageScripts(container){
 
         newScript.onerror = ()=>{
           reject(
-            new Error("Could not load script: "+newScript.src)
+            new Error("Could not load script: " + newScript.src)
           );
         };
 
@@ -857,12 +965,10 @@ async function executePageScripts(container){
 
 /* =====================================
    MAIN PAGE LOADER
-   All HTML files are in ROOT DIRECTORY
 ===================================== */
 
 let currentPage = "";
 let loadCounter = 0;
-
 
 async function loadPage(page,addHistory=true){
 
@@ -904,12 +1010,7 @@ async function loadPage(page,addHistory=true){
 
   try{
 
-    /*
-      IMPORTANT:
-      Files are loaded directly from ROOT.
-      No pages/ folder.
-    */
-
+    // Fetch child HTML from repository root.
     const response = await fetch(
       "./" + config.file,
       {
@@ -921,7 +1022,7 @@ async function loadPage(page,addHistory=true){
     if(!response.ok){
 
       throw new Error(
-        config.file+" not found. HTTP "+response.status
+        config.file + " not found. HTTP " + response.status
       );
 
     }
@@ -930,11 +1031,6 @@ async function loadPage(page,addHistory=true){
 
     if(thisLoad !== loadCounter) return;
 
-    /*
-      Extract body content.
-      Also supports HTML fragments.
-    */
-
     const parser = new DOMParser();
 
     const doc = parser.parseFromString(
@@ -942,15 +1038,15 @@ async function loadPage(page,addHistory=true){
       "text/html"
     );
 
-    const bodyContent = doc.body.innerHTML;
+    // First load the child page CSS.
+    await loadPageStyles(doc,config.file);
 
-    pageContainer.innerHTML = bodyContent;
+    if(thisLoad !== loadCounter) return;
 
-    /*
-      Execute inline and external scripts
-      inside the newly loaded page.
-    */
+    // Then load the child page body.
+    pageContainer.innerHTML = doc.body.innerHTML;
 
+    // Execute scripts inside the loaded page.
     await executePageScripts(pageContainer);
 
     if(thisLoad !== loadCounter) return;
@@ -972,13 +1068,10 @@ async function loadPage(page,addHistory=true){
 
         <p>
           ${config.file} could not be loaded.
-          Make sure this file exists in the
-          GitHub repository root directory.
+          Check that the file exists in your GitHub root folder.
         </p>
 
-        <p>
-          ${String(error.message)}
-        </p>
+        <p>${String(error.message)}</p>
 
         <button onclick="window.loadPage('${page}',false)">
           Try Again
@@ -994,11 +1087,16 @@ async function loadPage(page,addHistory=true){
 
 /* =====================================
    GLOBAL NAVIGATION
-   Child HTML pages can call:
-   window.loadPage('user-list')
 ===================================== */
 
 window.loadPage = loadPage;
+
+
+/* =====================================
+   GLOBAL USER EDIT SUPPORT
+===================================== */
+
+window.__wageEditUserId = "";
 
 
 /* =====================================
@@ -1025,37 +1123,19 @@ document.querySelectorAll(".nav-item")
 
 window.addEventListener("popstate",function(){
 
-  const page = getPageFromHash();
-
-  loadPage(page,false);
+  loadPage(getPageFromHash(),false);
 
 });
-
 
 window.addEventListener("hashchange",function(){
 
   const page = getPageFromHash();
 
   if(page !== currentPage){
-
     loadPage(page,false);
-
   }
 
 });
-
-
-/* =====================================
-   GLOBAL USER EDIT SUPPORT
-
-   User List page can call:
-
-   window.__wageEditUserId = id;
-   window.loadPage('add-user');
-
-===================================== */
-
-window.__wageEditUserId = "";
 
 
 /* =====================================
