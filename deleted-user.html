@@ -1,218 +1,497 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Deleted Users</title>
+
 <style>
 .du-page{color:var(--text);font-family:Arial,sans-serif}
 .du-page *{box-sizing:border-box}
-.du-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+
+.du-head{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;
+  margin-bottom:18px
+}
 .du-head h2{font-size:20px;margin:0 0 5px}
 .du-muted{font-size:12px;color:var(--muted)}
-.du-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px}
-.du-tools{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
-.du-tools input{flex:1;min-width:180px;padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:12px}
-.du-btn{border:0;border-radius:8px;padding:10px 13px;cursor:pointer;font-size:11px;font-weight:700}
+
+.du-panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;padding:17px
+}
+
+.du-tools{
+  display:flex;gap:9px;flex-wrap:wrap;
+  margin-bottom:14px
+}
+.du-tools input{
+  flex:1;min-width:180px;padding:11px;
+  border:1px solid var(--border);
+  border-radius:8px;background:var(--bg);
+  color:var(--text);font-size:12px
+}
+
+.du-btn{
+  border:0;border-radius:8px;padding:10px 13px;
+  cursor:pointer;font-size:11px;font-weight:700
+}
+.du-btn:disabled{opacity:.5;cursor:not-allowed}
 .du-secondary{background:var(--hover);color:var(--text)}
 .du-restore{background:#e8f7ef;color:#087f5b}
 .du-danger{background:#fff0ee;color:#c0392b}
+
 .du-table-wrap{overflow-x:auto}
-.du-page table{width:100%;border-collapse:collapse;min-width:750px}
-.du-page th,.du-page td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;white-space:nowrap}
-.du-page th{font-size:10px;color:var(--muted);text-transform:uppercase}
+.du-page table{
+  width:100%;border-collapse:collapse;min-width:850px
+}
+.du-page th,.du-page td{
+  padding:12px 10px;border-bottom:1px solid var(--border);
+  text-align:left;font-size:12px;white-space:nowrap
+}
+.du-page th{
+  font-size:10px;color:var(--muted);
+  text-transform:uppercase
+}
 .du-empty{text-align:center;padding:30px;color:var(--muted)}
 .du-actions{display:flex;gap:6px}
-.du-message{display:none;padding:11px;border-radius:8px;margin-bottom:12px;font-size:12px}
+
+.du-user{
+  display:flex;align-items:center;gap:9px;
+  min-width:150px
+}
+.du-avatar{
+  width:38px;height:38px;min-width:38px;
+  border-radius:50%;overflow:hidden;
+  background:var(--hover);
+  display:flex;align-items:center;
+  justify-content:center;font-weight:700;
+  color:var(--text);font-size:14px;
+  position:relative
+}
+.du-avatar img{
+  width:100%;height:100%;
+  object-fit:cover;display:block
+}
+.du-avatar-fallback{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center
+}
+.du-user-name{font-weight:700}
+.du-user-id{font-size:10px;color:var(--muted);margin-top:3px}
+
+.du-message{
+  display:none;padding:11px;border-radius:8px;
+  margin-bottom:12px;font-size:12px
+}
 .du-message.ok{display:block;background:#e8f7ef;color:#087f5b}
 .du-message.err{display:block;background:#fff0ee;color:#c0392b}
-.du-modal{display:none;position:fixed;inset:0;background:#0008;z-index:5000;align-items:center;justify-content:center;padding:15px}
+
+.du-modal{
+  display:none;position:fixed;inset:0;
+  background:#0008;z-index:5000;
+  align-items:center;justify-content:center;padding:15px
+}
 .du-modal.show{display:flex}
-.du-modal-box{width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.du-modal-box{
+  width:100%;max-width:420px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:22px
+}
 .du-modal-box h3{margin:0 0 10px;font-size:17px}
-.du-modal-box p{font-size:12px;color:var(--muted);line-height:1.6}
-.du-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-@media(max-width:650px){.du-panel{padding:12px}}
+.du-modal-box p{
+  font-size:12px;color:var(--muted);line-height:1.6
+}
+.du-modal-actions{
+  display:flex;justify-content:flex-end;
+  gap:8px;margin-top:18px
+}
+
+@media(max-width:650px){
+  .du-panel{padding:12px}
+}
 </style>
 </head>
+
 <body>
 <div class="du-page">
 
   <div class="du-head">
     <div>
       <h2>Deleted Users</h2>
-      <div class="du-muted">Restore deleted users or permanently delete profiles</div>
+      <div class="du-muted">
+        Restore deleted users or permanently delete profiles
+      </div>
     </div>
-    <button class="du-btn du-secondary" onclick="window.loadPage('user-list')">← Active Users</button>
+
+    <button class="du-btn du-secondary"
+      onclick="window.loadPage('user-list')">
+      ← Active Users
+    </button>
   </div>
 
   <div class="du-panel">
+
     <div id="duMessage" class="du-message"></div>
 
     <div class="du-tools">
-      <input id="duSearch" placeholder="Search by name, ID, phone, Gmail or area...">
-      <button class="du-btn du-secondary" id="duRefresh">↻ Refresh</button>
+      <input id="duSearch"
+        placeholder="Search by name, ID, phone, Gmail or area...">
+
+      <button class="du-btn du-secondary" id="duRefresh">
+        ↻ Refresh
+      </button>
     </div>
 
     <div class="du-table-wrap">
       <table>
         <thead>
           <tr>
-            <th>User ID</th><th>User Name</th><th>Phone</th>
-            <th>Gmail</th><th>Area</th><th>Deleted At</th><th>Actions</th>
+            <th>User ID</th>
+            <th>User</th>
+            <th>Phone</th>
+            <th>Gmail</th>
+            <th>Area</th>
+            <th>Deleted At</th>
+            <th>Actions</th>
           </tr>
         </thead>
+
         <tbody id="duBody">
-          <tr><td colspan="7" class="du-empty">Loading deleted users...</td></tr>
+          <tr>
+            <td colspan="7" class="du-empty">
+              Loading deleted users...
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
+
   </div>
 
   <div class="du-modal" id="duModal">
     <div class="du-modal-box">
       <h3 id="duModalTitle">Confirm Action</h3>
       <p id="duModalText"></p>
+
       <div class="du-modal-actions">
-        <button class="du-btn du-secondary" id="duCancel">Cancel</button>
-        <button class="du-btn du-danger" id="duConfirm">Confirm</button>
+        <button class="du-btn du-secondary" id="duCancel">
+          Cancel
+        </button>
+
+        <button class="du-btn du-danger" id="duConfirm">
+          Confirm
+        </button>
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
 (function(){
-  const API_URL="https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
-  const $=id=>document.getElementById(id);
-  let deletedUsers=[];
-  let selectedId="";
-  let selectedAction="";
 
-  function esc(v){
-    return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const API_URL =
+  "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+
+  const $ = id => document.getElementById(id);
+
+  let deletedUsers = [];
+  let selectedRow = null;
+  let selectedAction = "";
+
+  function esc(value){
+    return String(value ?? "").replace(/[&<>"']/g,c=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c]));
   }
 
   function msg(text,type){
-    $("duMessage").textContent=text;
-    $("duMessage").className="du-message "+type;
+    $("duMessage").textContent = text;
+    $("duMessage").className = "du-message " + type;
   }
 
+  function formatDate(value){
+    if(!value) return "—";
+
+    const date = new Date(value);
+
+    if(isNaN(date.getTime())) return esc(value);
+
+    return date.toLocaleString();
+  }
+
+  // ================= LOAD DELETED USERS =================
+
   async function loadDeleted(){
-    $("duBody").innerHTML='<tr><td colspan="7" class="du-empty">Loading...</td></tr>';
-    $("duMessage").className="du-message";
+
+    $("duBody").innerHTML =
+      '<tr><td colspan="7" class="du-empty">Loading...</td></tr>';
+
+    $("duMessage").className = "du-message";
 
     try{
-      const response=await fetch(API_URL+"?api=deleted",{cache:"no-store"});
-      const data=await response.json();
-      if(!data.success)throw new Error(data.message||"Unable to load deleted users.");
-      deletedUsers=Array.isArray(data.users)?data.users:[];
+
+      const response = await fetch(
+        API_URL + "?api=deleted&t=" + Date.now(),
+        {cache:"no-store"}
+      );
+
+      const data = await response.json();
+
+      if(!data.success){
+        throw new Error(data.message || "Unable to load deleted users.");
+      }
+
+      deletedUsers = Array.isArray(data.users)
+        ? data.users
+        : [];
+
       render();
-    }catch(err){
-      $("duBody").innerHTML='<tr><td colspan="7" class="du-empty">'+esc(err.message)+'</td></tr>';
-      msg(err.message,"err");
+
+    }catch(error){
+
+      $("duBody").innerHTML =
+        '<tr><td colspan="7" class="du-empty">' +
+        esc(error.message) +
+        '</td></tr>';
+
+      msg(error.message,"err");
     }
   }
 
-  function render(){
-    const q=$("duSearch").value.trim().toLowerCase();
+  // ================= USER AVATAR =================
 
-    const list=deletedUsers.filter(u=>[
-      u.userId,u.userName,u.phone,u.gmail,u.area
-    ].join(" ").toLowerCase().includes(q));
+  function avatarHTML(user){
+
+    const name = user.userName || "U";
+    const initial = name.charAt(0).toUpperCase();
+    const picture = user.profilePicture || "";
+
+    if(!picture){
+      return `
+        <div class="du-avatar">
+          <span>${esc(initial)}</span>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="du-avatar">
+        <span class="du-avatar-fallback">${esc(initial)}</span>
+        <img
+          src="${esc(picture)}"
+          alt="${esc(name)}"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        >
+      </div>
+    `;
+  }
+
+  // ================= RENDER =================
+
+  function render(){
+
+    const q = $("duSearch").value.trim().toLowerCase();
+
+    const list = deletedUsers.filter(user => {
+
+      const searchText = [
+        user.userId,
+        user.userName,
+        user.phone,
+        user.gmail,
+        user.area
+      ].join(" ").toLowerCase();
+
+      return searchText.includes(q);
+    });
 
     if(!list.length){
-      $("duBody").innerHTML='<tr><td colspan="7" class="du-empty">No deleted users found.</td></tr>';
+
+      $("duBody").innerHTML =
+        '<tr><td colspan="7" class="du-empty">No deleted users found.</td></tr>';
+
       return;
     }
 
-    $("duBody").innerHTML=list.map(u=>`
+    $("duBody").innerHTML = list.map(user => `
+
       <tr>
-        <td>${esc(u.userId)}</td>
-        <td><strong>${esc(u.userName)}</strong></td>
-        <td>${esc(u.phone||"—")}</td>
-        <td>${esc(u.gmail||"—")}</td>
-        <td>${esc(u.area||"—")}</td>
-        <td>${esc(u.deletedAt||"—")}</td>
+
+        <td>${esc(user.userId)}</td>
+
         <td>
-          <div class="du-actions">
-            <button class="du-btn du-restore" data-restore="${esc(u.userId)}">Restore</button>
-            <button class="du-btn du-danger" data-delete="${esc(u.userId)}">Permanent Delete</button>
+          <div class="du-user">
+
+            ${avatarHTML(user)}
+
+            <div>
+              <div class="du-user-name">
+                ${esc(user.userName || "Unnamed User")}
+              </div>
+
+              <div class="du-user-id">
+                Deleted Account
+              </div>
+            </div>
+
           </div>
         </td>
+
+        <td>${esc(user.phone || "—")}</td>
+
+        <td>${esc(user.gmail || "—")}</td>
+
+        <td>${esc(user.area || "—")}</td>
+
+        <td>${formatDate(user.deletedAt)}</td>
+
+        <td>
+          <div class="du-actions">
+
+            <button
+              class="du-btn du-restore"
+              data-restore="${Number(user._row)}">
+              Restore
+            </button>
+
+            <button
+              class="du-btn du-danger"
+              data-delete="${Number(user._row)}">
+              Permanent Delete
+            </button>
+
+          </div>
+        </td>
+
       </tr>
+
     `).join("");
 
-    $("duBody").querySelectorAll("[data-restore]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        selectedId=btn.dataset.restore;
-        selectedAction="restoreUser";
-        $("duModalTitle").textContent="Restore User";
-        $("duModalText").textContent="Restore User ID "+selectedId+" to the active user list?";
-        $("duConfirm").textContent="Restore User";
-        $("duConfirm").className="du-btn du-restore";
+    // Restore event
+    $("duBody").querySelectorAll("[data-restore]").forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        selectedRow = Number(button.dataset.restore);
+        selectedAction = "restoreUser";
+
+        $("duModalTitle").textContent = "Restore User";
+
+        $("duModalText").textContent =
+          "Restore this user to the active user list?";
+
+        $("duConfirm").textContent = "Restore User";
+        $("duConfirm").className = "du-btn du-restore";
+
         $("duModal").classList.add("show");
       });
+
     });
 
-    $("duBody").querySelectorAll("[data-delete]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        selectedId=btn.dataset.delete;
-        selectedAction="permanentDeleteUser";
-        $("duModalTitle").textContent="Permanent Delete";
-        $("duModalText").textContent="Permanently delete profile "+selectedId+"? Wage History and Payment History will remain. This action cannot be undone.";
-        $("duConfirm").textContent="Delete Permanently";
-        $("duConfirm").className="du-btn du-danger";
+    // Permanent delete event
+    $("duBody").querySelectorAll("[data-delete]").forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        selectedRow = Number(button.dataset.delete);
+        selectedAction = "permanentDeleteUser";
+
+        $("duModalTitle").textContent = "Permanent Delete";
+
+        $("duModalText").textContent =
+          "Permanently delete this user profile? This action cannot be undone.";
+
+        $("duConfirm").textContent = "Delete Permanently";
+        $("duConfirm").className = "du-btn du-danger";
+
         $("duModal").classList.add("show");
       });
+
     });
+
   }
 
+  // ================= SEARCH & REFRESH =================
+
   $("duSearch").addEventListener("input",render);
+
   $("duRefresh").addEventListener("click",loadDeleted);
 
+  // ================= CANCEL =================
+
   $("duCancel").addEventListener("click",()=>{
+
     $("duModal").classList.remove("show");
-    selectedId="";
-    selectedAction="";
+
+    selectedRow = null;
+    selectedAction = "";
+
   });
 
-  $("duConfirm").addEventListener("click",async function(){
-    if(!selectedId||!selectedAction)return;
+  // ================= CONFIRM ACTION =================
 
-    const button=this;
-    button.disabled=true;
-    button.textContent="Processing...";
+  $("duConfirm").addEventListener("click",async function(){
+
+    if(!selectedRow || !selectedAction) return;
+
+    const button = this;
+
+    button.disabled = true;
+    button.textContent = "Processing...";
 
     try{
-      const response=await fetch(API_URL,{
+
+      const response = await fetch(API_URL,{
         method:"POST",
         body:JSON.stringify({
           action:selectedAction,
-          userId:selectedId
+          deletedRow:selectedRow
         })
       });
 
-      const data=await response.json();
-      if(!data.success)throw new Error(data.message||"Action failed.");
+      const data = await response.json();
+
+      if(!data.success){
+        throw new Error(data.message || "Action failed.");
+      }
 
       $("duModal").classList.remove("show");
-      msg(data.message||"Action completed.","ok");
-      selectedId="";
-      selectedAction="";
+
+      selectedRow = null;
+      selectedAction = "";
+
+      msg(data.message || "Action completed.","ok");
+
       await loadDeleted();
 
-    }catch(err){
-      msg(err.message,"err");
+    }catch(error){
+
+      msg(error.message,"err");
+
     }finally{
-      button.disabled=false;
-      button.textContent="Confirm";
+
+      button.disabled = false;
+      button.textContent = "Confirm";
+
     }
+
   });
 
+  // ================= START =================
+
   loadDeleted();
+
 })();
 </script>
+
 </body>
 </html>
