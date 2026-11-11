@@ -1,4 +1,11 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deleted Wage</title>
+
 <style>
 #deletedWagePage{
   font-family:inherit;
@@ -29,6 +36,7 @@
 
 #deletedWagePage .card{
   background:var(--card,#fff);
+  color:var(--text,#172033);
   border:1px solid var(--border,#e5e7eb);
   border-radius:17px;
   padding:24px;
@@ -65,6 +73,7 @@
   color:var(--muted,#888);
   margin-bottom:9px;
 }
+
 #deletedWagePage .stat-value{
   font-size:23px;
   font-weight:800;
@@ -97,6 +106,10 @@
   box-shadow:0 0 0 3px #6366f11c;
 }
 
+#deletedWagePage input::placeholder{
+  color:var(--muted,#888);
+}
+
 #deletedWagePage button{
   border:0;
   border-radius:10px;
@@ -105,6 +118,7 @@
   cursor:pointer;
   font:inherit;
 }
+
 #deletedWagePage button:disabled{
   opacity:.55;
   cursor:not-allowed;
@@ -114,15 +128,18 @@
   background:linear-gradient(120deg,#4338ca,#7c3aed);
   color:white;
 }
+
 #deletedWagePage .secondary{
   background:var(--bg,#f1f5f9);
   border:1px solid var(--border,#ddd);
   color:var(--text,#172033);
 }
+
 #deletedWagePage .restore{
   background:#dcfce7;
   color:#166534;
 }
+
 #deletedWagePage .danger{
   background:#fee2e2;
   color:#991b1b;
@@ -135,11 +152,13 @@
   margin-bottom:18px;
   font-size:13px;
 }
+
 #deletedWagePage .message.success{
   display:block;
   background:#dcfce7;
   color:#166534;
 }
+
 #deletedWagePage .message.error{
   display:block;
   background:#fee2e2;
@@ -191,12 +210,17 @@
   background:var(--hover,rgba(99,102,241,.04));
 }
 
-#deletedWagePage .company{font-weight:800}
+#deletedWagePage .company{
+  font-weight:800;
+  color:var(--text,#172033);
+}
+
 #deletedWagePage .sub{
   font-size:11px;
   color:var(--muted,#888);
   margin-top:4px;
 }
+
 #deletedWagePage .amount{
   font-weight:800;
   white-space:nowrap;
@@ -207,6 +231,7 @@
   gap:7px;
   white-space:nowrap;
 }
+
 #deletedWagePage .actions button{
   font-size:11px;
   padding:9px 11px;
@@ -230,43 +255,72 @@
 }
 
 @media(max-width:650px){
-  #deletedWagePage .stats{grid-template-columns:1fr 1fr}
-  #deletedWagePage .stat:last-child{grid-column:1/-1}
-  #deletedWagePage .card{padding:17px}
-  #deletedWagePage .toolbar{grid-template-columns:1fr}
-  #deletedWagePage .toolbar button{width:100%}
+  #deletedWagePage .stats{
+    grid-template-columns:1fr 1fr;
+  }
+  #deletedWagePage .stat:last-child{
+    grid-column:1/-1;
+  }
+  #deletedWagePage .card{
+    padding:17px;
+  }
+  #deletedWagePage .toolbar{
+    grid-template-columns:1fr;
+  }
+  #deletedWagePage .toolbar button{
+    width:100%;
+  }
+  #deletedWagePage .hero{
+    padding:22px;
+  }
 }
 </style>
+</head>
+
+<body>
 
 <div id="deletedWagePage">
+
   <div class="hero">
     <h2>🗑️ Deleted Wage</h2>
     <p>View, restore and permanently delete your removed wage records.</p>
   </div>
 
   <div class="stats">
+
     <div class="stat">
       <div class="stat-label">Deleted Records</div>
       <div class="stat-value" id="dwTotal">0</div>
     </div>
+
     <div class="stat">
       <div class="stat-label">Latest Wage Date</div>
       <div class="stat-value" id="dwLatest" style="font-size:17px">—</div>
     </div>
+
     <div class="stat">
       <div class="stat-label">Available Actions</div>
       <div class="stat-value" style="font-size:17px">Restore / Delete</div>
     </div>
+
   </div>
 
   <div class="card">
+
     <h3 class="heading">Deleted Wage Information</h3>
 
     <div id="dwMessage" class="message"></div>
 
     <div class="toolbar">
-      <input id="dwSearch" type="search" placeholder="Search company, wage ID, transaction ID...">
-      <button type="button" class="primary" id="dwRefresh">↻ Refresh Records</button>
+      <input
+        id="dwSearch"
+        type="search"
+        placeholder="Search company, wage ID, transaction ID..."
+      >
+
+      <button type="button" class="primary" id="dwRefresh">
+        ↻ Refresh Records
+      </button>
     </div>
 
     <div class="count" id="dwCount">Showing 0 records</div>
@@ -285,21 +339,30 @@
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody id="dwTable">
-          <tr><td colspan="8" class="loading">Loading deleted wages...</td></tr>
+          <tr>
+            <td colspan="8" class="loading">Loading deleted wages...</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
   </div>
+
 </div>
 
 <script>
 (function(){
+
   const root=document.getElementById("deletedWagePage");
-  if(!root||root.dataset.ready==="1")return;
+
+  if(!root || root.dataset.ready==="1")return;
+
   root.dataset.ready="1";
 
   const API="https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
+
   const $=id=>root.querySelector("#"+id);
 
   let wages=[];
@@ -307,7 +370,11 @@
 
   function esc(value){
     return String(value??"").replace(/[&<>"']/g,c=>({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
     }[c]));
   }
 
@@ -322,115 +389,214 @@
   }
 
   async function get(api){
-    const r=await fetch(API+"?api="+encodeURIComponent(api)+"&_="+Date.now(),{
-      cache:"no-store"
-    });
-    if(!r.ok)throw Error("HTTP "+r.status);
-    return r.json();
+
+    const response=await fetch(
+      API+"?api="+encodeURIComponent(api)+"&_="+Date.now(),
+      {cache:"no-store"}
+    );
+
+    if(!response.ok){
+      throw Error("HTTP "+response.status);
+    }
+
+    return response.json();
   }
 
   async function post(data){
-    const r=await fetch(API,{
+
+    const response=await fetch(API,{
       method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+      },
       body:JSON.stringify(data)
     });
-    if(!r.ok)throw Error("HTTP "+r.status);
-    return r.json();
+
+    if(!response.ok){
+      throw Error("HTTP "+response.status);
+    }
+
+    return response.json();
   }
 
   function amountText(w){
+
     const amount=Number(w.amount||0);
-    return (w.currencySymbol||"")+" "+amount.toLocaleString(undefined,{
-      maximumFractionDigits:2
-    });
+
+    return (w.currencySymbol||"")+" "+
+      amount.toLocaleString(undefined,{
+        maximumFractionDigits:2
+      });
   }
 
   function updateStats(){
+
     $("dwTotal").textContent=wages.length;
-    const dates=wages.map(w=>String(w.date||"")).filter(Boolean).sort();
-    $("dwLatest").textContent=dates.length?dates[dates.length-1]:"—";
+
+    const dates=wages
+      .map(w=>String(w.date||""))
+      .filter(Boolean)
+      .sort();
+
+    $("dwLatest").textContent=
+      dates.length?dates[dates.length-1]:"—";
   }
 
   function render(){
+
     const q=$("dwSearch").value.trim().toLowerCase();
 
     const filtered=wages.filter(w=>{
-      return [
-        w.companyName,w.wageId,w.transactionId,
-        w.currencyCode,w.currencySymbol,w.comment,w.date,w.amount
-      ].join(" ").toLowerCase().includes(q);
+
+      const searchText=[
+        w.companyName,
+        w.wageId,
+        w.transactionId,
+        w.currencyCode,
+        w.currencySymbol,
+        w.comment,
+        w.date,
+        w.amount
+      ].join(" ").toLowerCase();
+
+      return searchText.includes(q);
+
     });
 
-    $("dwCount").textContent="Showing "+filtered.length+" of "+wages.length+" records";
+    $("dwCount").textContent=
+      "Showing "+filtered.length+" of "+wages.length+" records";
 
     if(!filtered.length){
+
       $("dwTable").innerHTML=
         '<tr><td colspan="8" class="empty">'+
-        (wages.length?"No matching wage records found.":"No deleted wage records found.")+
+        (wages.length
+          ?"No matching wage records found."
+          :"No deleted wage records found.")+
         '</td></tr>';
+
       return;
     }
 
     $("dwTable").innerHTML=filtered.map((w,i)=>`
+
       <tr>
+
         <td>${i+1}</td>
+
         <td>
-          <div class="company">${esc(w.companyName||"No Company Name")}</div>
-          <div class="sub">ID: ${esc(w.wageId||"")}</div>
+          <div class="company">
+            ${esc(w.companyName||"No Company Name")}
+          </div>
+          <div class="sub">
+            ID: ${esc(w.wageId||"")}
+          </div>
         </td>
-        <td class="amount">${esc(amountText(w))}</td>
+
+        <td class="amount">
+          ${esc(amountText(w))}
+        </td>
+
         <td>${esc(w.transactionId||"—")}</td>
+
         <td>${esc(w.date||"—")}</td>
+
         <td>${esc(w.comment||"—")}</td>
-        <td><span class="badge">Deleted</span></td>
+
+        <td>
+          <span class="badge">Deleted</span>
+        </td>
+
         <td>
           <div class="actions">
-            <button type="button" class="restore"
+
+            <button
+              type="button"
+              class="restore"
               data-action="restore"
               data-id="${esc(w.wageId||"")}"
               data-row="${Number(w._row||0)}"
-              ${busy?"disabled":""}>↶ Restore</button>
-            <button type="button" class="danger"
+              ${busy?"disabled":""}>
+              ↶ Restore
+            </button>
+
+            <button
+              type="button"
+              class="danger"
               data-action="permanent"
               data-id="${esc(w.wageId||"")}"
               data-row="${Number(w._row||0)}"
-              ${busy?"disabled":""}>Delete Forever</button>
+              ${busy?"disabled":""}>
+              Delete Forever
+            </button>
+
           </div>
         </td>
+
       </tr>
+
     `).join("");
+
   }
 
   async function loadDeletedWages(){
+
     $("dwRefresh").disabled=true;
+
     $("dwTable").innerHTML=
       '<tr><td colspan="8" class="loading">Loading deleted wages...</td></tr>';
 
     try{
-      const data=await get("deletedWages");
-      if(!data.success)throw Error(data.message||"Could not load deleted wages");
 
-      wages=Array.isArray(data.deletedWages)?data.deletedWages:[];
+      const data=await get("deletedWages");
+
+      if(!data.success){
+        throw Error(data.message||"Could not load deleted wages");
+      }
+
+      wages=Array.isArray(data.deletedWages)
+        ?data.deletedWages:[ ];
+
       updateStats();
       render();
-    }catch(e){
+
+    }catch(error){
+
       $("dwTable").innerHTML=
-        '<tr><td colspan="8" class="empty">Failed to load: '+esc(e.message)+'</td></tr>';
-      msg("Load failed: "+e.message,"error");
+        '<tr><td colspan="8" class="empty">Failed to load: '+
+        esc(error.message)+'</td></tr>';
+
+      msg("Load failed: "+error.message,"error");
+
     }finally{
+
       $("dwRefresh").disabled=false;
+
     }
+
   }
 
   async function performAction(action,button){
+
+    if(busy)return;
+
     const wageId=button.dataset.id;
     const deletedRow=Number(button.dataset.row||0);
 
     if(action==="restore"){
-      if(!confirm("Are you sure you want to restore this wage?"))return;
+
+      if(!confirm("Are you sure you want to restore this wage?")){
+        return;
+      }
+
     }else{
-      if(!confirm("WARNING: This wage will be permanently deleted. This action cannot be undone. Continue?"))return;
+
+      if(!confirm(
+        "WARNING: This wage will be permanently deleted. This action cannot be undone. Continue?"
+      )){
+        return;
+      }
+
     }
 
     busy=true;
@@ -438,37 +604,65 @@
     clearMsg();
 
     try{
+
       const result=await post({
-        action:action==="restore"?"restoreWage":"permanentDeleteWage",
+
+        action:action==="restore"
+          ?"restoreWage"
+          :"permanentDeleteWage",
+
         wageId:wageId,
         deletedRow:deletedRow
+
       });
 
-      if(!result.success)throw Error(result.message||"Action failed");
+      if(!result.success){
+        throw Error(result.message||"Action failed");
+      }
 
-      msg("✓ "+(result.message||"Action completed successfully."),"success");
+      msg(
+        "✓ "+(result.message||"Action completed successfully."),
+        "success"
+      );
+
       await loadDeletedWages();
-    }catch(e){
-      msg("Action failed: "+e.message,"error");
+
+    }catch(error){
+
+      msg("Action failed: "+error.message,"error");
+
     }finally{
+
       busy=false;
       render();
+
     }
+
   }
 
-  $("dwTable").addEventListener("click",e=>{
-    const button=e.target.closest("button[data-action]");
-    if(!button||busy)return;
+  $("dwTable").addEventListener("click",function(event){
+
+    const button=event.target.closest("button[data-action]");
+
+    if(!button || busy)return;
+
     performAction(button.dataset.action,button);
+
   });
 
   $("dwSearch").addEventListener("input",render);
 
-  $("dwRefresh").addEventListener("click",()=>{
+  $("dwRefresh").addEventListener("click",function(){
+
     clearMsg();
     loadDeletedWages();
+
   });
 
   loadDeletedWages();
+
 })();
 </script>
+
+</body>
+</html>
