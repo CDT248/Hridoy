@@ -105,7 +105,7 @@
 /* STATISTICS */
 .du-stats{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:1fr;
   gap:14px;
   margin-bottom:19px;
 }
@@ -126,15 +126,8 @@
   place-items:center;
   border-radius:14px;
   font-size:21px;
-}
-.du-stat:nth-child(1) .du-stat-icon{
-  background:#fff1f2;color:#e11d48;
-}
-.du-stat:nth-child(2) .du-stat-icon{
-  background:#dcfce7;color:#059669;
-}
-.du-stat:nth-child(3) .du-stat-icon{
-  background:#fff7ed;color:#ea580c;
+  background:#fff1f2;
+  color:#e11d48;
 }
 .du-stat small{
   display:block;
@@ -430,7 +423,7 @@
   .du-hero{padding:20px 17px;border-radius:17px}
   .du-head h2{font-size:20px}
   .du-title-icon{width:45px;height:45px}
-  .du-stats{grid-template-columns:1fr 1fr;gap:9px}
+  .du-stats{grid-template-columns:1fr;gap:9px}
   .du-stat{padding:12px;gap:9px}
   .du-stat-icon{width:37px;height:37px;font-size:17px}
   .du-stat strong{font-size:20px}
@@ -463,29 +456,13 @@
     </div>
   </div>
 
-  <!-- STATISTICS -->
+  <!-- STATISTICS: ONLY TOTAL DELETED -->
   <div class="du-stats">
     <div class="du-stat">
       <div class="du-stat-icon">⌫</div>
       <div>
         <small>Total Deleted</small>
         <strong id="duTotal">0</strong>
-      </div>
-    </div>
-
-    <div class="du-stat">
-      <div class="du-stat-icon">↶</div>
-      <div>
-        <small>Available to Restore</small>
-        <strong id="duRestore">0</strong>
-      </div>
-    </div>
-
-    <div class="du-stat">
-      <div class="du-stat-icon">!</div>
-      <div>
-        <small>Permanent Removal</small>
-        <strong id="duPermanent">0</strong>
       </div>
     </div>
   </div>
@@ -685,8 +662,6 @@ async function loadDeletedUsers(){
 function renderDeletedUsers(){
 
   $("duTotal").textContent=deletedUsers.length;
-  $("duRestore").textContent=deletedUsers.length;
-  $("duPermanent").textContent=deletedUsers.length;
 
   const search=$("duSearch").value.trim().toLowerCase();
 
