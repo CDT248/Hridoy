@@ -1,488 +1,1013 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Payment</title>
 
 <style>
 #userPaymentPage{
---p:var(--primary,#087f5b);
---bg:var(--bg,#f5f7fb);
---card:var(--card,#fff);
---text:var(--text,#172033);
---muted:var(--muted,#8490a3);
---border:var(--border,#e8edf3);
---hover:var(--hover,#f1f8f5);
-color:var(--text);font-family:inherit;width:100%;
+  --up-primary:var(--primary,#087f5b);
+  --up-bg:var(--bg,#f5f7fb);
+  --up-card:var(--card,#fff);
+  --up-text:var(--text,#172033);
+  --up-muted:var(--muted,#8490a3);
+  --up-border:var(--border,#e8edf3);
+  color:var(--up-text);
+  font-family:inherit;
+  width:100%;
 }
 #userPaymentPage *{box-sizing:border-box}
+#userPaymentPage .up-wrap{width:100%;padding:4px}
+#userPaymentPage .up-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:20px
+}
+#userPaymentPage .up-heading h2{font-size:23px;margin:0 0 5px;font-weight:800}
+#userPaymentPage .up-sub{font-size:13px;color:var(--up-muted)}
 #userPaymentPage button,#userPaymentPage input,
 #userPaymentPage select,#userPaymentPage textarea{font:inherit}
 #userPaymentPage button{cursor:pointer}
-#userPaymentPage .header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-#userPaymentPage h2{font-size:23px;margin:0 0 5px}
-#userPaymentPage .muted{font-size:12px;color:var(--muted)}
-#userPaymentPage .btn{border:0;background:var(--p);color:white;padding:10px 14px;border-radius:9px;font-weight:700}
-#userPaymentPage .btn.secondary{background:var(--hover);color:var(--text);border:1px solid var(--border)}
-#userPaymentPage .btn.danger{background:#dc3545;color:white}
-#userPaymentPage .btn.small{padding:7px 10px;font-size:12px}
-#userPaymentPage .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-#userPaymentPage .stat,#userPaymentPage .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;min-width:0}
-#userPaymentPage .stat small{display:block;color:var(--muted);margin-bottom:8px}
-#userPaymentPage .stat strong{font-size:21px;overflow-wrap:anywhere}
-#userPaymentPage .layout{display:grid;grid-template-columns:minmax(290px,380px) minmax(0,1fr);gap:15px;align-items:start}
-#userPaymentPage .panel h3{font-size:16px;margin:0 0 16px}
-#userPaymentPage .field{margin-bottom:13px}
-#userPaymentPage .field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px}
-#userPaymentPage .field input,#userPaymentPage .field select,#userPaymentPage .field textarea,
-#userPaymentPage .search{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);outline:none;font-size:13px}
-#userPaymentPage .field textarea{min-height:70px;resize:vertical}
-#userPaymentPage .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* PROFILE PICTURE */
-#userPaymentPage .avatar{
-width:44px;height:44px;min-width:44px;border-radius:50%;
-overflow:hidden;background:var(--hover);border:1px solid var(--border);
-display:flex;align-items:center;justify-content:center;
-color:var(--p);font-weight:800;font-size:14px;
+#userPaymentPage .up-btn{
+  border:1px solid var(--up-border);background:var(--up-card);
+  color:var(--up-text);padding:10px 15px;border-radius:10px;
+  font-size:13px;font-weight:700
 }
-#userPaymentPage .avatar img{
-display:block!important;width:100%!important;height:100%!important;
-max-width:none!important;object-fit:cover!important;border-radius:50%;
+#userPaymentPage .up-btn.primary{background:var(--up-primary);color:white;border-color:var(--up-primary)}
+#userPaymentPage .up-btn.danger{color:#dc3545}
+#userPaymentPage .up-btn:disabled{opacity:.55;cursor:not-allowed}
+#userPaymentPage .up-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;margin-bottom:20px
 }
-#userPaymentPage .user-picker{position:relative}
-#userPaymentPage .user-trigger{
-display:flex;align-items:center;gap:10px;width:100%;padding:10px;
-border:1px solid var(--border);border-radius:10px;
-background:var(--card);color:var(--text);text-align:left;
+#userPaymentPage .up-stat{
+  background:var(--up-card);border:1px solid var(--up-border);
+  border-radius:14px;padding:17px
 }
-#userPaymentPage .user-info{flex:1;min-width:0}
-#userPaymentPage .user-info strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#userPaymentPage .user-info small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
-#userPaymentPage .user-menu{
-display:none;position:absolute;z-index:50;top:calc(100% + 5px);
-left:0;right:0;background:var(--card);border:1px solid var(--border);
-border-radius:10px;padding:9px;box-shadow:0 10px 30px #0002;
-max-height:330px;overflow:auto;
+#userPaymentPage .up-stat small{display:block;color:var(--up-muted);font-size:12px;margin-bottom:9px}
+#userPaymentPage .up-stat strong{font-size:22px;display:block;overflow-wrap:anywhere}
+#userPaymentPage .up-panel{
+  background:var(--up-card);border:1px solid var(--up-border);
+  border-radius:15px;padding:18px;margin-bottom:18px
 }
-#userPaymentPage .user-menu.open{display:block}
-#userPaymentPage .user-option{
-width:100%;display:flex;align-items:center;gap:10px;
-padding:9px;border:0;border-radius:8px;background:transparent;
-color:var(--text);text-align:left;
+#userPaymentPage .up-panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;flex-wrap:wrap;margin-bottom:15px
 }
-#userPaymentPage .user-option:hover{background:var(--hover)}
-#userPaymentPage .selected-user{
-display:none;align-items:center;gap:10px;padding:9px;
-margin-top:8px;background:var(--hover);border-radius:9px;
+#userPaymentPage .up-panel-head h3{margin:0;font-size:16px}
+#userPaymentPage .up-form-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px
 }
-#userPaymentPage .selected-user.show{display:flex}
-#userPaymentPage .actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
-#userPaymentPage .actions .btn{flex:1}
-#userPaymentPage .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-#userPaymentPage .toolbar input{flex:1;min-width:120px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
-#userPaymentPage .table-wrap{overflow-x:auto}
-#userPaymentPage table{width:100%;border-collapse:collapse;min-width:590px}
-#userPaymentPage th{text-align:left;padding:11px;background:var(--hover);font-size:11px;color:var(--muted)}
-#userPaymentPage td{padding:11px;border-bottom:1px solid var(--border);font-size:12px}
-#userPaymentPage .table-user{display:flex;align-items:center;gap:8px;min-width:130px}
-#userPaymentPage .table-user .avatar{width:34px;height:34px;min-width:34px}
-#userPaymentPage .table-user strong{display:block}
-#userPaymentPage .table-user small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
-#userPaymentPage .icon-btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:7px;padding:6px 9px}
-#userPaymentPage .mobile-list{display:none}
-#userPaymentPage .payment-card{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px}
-#userPaymentPage .card-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-#userPaymentPage .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-#userPaymentPage .card-grid small{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}
-#userPaymentPage .card-grid strong{font-size:12px;overflow-wrap:anywhere}
-#userPaymentPage .empty{text-align:center;padding:25px;color:var(--muted);font-size:13px}
-#userPaymentPage .pagination{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:11px;color:var(--muted)}
-#userPaymentPage .pagination button{padding:7px 10px;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:7px}
-#userPaymentPage .overlay{display:none;position:fixed;inset:0;z-index:10000;background:#0008;align-items:center;justify-content:center;padding:12px}
-#userPaymentPage .overlay.show{display:flex}
-#userPaymentPage .modal{width:min(100%,480px);max-height:90vh;overflow:auto;background:var(--card);color:var(--text);border-radius:14px;padding:18px;border:1px solid var(--border)}
-#userPaymentPage .modal h3{margin:0 0 12px}
-#userPaymentPage .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-#userPaymentPage .detail{padding:10px;border:1px solid var(--border);border-radius:8px;min-width:0}
-#userPaymentPage .detail.full{grid-column:1/-1}
-#userPaymentPage .detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
-#userPaymentPage .detail strong{font-size:12px;overflow-wrap:anywhere}
-#userPaymentPage .modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
-#userPaymentPage .toast-area{position:fixed;z-index:20000;right:15px;bottom:15px;display:flex;flex-direction:column;gap:7px;pointer-events:none}
-#userPaymentPage .toast{background:#172033;color:white;padding:12px 15px;border-radius:8px;font-size:12px;max-width:330px}
-#userPaymentPage .toast.success{background:#087f5b}
-#userPaymentPage .toast.error{background:#c73535}
-#userPaymentPage .loading{display:none;position:fixed;inset:0;z-index:15000;background:#0005;align-items:center;justify-content:center}
-#userPaymentPage .loading.show{display:flex}
-#userPaymentPage .loading-box{background:var(--card);color:var(--text);padding:20px;border-radius:10px}
-@media(max-width:1000px){#userPaymentPage .layout{grid-template-columns:1fr}}
-@media(max-width:650px){
-#userPaymentPage .stats{grid-template-columns:repeat(2,1fr);gap:8px}
-#userPaymentPage .stat{padding:12px}
-#userPaymentPage .stat strong{font-size:17px}
-#userPaymentPage .panel{padding:13px}
-#userPaymentPage .table-wrap{display:none}
-#userPaymentPage .mobile-list{display:block}
-#userPaymentPage .header h2{font-size:20px}
-#userPaymentPage .toast-area{left:10px;right:10px;bottom:10px}
-#userPaymentPage .toast{max-width:none}
+#userPaymentPage .up-field{min-width:0}
+#userPaymentPage .up-field.full{grid-column:1/-1}
+#userPaymentPage .up-field label{
+  display:block;font-size:12px;font-weight:700;margin-bottom:7px
 }
-@media(max-width:360px){#userPaymentPage .two{grid-template-columns:1fr}}
+#userPaymentPage .up-field input,
+#userPaymentPage .up-field select,
+#userPaymentPage .up-field textarea,
+#userPaymentPage .up-search{
+  width:100%;border:1px solid var(--up-border);border-radius:10px;
+  padding:11px 12px;background:var(--up-bg);color:var(--up-text);
+  outline:none;min-height:42px
+}
+#userPaymentPage .up-field textarea{min-height:75px;resize:vertical}
+#userPaymentPage .up-field input:focus,
+#userPaymentPage .up-field select:focus,
+#userPaymentPage .up-field textarea:focus,
+#userPaymentPage .up-search:focus{border-color:var(--up-primary)}
+#userPaymentPage .up-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+#userPaymentPage .up-user-picker{position:relative}
+#userPaymentPage .up-user-selected{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:9px 12px;border:1px solid var(--up-border);
+  border-radius:10px;background:var(--up-bg);cursor:pointer;
+  min-height:56px;text-align:left;color:var(--up-text)
+}
+#userPaymentPage .up-avatar{
+  width:38px;height:38px;border-radius:50%;flex:0 0 38px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--up-primary);color:#fff;font-weight:800;
+  overflow:hidden;font-size:14px
+}
+#userPaymentPage .up-avatar img{width:100%;height:100%;object-fit:cover}
+#userPaymentPage .up-user-meta{min-width:0;flex:1}
+#userPaymentPage .up-user-meta strong{
+  display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+#userPaymentPage .up-user-meta small{font-size:11px;color:var(--up-muted)}
+#userPaymentPage .up-picker-arrow{color:var(--up-muted)}
+#userPaymentPage .up-user-menu{
+  display:none;position:absolute;z-index:20;top:calc(100% + 5px);
+  left:0;right:0;background:var(--up-card);border:1px solid var(--up-border);
+  border-radius:12px;padding:9px;box-shadow:0 12px 35px #0002;
+  max-height:300px;overflow:auto
+}
+#userPaymentPage .up-user-menu.open{display:block}
+#userPaymentPage .up-user-menu .up-search{margin-bottom:8px}
+#userPaymentPage .up-user-option{
+  display:flex;align-items:center;gap:10px;padding:9px;border-radius:9px;
+  cursor:pointer
+}
+#userPaymentPage .up-user-option:hover{background:var(--up-bg)}
+#userPaymentPage .up-user-option .up-user-meta strong{font-size:13px}
+#userPaymentPage .up-user-option .up-user-meta small{font-size:11px}
+#userPaymentPage .up-toolbar{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px
+}
+#userPaymentPage .up-toolbar .up-search{flex:1;min-width:180px}
+#userPaymentPage .up-toolbar select{
+  border:1px solid var(--up-border);border-radius:10px;
+  padding:10px;background:var(--up-bg);color:var(--up-text)
+}
+#userPaymentPage .up-table-wrap{overflow-x:auto}
+#userPaymentPage table{width:100%;border-collapse:collapse;min-width:760px}
+#userPaymentPage th{
+  font-size:11px;color:var(--up-muted);font-weight:800;
+  text-align:left;padding:12px;border-bottom:1px solid var(--up-border);
+  white-space:nowrap
+}
+#userPaymentPage td{
+  padding:12px;border-bottom:1px solid var(--up-border);
+  font-size:12px;vertical-align:middle
+}
+#userPaymentPage tbody tr:last-child td{border-bottom:0}
+#userPaymentPage .up-user-cell{display:flex;align-items:center;gap:9px;min-width:145px}
+#userPaymentPage .up-user-cell .up-avatar{width:32px;height:32px;flex-basis:32px}
+#userPaymentPage .up-user-cell strong{font-size:12px}
+#userPaymentPage .up-user-cell small{display:block;color:var(--up-muted);font-size:10px;margin-top:3px}
+#userPaymentPage .up-pill{
+  display:inline-block;padding:5px 9px;border-radius:20px;
+  background:var(--up-bg);font-size:10px;font-weight:800
+}
+#userPaymentPage .up-row-actions{display:flex;gap:5px}
+#userPaymentPage .up-icon-btn{
+  border:1px solid var(--up-border);background:var(--up-card);
+  color:var(--up-text);border-radius:8px;padding:7px 9px;font-size:11px
+}
+#userPaymentPage .up-icon-btn.delete{color:#dc3545}
+#userPaymentPage .up-empty{text-align:center;padding:30px;color:var(--up-muted);font-size:13px}
+#userPaymentPage .up-pagination{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--up-muted)
+}
+#userPaymentPage .up-modal{
+  display:none;position:fixed;inset:0;background:#0008;z-index:9999;
+  align-items:center;justify-content:center;padding:15px
+}
+#userPaymentPage .up-modal.show{display:flex}
+#userPaymentPage .up-modal-box{
+  width:min(520px,100%);max-height:90vh;overflow:auto;
+  background:var(--up-card);color:var(--up-text);
+  border-radius:16px;padding:20px;border:1px solid var(--up-border)
+}
+#userPaymentPage .up-modal-head{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:15px
+}
+#userPaymentPage .up-modal-head h3{margin:0;font-size:17px}
+#userPaymentPage .up-close{
+  border:0;background:transparent;color:var(--up-muted);font-size:24px
+}
+#userPaymentPage .up-toast{
+  position:fixed;right:20px;bottom:20px;z-index:10001;
+  background:#172033;color:#fff;padding:12px 17px;border-radius:10px;
+  font-size:13px;box-shadow:0 5px 20px #0003;display:none;max-width:90vw
+}
+#userPaymentPage .up-toast.show{display:block}
+#userPaymentPage .up-loading{
+  display:none;text-align:center;padding:15px;color:var(--up-muted);font-size:13px
+}
+#userPaymentPage .up-loading.show{display:block}
+#userPaymentPage .up-mobile-list{display:none}
+#userPaymentPage .up-mobile-card{
+  border:1px solid var(--up-border);border-radius:12px;
+  padding:13px;margin-bottom:10px
+}
+#userPaymentPage .up-mobile-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+#userPaymentPage .up-mobile-details{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+  margin:12px 0;font-size:11px
+}
+#userPaymentPage .up-mobile-details span{color:var(--up-muted);display:block;margin-bottom:3px}
+#userPaymentPage .up-mobile-details strong{font-size:12px;overflow-wrap:anywhere}
+@media(max-width:850px){
+  #userPaymentPage .up-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  #userPaymentPage .up-wrap{padding:0}
+  #userPaymentPage .up-heading h2{font-size:20px}
+  #userPaymentPage .up-panel{padding:13px}
+  #userPaymentPage .up-form-grid{grid-template-columns:1fr}
+  #userPaymentPage .up-field.full{grid-column:auto}
+  #userPaymentPage .up-stats{gap:8px}
+  #userPaymentPage .up-stat{padding:12px}
+  #userPaymentPage .up-stat strong{font-size:18px}
+  #userPaymentPage .up-stat small{font-size:10px}
+  #userPaymentPage .up-table-wrap{display:none}
+  #userPaymentPage .up-mobile-list{display:block}
+}
 </style>
 </head>
 
 <body>
 <div id="userPaymentPage">
+<div class="up-wrap">
 
-<div class="header">
- <div><h2>User Payment</h2><div class="muted">Manage payments made to users</div></div>
- <button class="btn secondary" id="refreshBtn">↻ Refresh</button>
+  <div class="up-heading">
+    <div>
+      <h2>User Payment</h2>
+      <div class="up-sub">Manage user payments and payment records</div>
+    </div>
+    <button class="up-btn" id="upRefreshBtn" type="button">↻ Refresh</button>
+  </div>
+
+  <div class="up-stats">
+    <div class="up-stat"><small>Total Payments</small><strong id="upTotalCount">0</strong></div>
+    <div class="up-stat"><small>Total Amount</small><strong id="upTotalAmount">0</strong></div>
+    <div class="up-stat"><small>Today's Payments</small><strong id="upTodayAmount">0</strong></div>
+    <div class="up-stat"><small>Active Users</small><strong id="upUserCount">0</strong></div>
+  </div>
+
+  <div class="up-panel">
+    <div class="up-panel-head">
+      <h3 id="upFormTitle">Add New Payment</h3>
+      <span class="up-pill" id="upFormMode">NEW PAYMENT</span>
+    </div>
+
+    <form id="upPaymentForm">
+      <div class="up-form-grid">
+
+        <div class="up-field full">
+          <label>Select User *</label>
+          <div class="up-user-picker">
+            <button type="button" class="up-user-selected" id="upUserSelected">
+              <span class="up-avatar" id="upSelectedAvatar">?</span>
+              <span class="up-user-meta">
+                <strong id="upSelectedName">Select a user</strong>
+                <small id="upSelectedId">Choose user account</small>
+              </span>
+              <span class="up-picker-arrow">⌄</span>
+            </button>
+            <div class="up-user-menu" id="upUserMenu">
+              <input class="up-search" id="upUserSearch" type="search" placeholder="Search user name or ID...">
+              <div id="upUserOptions"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="up-field">
+          <label>Amount *</label>
+          <input type="number" id="upAmount" min="0.01" step="0.01" placeholder="Enter amount" required>
+        </div>
+
+        <div class="up-field">
+          <label>Currency *</label>
+          <select id="upCurrency" required>
+            <option value="">Loading currencies...</option>
+          </select>
+        </div>
+
+        <div class="up-field">
+          <label>Payment Method *</label>
+          <select id="upMethod" required>
+            <option value="">Loading methods...</option>
+          </select>
+        </div>
+
+        <div class="up-field">
+          <label>Transaction ID</label>
+          <input type="text" id="upTransaction" placeholder="Transaction ID (optional)">
+        </div>
+
+        <div class="up-field">
+          <label>Payment Date *</label>
+          <input type="date" id="upDate" required>
+        </div>
+
+        <div class="up-field full">
+          <label>Comment</label>
+          <textarea id="upComment" placeholder="Write a comment (optional)"></textarea>
+        </div>
+      </div>
+
+      <div class="up-actions">
+        <button class="up-btn primary" type="submit" id="upSubmitBtn">+ Add Payment</button>
+        <button class="up-btn" type="button" id="upCancelEdit" style="display:none">Cancel Edit</button>
+        <button class="up-btn" type="reset" id="upResetBtn">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="up-panel">
+    <div class="up-panel-head">
+      <h3>Payment Records</h3>
+      <span class="up-pill" id="upRecordCount">0 RECORDS</span>
+    </div>
+
+    <div class="up-toolbar">
+      <input class="up-search" type="search" id="upRecordSearch" placeholder="Search user, ID, transaction...">
+      <select id="upCurrencyFilter"><option value="">All Currencies</option></select>
+      <select id="upPageSize">
+        <option value="10">10 per page</option>
+        <option value="20">20 per page</option>
+        <option value="50">50 per page</option>
+        <option value="100">100 per page</option>
+      </select>
+    </div>
+
+    <div class="up-loading" id="upLoading">Loading payment records...</div>
+
+    <div class="up-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>USER</th>
+            <th>AMOUNT</th>
+            <th>METHOD</th>
+            <th>TRANSACTION ID</th>
+            <th>DATE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody id="upTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="up-mobile-list" id="upMobileList"></div>
+
+    <div class="up-pagination">
+      <span id="upPageInfo">Showing 0 records</span>
+      <div style="display:flex;gap:7px">
+        <button class="up-btn" type="button" id="upPrevPage">Previous</button>
+        <button class="up-btn" type="button" id="upNextPage">Next</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="stats">
- <div class="stat"><small>Total Payment Records</small><strong id="totalRecords">0</strong></div>
- <div class="stat"><small>Total Paid Amount</small><strong id="totalAmount">0</strong></div>
- <div class="stat"><small>Latest Payment</small><strong id="latestDate">—</strong></div>
+<div class="up-modal" id="upViewModal">
+  <div class="up-modal-box">
+    <div class="up-modal-head">
+      <h3>Payment Details</h3>
+      <button class="up-close" type="button" data-close="upViewModal">×</button>
+    </div>
+    <div id="upViewContent"></div>
+    <div class="up-actions">
+      <button class="up-btn" type="button" data-close="upViewModal">Close</button>
+    </div>
+  </div>
 </div>
 
-<div class="layout">
-
-<section class="panel">
-<h3 id="formTitle">Add User Payment</h3>
-<form id="paymentForm">
-
-<div class="field">
-<label>Select User *</label>
-<div class="user-picker" id="userPicker">
-<button type="button" class="user-trigger" id="userTrigger">
- <div class="avatar" id="triggerAvatar">?</div>
- <div class="user-info"><strong id="triggerName">Select a User</strong><small id="triggerId">Search user by name or ID</small></div>
- <span>⌄</span>
-</button>
-<div class="user-menu" id="userMenu">
-<input class="search" id="userSearch" placeholder="Search user..." autocomplete="off">
-<div id="userOptions"><div class="empty">Loading users...</div></div>
-</div>
-</div>
-<div class="selected-user" id="selectedUser">
- <div class="avatar" id="selectedAvatar">?</div>
- <div class="user-info"><strong id="selectedName"></strong><small id="selectedId"></small></div>
- <button type="button" class="btn secondary small" id="changeUser">Change</button>
-</div>
+<div class="up-modal" id="upDeleteModal">
+  <div class="up-modal-box">
+    <div class="up-modal-head">
+      <h3>Delete Payment?</h3>
+      <button class="up-close" type="button" data-close="upDeleteModal">×</button>
+    </div>
+    <p style="font-size:13px;color:var(--up-muted);line-height:1.7">
+      Are you sure you want to delete this payment? It will be moved to Deleted Payment.
+    </p>
+    <div class="up-actions">
+      <button class="up-btn danger" type="button" id="upConfirmDelete">Delete Payment</button>
+      <button class="up-btn" type="button" data-close="upDeleteModal">Cancel</button>
+    </div>
+  </div>
 </div>
 
-<div class="two">
-<div class="field"><label>Payment Amount *</label><input id="amount" type="number" min="0.01" step="any" required placeholder="Enter amount"></div>
-<div class="field"><label>Currency *</label><select id="currency" required><option value="">Loading...</option></select></div>
-</div>
-<div class="field"><label>Payment Method *</label><select id="method" required><option value="">Loading...</option></select></div>
-<div class="field"><label>Transaction ID</label><input id="transaction" placeholder="Transaction ID"></div>
-<div class="field"><label>Payment Date *</label><input id="paymentDate" type="date" required></div>
-<div class="field"><label>Comment</label><textarea id="comment" placeholder="Optional comment"></textarea></div>
-<div class="actions">
-<button class="btn" type="submit" id="saveBtn">＋ Add Payment</button>
-<button class="btn secondary" type="button" id="cancelEdit" style="display:none">Cancel</button>
-</div>
-</form>
-</section>
-
-<section class="panel">
-<h3>Payment Records</h3>
-<div class="toolbar">
-<input id="paymentSearch" placeholder="Search user, ID, transaction...">
-<input id="dateFilter" type="date">
-<button class="btn secondary small" id="clearFilter">Clear</button>
-</div>
-<div class="table-wrap">
-<table>
-<thead><tr><th>USER</th><th>AMOUNT</th><th>METHOD</th><th>DATE</th><th>ACTIONS</th></tr></thead>
-<tbody id="paymentTable"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
-</table>
-</div>
-<div class="mobile-list" id="mobileList"><div class="empty">Loading...</div></div>
-<div class="pagination">
-<span id="pageInfo">0 records</span>
-<div><button id="prevPage">Previous</button> <button id="nextPage">Next</button></div>
-</div>
-</section>
-</div>
-
-<div class="overlay" id="modalOverlay">
-<div class="modal">
-<h3 id="modalTitle"></h3>
-<div id="modalBody"></div>
-<div class="modal-actions" id="modalActions"></div>
-</div>
-</div>
-
-<div class="loading" id="loading"><div class="loading-box" id="loadingText">Please wait...</div></div>
-<div class="toast-area" id="toastArea"></div>
+<div class="up-toast" id="upToast"></div>
 </div>
 
 <script>
 (function(){
-const API="https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
-const root=document.getElementById("userPaymentPage");
-if(!root || root.dataset.ready==="1")return;
-root.dataset.ready="1";
+"use strict";
 
-const $=id=>document.getElementById(id);
-let users=[],currencies=[],methods=[],payments=[];
-let selectedUser=null,editing=null,page=1,pageSize=8,pending=null;
+const ROOT = document.getElementById("userPaymentPage");
+if(!ROOT || ROOT.dataset.initialized === "yes") return;
+ROOT.dataset.initialized = "yes";
 
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function initials(name){return String(name||"U").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"U";}
+/* ================= API CONFIG ================= */
 
-/* Handles direct URL, Google Drive sharing URL and file ID */
-function imageURL(value){
- let v=String(value||"").trim();
- if(!v)return "";
- if(v.startsWith("data:image/"))return v;
+// User Payment backend
+const PAYMENT_API =
+"https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
- let id="";
- let m=v.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i);
- if(m)id=m[1];
- if(!id){
-  m=v.match(/[?&]id=([a-zA-Z0-9_-]+)/i);
-  if(m && /drive\.google\.com/i.test(v))id=m[1];
- }
- if(!id){
-  m=v.match(/drive\.google\.com\/uc\?.*id=([a-zA-Z0-9_-]+)/i);
-  if(m)id=m[1];
- }
- if(id)return "https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w300";
+// Actual User Management backend
+const USER_API =
+"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
- if(/^https?:\/\//i.test(v))return v;
- if(/^[a-zA-Z0-9_-]{20,}$/.test(v))
-  return "https://drive.google.com/thumbnail?id="+encodeURIComponent(v)+"&sz=w300";
- return "";
-}
+/* ================= STATE ================= */
 
-/* Get picture from different possible API field names */
-function pictureOf(u){
- return u.profilePicture || u.profilePic || u.profile_picture ||
-        u.photoURL || u.photoUrl || u.photo || u.picture ||
-        u.image || u.imageUrl || u.avatar || u.pic || u.Picture || "";
-}
-function avatarHTML(u){
- const name=u?.userName||u?.name||"User";
- const url=imageURL(pictureOf(u));
- const fallback=esc(initials(name));
- if(!url)return `<div class="avatar">${fallback}</div>`;
- return `<div class="avatar"><img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='${fallback}'"></div>`;
-}
-function toast(msg,type="success"){
- const d=document.createElement("div");d.className="toast "+type;d.textContent=msg;
- $("toastArea").appendChild(d);setTimeout(()=>d.remove(),3500);
-}
-function loading(on,msg="Please wait..."){
- $("loadingText").textContent=msg;$("loading").classList.toggle("show",!!on);
-}
-function today(){
- const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-async function get(api){
- const r=await fetch(API+"?api="+encodeURIComponent(api),{cache:"no-store"});
- if(!r.ok)throw Error("Server error "+r.status);
- const d=await r.json();if(!d.success)throw Error(d.message||"API error");return d;
-}
-async function post(data){
- const r=await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
- if(!r.ok)throw Error("Server error "+r.status);
- const d=await r.json();if(!d.success)throw Error(d.message||"Operation failed");return d;
+let users = [];
+let currencies = [];
+let methods = [];
+let payments = [];
+let selectedUser = null;
+let editingPaymentId = "";
+let deletingPaymentId = "";
+let currentPage = 1;
+let pageSize = 10;
+
+const $ = id => document.getElementById(id);
+
+const money = value => {
+  const n = Number(value || 0);
+  return n.toLocaleString(undefined,{maximumFractionDigits:2});
+};
+
+const today = () => {
+  const d = new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+};
+
+function escapeHTML(value){
+  return String(value == null ? "" : value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
 
-async function load(){
- loading(true,"Loading payment data...");
- try{
-  const [u,c,m,p]=await Promise.all([get("users"),get("currencies"),get("methods"),get("payments")]);
-  users=u.users||[];currencies=c.currencies||[];methods=m.methods||[];payments=p.payments||[];
-  renderUsers();renderOptions();renderPayments();stats();
- }catch(e){toast(e.message,"error");console.error(e);}
- finally{loading(false);}
+function toast(message){
+  const el=$("upToast");
+  el.textContent=message;
+  el.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>el.classList.remove("show"),3200);
 }
 
-function renderUsers(search=""){
- const q=search.toLowerCase();
- const found=users.filter(u=>
-  String(u.userName||"").toLowerCase().includes(q)||
-  String(u.userId||"").toLowerCase().includes(q)||
-  String(u.phone||"").toLowerCase().includes(q)
- );
- $("userOptions").innerHTML=found.length?found.map(u=>`
- <button type="button" class="user-option" data-user="${esc(u.userId)}">
- ${avatarHTML(u)}
- <div class="user-info"><strong>${esc(u.userName)}</strong><small>ID: ${esc(u.userId)}</small></div>
- </button>`).join(""):`<div class="empty">No user found</div>`;
+function showLoading(show){
+  $("upLoading").classList.toggle("show",!!show);
 }
-function chooseUser(u){
- selectedUser=u;
- $("triggerAvatar").outerHTML=avatarHTML(u).replace('class="avatar"','class="avatar" id="triggerAvatar"');
- $("triggerName").textContent=u.userName;
- $("triggerId").textContent="ID: "+u.userId;
- $("selectedAvatar").outerHTML=avatarHTML(u).replace('class="avatar"','class="avatar" id="selectedAvatar"');
- $("selectedName").textContent=u.userName;
- $("selectedId").textContent="User ID: "+u.userId;
- $("selectedUser").classList.add("show");
- $("userMenu").classList.remove("open");
-}
-function clearUser(){
- selectedUser=null;
- $("triggerAvatar").outerHTML='<div class="avatar" id="triggerAvatar">?</div>';
- $("triggerName").textContent="Select a User";
- $("triggerId").textContent="Search user by name or ID";
- $("selectedAvatar").outerHTML='<div class="avatar" id="selectedAvatar">?</div>';
- $("selectedUser").classList.remove("show");
-}
-function renderOptions(){
- $("currency").innerHTML='<option value="">Select Currency</option>'+currencies.map(c=>`<option value="${esc(c.id)}">${esc(c.code)} - ${esc(c.name)}</option>`).join("");
- $("method").innerHTML='<option value="">Select Method</option>'+methods.map(m=>`<option value="${esc(m.id)}">${esc(m.name)}</option>`).join("");
-}
-function findUser(id){return users.find(u=>String(u.userId)===String(id));}
-function findPayment(id){return payments.find(p=>String(p.paymentId)===String(id));}
-function money(code,amount){return (code?code+" ":"")+Number(amount||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-function stats(){
- $("totalRecords").textContent=payments.length;
- const totals={};payments.forEach(p=>totals[p.currencyCode||"Other"]=(totals[p.currencyCode||"Other"]||0)+Number(p.amount||0));
- const summary=Object.entries(totals).map(([c,v])=>c+" "+v.toLocaleString(undefined,{maximumFractionDigits:2})).join(" · ");
- $("totalAmount").textContent=summary||"0";
- $("totalAmount").style.fontSize=summary.length>18?"12px":"18px";
- $("latestDate").textContent=payments.map(p=>p.paymentDate||"").sort().pop()||"—";
+function formatDate(value){
+  if(!value) return "—";
+  const d=new Date(value);
+  if(isNaN(d.getTime())) return String(value);
+  return d.toLocaleDateString();
 }
-function filtered(){
- const q=$("paymentSearch").value.toLowerCase(),date=$("dateFilter").value;
- return payments.filter(p=>{
-  const hay=[p.userName,p.userId,p.paymentId,p.transactionId,p.paymentMethod].join(" ").toLowerCase();
-  return (!q||hay.includes(q))&&(!date||String(p.paymentDate).slice(0,10)===date);
- }).sort((a,b)=>String(b.createdAt||b.paymentDate).localeCompare(String(a.createdAt||a.paymentDate)));
+
+/* ================= IMAGE HANDLING ================= */
+
+function getImageURL(value){
+  let url=String(value || "").trim();
+  if(!url) return "";
+
+  // If the backend gives a Drive file ID.
+  if(/^[a-zA-Z0-9_-]{20,}$/.test(url)){
+    return "https://drive.google.com/thumbnail?id="+encodeURIComponent(url)+"&sz=w300";
+  }
+
+  // Convert Drive file links to thumbnail URLs.
+  let match=url.match(/\/file\/d\/([^/]+)/);
+  if(!match) match=url.match(/[?&]id=([^&]+)/);
+
+  if(match && match[1]){
+    return "https://drive.google.com/thumbnail?id="+
+      encodeURIComponent(match[1])+"&sz=w300";
+  }
+
+  return url;
 }
+
+function initials(name){
+  const parts=String(name || "?").trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0,2).map(x=>x.charAt(0).toUpperCase()).join("") || "?";
+}
+
+function avatarHTML(user,sizeClass=""){
+  if(!user) return '<span class="up-avatar">?</span>';
+
+  const name=escapeHTML(user.userName || "User");
+  const image=getImageURL(user.profilePicture);
+
+  if(image){
+    return `<span class="up-avatar ${sizeClass}">
+      <img src="${escapeHTML(image)}" alt="${name}" referrerpolicy="no-referrer"
+        onerror="this.parentElement.textContent='${escapeHTML(initials(user.userName))}'">
+    </span>`;
+  }
+
+  return `<span class="up-avatar ${sizeClass}">${escapeHTML(initials(user.userName))}</span>`;
+}
+
+/* ================= API REQUESTS ================= */
+
+async function getJSON(url){
+  const response=await fetch(url,{method:"GET",cache:"no-store"});
+  if(!response.ok) throw new Error("Server request failed: "+response.status);
+  const data=await response.json();
+  if(data && data.success===false) throw new Error(data.message || "API error");
+  return data;
+}
+
+async function postJSON(payload){
+  const response=await fetch(PAYMENT_API,{
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload)
+  });
+  if(!response.ok) throw new Error("Server request failed: "+response.status);
+  const data=await response.json();
+  if(!data || data.success===false) throw new Error(data?.message || "Operation failed");
+  return data;
+}
+
+/* ================= LOAD USERS ================= */
+
+async function loadUsers(){
+  // This is the exact GET endpoint from the supplied User Management Code.gs.
+  const data=await getJSON(USER_API+"?api=active");
+
+  if(!Array.isArray(data.users)){
+    throw new Error("User API response does not contain users array.");
+  }
+
+  users=data.users.map(u=>({
+    userId:String(u.userId || ""),
+    userName:String(u.userName || ""),
+    phone:u.phone || "",
+    gmail:u.gmail || "",
+    area:u.area || "",
+    status:u.status || "",
+    profilePicture:u.profilePicture || ""
+  })).filter(u=>u.userId);
+
+  users.sort((a,b)=>a.userName.localeCompare(b.userName));
+}
+
+/* ================= LOAD PAYMENT DATA ================= */
+
+async function loadCurrencies(){
+  const data=await getJSON(PAYMENT_API+"?api=currencies");
+  currencies=Array.isArray(data.currencies)?data.currencies:[];
+}
+
+async function loadMethods(){
+  const data=await getJSON(PAYMENT_API+"?api=methods");
+  methods=Array.isArray(data.methods)?data.methods:[];
+}
+
+async function loadPayments(){
+  const data=await getJSON(PAYMENT_API+"?api=payments");
+  payments=Array.isArray(data.payments)?data.payments:[];
+}
+
+/* ================= USER PICKER ================= */
+
+function renderUserOptions(search=""){
+  const q=search.trim().toLowerCase();
+
+  const filtered=users.filter(u=>
+    u.userName.toLowerCase().includes(q) ||
+    u.userId.toLowerCase().includes(q) ||
+    String(u.phone).toLowerCase().includes(q)
+  );
+
+  $("upUserOptions").innerHTML=filtered.length ? filtered.map(u=>`
+    <div class="up-user-option" data-user-id="${escapeHTML(u.userId)}">
+      ${avatarHTML(u)}
+      <span class="up-user-meta">
+        <strong>${escapeHTML(u.userName)}</strong>
+        <small>${escapeHTML(u.userId)}${u.phone?" · "+escapeHTML(u.phone):""}</small>
+      </span>
+    </div>
+  `).join("") : '<div class="up-empty">No users found</div>';
+}
+
+function selectUser(userId){
+  selectedUser=users.find(u=>u.userId===String(userId)) || null;
+
+  if(!selectedUser){
+    $("upSelectedAvatar").textContent="?";
+    $("upSelectedName").textContent="Select a user";
+    $("upSelectedId").textContent="Choose user account";
+  }else{
+    const img=getImageURL(selectedUser.profilePicture);
+    $("upSelectedAvatar").innerHTML=img
+      ? `<img src="${escapeHTML(img)}" alt="" referrerpolicy="no-referrer">`
+      : escapeHTML(initials(selectedUser.userName));
+
+    const avatarImg=$("upSelectedAvatar").querySelector("img");
+    if(avatarImg){
+      avatarImg.onerror=function(){
+        $("upSelectedAvatar").textContent=initials(selectedUser?.userName);
+      };
+    }
+
+    $("upSelectedName").textContent=selectedUser.userName;
+    $("upSelectedId").textContent=selectedUser.userId;
+  }
+
+  $("upUserMenu").classList.remove("open");
+}
+
+$("upUserSelected").addEventListener("click",()=>{
+  $("upUserMenu").classList.toggle("open");
+  $("upUserSearch").value="";
+  renderUserOptions("");
+  if($("upUserMenu").classList.contains("open")) $("upUserSearch").focus();
+});
+
+$("upUserSearch").addEventListener("input",e=>renderUserOptions(e.target.value));
+
+$("upUserOptions").addEventListener("click",e=>{
+  const option=e.target.closest("[data-user-id]");
+  if(option) selectUser(option.dataset.userId);
+});
+
+document.addEventListener("click",e=>{
+  if(!ROOT.contains(e.target)) return;
+  if(!e.target.closest(".up-user-picker")) $("upUserMenu").classList.remove("open");
+});
+
+/* ================= DROPDOWNS ================= */
+
+function renderCurrencies(){
+  const options=currencies.filter(c=>String(c.status || "Active").toLowerCase()!=="inactive");
+
+  $("upCurrency").innerHTML='<option value="">Select currency</option>'+
+    options.map(c=>`
+      <option value="${escapeHTML(c.id)}">
+        ${escapeHTML(c.code || c.name || c.id)}${c.symbol?" ("+escapeHTML(c.symbol)+")":""}
+      </option>
+    `).join("");
+
+  $("upCurrencyFilter").innerHTML='<option value="">All Currencies</option>'+
+    currencies.map(c=>`<option value="${escapeHTML(c.code || c.id)}">${escapeHTML(c.code || c.name || c.id)}</option>`).join("");
+}
+
+function renderMethods(){
+  const options=methods.filter(m=>String(m.status || "Active").toLowerCase()!=="inactive");
+
+  $("upMethod").innerHTML='<option value="">Select payment method</option>'+
+    options.map(m=>`<option value="${escapeHTML(m.id)}">${escapeHTML(m.name || m.id)}</option>`).join("");
+}
+
+/* ================= STATS ================= */
+
+function updateStats(){
+  const total=payments.reduce((sum,p)=>sum+Number(p.amount || 0),0);
+  const todayTotal=payments
+    .filter(p=>String(p.paymentDate || "").slice(0,10)===today())
+    .reduce((sum,p)=>sum+Number(p.amount || 0),0);
+
+  $("upTotalCount").textContent=payments.length;
+  $("upTotalAmount").textContent=money(total);
+  $("upTodayAmount").textContent=money(todayTotal);
+  $("upUserCount").textContent=users.length;
+  $("upRecordCount").textContent=payments.length+" RECORDS";
+}
+
+/* ================= PAYMENT TABLE ================= */
+
+function filteredPayments(){
+  const q=$("upRecordSearch").value.trim().toLowerCase();
+  const currency=$("upCurrencyFilter").value;
+
+  return payments.filter(p=>{
+    const text=[
+      p.paymentId,p.userId,p.userName,p.transactionId,
+      p.paymentMethod,p.currencyCode,p.currencyName,p.comment
+    ].join(" ").toLowerCase();
+
+    const currencyMatch=!currency ||
+      String(p.currencyCode || p.currencyId || "")===currency;
+
+    return (!q || text.includes(q)) && currencyMatch;
+  }).sort((a,b)=>String(b.paymentDate || "").localeCompare(String(a.paymentDate || "")));
+}
+
+function paymentUser(payment){
+  return users.find(u=>u.userId===String(payment.userId)) || {
+    userId:payment.userId || "",
+    userName:payment.userName || "Unknown User",
+    profilePicture:""
+  };
+}
+
 function renderPayments(){
- const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));
- page=Math.min(page,pages);
- const items=list.slice((page-1)*pageSize,page*pageSize);
- $("pageInfo").textContent=list.length?`Showing ${(page-1)*pageSize+1}-${Math.min(page*pageSize,list.length)} of ${list.length}`:"0 records";
- $("prevPage").disabled=page===1;$("nextPage").disabled=page===pages;
- if(!items.length){
-  $("paymentTable").innerHTML='<tr><td colspan="5" class="empty">No payment records found.</td></tr>';
-  $("mobileList").innerHTML='<div class="empty">No payment records found.</div>';return;
- }
- $("paymentTable").innerHTML=items.map(p=>{
-  const u=findUser(p.userId)||{userName:p.userName};
-  return `<tr><td><div class="table-user">${avatarHTML(u)}<div><strong>${esc(p.userName)}</strong><small>${esc(p.userId)}</small></div></div></td>
-  <td><b>${esc(money(p.currencyCode,p.amount))}</b></td><td>${esc(p.paymentMethod)}</td><td>${esc(p.paymentDate)}</td>
-  <td><button class="icon-btn" data-action="view" data-id="${esc(p.paymentId)}">View</button>
-  <button class="icon-btn" data-action="edit" data-id="${esc(p.paymentId)}">Edit</button>
-  <button class="icon-btn" data-action="delete" data-id="${esc(p.paymentId)}">×</button></td></tr>`;
- }).join("");
- $("mobileList").innerHTML=items.map(p=>{
-  const u=findUser(p.userId)||{userName:p.userName};
-  return `<div class="payment-card"><div class="card-head"><div class="table-user">${avatarHTML(u)}<div><strong>${esc(p.userName)}</strong><small>${esc(p.userId)}</small></div></div><b>${esc(money(p.currencyCode,p.amount))}</b></div>
-  <div class="card-grid"><div><small>Date</small><strong>${esc(p.paymentDate)}</strong></div><div><small>Method</small><strong>${esc(p.paymentMethod)}</strong></div><div><small>Transaction</small><strong>${esc(p.transactionId||"—")}</strong></div><div><small>Payment ID</small><strong>${esc(p.paymentId)}</strong></div></div>
-  <div class="actions"><button class="btn secondary small" data-action="view" data-id="${esc(p.paymentId)}">View</button><button class="btn secondary small" data-action="edit" data-id="${esc(p.paymentId)}">Edit</button><button class="btn danger small" data-action="delete" data-id="${esc(p.paymentId)}">Delete</button></div></div>`;
- }).join("");
+  updateStats();
+
+  const list=filteredPayments();
+  pageSize=Number($("upPageSize").value || 10);
+  const pages=Math.max(1,Math.ceil(list.length/pageSize));
+  currentPage=Math.min(currentPage,pages);
+
+  const start=(currentPage-1)*pageSize;
+  const visible=list.slice(start,start+pageSize);
+
+  $("upPageInfo").textContent=list.length
+    ? `Showing ${start+1}-${Math.min(start+pageSize,list.length)} of ${list.length}`
+    : "Showing 0 records";
+
+  $("upPrevPage").disabled=currentPage<=1;
+  $("upNextPage").disabled=currentPage>=pages;
+
+  if(!visible.length){
+    $("upTableBody").innerHTML='<tr><td colspan="6" class="up-empty">No payment records found.</td></tr>';
+    $("upMobileList").innerHTML='<div class="up-empty">No payment records found.</div>';
+    return;
+  }
+
+  $("upTableBody").innerHTML=visible.map(p=>{
+    const user=paymentUser(p);
+    const amount=money(p.amount);
+    return `<tr>
+      <td>
+        <div class="up-user-cell">
+          ${avatarHTML(user)}
+          <div><strong>${escapeHTML(user.userName)}</strong>
+          <small>${escapeHTML(user.userId)}</small></div>
+        </div>
+      </td>
+      <td><strong>${escapeHTML(p.currencyCode || p.currencyName || "")} ${amount}</strong></td>
+      <td>${escapeHTML(p.paymentMethod || p.methodId || "—")}</td>
+      <td>${escapeHTML(p.transactionId || "—")}</td>
+      <td>${escapeHTML(formatDate(p.paymentDate))}</td>
+      <td>
+        <div class="up-row-actions">
+          <button class="up-icon-btn" data-action="view" data-id="${escapeHTML(p.paymentId)}" title="View">View</button>
+          <button class="up-icon-btn" data-action="edit" data-id="${escapeHTML(p.paymentId)}" title="Edit">Edit</button>
+          <button class="up-icon-btn delete" data-action="delete" data-id="${escapeHTML(p.paymentId)}" title="Delete">Delete</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+
+  $("upMobileList").innerHTML=visible.map(p=>{
+    const user=paymentUser(p);
+    return `<div class="up-mobile-card">
+      <div class="up-mobile-top">
+        <div class="up-user-cell">
+          ${avatarHTML(user)}
+          <div><strong>${escapeHTML(user.userName)}</strong>
+          <small>${escapeHTML(user.userId)}</small></div>
+        </div>
+        <strong>${escapeHTML(p.currencyCode || "")} ${money(p.amount)}</strong>
+      </div>
+      <div class="up-mobile-details">
+        <div><span>Method</span><strong>${escapeHTML(p.paymentMethod || "—")}</strong></div>
+        <div><span>Date</span><strong>${escapeHTML(formatDate(p.paymentDate))}</strong></div>
+        <div><span>Transaction ID</span><strong>${escapeHTML(p.transactionId || "—")}</strong></div>
+        <div><span>Payment ID</span><strong>${escapeHTML(p.paymentId || "—")}</strong></div>
+      </div>
+      <div class="up-row-actions">
+        <button class="up-icon-btn" data-action="view" data-id="${escapeHTML(p.paymentId)}">View</button>
+        <button class="up-icon-btn" data-action="edit" data-id="${escapeHTML(p.paymentId)}">Edit</button>
+        <button class="up-icon-btn delete" data-action="delete" data-id="${escapeHTML(p.paymentId)}">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
 }
 
-function reset(){
- editing=null;pending=null;$("paymentForm").reset();$("paymentDate").value=today();clearUser();
- $("formTitle").textContent="Add User Payment";$("saveBtn").textContent="＋ Add Payment";$("cancelEdit").style.display="none";
-}
-function openEdit(p){
- editing=p;chooseUser(findUser(p.userId)||{userId:p.userId,userName:p.userName});
- $("amount").value=p.amount;$("currency").value=p.currencyId;$("method").value=p.methodId;
- $("transaction").value=p.transactionId||"";$("paymentDate").value=p.paymentDate;$("comment").value=p.comment||"";
- $("formTitle").textContent="Edit User Payment";$("saveBtn").textContent="Save Changes";$("cancelEdit").style.display="inline-block";
- $("paymentForm").scrollIntoView({behavior:"smooth"});
-}
-function modal(title,body,buttons){
- $("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalActions").innerHTML="";
- buttons.forEach(b=>{const x=document.createElement("button");x.className="btn "+(b.cls||"");x.textContent=b.label;x.onclick=b.fn;$("modalActions").appendChild(x);});
- $("modalOverlay").classList.add("show");
-}
-function closeModal(){$("modalOverlay").classList.remove("show");}
-function detail(label,value,full=false){return `<div class="detail ${full?"full":""}"><small>${label}</small><strong>${esc(value||"—")}</strong></div>`;}
+/* ================= FORM ================= */
 
-function view(p){
- modal("Payment Details",`<div class="detail-grid">
- ${detail("Payment ID",p.paymentId)}${detail("User ID",p.userId)}
- ${detail("User Name",p.userName)}${detail("Amount",money(p.currencyCode,p.amount))}
- ${detail("Currency",p.currencyCode+" - "+p.currencyName)}${detail("Method",p.paymentMethod)}
- ${detail("Transaction ID",p.transactionId)}${detail("Payment Date",p.paymentDate)}
- ${detail("Comment",p.comment,true)}${detail("Created At",p.createdAt,true)}
- </div>`,[{label:"Close",cls:"secondary",fn:closeModal},{label:"Edit",fn:()=>{closeModal();openEdit(p);}}]);
-}
-function deleteConfirm(p){
- modal("Confirm Delete",`<p>Move this payment to Deleted Payment?</p><div class="detail-grid">
- ${detail("User",p.userName)}${detail("Amount",money(p.currencyCode,p.amount))}
- ${detail("Payment ID",p.paymentId)}
- </div>`,[{label:"Cancel",cls:"secondary",fn:closeModal},{label:"Yes, Delete",cls:"danger",fn:async()=>{
- closeModal();loading(true,"Deleting payment...");
- try{const r=await post({action:"deletePayment",paymentId:p.paymentId});toast(r.message);if(editing?.paymentId===p.paymentId)reset();await load();}
- catch(e){toast(e.message,"error");}finally{loading(false);}
- }}]);
-}
-function confirmEdit(data){
- const c=currencies.find(x=>x.id===data.currencyId),m=methods.find(x=>x.id===data.methodId);
- pending=data;
- modal("Confirm Edit",`<p>Are you sure you want to update this payment?</p><div class="detail-grid">
- ${detail("User",selectedUser.userName)}${detail("Amount",money(c?.code,data.amount))}
- ${detail("Method",m?.name)}${detail("Date",data.paymentDate)}
- ${detail("Transaction ID",data.transactionId)}
- </div>`,[{label:"Back to Edit",cls:"secondary",fn:closeModal},{label:"Confirm Update",fn:async()=>{
- closeModal();loading(true,"Updating payment...");
- try{const r=await post({...pending,action:"editPayment",paymentId:editing.paymentId});toast(r.message);reset();await load();}
- catch(e){toast(e.message,"error");}finally{loading(false);}
- }}]);
+function resetForm(){
+  $("upPaymentForm").reset();
+  $("upDate").value=today();
+  selectUser("");
+  editingPaymentId="";
+  $("upFormTitle").textContent="Add New Payment";
+  $("upFormMode").textContent="NEW PAYMENT";
+  $("upSubmitBtn").textContent="+ Add Payment";
+  $("upCancelEdit").style.display="none";
 }
 
-$("paymentForm").addEventListener("submit",async e=>{
- e.preventDefault();
- if(!selectedUser){toast("Please select a user.","error");return;}
- const data={userId:selectedUser.userId,amount:Number($("amount").value),currencyId:$("currency").value,methodId:$("method").value,transactionId:$("transaction").value.trim(),paymentDate:$("paymentDate").value,comment:$("comment").value.trim()};
- if(!data.amount||data.amount<=0||!data.currencyId||!data.methodId||!data.paymentDate){toast("Please complete all required fields.","error");return;}
- if(editing){confirmEdit(data);return;}
- modal("Confirm Payment",`<p>Confirm adding this payment?</p><div class="detail-grid">
- ${detail("User",selectedUser.userName)}${detail("Amount",money(currencies.find(c=>c.id===data.currencyId)?.code,data.amount))}
- ${detail("Method",methods.find(m=>m.id===data.methodId)?.name)}${detail("Date",data.paymentDate)}
- </div>`,[{label:"Cancel",cls:"secondary",fn:closeModal},{label:"Confirm Payment",fn:async()=>{
- closeModal();loading(true,"Adding payment...");
- try{const r=await post({...data,action:"addPayment"});toast(r.message);reset();await load();}
- catch(e){toast(e.message,"error");}finally{loading(false);}
- }}]);
+function getFormPayload(){
+  if(!selectedUser) throw new Error("Please select a user.");
+
+  const amount=Number($("upAmount").value);
+  if(!Number.isFinite(amount) || amount<=0) throw new Error("Enter a valid payment amount.");
+
+  const currencyId=$("upCurrency").value;
+  const methodId=$("upMethod").value;
+
+  if(!currencyId) throw new Error("Please select currency.");
+  if(!methodId) throw new Error("Please select payment method.");
+  if(!$("upDate").value) throw new Error("Please select payment date.");
+
+  return {
+    userId:selectedUser.userId,
+    amount:amount,
+    currencyId:currencyId,
+    methodId:methodId,
+    transactionId:$("upTransaction").value.trim(),
+    paymentDate:$("upDate").value,
+    comment:$("upComment").value.trim()
+  };
+}
+
+$("upPaymentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  const btn=$("upSubmitBtn");
+  btn.disabled=true;
+
+  try{
+    const payload=getFormPayload();
+
+    if(editingPaymentId){
+      payload.action="editPayment";
+      payload.paymentId=editingPaymentId;
+    }else{
+      payload.action="addPayment";
+    }
+
+    const result=await postJSON(payload);
+    toast(result.message || (editingPaymentId?"Payment updated.":"Payment added."));
+    resetForm();
+    await loadPayments();
+    renderPayments();
+  }catch(err){
+    toast(err.message || "Payment could not be saved.");
+  }finally{
+    btn.disabled=false;
+  }
 });
 
-function actionHandler(e){
- const b=e.target.closest("[data-action]");if(!b)return;
- const p=findPayment(b.dataset.id);if(!p)return;
- if(b.dataset.action==="view")view(p);
- if(b.dataset.action==="edit")openEdit(p);
- if(b.dataset.action==="delete")deleteConfirm(p);
+function editPayment(paymentId){
+  const p=payments.find(x=>String(x.paymentId)===String(paymentId));
+  if(!p) return;
+
+  selectUser(p.userId);
+  $("upAmount").value=p.amount || "";
+  $("upCurrency").value=p.currencyId || "";
+  $("upMethod").value=p.methodId || "";
+  $("upTransaction").value=p.transactionId || "";
+  $("upDate").value=String(p.paymentDate || "").slice(0,10);
+  $("upComment").value=p.comment || "";
+
+  editingPaymentId=String(p.paymentId);
+  $("upFormTitle").textContent="Edit Payment";
+  $("upFormMode").textContent="EDITING";
+  $("upSubmitBtn").textContent="Save Changes";
+  $("upCancelEdit").style.display="inline-block";
+
+  ROOT.querySelector(".up-panel").scrollIntoView({behavior:"smooth",block:"start"});
 }
-$("paymentTable").addEventListener("click",actionHandler);
-$("mobileList").addEventListener("click",actionHandler);
 
-$("userTrigger").addEventListener("click",()=>{$("userMenu").classList.toggle("open");$("userSearch").focus();});
-$("userSearch").addEventListener("input",()=>renderUsers($("userSearch").value));
-$("userOptions").addEventListener("click",e=>{
- const b=e.target.closest("[data-user]");if(!b)return;
- const u=users.find(x=>String(x.userId)===b.dataset.user);if(u)chooseUser(u);
+/* ================= VIEW PAYMENT ================= */
+
+function viewPayment(paymentId){
+  const p=payments.find(x=>String(x.paymentId)===String(paymentId));
+  if(!p) return;
+
+  const user=paymentUser(p);
+  $("upViewContent").innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      ${avatarHTML(user)}
+      <div><strong>${escapeHTML(user.userName)}</strong>
+      <div style="font-size:11px;color:var(--up-muted)">${escapeHTML(user.userId)}</div></div>
+    </div>
+    <div class="up-mobile-details">
+      <div><span>Payment ID</span><strong>${escapeHTML(p.paymentId)}</strong></div>
+      <div><span>Amount</span><strong>${escapeHTML(p.currencyCode || "")} ${money(p.amount)}</strong></div>
+      <div><span>Currency</span><strong>${escapeHTML(p.currencyName || p.currencyCode || "—")}</strong></div>
+      <div><span>Payment Method</span><strong>${escapeHTML(p.paymentMethod || "—")}</strong></div>
+      <div><span>Transaction ID</span><strong>${escapeHTML(p.transactionId || "—")}</strong></div>
+      <div><span>Payment Date</span><strong>${escapeHTML(formatDate(p.paymentDate))}</strong></div>
+    </div>
+    <div style="border-top:1px solid var(--up-border);padding-top:12px;font-size:12px">
+      <strong>Comment</strong>
+      <p style="color:var(--up-muted);white-space:pre-wrap">${escapeHTML(p.comment || "No comment")}</p>
+    </div>
+  `;
+
+  $("upViewModal").classList.add("show");
+}
+
+/* ================= DELETE PAYMENT ================= */
+
+function openDelete(paymentId){
+  deletingPaymentId=String(paymentId);
+  $("upDeleteModal").classList.add("show");
+}
+
+$("upConfirmDelete").addEventListener("click",async()=>{
+  if(!deletingPaymentId) return;
+
+  const btn=$("upConfirmDelete");
+  btn.disabled=true;
+
+  try{
+    const result=await postJSON({
+      action:"deletePayment",
+      paymentId:deletingPaymentId
+    });
+
+    toast(result.message || "Payment deleted.");
+    $("upDeleteModal").classList.remove("show");
+    deletingPaymentId="";
+    await loadPayments();
+    renderPayments();
+  }catch(err){
+    toast(err.message || "Could not delete payment.");
+  }finally{
+    btn.disabled=false;
+  }
 });
-$("changeUser").addEventListener("click",()=>{clearUser();$("userMenu").classList.add("open");$("userSearch").focus();});
-document.addEventListener("click",e=>{if(root.contains(e.target)&&!$("userPicker").contains(e.target))$("userMenu").classList.remove("open");});
-$("paymentSearch").addEventListener("input",()=>{page=1;renderPayments();});
-$("dateFilter").addEventListener("change",()=>{page=1;renderPayments();});
-$("clearFilter").addEventListener("click",()=>{$("paymentSearch").value="";$("dateFilter").value="";page=1;renderPayments();});
-$("prevPage").addEventListener("click",()=>{if(page>1){page--;renderPayments();}});
-$("nextPage").addEventListener("click",()=>{if(page<Math.ceil(filtered().length/pageSize)){page++;renderPayments();}});
-$("refreshBtn").addEventListener("click",load);
-$("cancelEdit").addEventListener("click",reset);
-$("modalOverlay").addEventListener("click",e=>{if(e.target===$("modalOverlay"))closeModal();});
 
-$("paymentDate").value=today();
-load();
+/* ================= EVENT HANDLERS ================= */
+
+function handlePaymentAction(e){
+  const btn=e.target.closest("[data-action]");
+  if(!btn) return;
+
+  const id=btn.dataset.id;
+  const action=btn.dataset.action;
+
+  if(action==="view") viewPayment(id);
+  if(action==="edit") editPayment(id);
+  if(action==="delete") openDelete(id);
+}
+
+$("upTableBody").addEventListener("click",handlePaymentAction);
+$("upMobileList").addEventListener("click",handlePaymentAction);
+
+$("upRecordSearch").addEventListener("input",()=>{
+  currentPage=1;
+  renderPayments();
+});
+
+$("upCurrencyFilter").addEventListener("change",()=>{
+  currentPage=1;
+  renderPayments();
+});
+
+$("upPageSize").addEventListener("change",()=>{
+  currentPage=1;
+  renderPayments();
+});
+
+$("upPrevPage").addEventListener("click",()=>{
+  if(currentPage>1){currentPage--;renderPayments();}
+});
+
+$("upNextPage").addEventListener("click",()=>{
+  currentPage++;
+  renderPayments();
+});
+
+$("upCancelEdit").addEventListener("click",resetForm);
+$("upResetBtn").addEventListener("click",()=>{
+  setTimeout(resetForm,0);
+});
+
+ROOT.querySelectorAll("[data-close]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    $(btn.dataset.close).classList.remove("show");
+  });
+});
+
+ROOT.querySelectorAll(".up-modal").forEach(modal=>{
+  modal.addEventListener("click",e=>{
+    if(e.target===modal) modal.classList.remove("show");
+  });
+});
+
+/* ================= INITIAL LOAD ================= */
+
+async function refreshAll(){
+  showLoading(true);
+  $("upRefreshBtn").disabled=true;
+
+  try{
+    // Load the user list from the actual User Management API.
+    await loadUsers();
+
+    // Payment information comes from the separate User Payment API.
+    const results=await Promise.all([
+      loadCurrencies(),
+      loadMethods(),
+      loadPayments()
+    ]);
+
+    renderUserOptions();
+    renderCurrencies();
+    renderMethods();
+    renderPayments();
+
+    if(selectedUser){
+      const stillExists=users.find(u=>u.userId===selectedUser.userId);
+      selectUser(stillExists ? stillExists.userId : "");
+    }
+
+  }catch(err){
+    console.error("User Payment load error:",err);
+    toast(err.message || "Could not load data. Check API connection.");
+  }finally{
+    showLoading(false);
+    $("upRefreshBtn").disabled=false;
+  }
+}
+
+$("upRefreshBtn").addEventListener("click",refreshAll);
+
+$("upDate").value=today();
+refreshAll();
+
 })();
 </script>
 </body>
