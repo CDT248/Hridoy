@@ -456,7 +456,7 @@ button{
         <span class="nav-icon">◷</span>
         Wage History
       </button>
-      
+
       <div class="nav-label">PAYMENT MANAGEMENT</div>
 
       <button class="nav-item" data-page="payment">
@@ -467,6 +467,20 @@ button{
       <button class="nav-item" data-page="payment-history">
         <span class="nav-icon">▤</span>
         Payment History
+      </button>
+
+      <!-- SETTINGS -->
+
+      <div class="nav-label">SETTINGS</div>
+
+      <button class="nav-item" data-page="currency">
+        <span class="nav-icon">💱</span>
+        Add Currency
+      </button>
+
+      <button class="nav-item" data-page="payment-method">
+        <span class="nav-icon">💳</span>
+        Add Payment Method
       </button>
 
     </div>
@@ -596,6 +610,18 @@ const PAGE_CONFIG = {
     file:"payment-history.html",
     title:"Payment History",
     section:"Payment Management"
+  },
+
+  "currency":{
+    file:"currency.html",
+    title:"Add Currency",
+    section:"Settings"
+  },
+
+  "payment-method":{
+    file:"payment-method.html",
+    title:"Add Payment Method",
+    section:"Settings"
   }
 
 };
