@@ -1,408 +1,907 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>User Management</title>
-<style>
-/* =========================================================
-   USER LIST — PROFESSIONAL INDIGO / PURPLE THEME
-   Keeps the existing API actions and page navigation.
-========================================================= */
-.ul-page{
-  --ul-ink:#202344;--ul-muted:#7b809d;--ul-line:#e8e9f4;
-  --ul-primary:#6257e8;--ul-primary2:#8b5cf6;--ul-soft:#f1efff;
-  --ul-card:#fff;--ul-bg:#f7f7ff;--ul-green:#119b72;
-  --ul-red:#df4960;--ul-shadow:0 12px 35px rgba(46,42,110,.08);
-  color:var(--text,var(--ul-ink));font-family:Inter,Arial,sans-serif;
-  width:100%;padding:2px 0 22px
-}
-.ul-page *{box-sizing:border-box}
-.ul-hero{
-  position:relative;overflow:hidden;border-radius:20px;padding:25px 27px;
-  margin-bottom:19px;color:#fff;
-  background:linear-gradient(115deg,#5146d8 0%,#6d4ee8 52%,#9b5cf6 100%);
-  box-shadow:0 14px 30px rgba(98,87,232,.22)
-}
-.ul-hero:before,.ul-hero:after{content:"";position:absolute;border-radius:50%;background:#ffffff12;pointer-events:none}
-.ul-hero:before{width:210px;height:210px;right:8%;top:-125px}
-.ul-hero:after{width:150px;height:150px;right:-35px;bottom:-95px}
-.ul-head{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.ul-title-wrap{display:flex;align-items:center;gap:14px}
-.ul-title-icon{
-  width:52px;height:52px;border-radius:16px;background:#ffffff22;
-  display:grid;place-items:center;font-size:25px;border:1px solid #ffffff30
-}
-.ul-head h2{font-size:22px;line-height:1.2;margin:0 0 6px;font-weight:800;letter-spacing:.1px}
-.ul-muted{font-size:12px;color:#ffffffc9}
-.ul-btn{
-  border:0;border-radius:10px;padding:11px 15px;cursor:pointer;
-  font-size:12px;font-weight:800;transition:.2s ease;display:inline-flex;
-  align-items:center;justify-content:center;gap:7px
-}
-.ul-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.ul-add{background:#fff;color:#5b50d9;box-shadow:0 5px 14px #3025a533}
-.ul-add:hover{background:#f3f1ff;transform:translateY(-2px)}
-.ul-secondary{background:#f0efff;color:#5d53d5;border:1px solid #e2dfff}
-.ul-secondary:hover{background:#e5e2ff}
-.ul-danger{background:#fff0f2;color:#d83f58;border:1px solid #ffdae0}
-.ul-danger:hover{background:#ffe2e7}
-.ul-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:17px}
-.ul-stat{
-  position:relative;overflow:hidden;background:var(--ul-card);border:1px solid var(--ul-line);
-  border-radius:16px;padding:17px 18px;box-shadow:var(--ul-shadow);min-height:105px
-}
-.ul-stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.ul-stat-label{font-size:11px;font-weight:700;color:var(--ul-muted);letter-spacing:.35px;text-transform:uppercase}
-.ul-stat-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:16px}
-.ul-stat strong{display:block;font-size:27px;color:var(--ul-ink);margin-top:7px;font-weight:800}
-.ul-stat.total .ul-stat-icon{background:#eeedff;color:#6558e8}
-.ul-stat.active .ul-stat-icon{background:#e7f8f1;color:#119b72}
-.ul-stat.inactive .ul-stat-icon{background:#fff0f2;color:#df4960}
-.ul-panel{
-  background:var(--ul-card);border:1px solid var(--ul-line);border-radius:18px;
-  padding:19px;box-shadow:var(--ul-shadow)
-}
-.ul-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.ul-panel-title{font-size:15px;font-weight:800;color:var(--ul-ink)}
-.ul-panel-sub{font-size:11px;color:var(--ul-muted);margin-top:4px}
-.ul-tools{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
-.ul-search-wrap{position:relative;flex:1;min-width:210px}
-.ul-search-wrap span{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;color:#8c8ca8}
-.ul-tools input,.ul-tools select{
-  height:42px;padding:10px 12px;border:1px solid #e5e5f1;border-radius:10px;
-  background:#fbfbff;color:var(--ul-ink);font-size:12px;outline:none;transition:.2s
-}
-.ul-tools input{width:100%;padding-left:37px}
-.ul-tools select{min-width:135px}
-.ul-tools input:focus,.ul-tools select:focus{border-color:#8c80f3;box-shadow:0 0 0 3px #7568eb18;background:#fff}
-.ul-table-wrap{overflow-x:auto;border:1px solid #eeeef6;border-radius:13px}
-.ul-page table{width:100%;border-collapse:separate;border-spacing:0;min-width:790px}
-.ul-page th,.ul-page td{padding:13px 12px;border-bottom:1px solid #f0f0f7;text-align:left;font-size:12px;white-space:nowrap}
-.ul-page th{font-size:10px;color:#8588a2;text-transform:uppercase;letter-spacing:.55px;background:#fafaff;font-weight:800}
-.ul-page tbody tr{transition:background .15s}
-.ul-page tbody tr:hover{background:#faf9ff}
-.ul-page tbody tr:last-child td{border-bottom:0}
-.ul-user{display:flex;align-items:center;gap:10px;min-width:150px}
-.ul-avatar{width:39px;height:39px;flex-shrink:0;border-radius:13px;overflow:hidden;background:linear-gradient(135deg,#e8e5ff,#f1e8ff);color:#6558e8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
-.ul-avatar img{width:100%;height:100%;object-fit:cover}
-.ul-user-name{font-weight:800;color:#303250;max-width:150px;overflow:hidden;text-overflow:ellipsis}
-.ul-user-caption{font-size:10px;color:#999bb0;margin-top:3px}
-.ul-id{font-weight:800;color:#6257d9;background:#f2f0ff;border-radius:7px;padding:5px 8px;display:inline-block}
-.ul-status{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;background:#e8f8f1;color:#11845f;font-size:10px;font-weight:800}
-.ul-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-.ul-inactive{background:#fff0f2;color:#d34b61}
-.ul-actions{display:flex;gap:6px}
-.ul-action{padding:8px 10px;font-size:10px;border-radius:8px}
-.ul-empty{text-align:center;padding:35px 15px!important;color:#9294aa;font-size:13px!important}
-.ul-message{display:none;padding:11px 13px;border-radius:10px;margin-bottom:13px;font-size:12px;font-weight:700}
-.ul-message.ok{display:block;background:#e9f8f1;color:#087f5b;border:1px solid #c9efdd}
-.ul-message.err{display:block;background:#fff0f2;color:#c03952;border:1px solid #ffd8df}
-.ul-loading{display:inline-flex;align-items:center;gap:8px;color:#777b98}
-.ul-spinner{width:15px;height:15px;border:2px solid #dedcff;border-top-color:#695be8;border-radius:50%;animation:ulspin .7s linear infinite}
-@keyframes ulspin{to{transform:rotate(360deg)}}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User List</title>
 
-/* Confirmation and success popups */
-.ul-modal{
-  display:none;position:fixed;inset:0;background:rgba(23,20,57,.58);
-  backdrop-filter:blur(5px);z-index:99999;align-items:center;justify-content:center;padding:16px
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #171717;
+  --muted: #777777;
+  --border: #e5e5e5;
+  --soft: #f7f7f7;
+  --black: #171717;
+  --green: #16834b;
+  --red: #dc3545;
 }
-.ul-modal.show{display:flex;animation:ulfade .18s ease}
-.ul-modal-box{
-  width:100%;max-width:430px;background:#fff;border-radius:21px;padding:25px;
-  box-shadow:0 24px 80px #17143b40;text-align:center;animation:ulpop .22s ease
+
+* {
+  box-sizing: border-box;
 }
-.ul-modal-icon{
-  width:66px;height:66px;border-radius:20px;margin:0 auto 15px;
-  display:grid;place-items:center;font-size:29px;background:#fff0f2;color:#df4960
+
+body {
+  margin: 0;
+  padding: 25px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
 }
-.ul-modal-icon.success{background:#e8f8f1;color:#119b72}
-.ul-modal-box h3{margin:0 0 9px;font-size:19px;color:#262746}
-.ul-modal-box p{font-size:12px;color:#777b95;line-height:1.65;margin:0}
-.ul-modal-actions{display:flex;justify-content:center;gap:9px;margin-top:21px}
-.ul-modal-actions .ul-btn{min-width:105px;padding:11px 17px}
-.ul-confirm-delete{background:linear-gradient(110deg,#e34b65,#f06b78);color:white}
-.ul-success-btn{background:linear-gradient(110deg,#5b50dc,#8b5cf6);color:white;min-width:125px!important}
-@keyframes ulfade{from{opacity:0}to{opacity:1}}
-@keyframes ulpop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:700px){
-  .ul-hero{padding:20px;border-radius:16px}
-  .ul-head h2{font-size:19px}
-  .ul-title-icon{width:45px;height:45px}
-  .ul-stats{gap:9px}
-  .ul-stat{padding:13px;min-height:93px}
-  .ul-stat strong{font-size:23px}
-  .ul-panel{padding:13px;border-radius:15px}
+
+.container {
+  width: 100%;
+  max-width: 1500px;
+  margin: auto;
 }
-@media(max-width:480px){
-  .ul-stats{grid-template-columns:1fr 1fr}
-  .ul-stat.inactive{grid-column:1/-1}
-  .ul-tools{display:grid;grid-template-columns:1fr 1fr}
-  .ul-search-wrap{grid-column:1/-1}
-  .ul-tools select{width:100%}
-  .ul-tools #ulRefresh{width:100%}
-  .ul-head{align-items:flex-start}
-  .ul-add{width:100%}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 750;
+}
+
+.header p {
+  margin: 7px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn {
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: white;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.btn-black {
+  background: var(--black);
+  color: white;
+  border-color: var(--black);
+}
+
+.btn-black:hover {
+  background: #333;
+}
+
+.btn-danger {
+  color: var(--red);
+  border-color: #f1c6ca;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  background: white;
+}
+
+.stat-card small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stat-card h2 {
+  margin: 9px 0 0;
+  font-size: 27px;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  overflow: hidden;
+  background: white;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 220px;
+}
+
+.search input,
+select {
+  width: 100%;
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.search input:focus,
+select:focus {
+  border-color: #555;
+}
+
+.filter {
+  width: 155px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 14px;
+  background: var(--soft);
+  color: var(--muted);
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  padding: 13px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+
+tr:hover td {
+  background: #fafafa;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 175px;
+}
+
+.avatar {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  background: #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 700;
+}
+
+.user-id {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #e9f7ee;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.inactive {
+  background: #f0f0f0;
+  color: #777;
+}
+
+.actions {
+  display: flex;
+  gap: 7px;
+}
+
+.action-btn {
+  width: 33px;
+  height: 33px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: white;
+  color: #222;
+}
+
+.action-btn.delete {
+  color: var(--red);
+  border-color: #f1c6ca;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+}
+
+.footer {
+  padding: 15px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+}
+
+.page-btn {
+  min-width: 35px;
+  height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 7px;
+  color: var(--text);
+}
+
+.page-btn.active {
+  background: var(--black);
+  color: white;
+  border-color: var(--black);
+}
+
+.page-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.loading {
+  padding: 35px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 25px;
+  border-radius: 13px;
+  width: 100%;
+  max-width: 390px;
+}
+
+.modal h3 {
+  margin: 0 0 10px;
+}
+
+.modal p {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #171717;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 9px;
+  display: none;
+  z-index: 10000;
+  font-size: 13px;
+}
+
+@media(max-width:650px) {
+  body { padding: 15px; }
+  .stats { gap: 8px; }
+  .stat-card { padding: 13px; }
+  .stat-card h2 { font-size: 22px; }
+  .header h2 { font-size: 22px; }
+}
+
+@media(max-width:420px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat-card:last-child { grid-column: 1/-1; }
+  .header .btn { width: 100%; }
 }
 </style>
 </head>
-<body>
-<div class="ul-page">
-  <section class="ul-hero">
-    <div class="ul-head">
-      <div class="ul-title-wrap">
-        <div class="ul-title-icon">👥</div>
-        <div>
-          <h2>User Management</h2>
-          <div class="ul-muted">Manage, search and organize all active user accounts</div>
-        </div>
-      </div>
-      <button class="ul-btn ul-add" type="button" onclick="window.loadPage('add-user')">＋ Add New User</button>
-    </div>
-  </section>
 
-  <div class="ul-stats">
-    <div class="ul-stat total">
-      <div class="ul-stat-top"><span class="ul-stat-label">Total Users</span><span class="ul-stat-icon">👥</span></div>
-      <strong id="ulTotal">0</strong>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div>
+      <h2>User List</h2>
+      <p>Manage all registered user accounts</p>
     </div>
-    <div class="ul-stat active">
-      <div class="ul-stat-top"><span class="ul-stat-label">Active Users</span><span class="ul-stat-icon">✓</span></div>
-      <strong id="ulActive">0</strong>
+
+    <button class="btn btn-black" onclick="goAddUser()">
+      + Add New User
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <small>Total Users</small>
+      <h2 id="totalUsers">0</h2>
     </div>
-    <div class="ul-stat inactive">
-      <div class="ul-stat-top"><span class="ul-stat-label">Inactive Users</span><span class="ul-stat-icon">⏸</span></div>
-      <strong id="ulInactive">0</strong>
+
+    <div class="stat-card">
+      <small>Active Users</small>
+      <h2 id="activeUsers">0</h2>
+    </div>
+
+    <div class="stat-card">
+      <small>Inactive Users</small>
+      <h2 id="inactiveUsers">0</h2>
     </div>
   </div>
 
-  <section class="ul-panel">
-    <div id="ulMessage" class="ul-message" role="status"></div>
-    <div class="ul-panel-head">
-      <div>
-        <div class="ul-panel-title">All User Accounts</div>
-        <div class="ul-panel-sub">View account details and manage user status</div>
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <div class="search">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search name, ID, phone, Gmail or area..."
+        >
       </div>
-      <span class="ul-panel-sub" id="ulCountLabel">0 users</span>
+
+      <div class="filter">
+        <select id="statusFilter">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="loadUsers()">↻ Refresh</button>
+
     </div>
 
-    <div class="ul-tools">
-      <div class="ul-search-wrap">
-        <span>⌕</span>
-        <input id="ulSearch" type="search" placeholder="Search name, ID, phone, Gmail or area..." autocomplete="off">
-      </div>
-      <select id="ulFilter" aria-label="Filter by status">
-        <option value="">All Status</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-      </select>
-      <button class="ul-btn ul-secondary" type="button" id="ulRefresh">↻ Refresh</button>
-    </div>
+    <div class="table-wrap">
 
-    <div class="ul-table-wrap">
       <table>
-        <thead><tr>
-          <th>User Profile</th><th>User ID</th><th>Phone</th><th>Gmail</th>
-          <th>Area</th><th>Status</th><th>Actions</th>
-        </tr></thead>
-        <tbody id="ulBody">
-          <tr><td colspan="7" class="ul-empty"><span class="ul-loading"><i class="ul-spinner"></i> Loading users...</span></td></tr>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Phone</th>
+            <th>Gmail</th>
+            <th>Area</th>
+            <th>Active Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="userTable">
+          <tr>
+            <td colspan="7" class="loading">Loading users...</td>
+          </tr>
         </tbody>
       </table>
-    </div>
-  </section>
 
-  <!-- Delete confirmation popup -->
-  <div class="ul-modal" id="ulModal" aria-hidden="true">
-    <div class="ul-modal-box" role="dialog" aria-modal="true" aria-labelledby="ulModalTitle">
-      <div class="ul-modal-icon">⚠</div>
-      <h3 id="ulModalTitle">Move User to Deleted?</h3>
-      <p id="ulModalText">This user profile will move to Deleted Users. Wage and Payment history will remain.</p>
-      <div class="ul-modal-actions">
-        <button class="ul-btn ul-secondary" type="button" id="ulCancel">Cancel</button>
-        <button class="ul-btn ul-confirm-delete" type="button" id="ulConfirm">Yes, Delete</button>
-      </div>
     </div>
+
+    <div class="footer">
+      <div class="count" id="showCount">
+        Showing 0–0 of 0 users
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </div>
+
   </div>
 
-  <!-- Success popup -->
-  <div class="ul-modal" id="ulSuccessModal" aria-hidden="true">
-    <div class="ul-modal-box" role="dialog" aria-modal="true" aria-labelledby="ulSuccessTitle">
-      <div class="ul-modal-icon success">✓</div>
-      <h3 id="ulSuccessTitle">User Moved Successfully!</h3>
-      <p id="ulSuccessText">The user has been moved to Deleted Users.</p>
-      <div class="ul-modal-actions">
-        <button class="ul-btn ul-success-btn" type="button" id="ulSuccessOk">Done</button>
-      </div>
+</div>
+
+<div class="modal-bg" id="deleteModal">
+  <div class="modal">
+    <h3>Delete User?</h3>
+    <p>
+      This user will be moved to the Deleted Users section.
+      You can restore the account later.
+    </p>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeDelete()">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">
+        Delete User
+      </button>
     </div>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-(function(){
-  const API_URL="https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
-  const $=id=>document.getElementById(id);
-  let users=[];
-  let deleteId="";
-  let loading=false;
+/* =====================================
+   API CONFIGURATION
+===================================== */
 
-  function val(u,keys){
-    for(const k of keys)if(u&&u[k]!==undefined&&u[k]!==null)return u[k];
-    return "";
-  }
-  function esc(v){
-    return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  }
-  function msg(text,type){
-    $("ulMessage").textContent=text;
-    $("ulMessage").className="ul-message "+type;
-  }
-  function openModal(id){
-    $(id).classList.add("show");
-    $(id).setAttribute("aria-hidden","false");
-  }
-  function closeModal(id){
-    $(id).classList.remove("show");
-    $(id).setAttribute("aria-hidden","true");
-  }
-  function showSuccess(title,text){
-    $("ulSuccessTitle").textContent=title;
-    $("ulSuccessText").textContent=text;
-    openModal("ulSuccessModal");
-  }
+const API_URL =
+'https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec';
 
-  async function loadUsers(){
-    if(loading)return;
-    loading=true;
-    $("ulRefresh").disabled=true;
-    $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty"><span class="ul-loading"><i class="ul-spinner"></i> Loading users...</span></td></tr>';
-    $("ulMessage").className="ul-message";
-    try{
-      const response=await fetch(API_URL+"?api=active",{cache:"no-store"});
-      if(!response.ok)throw new Error("Server response error: "+response.status);
-      const data=await response.json();
-      if(!data.success)throw new Error(data.message||"Unable to load users.");
-      users=Array.isArray(data.users)?data.users:[];
-      render();
-    }catch(err){
-      $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty">Unable to load users. '+esc(err.message)+'</td></tr>';
-      msg(err.message,"err");
-    }finally{
-      loading=false;
-      $("ulRefresh").disabled=false;
+const PAGE_SIZE = 10;
+
+let users = [];
+let currentPage = 1;
+let selectedDeleteId = null;
+
+
+/* =====================================
+   HELPERS
+===================================== */
+
+function getValue(obj, ...keys) {
+  for (const key of keys) {
+    if (obj && obj[key] !== undefined && obj[key] !== null) {
+      return obj[key];
     }
   }
+  return '';
+}
 
-  function render(){
-    const active=users.filter(u=>String(val(u,["status","Status"])||"Active").toLowerCase()==="active");
-    $("ulTotal").textContent=users.length;
-    $("ulActive").textContent=active.length;
-    $("ulInactive").textContent=users.length-active.length;
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
 
-    const search=$("ulSearch").value.trim().toLowerCase();
-    const filter=$("ulFilter").value.toLowerCase();
-    const list=users.filter(u=>{
-      const name=val(u,["userName","User Name"]);
-      const id=val(u,["userId","User ID"]);
-      const phone=val(u,["phone","Phone"]);
-      const gmail=val(u,["gmail","Gmail"]);
-      const area=val(u,["area","Area"]);
-      const status=val(u,["status","Status"])||"Active";
-      return [name,id,phone,gmail,area].join(" ").toLowerCase().includes(search)
-        &&(!filter||String(status).toLowerCase()===filter);
-    });
-    $("ulCountLabel").textContent=list.length+" of "+users.length+" users";
+function isUserActive(user) {
+  const status = String(
+    getValue(user, 'status', 'Status') || 'Active'
+  ).toLowerCase();
 
-    if(!list.length){
-      $("ulBody").innerHTML='<tr><td colspan="7" class="ul-empty">No users found. Try another search or filter.</td></tr>';
-      return;
-    }
+  return ['active', 'enabled', 'true', '1'].includes(status);
+}
 
-    $("ulBody").innerHTML=list.map(u=>{
-      const name=val(u,["userName","User Name"]);
-      const id=val(u,["userId","User ID"]);
-      const status=val(u,["status","Status"])||"Active";
-      const picture=val(u,["profilePicture","Profile Picture"]);
-      const avatar=picture
-        ?'<img src="'+esc(picture)+'" alt="" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='+JSON.stringify(String(name||"U").charAt(0).toUpperCase())+'">'
-        :esc(String(name||"U").charAt(0).toUpperCase());
-      return `<tr>
-        <td><div class="ul-user"><div class="ul-avatar">${avatar}</div><div><div class="ul-user-name">${esc(name||"Unnamed User")}</div><div class="ul-user-caption">User account</div></div></div></td>
-        <td><span class="ul-id">${esc(id)}</span></td>
-        <td>${esc(val(u,["phone","Phone"])||"—")}</td>
-        <td>${esc(val(u,["gmail","Gmail"])||"—")}</td>
-        <td>${esc(val(u,["area","Area"])||"—")}</td>
-        <td><span class="ul-status ${String(status).toLowerCase()==="inactive"?"ul-inactive":""}">${esc(status)}</span></td>
-        <td><div class="ul-actions">
-          <button class="ul-btn ul-secondary ul-action" type="button" data-edit="${esc(id)}">✎ Edit</button>
-          <button class="ul-btn ul-danger ul-action" type="button" data-delete="${esc(id)}">⌫ Delete</button>
-        </div></td>
-      </tr>`;
-    }).join("");
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
 
-    $("ulBody").querySelectorAll("[data-edit]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        window.__wageEditUserId=btn.dataset.edit;
-        window.loadPage("add-user");
-      });
-    });
-    $("ulBody").querySelectorAll("[data-delete]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        deleteId=btn.dataset.delete;
-        const user=users.find(u=>String(val(u,["userId","User ID"]))===deleteId);
-        const name=val(user,["userName","User Name"])||deleteId;
-        $("ulModalText").textContent=name+" ("+deleteId+") will be moved to Deleted Users. Wage and Payment history will remain.";
-        openModal("ulModal");
-      });
-    });
+  clearTimeout(window.userToastTimer);
+
+  window.userToastTimer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3000);
+}
+
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+function goAddUser() {
+  window.__wageEditUserId = null;
+
+  if (typeof window.loadPage === 'function') {
+    window.loadPage('add-user');
+  } else {
+    window.location.href = 'add-user.html';
+  }
+}
+
+function editUser(userId) {
+  const user = users.find(u =>
+    String(getValue(u, 'userId', 'User ID', 'userID')) === String(userId)
+  );
+
+  if (!user) {
+    showToast('User not found');
+    return;
   }
 
-  $("ulSearch").addEventListener("input",render);
-  $("ulFilter").addEventListener("change",render);
-  $("ulRefresh").addEventListener("click",loadUsers);
-  $("ulCancel").addEventListener("click",()=>{
-    closeModal("ulModal");
-    deleteId="";
-  });
-  $("ulSuccessOk").addEventListener("click",()=>closeModal("ulSuccessModal"));
+  window.__wageEditUserId = userId;
 
-  $("ulConfirm").addEventListener("click",async function(){
-    if(!deleteId)return;
-    this.disabled=true;
-    this.textContent="Deleting...";
-    try{
-      const response=await fetch(API_URL,{
-        method:"POST",
-        body:JSON.stringify({action:"deleteUser",userId:deleteId})
-      });
-      const data=await response.json();
-      if(!data.success)throw new Error(data.message||"Delete failed.");
-      const deletedName=deleteId;
-      closeModal("ulModal");
-      deleteId="";
-      await loadUsers();
-      showSuccess("User Moved Successfully!","User ID "+deletedName+" has been moved to Deleted Users. Wage and Payment history remain unchanged.");
-    }catch(err){
-      closeModal("ulModal");
-      msg(err.message,"err");
-    }finally{
-      this.disabled=false;
-      this.textContent="Yes, Delete";
+  if (typeof window.loadPage === 'function') {
+    window.loadPage('add-user');
+  } else {
+    window.location.href =
+      'add-user.html?userId=' + encodeURIComponent(userId);
+  }
+}
+
+
+/* =====================================
+   LOAD USERS
+===================================== */
+
+async function loadUsers() {
+  const table = document.getElementById('userTable');
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="7" class="loading">Loading users...</td>
+    </tr>
+  `;
+
+  try {
+    const response = await fetch(
+      API_URL + '?api=active&t=' + Date.now(),
+      { cache: 'no-store' }
+    );
+
+    if (!response.ok) {
+      throw new Error('Server connection failed');
     }
+
+    const data = await response.json();
+
+    users = Array.isArray(data)
+      ? data
+      : (data.users || data.data || []);
+
+    if (!Array.isArray(users)) {
+      users = [];
+    }
+
+    currentPage = 1;
+    renderUsers();
+
+  } catch (error) {
+    table.innerHTML = `
+      <tr>
+        <td colspan="7" class="empty">
+          Unable to load users. Please check API connection.
+        </td>
+      </tr>
+    `;
+
+    showToast(error.message || 'Failed to load users');
+  }
+}
+
+
+/* =====================================
+   FILTER USERS
+===================================== */
+
+function getFilteredUsers() {
+  const search = document
+    .getElementById('searchInput')
+    .value.trim().toLowerCase();
+
+  const filter = document
+    .getElementById('statusFilter').value;
+
+  return users.filter(user => {
+
+    const active = isUserActive(user);
+
+    if (filter === 'active' && !active) return false;
+    if (filter === 'inactive' && active) return false;
+
+    const searchText = [
+      getValue(user, 'userId', 'User ID', 'userID'),
+      getValue(user, 'userName', 'User Name', 'name'),
+      getValue(user, 'phone', 'Phone'),
+      getValue(user, 'gmail', 'Gmail', 'email'),
+      getValue(user, 'area', 'Area')
+    ].join(' ').toLowerCase();
+
+    return !search || searchText.includes(search);
+  });
+}
+
+
+/* =====================================
+   RENDER USERS
+===================================== */
+
+function renderUsers() {
+
+  const activeCount = users.filter(isUserActive).length;
+
+  document.getElementById('totalUsers').textContent = users.length;
+  document.getElementById('activeUsers').textContent = activeCount;
+  document.getElementById('inactiveUsers').textContent =
+    users.length - activeCount;
+
+  const filtered = getFilteredUsers();
+
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageUsers = filtered.slice(start, start + PAGE_SIZE);
+
+  const table = document.getElementById('userTable');
+
+  if (!pageUsers.length) {
+    table.innerHTML = `
+      <tr>
+        <td colspan="7" class="empty">No users found.</td>
+      </tr>
+    `;
+  } else {
+
+    table.innerHTML = pageUsers.map(user => {
+
+      const id = getValue(user, 'userId', 'User ID', 'userID');
+      const name = getValue(user, 'userName', 'User Name', 'name') || 'Unnamed User';
+      const phone = getValue(user, 'phone', 'Phone');
+      const gmail = getValue(user, 'gmail', 'Gmail', 'email');
+      const area = getValue(user, 'area', 'Area');
+      const date = getValue(user, 'activeDate', 'Active Date', 'active_date');
+      const picture = getValue(user, 'profilePicture', 'Profile Picture', 'profile_picture');
+      const active = isUserActive(user);
+
+      const initial = escapeHTML(
+        String(name).trim().charAt(0).toUpperCase() || 'U'
+      );
+
+      const avatar = picture
+        ? `<img src="${escapeHTML(picture)}" alt=""
+             onerror="this.parentElement.textContent='${initial}'">`
+        : initial;
+
+      return `
+        <tr>
+          <td>
+            <div class="user-info">
+              <div class="avatar">${avatar}</div>
+              <div>
+                <div class="user-name">${escapeHTML(name)}</div>
+                <div class="user-id">ID: ${escapeHTML(id || '—')}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>${escapeHTML(phone || '—')}</td>
+          <td>${escapeHTML(gmail || '—')}</td>
+          <td>${escapeHTML(area || '—')}</td>
+          <td>${escapeHTML(date || '—')}</td>
+
+          <td>
+            <span class="status ${active ? '' : 'inactive'}">
+              ${active ? '● Active' : '● Inactive'}
+            </span>
+          </td>
+
+          <td>
+            <div class="actions">
+              <button class="action-btn"
+                title="Edit"
+                onclick="editUser('${escapeHTML(id)}')">✎</button>
+
+              <button class="action-btn delete"
+                title="Delete"
+                onclick="openDelete('${escapeHTML(id)}')">⌫</button>
+            </div>
+          </td>
+        </tr>
+      `;
+
+    }).join('');
+  }
+
+  document.getElementById('showCount').textContent =
+    total
+      ? `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, total)} of ${total} users`
+      : 'Showing 0–0 of 0 users';
+
+  renderPagination(totalPages);
+}
+
+
+/* =====================================
+   PAGINATION
+===================================== */
+
+function renderPagination(totalPages) {
+
+  const pagination = document.getElementById('pagination');
+
+  pagination.innerHTML = '';
+
+  function addButton(label, page, disabled, active) {
+
+    const button = document.createElement('button');
+
+    button.className = 'page-btn' + (active ? ' active' : '');
+    button.textContent = label;
+    button.disabled = disabled;
+
+    button.onclick = () => {
+      currentPage = page;
+      renderUsers();
+    };
+
+    pagination.appendChild(button);
+  }
+
+  addButton('‹', currentPage - 1, currentPage === 1, false);
+
+  let first = Math.max(1, currentPage - 2);
+  let last = Math.min(totalPages, first + 4);
+
+  first = Math.max(1, last - 4);
+
+  for (let page = first; page <= last; page++) {
+    addButton(
+      page,
+      page,
+      false,
+      page === currentPage
+    );
+  }
+
+  addButton(
+    '›',
+    currentPage + 1,
+    currentPage === totalPages,
+    false
+  );
+}
+
+
+/* =====================================
+   DELETE USER
+===================================== */
+
+function openDelete(userId) {
+  selectedDeleteId = userId;
+  document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDelete() {
+  selectedDeleteId = null;
+  document.getElementById('deleteModal').style.display = 'none';
+}
+
+async function confirmDelete() {
+
+  if (!selectedDeleteId) return;
+
+  const button = document.getElementById('confirmDeleteBtn');
+
+  button.disabled = true;
+  button.textContent = 'Deleting...';
+
+  try {
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action: 'deleteUser',
+        userId: selectedDeleteId
+      })
+    });
+
+    const result = await response.json();
+
+    if (result.success === false || result.error) {
+      throw new Error(
+        result.message || result.error || 'Delete failed'
+      );
+    }
+
+    closeDelete();
+
+    showToast(result.message || 'User moved to Deleted Users');
+
+    await loadUsers();
+
+  } catch (error) {
+
+    showToast(error.message || 'Could not delete user');
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = 'Delete User';
+
+  }
+}
+
+
+/* =====================================
+   SEARCH & FILTER EVENTS
+===================================== */
+
+document.getElementById('searchInput')
+  .addEventListener('input', () => {
+    currentPage = 1;
+    renderUsers();
   });
 
-  $("ulModal").addEventListener("click",e=>{
-    if(e.target===$("ulModal")){closeModal("ulModal");deleteId="";}
-  });
-  $("ulSuccessModal").addEventListener("click",e=>{
-    if(e.target===$("ulSuccessModal"))closeModal("ulSuccessModal");
-  });
-  document.addEventListener("keydown",e=>{
-    if(e.key==="Escape"){closeModal("ulModal");closeModal("ulSuccessModal");deleteId="";}
+document.getElementById('statusFilter')
+  .addEventListener('change', () => {
+    currentPage = 1;
+    renderUsers();
   });
 
-  loadUsers();
-})();
+
+/* =====================================
+   START
+===================================== */
+
+loadUsers();
+
 </script>
+
 </body>
 </html>
