@@ -124,7 +124,7 @@
   border:1px solid var(--border,#e8edf3);
 }
 #pageContainer #wageHistoryPage .wh-table-wrap{width:100%;overflow-x:auto}
-#pageContainer #wageHistoryPage table{width:100%;border-collapse:collapse;min-width:850px}
+#pageContainer #wageHistoryPage table{width:100%;border-collapse:collapse;min-width:950px}
 #pageContainer #wageHistoryPage th{
   padding:13px 15px;text-align:left;font-size:11px;text-transform:uppercase;
   letter-spacing:.5px;color:var(--muted,#8490a3);
@@ -144,10 +144,12 @@
   display:inline-block;padding:5px 8px;border-radius:7px;
   background:var(--hover,#f1f5f9);font-size:11px;font-weight:700;
 }
-#pageContainer #wageHistoryPage .wh-actions{display:flex;gap:7px}
+#pageContainer #wageHistoryPage .wh-actions{display:flex;gap:6px}
 #pageContainer #wageHistoryPage .wh-action{
-  border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer;
+  border:0;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;cursor:pointer;
+  white-space:nowrap;
 }
+#pageContainer #wageHistoryPage .wh-view{background:#ecfdf5;color:#059669}
 #pageContainer #wageHistoryPage .wh-edit{background:#eef2ff;color:#4f46e5}
 #pageContainer #wageHistoryPage .wh-delete{background:#fef2f2;color:#dc2626}
 #pageContainer #wageHistoryPage .wh-empty{
@@ -220,6 +222,22 @@
   display:block;font-size:12px;font-weight:700;margin-bottom:6px;
 }
 #pageContainer #wageHistoryPage .wh-field .wh-input{height:44px}
+
+/* VIEW DETAILS */
+#pageContainer #wageHistoryPage .wh-view-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+}
+#pageContainer #wageHistoryPage .wh-view-item{
+  min-width:0;padding:11px;border:1px solid var(--border,#e8edf3);
+  border-radius:9px;background:var(--bg,#f8fafc);
+}
+#pageContainer #wageHistoryPage .wh-view-item small{
+  display:block;font-size:10px;color:var(--muted,#8490a3);
+  margin-bottom:5px;font-weight:700;
+}
+#pageContainer #wageHistoryPage .wh-view-item strong{
+  display:block;font-size:12px;font-weight:750;overflow-wrap:anywhere;
+}
 #pageContainer #wageHistoryPage .wh-toast{
   position:fixed;right:20px;bottom:20px;z-index:1000002;
   display:none;max-width:min(380px,calc(100vw - 30px));
@@ -266,6 +284,7 @@
   #pageContainer #wageHistoryPage .wh-search{grid-column:auto}
   #pageContainer #wageHistoryPage .wh-stat-value{font-size:17px}
   #pageContainer #wageHistoryPage .wh-currency-total{font-size:17px}
+  #pageContainer #wageHistoryPage .wh-view-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -285,7 +304,6 @@
       <button class="wh-btn wh-refresh" id="whRefresh">↻ Refresh</button>
     </div>
 
-    <!-- Fixed summary cards -->
     <div class="wh-stats">
       <div class="wh-stat">
         <div class="wh-stat-top">
@@ -304,7 +322,6 @@
       </div>
     </div>
 
-    <!-- Automatically generated currency cards -->
     <div class="wh-currency-stats" id="whCurrencyStats" style="display:none"></div>
 
     <div class="wh-panel">
@@ -356,6 +373,9 @@
 
   const root=document.getElementById("wageHistoryPage");
   if(!root)return;
+  if(root.dataset.initialized==="yes")return;
+  root.dataset.initialized="yes";
+
   const $=id=>root.querySelector("#"+id);
 
   let allWages=[];
@@ -514,11 +534,56 @@
     return button;
   }
 
-  /*
-   * Dynamic Currency Cards:
-   * প্রতিটি Active Currency-এর জন্য আলাদা কার্ড তৈরি হবে।
-   * Wage-এর currency code বা currencyId দিয়ে matching করা হবে।
-   */
+  /* VIEW WAGE DETAILS */
+  function openViewModal(wage){
+    const code=getCurrency(wage);
+    const symbol=getSymbol(wage);
+
+    const matchedCurrency=currencies.find(c=>{
+      const sameCode=currencyCode(c).trim().toUpperCase()===code.trim().toUpperCase();
+      const sameId=currencyId(c)&&currencyId(c)===getCurrencyId(wage);
+      return sameCode||sameId;
+    });
+
+    const name=matchedCurrency?currencyName(matchedCurrency):code;
+
+    const details=[
+      ["Wage ID",getId(wage)],
+      ["Company Name",getCompany(wage)],
+      ["Wage Amount",formatMoney(getAmount(wage),symbol,code)],
+      ["Currency Code",code],
+      ["Currency Symbol",symbol],
+      ["Currency Name",name],
+      ["Transaction ID",getTransaction(wage)],
+      ["Date",formatDate(getDate(wage))],
+      ["Comment",getComment(wage)],
+      ["Created At",getValue(wage,["createdAt","created_at","Created At"],"—")]
+    ];
+
+    $("whModalIcon").className="wh-modal-icon";
+    $("whModalIcon").textContent="👁️";
+    $("whModalTitle").textContent="Wage Details";
+    $("whModalText").textContent="Complete information about this wage record.";
+
+    $("whEditFields").innerHTML=`
+      <div class="wh-view-grid">
+        ${details.map(([label,value])=>`
+          <div class="wh-view-item">
+            <small>${escapeHTML(label)}</small>
+            <strong>${escapeHTML(value||"—")}</strong>
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    $("whModalActions").innerHTML="";
+    $("whModalActions").append(
+      modalButton("Close","wh-cancel",closeModal)
+    );
+
+    showModal();
+  }
+
   function renderCurrencyCards(){
     const container=$("whCurrencyStats");
     const activeCurrencies=getActiveCurrencies();
@@ -643,6 +708,7 @@
         <td>${transaction}</td>
         <td>${date}</td>
         <td><div class="wh-actions">
+          <button class="wh-action wh-view" data-view="${id}">👁 View</button>
           <button class="wh-action wh-edit" data-edit="${id}">✎ Edit</button>
           <button class="wh-action wh-delete" data-delete="${id}">⌫ Delete</button>
         </div></td>
@@ -666,6 +732,7 @@
           <div><div class="wh-meta-label">COMMENT</div><div class="wh-meta-value">${escapeHTML(getComment(w)||"—")}</div></div>
         </div>
         <div class="wh-mobile-actions">
+          <button class="wh-action wh-view" data-view="${id}">👁 View</button>
           <button class="wh-action wh-edit" data-edit="${id}">✎ Edit</button>
           <button class="wh-action wh-delete" data-delete="${id}">⌫ Delete</button>
         </div>
@@ -848,8 +915,6 @@
     const date=$("whEditDate").value;
     const currencySelect=$("whEditCurrency");
     const currencyIdValue=currencySelect.value;
-    const selectedOption=currencySelect.options[currencySelect.selectedIndex];
-    const currencyCodeValue=selectedOption?.dataset.code||getCurrency(wage);
 
     if(!Number.isFinite(amount)||amount<=0){
       toast("Please enter a valid wage amount.","error");return;
@@ -893,12 +958,20 @@
   }
 
   root.addEventListener("click",event=>{
+    const viewButton=event.target.closest("[data-view]");
     const editButton=event.target.closest("[data-edit]");
     const deleteButton=event.target.closest("[data-delete]");
+
+    if(viewButton){
+      const wage=findWage(viewButton.dataset.view);
+      if(wage)openViewModal(wage);
+      return;
+    }
 
     if(editButton){
       const wage=findWage(editButton.dataset.edit);
       if(wage)openEditModal(wage);
+      return;
     }
 
     if(deleteButton){
