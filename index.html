@@ -324,6 +324,76 @@ button{
   font-weight:700;
 }
 
+/* CARD HIDE CONTROLS */
+
+.card-hide-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:13px 16px;
+  margin-bottom:18px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--text);
+  font-size:13px;
+}
+
+.card-hide-toolbar button{
+  padding:9px 15px;
+  background:var(--primary);
+  color:#fff;
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.card-hide-control{
+  display:none;
+  position:absolute;
+  top:9px;
+  right:9px;
+  z-index:20;
+  padding:7px 11px;
+  border:0;
+  border-radius:7px;
+  background:#dc2626;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.card-hide-control.is-hidden{
+  background:#087f5b;
+}
+
+.card-hide-target{
+  position:relative !important;
+}
+
+body.card-hide-mode .card-hide-control{
+  display:block;
+}
+
+body.card-hide-mode .card-hide-target{
+  outline:2px dashed var(--primary);
+  outline-offset:3px;
+}
+
+body.card-hide-mode .card-hide-target.is-card-hidden{
+  opacity:.65;
+  outline-color:#dc2626;
+}
+
+body:not(.card-hide-mode) .is-card-hidden{
+  display:none !important;
+}
+
 /* FOOTER */
 
 .footer{
@@ -457,6 +527,13 @@ button{
         Wage History
       </button>
 
+      <!-- NEW: WAGE DELETE HISTORY -->
+
+      <button class="nav-item" data-page="deleted-wage">
+        <span class="nav-icon">🗑️</span>
+        Wage Delete History
+      </button>
+
       <div class="nav-label">PAYMENT MANAGEMENT</div>
 
       <button class="nav-item" data-page="payment">
@@ -481,6 +558,13 @@ button{
       <button class="nav-item" data-page="payment-method">
         <span class="nav-icon">💳</span>
         Add Payment Method
+      </button>
+
+      <!-- NEW: CARD HIDE OPTION -->
+
+      <button class="nav-item" id="cardHideMenuButton" data-action="card-hide">
+        <span class="nav-icon">▣</span>
+        Card Hide / Show
       </button>
 
     </div>
@@ -597,6 +681,14 @@ const PAGE_CONFIG = {
   "wage-history":{
     file:"wage-history.html",
     title:"Wage History",
+    section:"Wage Management"
+  },
+
+  /* NEW PAGE CONFIGURATION */
+
+  "deleted-wage":{
+    file:"deleted-wage.html",
+    title:"Wage Delete History",
     section:"Wage Management"
   },
 
@@ -718,7 +810,7 @@ function getPageFromHash(){
 
 function updateActiveMenu(page){
 
-  document.querySelectorAll(".nav-item")
+  document.querySelectorAll(".nav-item[data-page]")
   .forEach(item=>{
 
     item.classList.toggle(
@@ -753,9 +845,6 @@ function updatePageHeader(page){
 /* =====================================
    CHILD CSS SCOPING
 ===================================== */
-
-// Child CSS is restricted to #pageContainer.
-// It cannot overwrite the main dashboard layout.
 
 function scopeChildCSS(css, scope){
 
@@ -879,7 +968,6 @@ async function loadPageStyles(doc,pageFile){
 
   const stylePromises = [];
 
-  // Inline styles from child HTML.
   doc.head.querySelectorAll("style").forEach(oldStyle=>{
 
     const newStyle = document.createElement("style");
@@ -898,7 +986,6 @@ async function loadPageStyles(doc,pageFile){
 
   });
 
-  // External CSS files from child HTML.
   doc.head.querySelectorAll(
     'link[rel="stylesheet"]'
   ).forEach(oldLink=>{
@@ -990,6 +1077,300 @@ async function executePageScripts(container){
 
 
 /* =====================================
+   CARD HIDE / SHOW SYSTEM
+===================================== */
+
+const CARD_HIDE_STORAGE_KEY = "wage_hidden_dashboard_cards";
+
+let cardHideMode = false;
+
+function getHiddenDashboardCards(){
+
+  try{
+    const saved = JSON.parse(
+      localStorage.getItem(CARD_HIDE_STORAGE_KEY) || "[]"
+    );
+
+    return Array.isArray(saved) ? saved : [];
+
+  }catch(error){
+    return [];
+  }
+
+}
+
+function saveHiddenDashboardCards(cards){
+
+  localStorage.setItem(
+    CARD_HIDE_STORAGE_KEY,
+    JSON.stringify(cards)
+  );
+
+}
+
+/*
+  Dashboard card selectors.
+  If your dashboard uses other card classes,
+  add them to this selector.
+*/
+
+const DASHBOARD_CARD_SELECTOR = [
+  "[data-dashboard-card]",
+  ".stat-card",
+  ".dashboard-card",
+  ".summary-card",
+  ".metric-card",
+  ".stat-box",
+  ".summary-box",
+  ".dashboard-stat",
+  ".card"
+].join(",");
+
+
+function getDashboardCardKey(card,index){
+
+  if(card.dataset.cardHideKey){
+    return card.dataset.cardHideKey;
+  }
+
+  if(card.id){
+    card.dataset.cardHideKey = "id:" + card.id;
+    return card.dataset.cardHideKey;
+  }
+
+  const heading = card.querySelector(
+    "h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title"
+  );
+
+  const title = heading
+    ? heading.textContent.trim()
+    : card.textContent.trim().slice(0,70);
+
+  const classes = Array.from(card.classList)
+    .filter(c=>c !== "card-hide-target")
+    .sort()
+    .join(".");
+
+  const key = [
+    "dashboard-card",
+    classes,
+    title,
+    index
+  ].join("|");
+
+  card.dataset.cardHideKey = key;
+
+  return key;
+
+}
+
+
+function updateCardHideButton(){
+
+  const button = document.getElementById("cardHideMenuButton");
+
+  if(!button) return;
+
+  const label = button.querySelector(".card-hide-label");
+
+  if(label){
+    label.textContent = cardHideMode
+      ? "Finish Card Editing"
+      : "Card Hide / Show";
+  }
+
+  button.classList.toggle("active",cardHideMode);
+
+}
+
+
+function createCardHideToolbar(){
+
+  let toolbar = document.getElementById("cardHideToolbar");
+
+  if(!cardHideMode){
+    if(toolbar) toolbar.remove();
+    return;
+  }
+
+  if(!toolbar){
+
+    toolbar = document.createElement("div");
+
+    toolbar.id = "cardHideToolbar";
+    toolbar.className = "card-hide-toolbar";
+
+    toolbar.innerHTML = `
+      <div>
+        <strong>Dashboard Card Settings</strong>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">
+          Hide or show individual dashboard cards.
+        </div>
+      </div>
+      <button type="button" id="finishCardHideMode">
+        Done
+      </button>
+    `;
+
+    pageContainer.prepend(toolbar);
+
+    toolbar.querySelector("#finishCardHideMode")
+      .addEventListener("click",function(){
+
+        cardHideMode = false;
+        document.body.classList.remove("card-hide-mode");
+
+        updateCardHideButton();
+        setupDashboardCardControls();
+
+      });
+
+  }
+
+}
+
+
+function toggleDashboardCard(card){
+
+  const key = card.dataset.cardHideKey;
+
+  if(!key) return;
+
+  const hidden = getHiddenDashboardCards();
+
+  const index = hidden.indexOf(key);
+
+  if(index >= 0){
+    hidden.splice(index,1);
+  }else{
+    hidden.push(key);
+  }
+
+  saveHiddenDashboardCards(hidden);
+
+  setupDashboardCardControls();
+
+}
+
+
+function setupDashboardCardControls(){
+
+  if(currentPage !== "dashboard") return;
+
+  createCardHideToolbar();
+
+  const hidden = getHiddenDashboardCards();
+
+  const cards = Array.from(
+    pageContainer.querySelectorAll(DASHBOARD_CARD_SELECTOR)
+  );
+
+  /*
+    Avoid adding duplicate controls to nested cards.
+    Use only the outer matching card.
+  */
+
+  const outerCards = cards.filter(card=>{
+
+    const parent = card.parentElement;
+
+    if(!parent) return true;
+
+    return !parent.closest(DASHBOARD_CARD_SELECTOR);
+
+  });
+
+  outerCards.forEach((card,index)=>{
+
+    const key = getDashboardCardKey(card,index);
+
+    const isHidden = hidden.includes(key);
+
+    card.classList.add("card-hide-target");
+    card.classList.toggle("is-card-hidden",isHidden);
+
+    let button = card.querySelector(
+      ":scope > .card-hide-control"
+    );
+
+    if(!button){
+
+      button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "card-hide-control";
+
+      card.appendChild(button);
+
+      button.addEventListener("click",function(event){
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        toggleDashboardCard(card);
+
+      });
+
+    }
+
+    button.classList.toggle("is-hidden",isHidden);
+
+    button.textContent = isHidden
+      ? "Show Card"
+      : "Hide Card";
+
+    if(!cardHideMode){
+      button.style.display = "none";
+    }else{
+      button.style.display = "block";
+    }
+
+    /*
+      In normal mode, previously hidden cards stay hidden.
+      In edit mode, every card is visible for restoration.
+    */
+
+    card.style.removeProperty("display");
+
+    if(isHidden && !cardHideMode){
+      card.classList.add("is-card-hidden");
+    }
+
+  });
+
+  if(cardHideMode){
+    document.body.classList.add("card-hide-mode");
+  }else{
+    document.body.classList.remove("card-hide-mode");
+  }
+
+  updateCardHideButton();
+
+}
+
+
+function toggleCardHideMode(){
+
+  cardHideMode = !cardHideMode;
+
+  closeSidebar();
+
+  updateCardHideButton();
+
+  if(currentPage !== "dashboard"){
+
+    loadPage("dashboard",true);
+
+  }else{
+
+    setupDashboardCardControls();
+
+  }
+
+}
+
+
+/* =====================================
    MAIN PAGE LOADER
 ===================================== */
 
@@ -1036,7 +1417,6 @@ async function loadPage(page,addHistory=true){
 
   try{
 
-    // Fetch child HTML from repository root.
     const response = await fetch(
       "./" + config.file,
       {
@@ -1064,15 +1444,12 @@ async function loadPage(page,addHistory=true){
       "text/html"
     );
 
-    // First load the child page CSS.
     await loadPageStyles(doc,config.file);
 
     if(thisLoad !== loadCounter) return;
 
-    // Then load the child page body.
     pageContainer.innerHTML = doc.body.innerHTML;
 
-    // Execute scripts inside the loaded page.
     await executePageScripts(pageContainer);
 
     if(thisLoad !== loadCounter) return;
@@ -1080,6 +1457,12 @@ async function loadPage(page,addHistory=true){
     currentPage = page;
 
     window.currentPage = page;
+
+    /* NEW: Apply dashboard card visibility controls */
+
+    if(page === "dashboard"){
+      setupDashboardCardControls();
+    }
 
   }catch(error){
 
@@ -1129,7 +1512,7 @@ window.__wageEditUserId = "";
    SIDEBAR CLICK EVENTS
 ===================================== */
 
-document.querySelectorAll(".nav-item")
+document.querySelectorAll(".nav-item[data-page]")
 .forEach(item=>{
 
   item.addEventListener("click",function(){
@@ -1139,6 +1522,18 @@ document.querySelectorAll(".nav-item")
     loadPage(page,true);
 
   });
+
+});
+
+
+/* =====================================
+   CARD HIDE MENU EVENT
+===================================== */
+
+document.getElementById("cardHideMenuButton")
+.addEventListener("click",function(){
+
+  toggleCardHideMode();
 
 });
 
