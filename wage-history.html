@@ -34,7 +34,6 @@
 #pageContainer #wageHistoryPage .wh-btn:hover{transform:translateY(-1px);filter:brightness(.97)}
 #pageContainer #wageHistoryPage .wh-refresh{color:white;background:linear-gradient(135deg,#4338ca,#8b5cf6)}
 
-/* TOP STATS */
 #pageContainer #wageHistoryPage .wh-stats{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:15px;
 }
@@ -54,7 +53,6 @@
 #pageContainer #wageHistoryPage .wh-stat:nth-child(1) .wh-stat-icon{background:#eef2ff;color:#4f46e5}
 #pageContainer #wageHistoryPage .wh-stat:nth-child(2) .wh-stat-icon{background:#f5f3ff;color:#7c3aed}
 
-/* CURRENCY CARDS */
 #pageContainer #wageHistoryPage .wh-currency-stats{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
   gap:15px;margin-bottom:22px;
@@ -74,7 +72,7 @@
 }
 #pageContainer #wageHistoryPage .wh-currency-icon{
   width:36px;height:36px;border-radius:11px;display:grid;place-items:center;
-  background:#ecfdf5;color:#059669;font-size:16px;font-weight:800;
+  background:#ecfdf5;color:#059669;font-size:12px;font-weight:800;
 }
 #pageContainer #wageHistoryPage .wh-currency-total{
   margin-top:12px;font-size:23px;font-weight:850;color:var(--wh-success);
@@ -82,7 +80,6 @@
 }
 #pageContainer #wageHistoryPage .wh-currency-sub{color:var(--muted,#8490a3);font-size:11px;margin-top:5px}
 
-/* TABLE AND FILTERS */
 #pageContainer #wageHistoryPage .wh-panel{
   background:var(--card,var(--panel,#fff));border:1px solid var(--border,#e8edf3);
   border-radius:16px;overflow:hidden;box-shadow:0 3px 12px #00000008;
@@ -139,7 +136,6 @@
 #pageContainer #wageHistoryPage .wh-empty h3{margin:0 0 6px;color:var(--text,#172033);font-size:16px}
 #pageContainer #wageHistoryPage .wh-empty p{margin:0;font-size:13px}
 
-/* MOBILE CARDS */
 #pageContainer #wageHistoryPage .wh-mobile-list{display:none;padding:12px}
 #pageContainer #wageHistoryPage .wh-mobile-card{
   border:1px solid var(--border,#e8edf3);border-radius:13px;
@@ -157,7 +153,6 @@
 #pageContainer #wageHistoryPage .wh-mobile-actions{display:flex;gap:7px;margin-top:13px}
 #pageContainer #wageHistoryPage .wh-mobile-actions button{flex:1;padding:9px 5px}
 
-/* MODALS */
 #pageContainer #wageHistoryPage .wh-overlay{
   position:fixed;inset:0;z-index:1000000;background:#0b1220a8;
   backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:12px;
@@ -188,7 +183,6 @@
 #pageContainer #wageHistoryPage .wh-field label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}
 #pageContainer #wageHistoryPage .wh-field .wh-input{height:44px}
 
-/* COMPACT VIEW DETAILS */
 #pageContainer #wageHistoryPage .wh-view-grid{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;
 }
@@ -242,8 +236,6 @@
   #pageContainer #wageHistoryPage .wh-panel-head{padding:15px}
   #pageContainer #wageHistoryPage .wh-table-wrap{display:none}
   #pageContainer #wageHistoryPage .wh-mobile-list{display:block}
-
-  /* Mobile View popup: compact layout */
   #pageContainer #wageHistoryPage .wh-view-modal{
     width:min(100%,360px);max-height:78vh;padding:12px;border-radius:13px;
   }
@@ -361,7 +353,6 @@
     return String(getValue(w,["currency","wageCurrency","wage_currency","Wage Currency","Currency","currencyCode","currency_code","Currency Code"],""));
   }
   function getCurrencyId(w){return String(getValue(w,["currencyId","currency_id","Currency ID"],""))}
-  function getSymbol(w){return String(getValue(w,["currencySymbol","currency_symbol","Currency Symbol","symbol"],""))}
   function getId(w){return String(getValue(w,["wageId","wageID","Wage ID","id"],""))}
   function getCompany(w){return String(getValue(w,["companyName","company_name","Company Name"],""))}
   function getTransaction(w){return String(getValue(w,["transactionId","transaction_id","Transaction ID"],""))}
@@ -370,7 +361,6 @@
 
   function currencyCode(c){return String(getValue(c,["currencyCode","code","Currency Code","currency_code"],""))}
   function currencyName(c){return String(getValue(c,["currencyName","name","Currency Name","currency_name"],currencyCode(c)))}
-  function currencySymbol(c){return String(getValue(c,["currencySymbol","symbol","Currency Symbol","currency_symbol"],""))}
   function currencyId(c){return String(getValue(c,["currencyId","Currency ID","id"],""))}
   function isCurrencyActive(c){
     const status=String(getValue(c,["status","Status"],"Active")).trim().toLowerCase();
@@ -378,11 +368,9 @@
   }
   function getActiveCurrencies(){return currencies.filter(c=>currencyCode(c)&&isCurrencyActive(c))}
 
-  function formatMoney(amount,symbol,currency){
+  function formatMoney(amount,currency){
     const formatted=Number(amount||0).toLocaleString("en-US",{maximumFractionDigits:2});
-    if(symbol)return symbol+formatted;
-    if(currency)return currency+" "+formatted;
-    return formatted;
+    return currency ? currency+" "+formatted : formatted;
   }
   function formatDate(date){
     if(!date)return "—";
@@ -409,7 +397,7 @@
     clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.className="wh-toast",3500);
   }
   function showProcessing(show){$("whProcessing").classList.toggle("show",!!show)}
-  function showModal(){ $("whModalOverlay").classList.add("show") }
+  function showModal(){$("whModalOverlay").classList.add("show")}
   function closeModal(){
     $("whModalOverlay").classList.remove("show");
     $("whModal").classList.remove("wh-view-modal");
@@ -422,9 +410,8 @@
     button.addEventListener("click",callback);return button;
   }
 
-  /* VIEW DETAILS - compact popup for desktop and mobile */
   function openViewModal(wage){
-    const code=getCurrency(wage),symbol=getSymbol(wage);
+    const code=getCurrency(wage);
     const matchedCurrency=currencies.find(c=>
       currencyCode(c).trim().toUpperCase()===code.trim().toUpperCase()||
       (currencyId(c)&&currencyId(c)===getCurrencyId(wage))
@@ -434,9 +421,8 @@
     const details=[
       ["Wage ID",getId(wage)],
       ["Company",getCompany(wage)],
-      ["Amount",formatMoney(getAmount(wage),symbol,code)],
+      ["Amount",formatMoney(getAmount(wage),code)],
       ["Currency",code],
-      ["Symbol",symbol],
       ["Currency Name",name],
       ["Transaction ID",getTransaction(wage)],
       ["Date",formatDate(getDate(wage))],
@@ -469,7 +455,7 @@
     if(!activeCurrencies.length){container.innerHTML="";container.style.display="none";return}
 
     container.innerHTML=activeCurrencies.map(c=>{
-      const code=currencyCode(c),id=currencyId(c),symbol=currencySymbol(c);
+      const code=currencyCode(c),id=currencyId(c);
       const matchingWages=allWages.filter(w=>{
         const wageCode=getCurrency(w).trim().toUpperCase(),wageCurrencyId=getCurrencyId(w);
         return (wageCode&&wageCode===code.trim().toUpperCase())||(wageCurrencyId&&id&&wageCurrencyId===id);
@@ -478,9 +464,9 @@
       return `<div class="wh-currency-stat">
         <div class="wh-currency-top">
           <span class="wh-currency-label">${escapeHTML(currencyName(c)||code)} TOTAL WAGE</span>
-          <span class="wh-currency-icon">${escapeHTML(symbol||code||"¤")}</span>
+          <span class="wh-currency-icon">${escapeHTML(code||"CUR")}</span>
         </div>
-        <div class="wh-currency-total">${escapeHTML(formatMoney(total,symbol,code))}</div>
+        <div class="wh-currency-total">${escapeHTML(formatMoney(total,code))}</div>
         <div class="wh-currency-sub">${matchingWages.length.toLocaleString()} wage record(s) · ${escapeHTML(code)}</div>
       </div>`;
     }).join("");
@@ -500,7 +486,7 @@
   function updateStats(){
     $("whTotalRecords").textContent=allWages.length.toLocaleString();
     const latest=[...allWages].sort((a,b)=>getDate(b).localeCompare(getDate(a)))[0];
-    $("whLatestAmount").textContent=latest?formatMoney(getAmount(latest),getSymbol(latest),getCurrency(latest)):"0";
+    $("whLatestAmount").textContent=latest?formatMoney(getAmount(latest),getCurrency(latest)):"0";
     renderCurrencyCards();
   }
 
@@ -535,7 +521,7 @@
       return `<tr>
         <td><span class="wh-id">${id||"—"}</span></td>
         <td><div class="wh-company">${escapeHTML(getCompany(w)||"Not specified")}</div><div class="wh-sub">${escapeHTML(getComment(w)||"—")}</div></td>
-        <td class="wh-amount">${escapeHTML(formatMoney(getAmount(w),getSymbol(w),getCurrency(w)))}</td>
+        <td class="wh-amount">${escapeHTML(formatMoney(getAmount(w),getCurrency(w)))}</td>
         <td>${escapeHTML(getCurrency(w)||"—")}</td>
         <td>${escapeHTML(getTransaction(w)||"—")}</td>
         <td>${escapeHTML(formatDate(getDate(w)))}</td>
@@ -555,7 +541,7 @@
             <div class="wh-mobile-name">${escapeHTML(getCompany(w)||"Not specified")}</div>
             <div class="wh-sub">${id}</div>
           </div>
-          <div class="wh-mobile-amount">${escapeHTML(formatMoney(getAmount(w),getSymbol(w),getCurrency(w)))}</div>
+          <div class="wh-mobile-amount">${escapeHTML(formatMoney(getAmount(w),getCurrency(w)))}</div>
         </div>
         <div class="wh-mobile-meta">
           <div><div class="wh-meta-label">DATE</div><div class="wh-meta-value">${escapeHTML(formatDate(getDate(w)))}</div></div>
@@ -616,7 +602,7 @@
       '<div style="padding:12px;border:1px solid var(--border);border-radius:10px;font-size:13px;line-height:1.8">'+
       '<b>'+escapeHTML(getCompany(wage)||"Not specified")+'</b><br>'+
       'Wage ID: '+escapeHTML(getId(wage))+'<br>'+
-      'Amount: '+escapeHTML(formatMoney(getAmount(wage),getSymbol(wage),getCurrency(wage)))+'</div>';
+      'Amount: '+escapeHTML(formatMoney(getAmount(wage),getCurrency(wage)))+'</div>';
     $("whModalActions").innerHTML="";
     $("whModalActions").append(
       modalButton("Cancel","wh-cancel",closeModal),
