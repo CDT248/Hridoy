@@ -7,416 +7,342 @@
 <title>Wage History</title>
 
 <style>
-:root {
-  --wh-bg:#f8fafc;
-  --wh-card:#ffffff;
-  --wh-text:#172033;
-  --wh-muted:#64748b;
-  --wh-border:#e2e8f0;
-  --wh-hover:#f1f5f9;
-  --wh-primary:#4338ca;
-  --wh-danger:#dc2626;
-  --wh-success:#059669;
-}
-
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  padding:20px;
-  background:var(--wh-bg);
-  color:var(--wh-text);
-  font-family:Arial, sans-serif;
-}
-
-.wh-container {
+#pageContainer #wageHistoryPage,
+#wageHistoryPage {
   width:100%;
-  max-width:1500px;
-  margin:auto;
+  color:var(--text,#172033);
+  font-family:Arial, sans-serif;
+  box-sizing:border-box;
 }
-
-.wh-header {
+#wageHistoryPage *,
+#wageHistoryPage *::before,
+#wageHistoryPage *::after {
+  box-sizing:border-box;
+}
+#wageHistoryPage .wh-hero {
+  background:linear-gradient(120deg,#4338ca,#6366f1,#8b5cf6);
+  color:#fff;
+  padding:26px;
+  border-radius:18px;
+  margin-bottom:22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap;
   gap:15px;
-  margin-bottom:22px;
+  flex-wrap:wrap;
 }
-
-.wh-header h1 {
+#wageHistoryPage .wh-hero h2 {
+  margin:0 0 7px;
   font-size:25px;
-  margin:0 0 6px;
 }
-
-.wh-subtitle {
-  color:var(--wh-muted);
-  font-size:13px;
+#wageHistoryPage .wh-hero p {
+  margin:0;
+  opacity:.9;
+  font-size:14px;
 }
-
-.wh-btn {
-  padding:10px 15px;
-  border:1px solid var(--wh-border);
-  border-radius:8px;
-  background:var(--wh-card);
-  color:var(--wh-text);
+#wageHistoryPage button {
   cursor:pointer;
-  font-weight:600;
+  border:0;
+  font-family:inherit;
+}
+#wageHistoryPage .wh-btn {
+  padding:11px 17px;
+  border-radius:9px;
   font-size:13px;
+  font-weight:600;
+  transition:.2s;
 }
-
-.wh-btn:hover { background:var(--wh-hover); }
-
-.wh-primary {
-  background:var(--wh-primary);
-  color:#fff;
-  border-color:var(--wh-primary);
+#wageHistoryPage .wh-refresh {
+  background:#fff;
+  color:#4338ca;
 }
-
-.wh-primary:hover {
-  background:#3730a3;
+#wageHistoryPage .wh-refresh:hover {
+  transform:translateY(-2px);
 }
-
-.wh-stats {
+#wageHistoryPage .wh-stats {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;
-  margin-bottom:20px;
+  gap:16px;
+  margin-bottom:22px;
 }
-
-.wh-stat {
-  background:var(--wh-card);
-  border:1px solid var(--wh-border);
-  border-radius:13px;
-  padding:19px;
+#wageHistoryPage .wh-stat {
+  background:var(--card,#fff);
+  border:1px solid var(--border,#e8edf3);
+  border-radius:14px;
+  padding:20px;
   min-width:0;
 }
-
-.wh-stat-icon {
-  font-size:22px;
-  margin-bottom:12px;
+#wageHistoryPage .wh-stat-label {
+  color:var(--muted,#8490a3);
+  font-size:13px;
+  margin-bottom:10px;
 }
-
-.wh-stat-label {
-  color:var(--wh-muted);
-  font-size:12px;
-  margin-bottom:9px;
-}
-
-.wh-stat-value {
-  font-size:24px;
-  font-weight:800;
+#wageHistoryPage .wh-stat-value {
+  font-size:25px;
+  font-weight:750;
+  color:var(--text,#172033);
   overflow-wrap:anywhere;
 }
-
-.wh-panel {
-  background:var(--wh-card);
-  border:1px solid var(--wh-border);
-  border-radius:13px;
-  padding:19px;
+#wageHistoryPage .wh-stat-icon {
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--primary-light,#e8f7ef);
+  margin-bottom:13px;
+  font-size:19px;
+}
+#wageHistoryPage .wh-card {
+  background:var(--card,#fff);
+  border:1px solid var(--border,#e8edf3);
+  border-radius:15px;
+  padding:20px;
   margin-bottom:20px;
   min-width:0;
 }
-
-.wh-panel-title {
-  font-size:16px;
-  font-weight:750;
+#wageHistoryPage .wh-card-title {
+  font-size:17px;
+  font-weight:700;
   margin:0 0 17px;
+  color:var(--text,#172033);
 }
-
-.wh-filters {
+#wageHistoryPage .wh-filters {
   display:grid;
   grid-template-columns:2fr 1fr 1fr 1fr auto;
   gap:12px;
   align-items:end;
 }
-
-.wh-field label {
+#wageHistoryPage .wh-field label {
   display:block;
-  color:var(--wh-muted);
   font-size:12px;
+  font-weight:650;
+  color:var(--muted,#8490a3);
   margin-bottom:7px;
 }
-
-.wh-field input,
-.wh-field select {
+#wageHistoryPage .wh-field input,
+#wageHistoryPage .wh-field select {
   width:100%;
   height:42px;
-  padding:0 11px;
-  background:var(--wh-bg);
-  border:1px solid var(--wh-border);
-  color:var(--wh-text);
-  border-radius:8px;
+  padding:0 12px;
+  border:1px solid var(--border,#e8edf3);
+  border-radius:9px;
   outline:none;
+  background:var(--bg,#f5f7fb);
+  color:var(--text,#172033);
   font-size:13px;
 }
-
-.wh-field input:focus,
-.wh-field select:focus {
-  border-color:var(--wh-primary);
+#wageHistoryPage .wh-field input:focus,
+#wageHistoryPage .wh-field select:focus {
+  border-color:var(--primary,#087f5b);
 }
-
-.wh-table-wrap {
+#wageHistoryPage .wh-clear {
+  height:42px;
+  padding:0 16px;
+  background:var(--primary-light,#e8f7ef);
+  color:var(--primary,#087f5b);
+  border-radius:9px;
+  font-weight:650;
+  white-space:nowrap;
+}
+#wageHistoryPage .wh-table-wrap {
   width:100%;
   overflow-x:auto;
 }
-
-.wh-table {
+#wageHistoryPage table {
   width:100%;
-  min-width:900px;
   border-collapse:collapse;
+  min-width:950px;
 }
-
-.wh-table th {
-  padding:13px 11px;
-  text-align:left;
+#wageHistoryPage th {
+  background:var(--bg,#f5f7fb);
+  color:var(--muted,#8490a3);
   font-size:11px;
-  color:var(--wh-muted);
+  font-weight:750;
   text-transform:uppercase;
   letter-spacing:.4px;
-  border-bottom:1px solid var(--wh-border);
+  padding:14px 12px;
+  text-align:left;
+  border-bottom:1px solid var(--border,#e8edf3);
   white-space:nowrap;
 }
-
-.wh-table td {
-  padding:14px 11px;
+#wageHistoryPage td {
+  padding:14px 12px;
+  border-bottom:1px solid var(--border,#e8edf3);
   font-size:13px;
-  border-bottom:1px solid var(--wh-border);
+  color:var(--text,#172033);
   vertical-align:middle;
 }
-
-.wh-table tbody tr:hover {
-  background:var(--wh-hover);
+#wageHistoryPage tbody tr:hover {
+  background:var(--hover,#f1f8f5);
 }
-
-.wh-company {
+#wageHistoryPage .wh-company {
   font-weight:700;
-  max-width:180px;
-  overflow-wrap:anywhere;
+  margin-bottom:4px;
 }
-
-.wh-id {
-  font-size:10px;
-  color:var(--wh-muted);
-  margin-top:5px;
+#wageHistoryPage .wh-sub {
+  color:var(--muted,#8490a3);
+  font-size:11px;
 }
-
-.wh-amount {
-  font-weight:800;
+#wageHistoryPage .wh-amount {
+  font-weight:750;
+  color:var(--primary,#087f5b);
   white-space:nowrap;
 }
-
-.wh-tag {
-  padding:5px 9px;
-  border-radius:6px;
-  background:var(--wh-hover);
-  font-size:11px;
-  font-weight:700;
-}
-
-.wh-delete {
-  padding:7px 11px;
+#wageHistoryPage .wh-delete {
+  background:#fee2e2;
+  color:#dc2626;
+  padding:8px 11px;
   border-radius:7px;
-  border:1px solid #ef444455;
-  color:var(--wh-danger);
-  background:transparent;
-  cursor:pointer;
+  font-size:12px;
   font-weight:650;
 }
-
-.wh-delete:hover {
-  background:#ef444415;
+#wageHistoryPage .wh-delete:hover {
+  background:#fecaca;
 }
-
-.wh-empty {
-  padding:40px 15px;
+#wageHistoryPage .wh-empty {
   text-align:center;
-  color:var(--wh-muted);
-  font-size:13px;
+  padding:40px 15px;
+  color:var(--muted,#8490a3);
 }
-
-.wh-message {
-  display:none;
-  padding:12px 15px;
-  border-radius:8px;
-  margin-bottom:15px;
-  font-size:13px;
+#wageHistoryPage .wh-loading {
+  text-align:center;
+  padding:35px;
+  color:var(--muted,#8490a3);
 }
-
-.wh-error {
-  color:var(--wh-danger);
-  background:#dc262615;
-  border:1px solid #dc262633;
-}
-
-.wh-success {
-  color:var(--wh-success);
-  background:#05966915;
-  border:1px solid #05966933;
-}
-
-.wh-footer {
+#wageHistoryPage .wh-footer {
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
   flex-wrap:wrap;
   margin-top:15px;
-  color:var(--wh-muted);
+  color:var(--muted,#8490a3);
   font-size:12px;
 }
-
-.wh-loading {
-  padding:35px;
-  text-align:center;
-  color:var(--wh-muted);
+#wageHistoryPage .wh-message {
+  display:none;
+  padding:12px 15px;
+  border-radius:9px;
+  margin-bottom:15px;
+  font-size:13px;
 }
-
-.wh-secondary {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
+#wageHistoryPage .wh-message.success {
+  display:block;
+  background:#dcfce7;
+  color:#166534;
 }
-
-@media(max-width:1000px) {
-  .wh-filters {
+#wageHistoryPage .wh-message.error {
+  display:block;
+  background:#fee2e2;
+  color:#991b1b;
+}
+@media(max-width:900px) {
+  #wageHistoryPage .wh-filters {
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
-
-  .wh-stats {
+  #wageHistoryPage .wh-stats {
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
-
-@media(max-width:600px) {
-  body { padding:12px; }
-
-  .wh-header h1 { font-size:21px; }
-
-  .wh-stats {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
+@media(max-width:560px) {
+  #wageHistoryPage .wh-hero {
+    padding:20px;
   }
-
-  .wh-stat { padding:13px; }
-
-  .wh-stat-value { font-size:19px; }
-
-  .wh-filters {
+  #wageHistoryPage .wh-hero h2 {
+    font-size:21px;
+  }
+  #wageHistoryPage .wh-stats {
+    grid-template-columns:1fr;
+    gap:11px;
+  }
+  #wageHistoryPage .wh-stat {
+    padding:16px;
+  }
+  #wageHistoryPage .wh-stat-value {
+    font-size:22px;
+  }
+  #wageHistoryPage .wh-card {
+    padding:14px;
+  }
+  #wageHistoryPage .wh-filters {
     grid-template-columns:1fr;
   }
-
-  .wh-panel { padding:13px; }
-
-  .wh-btn { padding:9px 11px; }
 }
 </style>
 </head>
 
 <body>
+<div id="wageHistoryPage">
 
-<div class="wh-container">
-
-  <!-- HEADER -->
-  <header class="wh-header">
+  <div class="wh-hero">
     <div>
-      <h1>Wage History</h1>
-      <div class="wh-subtitle">
-        Manage and review all wage transactions
-      </div>
+      <h2>Wage History</h2>
+      <p>View, search and manage all your wage records.</p>
     </div>
+    <button class="wh-btn wh-refresh" id="whRefreshBtn" onclick="whLoadData()">
+      ↻ Refresh Data
+    </button>
+  </div>
 
-    <div class="wh-secondary">
-      <button class="wh-btn" id="refreshBtn">
-        ↻ Refresh
-      </button>
-    </div>
-  </header>
+  <div id="whMessage" class="wh-message"></div>
 
-  <!-- MESSAGES -->
-  <div class="wh-message wh-error" id="errorMessage"></div>
-  <div class="wh-message wh-success" id="successMessage"></div>
-
-  <!-- STATS -->
-  <section class="wh-stats">
-
+  <div class="wh-stats">
     <div class="wh-stat">
-      <div class="wh-stat-icon">📁</div>
-      <div class="wh-stat-label">Total Wage Records</div>
-      <div class="wh-stat-value" id="totalRecords">0</div>
+      <div class="wh-stat-icon">📋</div>
+      <div class="wh-stat-label">Total Records</div>
+      <div class="wh-stat-value" id="whTotalRecords">0</div>
     </div>
-
     <div class="wh-stat">
       <div class="wh-stat-icon">💰</div>
       <div class="wh-stat-label">Total Wage Amount</div>
-      <div class="wh-stat-value" id="totalAmount">0</div>
-      <div class="wh-subtitle" id="totalCurrency">
-        All currencies
-      </div>
+      <div class="wh-stat-value" id="whTotalAmount">0</div>
     </div>
-
     <div class="wh-stat">
       <div class="wh-stat-icon">🕒</div>
       <div class="wh-stat-label">Latest Wage</div>
-      <div class="wh-stat-value" id="latestDate">—</div>
-      <div class="wh-subtitle" id="latestCompany">
-        No records yet
-      </div>
+      <div class="wh-stat-value" id="whLatestDate">—</div>
     </div>
+  </div>
 
-  </section>
-
-  <!-- FILTER -->
-  <section class="wh-panel">
-
-    <h3 class="wh-panel-title">Search & Filter</h3>
+  <div class="wh-card">
+    <h3 class="wh-card-title">Search & Filter</h3>
 
     <div class="wh-filters">
-
       <div class="wh-field">
         <label>Search</label>
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search company, ID, transaction..."
-        >
+        <input type="text" id="whSearch"
+          placeholder="Company, Wage ID, Transaction ID..."
+          oninput="whApplyFilters()">
       </div>
 
       <div class="wh-field">
         <label>From Date</label>
-        <input type="date" id="fromDate">
+        <input type="date" id="whFromDate" onchange="whApplyFilters()">
       </div>
 
       <div class="wh-field">
         <label>To Date</label>
-        <input type="date" id="toDate">
+        <input type="date" id="whToDate" onchange="whApplyFilters()">
       </div>
 
       <div class="wh-field">
         <label>Currency</label>
-        <select id="currencyFilter">
+        <select id="whCurrency" onchange="whApplyFilters()">
           <option value="">All Currencies</option>
         </select>
       </div>
 
-      <button class="wh-btn" id="clearBtn">
-        Clear
-      </button>
-
+      <button class="wh-clear" onclick="whClearFilters()">Clear Filter</button>
     </div>
+  </div>
 
-  </section>
-
-  <!-- TABLE -->
-  <section class="wh-panel">
-
-    <h3 class="wh-panel-title">All Wage Transactions</h3>
+  <div class="wh-card">
+    <h3 class="wh-card-title">All Wage Records</h3>
 
     <div class="wh-table-wrap">
-
-      <table class="wh-table">
-
+      <table>
         <thead>
           <tr>
             <th>SL</th>
@@ -429,588 +355,320 @@ body {
             <th>Action</th>
           </tr>
         </thead>
-
-        <tbody id="wageTableBody">
+        <tbody id="whTableBody">
           <tr>
-            <td colspan="8">
-              <div class="wh-loading">
-                Loading wage history...
-              </div>
-            </td>
+            <td colspan="8" class="wh-loading">Loading wage history...</td>
           </tr>
         </tbody>
-
       </table>
-
     </div>
 
     <div class="wh-footer">
-      <span id="showingText">Showing 0 records</span>
-      <span>Source: WAGE HISTORY</span>
+      <span id="whShowing">Showing 0 records</span>
+      <span>WAGE HISTORY</span>
     </div>
-
-  </section>
+  </div>
 
 </div>
 
-
 <script>
 (function () {
-
-  "use strict";
-
-  // ==================================================
-  // API CONFIGURATION
-  // ==================================================
-
   const API_URL =
     "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
 
-  let wageData = [];
-  let loading = false;
+  let whAllWages = [];
+  let whFilteredWages = [];
 
-  const $ = id => document.getElementById(id);
-
-
-  // ==================================================
-  // SAFE HTML
-  // ==================================================
-
-  function escapeHTML(value) {
-
-    return String(value == null ? "" : value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-  // ==================================================
-  // MESSAGE
-  // ==================================================
-
-  function showMessage(type, message) {
-
-    $("errorMessage").style.display = "none";
-    $("successMessage").style.display = "none";
-
-    const element = type === "error"
-      ? $("errorMessage")
-      : $("successMessage");
-
-    element.textContent = message;
-    element.style.display = "block";
-
-  }
-
-
-  function clearMessage() {
-
-    $("errorMessage").style.display = "none";
-    $("successMessage").style.display = "none";
-
-  }
-
-
-  // ==================================================
-  // FORMAT
-  // ==================================================
-
-  function numberFormat(value) {
-
-    return Number(value || 0).toLocaleString("en-US", {
-      maximumFractionDigits: 2
-    });
-
-  }
-
-
-  function dateFormat(value) {
-
-    if (!value) return "—";
-
-    const date = String(value).substring(0, 10);
-
-    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-
-      const parts = date.split("-");
-
-      return parts[2] + "/" + parts[1] + "/" + parts[0];
-
-    }
-
-    return date;
-
-  }
-
-
-  function amountFormat(wage) {
-
-    return String(wage.currencySymbol || "") +
-      numberFormat(wage.amount);
-
-  }
-
-
-  // ==================================================
-  // API GET
-  // ==================================================
-
-  async function apiGet(action) {
-
-    const response = await fetch(
-      API_URL + "?api=" + encodeURIComponent(action),
-      {
-        method: "GET",
-        redirect: "follow"
+  function whValue(obj, keys) {
+    for (const key of keys) {
+      if (obj && obj[key] !== undefined && obj[key] !== null) {
+        return obj[key];
       }
+    }
+    return "";
+  }
+
+  function whEscape(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
+
+  function whAmount(wage) {
+    return Number(whValue(wage, ["wageAmount", "amount", "Wage Amount"])) || 0;
+  }
+
+  function whCurrency(wage) {
+    return String(whValue(wage, [
+      "wageCurrency", "currencyCode", "currency", "Wage Currency"
+    ]) || "");
+  }
+
+  function whSymbol(wage) {
+    return String(whValue(wage, [
+      "currencySymbol", "symbol", "Currency Symbol"
+    ]) || "");
+  }
+
+  function whDate(wage) {
+    return String(whValue(wage, ["date", "Date"]) || "").slice(0, 10);
+  }
+
+  function whDateDisplay(date) {
+    if (!date) return "—";
+    const d = new Date(date + "T00:00:00");
+    if (isNaN(d.getTime())) return date;
+    return d.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  function whShowMessage(message, type) {
+    const box = document.getElementById("whMessage");
+    if (!box) return;
+    box.textContent = message;
+    box.className = "wh-message " + type;
+
+    setTimeout(function () {
+      if (box) box.className = "wh-message";
+    }, 4000);
+  }
+
+  function whUpdateStats(data) {
+    const total = data.length;
+    const totalAmount = data.reduce((sum, wage) => sum + whAmount(wage), 0);
+
+    const sorted = [...data].sort((a, b) =>
+      whDate(b).localeCompare(whDate(a))
     );
 
-    if (!response.ok) {
-      throw new Error("Server error: " + response.status);
-    }
-
-    return await response.json();
-
-  }
-
-
-  // ==================================================
-  // API POST
-  // ==================================================
-
-  async function apiPost(data) {
-
-    const response = await fetch(API_URL, {
-
-      method: "POST",
-      redirect: "follow",
-
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-
-      body: JSON.stringify(data)
-
-    });
-
-    if (!response.ok) {
-      throw new Error("Server error: " + response.status);
-    }
-
-    return await response.json();
-
-  }
-
-
-  // ==================================================
-  // LOAD DATA
-  // ==================================================
-
-  async function loadWages() {
-
-    if (loading) return;
-
-    loading = true;
-    clearMessage();
-
-    $("refreshBtn").disabled = true;
-    $("refreshBtn").textContent = "Loading...";
-
-    $("wageTableBody").innerHTML = `
-      <tr>
-        <td colspan="8">
-          <div class="wh-loading">Loading wage history...</div>
-        </td>
-      </tr>
-    `;
-
-    try {
-
-      const result = await apiGet("wages");
-
-      if (!result.success) {
-        throw new Error(result.message || "Unable to load wage records.");
-      }
-
-      wageData = Array.isArray(result.wages)
-        ? result.wages
-        : [];
-
-      updateCurrencyFilter();
-      updateStatistics();
-      renderTable();
-
-    } catch (error) {
-
-      $("wageTableBody").innerHTML = `
-        <tr>
-          <td colspan="8">
-            <div class="wh-empty">
-              Unable to load wage history.<br><br>
-              ${escapeHTML(error.message)}
-            </div>
-          </td>
-        </tr>
-      `;
-
-      showMessage("error", error.message);
-
-    } finally {
-
-      loading = false;
-
-      $("refreshBtn").disabled = false;
-      $("refreshBtn").textContent = "↻ Refresh";
-
-    }
-
-  }
-
-
-  // ==================================================
-  // CURRENCY FILTER
-  // ==================================================
-
-  function updateCurrencyFilter() {
-
-    const select = $("currencyFilter");
-    const previous = select.value;
-
-    const currencies = [
-      ...new Set(
-        wageData
-          .map(item => String(item.currency || ""))
-          .filter(Boolean)
-      )
-    ].sort();
-
-    select.innerHTML =
-      '<option value="">All Currencies</option>';
-
-    currencies.forEach(currency => {
-
-      const option = document.createElement("option");
-
-      option.value = currency;
-      option.textContent = currency;
-
-      select.appendChild(option);
-
-    });
-
-    if (currencies.includes(previous)) {
-      select.value = previous;
-    }
-
-  }
-
-
-  // ==================================================
-  // STATISTICS
-  // ==================================================
-
-  function updateStatistics() {
-
-    $("totalRecords").textContent =
-      wageData.length.toLocaleString("en-US");
-
-    const totals = {};
-
-    wageData.forEach(item => {
-
-      const currency = String(item.currency || "Unknown");
-
-      totals[currency] =
-        (totals[currency] || 0) +
-        Number(item.amount || 0);
-
-    });
-
-    const keys = Object.keys(totals);
-
-    if (keys.length === 0) {
-
-      $("totalAmount").textContent = "0";
-      $("totalCurrency").textContent = "No records";
-
-    } else if (keys.length === 1) {
-
-      const currency = keys[0];
-
-      const item = wageData.find(
-        w => String(w.currency || "Unknown") === currency
-      );
-
-      $("totalAmount").textContent =
-        String(item?.currencySymbol || "") +
-        numberFormat(totals[currency]);
-
-      $("totalCurrency").textContent = currency;
-
-    } else {
-
-      $("totalAmount").textContent =
-        keys.length + " Currencies";
-
-      $("totalCurrency").textContent =
-        keys.map(currency =>
-          currency + ": " + numberFormat(totals[currency])
-        ).join(" | ");
-
-    }
-
-    const latest = [...wageData].sort((a, b) =>
-      String(b.date || "").localeCompare(String(a.date || ""))
-    )[0];
-
-    $("latestDate").textContent =
-      latest ? dateFormat(latest.date) : "—";
-
-    $("latestCompany").textContent =
-      latest
-        ? (latest.companyName || "Company not specified")
-        : "No records yet";
-
-  }
-
-
-  // ==================================================
-  // FILTER
-  // ==================================================
-
-  function getFilteredData() {
-
-    const search = $("searchInput").value
-      .trim()
-      .toLowerCase();
-
-    const from = $("fromDate").value;
-    const to = $("toDate").value;
-    const currency = $("currencyFilter").value;
-
-    return wageData.filter(item => {
-
-      const searchable = [
-
-        item.wageId,
-        item.companyName,
-        item.transactionId,
-        item.comment,
-        item.currency,
-        item.currencySymbol
-
-      ].join(" ").toLowerCase();
-
-      const date = String(item.date || "").substring(0, 10);
-
-      if (search && !searchable.includes(search)) {
-        return false;
-      }
-
-      if (from && date < from) {
-        return false;
-      }
-
-      if (to && date > to) {
-        return false;
-      }
-
-      if (currency && String(item.currency) !== currency) {
-        return false;
-      }
-
-      return true;
-
-    });
-
-  }
-
-
-  // ==================================================
-  // RENDER TABLE
-  // ==================================================
-
-  function renderTable() {
-
-    const list = getFilteredData();
-    const body = $("wageTableBody");
-
-    if (list.length === 0) {
-
-      body.innerHTML = `
-        <tr>
-          <td colspan="8">
-            <div class="wh-empty">
-              No wage records found.
-            </div>
-          </td>
-        </tr>
-      `;
-
-      $("showingText").textContent = "Showing 0 records";
-
-      return;
-
-    }
-
-    body.innerHTML = list.map((item, index) => `
-
-      <tr>
-
-        <td>${index + 1}</td>
-
-        <td>
-          <div class="wh-company">
-            ${escapeHTML(item.companyName || "Not specified")}
-          </div>
-
-          <div class="wh-id">
-            ${escapeHTML(item.wageId || "")}
-          </div>
-        </td>
-
-        <td>
-          <span class="wh-amount">
-            ${escapeHTML(amountFormat(item))}
-          </span>
-        </td>
-
-        <td>
-          <span class="wh-tag">
-            ${escapeHTML(item.currency || "—")}
-          </span>
-        </td>
-
-        <td>
-          ${escapeHTML(item.transactionId || "—")}
-        </td>
-
-        <td>
-          ${escapeHTML(dateFormat(item.date))}
-        </td>
-
-        <td>
-          ${escapeHTML(item.comment || "—")}
-        </td>
-
-        <td>
-          <button
-            class="wh-delete"
-            data-delete-id="${escapeHTML(item.wageId)}"
-          >
-            Delete
-          </button>
-        </td>
-
-      </tr>
-
-    `).join("");
-
-    $("showingText").textContent =
-      "Showing " + list.length +
-      " of " + wageData.length + " records";
-
-  }
-
-
-  // ==================================================
-  // DELETE
-  // ==================================================
-
-  async function deleteWage(wageId) {
-
-    if (!wageId) return;
-
-    const confirmed = confirm(
-      "Do you really want to delete this wage record?\n\nThis action cannot be undone."
-    );
-
-    if (!confirmed) return;
-
-    clearMessage();
-
-    try {
-
-      const result = await apiPost({
-
-        action: "deleteWage",
-
-        wageId: wageId
-
+    document.getElementById("whTotalRecords").textContent =
+      total.toLocaleString();
+
+    document.getElementById("whTotalAmount").textContent =
+      totalAmount.toLocaleString(undefined, {
+        maximumFractionDigits: 2
       });
 
-      if (!result.success) {
-
-        throw new Error(
-          result.message || "Unable to delete wage record."
-        );
-
-      }
-
-      showMessage(
-        "success",
-        result.message || "Wage deleted successfully."
-      );
-
-      await loadWages();
-
-    } catch (error) {
-
-      showMessage("error", error.message);
-
-    }
-
+    document.getElementById("whLatestDate").textContent =
+      sorted.length ? whDateDisplay(whDate(sorted[0])) : "—";
   }
 
+  function whBuildCurrencyOptions() {
+    const select = document.getElementById("whCurrency");
+    const selected = select.value;
 
-  // ==================================================
-  // EVENT LISTENERS
-  // ==================================================
+    const currencies = [...new Set(
+      whAllWages.map(whCurrency).filter(Boolean)
+    )].sort();
 
-  $("refreshBtn").addEventListener("click", loadWages);
+    select.innerHTML = '<option value="">All Currencies</option>';
 
-  $("searchInput").addEventListener("input", renderTable);
+    currencies.forEach(currency => {
+      const option = document.createElement("option");
+      option.value = currency;
+      option.textContent = currency;
+      select.appendChild(option);
+    });
 
-  $("fromDate").addEventListener("change", renderTable);
+    select.value = currencies.includes(selected) ? selected : "";
+  }
 
-  $("toDate").addEventListener("change", renderTable);
+  function whRenderTable(data) {
+    const tbody = document.getElementById("whTableBody");
 
-  $("currencyFilter").addEventListener("change", renderTable);
+    if (!data.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="wh-empty">
+            No wage records found.
+          </td>
+        </tr>`;
+      document.getElementById("whShowing").textContent =
+        "Showing 0 records";
+      return;
+    }
 
-  $("clearBtn").addEventListener("click", function () {
+    tbody.innerHTML = data.map((wage, index) => {
+      const wageId = whValue(wage, ["wageId", "Wage ID"]);
+      const company = whValue(wage, [
+        "companyName", "Company Name"
+      ]) || "Unnamed";
 
-    $("searchInput").value = "";
-    $("fromDate").value = "";
-    $("toDate").value = "";
-    $("currencyFilter").value = "";
+      const transaction = whValue(wage, [
+        "transactionId", "Transaction ID"
+      ]) || "—";
 
-    renderTable();
+      const comment = whValue(wage, ["comment", "Comment"]) || "—";
+      const amount = whAmount(wage);
+      const currency = whCurrency(wage);
+      const symbol = whSymbol(wage);
+      const date = whDate(wage);
 
-  });
+      return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <div class="wh-company">${whEscape(company)}</div>
+            <div class="wh-sub">${whEscape(wageId || "—")}</div>
+          </td>
+          <td>
+            <span class="wh-amount">
+              ${whEscape(symbol)}${amount.toLocaleString(undefined, {
+                maximumFractionDigits: 2
+              })}
+            </span>
+          </td>
+          <td>${whEscape(currency || "—")}</td>
+          <td>${whEscape(transaction)}</td>
+          <td>${whEscape(whDateDisplay(date))}</td>
+          <td>${whEscape(comment)}</td>
+          <td>
+            <button class="wh-delete"
+              onclick="whDeleteWage('${whEscape(String(wageId))}')">
+              Delete
+            </button>
+          </td>
+        </tr>`;
+    }).join("");
 
-  $("wageTableBody").addEventListener("click", function (event) {
+    document.getElementById("whShowing").textContent =
+      "Showing " + data.length + " of " + whAllWages.length + " records";
+  }
 
-    const button = event.target.closest("[data-delete-id]");
+  window.whApplyFilters = function () {
+    const search = document.getElementById("whSearch").value
+      .trim().toLowerCase();
 
-    if (!button) return;
+    const from = document.getElementById("whFromDate").value;
+    const to = document.getElementById("whToDate").value;
+    const currency = document.getElementById("whCurrency").value;
 
-    deleteWage(button.getAttribute("data-delete-id"));
+    whFilteredWages = whAllWages.filter(wage => {
+      const company = whValue(wage, ["companyName", "Company Name"]);
+      const wageId = whValue(wage, ["wageId", "Wage ID"]);
+      const transaction = whValue(wage, ["transactionId", "Transaction ID"]);
+      const comment = whValue(wage, ["comment", "Comment"]);
+      const date = whDate(wage);
 
-  });
+      const searchText = [
+        company, wageId, transaction, comment,
+        whCurrency(wage), whAmount(wage)
+      ].join(" ").toLowerCase();
 
+      if (search && !searchText.includes(search)) return false;
+      if (from && date < from) return false;
+      if (to && date > to) return false;
+      if (currency && whCurrency(wage) !== currency) return false;
 
-  // ==================================================
-  // INITIAL LOAD
-  // ==================================================
+      return true;
+    });
 
-  loadWages();
+    whUpdateStats(whFilteredWages);
+    whRenderTable(whFilteredWages);
+  };
 
+  window.whClearFilters = function () {
+    document.getElementById("whSearch").value = "";
+    document.getElementById("whFromDate").value = "";
+    document.getElementById("whToDate").value = "";
+    document.getElementById("whCurrency").value = "";
+    window.whApplyFilters();
+  };
+
+  window.whLoadData = async function () {
+    const tbody = document.getElementById("whTableBody");
+    const button = document.getElementById("whRefreshBtn");
+
+    tbody.innerHTML = `
+      <tr><td colspan="8" class="wh-loading">Loading wage history...</td></tr>`;
+
+    button.disabled = true;
+    button.textContent = "Loading...";
+
+    try {
+      const response = await fetch(API_URL + "?api=wages", {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("Server error: " + response.status);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.message || "Could not load wage history.");
+      }
+
+      whAllWages = Array.isArray(result.wages) ? result.wages : [];
+
+      whBuildCurrencyOptions();
+      window.whApplyFilters();
+
+    } catch (error) {
+      console.error("Wage History Error:", error);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="wh-empty">
+            Failed to load wage history. Please refresh and try again.
+          </td>
+        </tr>`;
+      whShowMessage(error.message || "Failed to load data.", "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = "↻ Refresh Data";
+    }
+  };
+
+  window.whDeleteWage = async function (wageId) {
+    if (!wageId) {
+      whShowMessage("Wage ID not found.", "error");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to delete this wage record? It will be moved to Deleted Wage.")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "deleteWage",
+          wageId: wageId
+        })
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.message || "Delete failed.");
+      }
+
+      whShowMessage("Wage record moved to Deleted Wage successfully.", "success");
+      await window.whLoadData();
+
+    } catch (error) {
+      console.error("Delete Wage Error:", error);
+      whShowMessage(error.message || "Could not delete wage record.", "error");
+    }
+  };
+
+  window.whLoadData();
 })();
 </script>
-
 </body>
 </html>
