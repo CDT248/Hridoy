@@ -7,268 +7,141 @@
 <title>Wage History</title>
 
 <style>
-#pageContainer #wageHistoryPage,
 #wageHistoryPage {
   width:100%;
   color:var(--text,#172033);
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   box-sizing:border-box;
 }
-#wageHistoryPage *,
-#wageHistoryPage *::before,
-#wageHistoryPage *::after {
-  box-sizing:border-box;
-}
+#wageHistoryPage * { box-sizing:border-box; }
 #wageHistoryPage .wh-hero {
   background:linear-gradient(120deg,#4338ca,#6366f1,#8b5cf6);
-  color:#fff;
-  padding:26px;
-  border-radius:18px;
-  margin-bottom:22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
+  color:#fff;padding:26px;border-radius:18px;margin-bottom:22px;
+  display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;
 }
-#wageHistoryPage .wh-hero h2 {
-  margin:0 0 7px;
-  font-size:25px;
-}
-#wageHistoryPage .wh-hero p {
-  margin:0;
-  opacity:.9;
-  font-size:14px;
-}
-#wageHistoryPage button {
-  cursor:pointer;
-  border:0;
-  font-family:inherit;
-}
+#wageHistoryPage .wh-hero h2 {margin:0 0 7px;font-size:25px}
+#wageHistoryPage .wh-hero p {margin:0;opacity:.9;font-size:14px}
+#wageHistoryPage button {cursor:pointer;border:0;font-family:inherit}
 #wageHistoryPage .wh-btn {
-  padding:11px 17px;
-  border-radius:9px;
-  font-size:13px;
-  font-weight:600;
-  transition:.2s;
+  padding:11px 17px;border-radius:9px;font-size:13px;font-weight:650;
 }
-#wageHistoryPage .wh-refresh {
-  background:#fff;
-  color:#4338ca;
-}
-#wageHistoryPage .wh-refresh:hover {
-  transform:translateY(-2px);
-}
+#wageHistoryPage .wh-refresh {background:#fff;color:#4338ca}
 #wageHistoryPage .wh-stats {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:22px;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:22px;
 }
-#wageHistoryPage .wh-stat {
-  background:var(--card,#fff);
-  border:1px solid var(--border,#e8edf3);
-  border-radius:14px;
-  padding:20px;
-  min-width:0;
+#wageHistoryPage .wh-stat,#wageHistoryPage .wh-card {
+  background:var(--card,#fff);border:1px solid var(--border,#e8edf3);border-radius:14px;
 }
-#wageHistoryPage .wh-stat-label {
-  color:var(--muted,#8490a3);
-  font-size:13px;
-  margin-bottom:10px;
-}
-#wageHistoryPage .wh-stat-value {
-  font-size:25px;
-  font-weight:750;
-  color:var(--text,#172033);
-  overflow-wrap:anywhere;
-}
+#wageHistoryPage .wh-stat {padding:20px;min-width:0}
 #wageHistoryPage .wh-stat-icon {
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--primary-light,#e8f7ef);
-  margin-bottom:13px;
-  font-size:19px;
+  width:38px;height:38px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;background:var(--primary-light,#e8f7ef);margin-bottom:13px;font-size:19px;
 }
-#wageHistoryPage .wh-card {
-  background:var(--card,#fff);
-  border:1px solid var(--border,#e8edf3);
-  border-radius:15px;
-  padding:20px;
-  margin-bottom:20px;
-  min-width:0;
+#wageHistoryPage .wh-stat-label {color:var(--muted,#8490a3);font-size:13px;margin-bottom:10px}
+#wageHistoryPage .wh-stat-value {
+  font-size:25px;font-weight:750;overflow-wrap:anywhere;color:var(--text,#172033);
 }
-#wageHistoryPage .wh-card-title {
-  font-size:17px;
-  font-weight:700;
-  margin:0 0 17px;
-  color:var(--text,#172033);
-}
+#wageHistoryPage .wh-card {padding:20px;margin-bottom:20px;min-width:0}
+#wageHistoryPage .wh-card-title {font-size:17px;font-weight:700;margin:0 0 17px}
 #wageHistoryPage .wh-filters {
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr auto;
-  gap:12px;
-  align-items:end;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:12px;align-items:end;
 }
 #wageHistoryPage .wh-field label {
-  display:block;
-  font-size:12px;
-  font-weight:650;
-  color:var(--muted,#8490a3);
-  margin-bottom:7px;
+  display:block;font-size:12px;font-weight:650;color:var(--muted,#8490a3);margin-bottom:7px;
 }
 #wageHistoryPage .wh-field input,
 #wageHistoryPage .wh-field select {
-  width:100%;
-  height:42px;
-  padding:0 12px;
-  border:1px solid var(--border,#e8edf3);
-  border-radius:9px;
-  outline:none;
-  background:var(--bg,#f5f7fb);
-  color:var(--text,#172033);
-  font-size:13px;
+  width:100%;height:42px;padding:0 12px;border:1px solid var(--border,#e8edf3);
+  border-radius:9px;outline:none;background:var(--bg,#f5f7fb);color:var(--text,#172033);font-size:13px;
 }
 #wageHistoryPage .wh-field input:focus,
-#wageHistoryPage .wh-field select:focus {
-  border-color:var(--primary,#087f5b);
-}
+#wageHistoryPage .wh-field select:focus {border-color:var(--primary,#087f5b)}
 #wageHistoryPage .wh-clear {
-  height:42px;
-  padding:0 16px;
-  background:var(--primary-light,#e8f7ef);
-  color:var(--primary,#087f5b);
-  border-radius:9px;
-  font-weight:650;
-  white-space:nowrap;
+  height:42px;padding:0 16px;background:var(--primary-light,#e8f7ef);
+  color:var(--primary,#087f5b);border-radius:9px;font-weight:650;white-space:nowrap;
 }
-#wageHistoryPage .wh-table-wrap {
-  width:100%;
-  overflow-x:auto;
-}
-#wageHistoryPage table {
-  width:100%;
-  border-collapse:collapse;
-  min-width:950px;
-}
+#wageHistoryPage .wh-table-wrap {width:100%;overflow-x:auto}
+#wageHistoryPage table {width:100%;border-collapse:collapse;min-width:1050px}
 #wageHistoryPage th {
-  background:var(--bg,#f5f7fb);
-  color:var(--muted,#8490a3);
-  font-size:11px;
-  font-weight:750;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-  padding:14px 12px;
-  text-align:left;
-  border-bottom:1px solid var(--border,#e8edf3);
-  white-space:nowrap;
+  background:var(--bg,#f5f7fb);color:var(--muted,#8490a3);font-size:11px;
+  font-weight:750;text-transform:uppercase;letter-spacing:.4px;padding:14px 12px;
+  text-align:left;border-bottom:1px solid var(--border,#e8edf3);white-space:nowrap;
 }
 #wageHistoryPage td {
-  padding:14px 12px;
-  border-bottom:1px solid var(--border,#e8edf3);
-  font-size:13px;
-  color:var(--text,#172033);
-  vertical-align:middle;
+  padding:14px 12px;border-bottom:1px solid var(--border,#e8edf3);
+  font-size:13px;color:var(--text,#172033);vertical-align:middle;
 }
-#wageHistoryPage tbody tr:hover {
-  background:var(--hover,#f1f8f5);
+#wageHistoryPage tbody tr:hover {background:var(--hover,#f1f8f5)}
+#wageHistoryPage .wh-company {font-weight:700;margin-bottom:4px}
+#wageHistoryPage .wh-sub {color:var(--muted,#8490a3);font-size:11px}
+#wageHistoryPage .wh-amount {font-weight:750;color:var(--primary,#087f5b);white-space:nowrap}
+#wageHistoryPage .wh-actions {display:flex;gap:7px}
+#wageHistoryPage .wh-edit,#wageHistoryPage .wh-delete {
+  padding:8px 11px;border-radius:7px;font-size:12px;font-weight:650;
 }
-#wageHistoryPage .wh-company {
-  font-weight:700;
-  margin-bottom:4px;
-}
-#wageHistoryPage .wh-sub {
-  color:var(--muted,#8490a3);
-  font-size:11px;
-}
-#wageHistoryPage .wh-amount {
-  font-weight:750;
-  color:var(--primary,#087f5b);
-  white-space:nowrap;
-}
-#wageHistoryPage .wh-delete {
-  background:#fee2e2;
-  color:#dc2626;
-  padding:8px 11px;
-  border-radius:7px;
-  font-size:12px;
-  font-weight:650;
-}
-#wageHistoryPage .wh-delete:hover {
-  background:#fecaca;
-}
-#wageHistoryPage .wh-empty {
-  text-align:center;
-  padding:40px 15px;
-  color:var(--muted,#8490a3);
-}
-#wageHistoryPage .wh-loading {
-  text-align:center;
-  padding:35px;
-  color:var(--muted,#8490a3);
+#wageHistoryPage .wh-edit {background:#dbeafe;color:#1d4ed8}
+#wageHistoryPage .wh-delete {background:#fee2e2;color:#dc2626}
+#wageHistoryPage .wh-edit:hover {background:#bfdbfe}
+#wageHistoryPage .wh-delete:hover {background:#fecaca}
+#wageHistoryPage .wh-empty,#wageHistoryPage .wh-loading {
+  text-align:center;padding:40px 15px;color:var(--muted,#8490a3);
 }
 #wageHistoryPage .wh-footer {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:15px;
-  color:var(--muted,#8490a3);
-  font-size:12px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-top:15px;color:var(--muted,#8490a3);font-size:12px;
 }
-#wageHistoryPage .wh-message {
-  display:none;
-  padding:12px 15px;
-  border-radius:9px;
-  margin-bottom:15px;
-  font-size:13px;
+#wageHistoryPage .wh-message {display:none;padding:12px 15px;border-radius:9px;margin-bottom:15px;font-size:13px}
+#wageHistoryPage .wh-message.success {display:block;background:#dcfce7;color:#166534}
+#wageHistoryPage .wh-message.error {display:block;background:#fee2e2;color:#991b1b}
+
+/* Edit modal */
+#wageHistoryPage .wh-modal {
+  display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.58);
+  align-items:center;justify-content:center;padding:16px;
 }
-#wageHistoryPage .wh-message.success {
-  display:block;
-  background:#dcfce7;
-  color:#166534;
+#wageHistoryPage .wh-modal.show {display:flex}
+#wageHistoryPage .wh-modal-box {
+  width:100%;max-width:560px;max-height:90vh;overflow:auto;
+  background:var(--card,#fff);color:var(--text,#172033);
+  border:1px solid var(--border,#e8edf3);border-radius:16px;padding:23px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
-#wageHistoryPage .wh-message.error {
-  display:block;
-  background:#fee2e2;
-  color:#991b1b;
+#wageHistoryPage .wh-modal-head {
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px;
 }
+#wageHistoryPage .wh-modal-head h3 {margin:0;font-size:19px}
+#wageHistoryPage .wh-close {
+  width:34px;height:34px;border-radius:8px;background:var(--bg,#f5f7fb);
+  color:var(--text,#172033);font-size:21px;
+}
+#wageHistoryPage .wh-form-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+#wageHistoryPage .wh-form-grid .full {grid-column:1/-1}
+#wageHistoryPage .wh-modal-actions {
+  display:flex;justify-content:flex-end;gap:10px;margin-top:22px;
+}
+#wageHistoryPage .wh-cancel {
+  background:var(--bg,#f5f7fb);color:var(--text,#172033);
+  padding:11px 17px;border-radius:9px;font-weight:650;
+}
+#wageHistoryPage .wh-save {
+  background:var(--primary,#087f5b);color:white;padding:11px 20px;border-radius:9px;font-weight:650;
+}
+#wageHistoryPage .wh-save:disabled {opacity:.6;cursor:not-allowed}
 @media(max-width:900px) {
-  #wageHistoryPage .wh-filters {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-  #wageHistoryPage .wh-stats {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
+  #wageHistoryPage .wh-filters {grid-template-columns:repeat(2,minmax(0,1fr))}
+  #wageHistoryPage .wh-stats {grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px) {
-  #wageHistoryPage .wh-hero {
-    padding:20px;
-  }
-  #wageHistoryPage .wh-hero h2 {
-    font-size:21px;
-  }
-  #wageHistoryPage .wh-stats {
-    grid-template-columns:1fr;
-    gap:11px;
-  }
-  #wageHistoryPage .wh-stat {
-    padding:16px;
-  }
-  #wageHistoryPage .wh-stat-value {
-    font-size:22px;
-  }
-  #wageHistoryPage .wh-card {
-    padding:14px;
-  }
-  #wageHistoryPage .wh-filters {
-    grid-template-columns:1fr;
-  }
+  #wageHistoryPage .wh-hero {padding:20px}
+  #wageHistoryPage .wh-hero h2 {font-size:21px}
+  #wageHistoryPage .wh-stats {grid-template-columns:1fr;gap:11px}
+  #wageHistoryPage .wh-stat {padding:16px}
+  #wageHistoryPage .wh-card {padding:14px}
+  #wageHistoryPage .wh-filters,#wageHistoryPage .wh-form-grid {grid-template-columns:1fr}
+  #wageHistoryPage .wh-form-grid .full {grid-column:auto}
+  #wageHistoryPage .wh-modal-box {padding:17px}
 }
 </style>
 </head>
@@ -279,11 +152,9 @@
   <div class="wh-hero">
     <div>
       <h2>Wage History</h2>
-      <p>View, search and manage all your wage records.</p>
+      <p>View, search, edit and manage all your wage records.</p>
     </div>
-    <button class="wh-btn wh-refresh" id="whRefreshBtn" onclick="whLoadData()">
-      ↻ Refresh Data
-    </button>
+    <button class="wh-btn wh-refresh" id="whRefreshBtn" onclick="whLoadData()">↻ Refresh Data</button>
   </div>
 
   <div id="whMessage" class="wh-message"></div>
@@ -308,364 +179,408 @@
 
   <div class="wh-card">
     <h3 class="wh-card-title">Search & Filter</h3>
-
     <div class="wh-filters">
       <div class="wh-field">
         <label>Search</label>
-        <input type="text" id="whSearch"
-          placeholder="Company, Wage ID, Transaction ID..."
-          oninput="whApplyFilters()">
+        <input id="whSearch" placeholder="Company, Wage ID, Transaction ID..." oninput="whApplyFilters()">
       </div>
-
       <div class="wh-field">
         <label>From Date</label>
         <input type="date" id="whFromDate" onchange="whApplyFilters()">
       </div>
-
       <div class="wh-field">
         <label>To Date</label>
         <input type="date" id="whToDate" onchange="whApplyFilters()">
       </div>
-
       <div class="wh-field">
         <label>Currency</label>
         <select id="whCurrency" onchange="whApplyFilters()">
           <option value="">All Currencies</option>
         </select>
       </div>
-
       <button class="wh-clear" onclick="whClearFilters()">Clear Filter</button>
     </div>
   </div>
 
   <div class="wh-card">
     <h3 class="wh-card-title">All Wage Records</h3>
-
     <div class="wh-table-wrap">
       <table>
         <thead>
           <tr>
-            <th>SL</th>
-            <th>Company / Wage ID</th>
-            <th>Wage Amount</th>
-            <th>Currency</th>
-            <th>Transaction ID</th>
-            <th>Date</th>
-            <th>Comment</th>
-            <th>Action</th>
+            <th>SL</th><th>Company / Wage ID</th><th>Wage Amount</th>
+            <th>Currency</th><th>Transaction ID</th><th>Date</th>
+            <th>Comment</th><th>Actions</th>
           </tr>
         </thead>
         <tbody id="whTableBody">
-          <tr>
-            <td colspan="8" class="wh-loading">Loading wage history...</td>
-          </tr>
+          <tr><td colspan="8" class="wh-loading">Loading wage history...</td></tr>
         </tbody>
       </table>
     </div>
-
     <div class="wh-footer">
       <span id="whShowing">Showing 0 records</span>
       <span>WAGE HISTORY</span>
     </div>
   </div>
 
+  <!-- Edit Wage Modal -->
+  <div class="wh-modal" id="whEditModal">
+    <div class="wh-modal-box">
+      <div class="wh-modal-head">
+        <h3>Edit Wage Record</h3>
+        <button class="wh-close" onclick="whCloseEdit()">×</button>
+      </div>
+
+      <form id="whEditForm" onsubmit="whSaveEdit(event)">
+        <input type="hidden" id="whEditWageId">
+
+        <div class="wh-form-grid">
+          <div class="wh-field full">
+            <label>Company Name</label>
+            <input id="whEditCompany" type="text" placeholder="Company Name">
+          </div>
+          <div class="wh-field">
+            <label>Wage Amount *</label>
+            <input id="whEditAmount" type="number" min="0.01" step="any" required>
+          </div>
+          <div class="wh-field">
+            <label>Wage Currency *</label>
+            <select id="whEditCurrency" required>
+              <option value="">Select Currency</option>
+            </select>
+          </div>
+          <div class="wh-field">
+            <label>Transaction ID</label>
+            <input id="whEditTransaction" type="text">
+          </div>
+          <div class="wh-field">
+            <label>Date *</label>
+            <input id="whEditDate" type="date" required>
+          </div>
+          <div class="wh-field full">
+            <label>Comment</label>
+            <input id="whEditComment" type="text" placeholder="Optional comment">
+          </div>
+        </div>
+
+        <div class="wh-modal-actions">
+          <button type="button" class="wh-cancel" onclick="whCloseEdit()">Cancel</button>
+          <button type="submit" class="wh-save" id="whSaveBtn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <script>
-(function () {
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
+(function(){
+  const API_URL = "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
 
   let whAllWages = [];
   let whFilteredWages = [];
+  let whCurrencies = [];
 
-  function whValue(obj, keys) {
+  function val(obj, keys) {
     for (const key of keys) {
-      if (obj && obj[key] !== undefined && obj[key] !== null) {
-        return obj[key];
-      }
+      if (obj && obj[key] !== undefined && obj[key] !== null) return obj[key];
     }
     return "";
   }
 
-  function whEscape(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (char) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[char];
-    });
+  function esc(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[c]);
   }
 
-  function whAmount(wage) {
-    return Number(whValue(wage, ["wageAmount", "amount", "Wage Amount"])) || 0;
+  function amount(w) {
+    return Number(val(w,["wageAmount","amount","Wage Amount"])) || 0;
   }
 
-  function whCurrency(wage) {
-    return String(whValue(wage, [
-      "wageCurrency", "currencyCode", "currency", "Wage Currency"
-    ]) || "");
+  function currency(w) {
+    return String(val(w,["wageCurrency","currencyCode","currency","Wage Currency"]) || "");
   }
 
-  function whSymbol(wage) {
-    return String(whValue(wage, [
-      "currencySymbol", "symbol", "Currency Symbol"
-    ]) || "");
+  function symbol(w) {
+    return String(val(w,["currencySymbol","symbol","Currency Symbol"]) || "");
   }
 
-  function whDate(wage) {
-    return String(whValue(wage, ["date", "Date"]) || "").slice(0, 10);
+  function dateOf(w) {
+    return String(val(w,["date","Date"]) || "").slice(0,10);
   }
 
-  function whDateDisplay(date) {
+  function dateDisplay(date) {
     if (!date) return "—";
-    const d = new Date(date + "T00:00:00");
-    if (isNaN(d.getTime())) return date;
-    return d.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+    const d = new Date(date+"T00:00:00");
+    return isNaN(d.getTime()) ? date : d.toLocaleDateString("en-GB",{
+      day:"2-digit",month:"short",year:"numeric"
     });
   }
 
-  function whShowMessage(message, type) {
-    const box = document.getElementById("whMessage");
-    if (!box) return;
-    box.textContent = message;
-    box.className = "wh-message " + type;
-
-    setTimeout(function () {
-      if (box) box.className = "wh-message";
-    }, 4000);
+  function message(msg,type) {
+    const el = document.getElementById("whMessage");
+    el.textContent = msg;
+    el.className = "wh-message "+type;
+    setTimeout(()=>el.className="wh-message",4000);
   }
 
-  function whUpdateStats(data) {
-    const total = data.length;
-    const totalAmount = data.reduce((sum, wage) => sum + whAmount(wage), 0);
-
-    const sorted = [...data].sort((a, b) =>
-      whDate(b).localeCompare(whDate(a))
-    );
-
-    document.getElementById("whTotalRecords").textContent =
-      total.toLocaleString();
-
-    document.getElementById("whTotalAmount").textContent =
-      totalAmount.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      });
-
-    document.getElementById("whLatestDate").textContent =
-      sorted.length ? whDateDisplay(whDate(sorted[0])) : "—";
+  function currencyId(c) {
+    return String(val(c,["currencyId","id","Currency ID"]) || "");
   }
 
-  function whBuildCurrencyOptions() {
-    const select = document.getElementById("whCurrency");
-    const selected = select.value;
+  function currencyCode(c) {
+    return String(val(c,["currencyCode","code","Currency Code"]) || "");
+  }
 
-    const currencies = [...new Set(
-      whAllWages.map(whCurrency).filter(Boolean)
-    )].sort();
+  function currencySymbol(c) {
+    return String(val(c,["currencySymbol","symbol","Currency Symbol"]) || "");
+  }
 
-    select.innerHTML = '<option value="">All Currencies</option>';
+  function currencyName(c) {
+    return String(val(c,["currencyName","name","Currency Name"]) || "");
+  }
 
-    currencies.forEach(currency => {
-      const option = document.createElement("option");
-      option.value = currency;
-      option.textContent = currency;
-      select.appendChild(option);
+  function buildCurrencyOptions() {
+    const filter = document.getElementById("whCurrency");
+    const oldFilter = filter.value;
+    const unique = [...new Set(whAllWages.map(currency).filter(Boolean))];
+
+    filter.innerHTML = '<option value="">All Currencies</option>';
+    unique.sort().forEach(code=>{
+      const op=document.createElement("option");
+      op.value=code;op.textContent=code;filter.appendChild(op);
     });
+    filter.value=unique.includes(oldFilter)?oldFilter:"";
 
-    select.value = currencies.includes(selected) ? selected : "";
+    const edit = document.getElementById("whEditCurrency");
+    edit.innerHTML = '<option value="">Select Currency</option>';
+
+    whCurrencies.forEach(c=>{
+      const id=currencyId(c);
+      const code=currencyCode(c);
+      if (!id || !code) return;
+      const op=document.createElement("option");
+      op.value=id;
+      op.textContent=code+" — "+(currencyName(c)||code);
+      op.dataset.code=code;
+      op.dataset.symbol=currencySymbol(c);
+      edit.appendChild(op);
+    });
   }
 
-  function whRenderTable(data) {
-    const tbody = document.getElementById("whTableBody");
+  function updateStats(data) {
+    document.getElementById("whTotalRecords").textContent=data.length.toLocaleString();
+    const total=data.reduce((sum,w)=>sum+amount(w),0);
+    document.getElementById("whTotalAmount").textContent=total.toLocaleString(undefined,{maximumFractionDigits:2});
+
+    const sorted=[...data].sort((a,b)=>dateOf(b).localeCompare(dateOf(a)));
+    document.getElementById("whLatestDate").textContent=sorted.length?dateDisplay(dateOf(sorted[0])):"—";
+  }
+
+  function render(data) {
+    const tbody=document.getElementById("whTableBody");
 
     if (!data.length) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" class="wh-empty">
-            No wage records found.
-          </td>
-        </tr>`;
-      document.getElementById("whShowing").textContent =
-        "Showing 0 records";
+      tbody.innerHTML='<tr><td colspan="8" class="wh-empty">No wage records found.</td></tr>';
+      document.getElementById("whShowing").textContent="Showing 0 records";
       return;
     }
 
-    tbody.innerHTML = data.map((wage, index) => {
-      const wageId = whValue(wage, ["wageId", "Wage ID"]);
-      const company = whValue(wage, [
-        "companyName", "Company Name"
-      ]) || "Unnamed";
-
-      const transaction = whValue(wage, [
-        "transactionId", "Transaction ID"
-      ]) || "—";
-
-      const comment = whValue(wage, ["comment", "Comment"]) || "—";
-      const amount = whAmount(wage);
-      const currency = whCurrency(wage);
-      const symbol = whSymbol(wage);
-      const date = whDate(wage);
-
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <div class="wh-company">${whEscape(company)}</div>
-            <div class="wh-sub">${whEscape(wageId || "—")}</div>
-          </td>
-          <td>
-            <span class="wh-amount">
-              ${whEscape(symbol)}${amount.toLocaleString(undefined, {
-                maximumFractionDigits: 2
-              })}
-            </span>
-          </td>
-          <td>${whEscape(currency || "—")}</td>
-          <td>${whEscape(transaction)}</td>
-          <td>${whEscape(whDateDisplay(date))}</td>
-          <td>${whEscape(comment)}</td>
-          <td>
-            <button class="wh-delete"
-              onclick="whDeleteWage('${whEscape(String(wageId))}')">
-              Delete
-            </button>
-          </td>
-        </tr>`;
+    tbody.innerHTML=data.map((w,i)=>{
+      const company=val(w,["companyName","Company Name"])||"Unnamed";
+      const id=val(w,["wageId","Wage ID"]);
+      const transaction=val(w,["transactionId","Transaction ID"])||"—";
+      const comment=val(w,["comment","Comment"])||"—";
+      return `<tr>
+        <td>${i+1}</td>
+        <td><div class="wh-company">${esc(company)}</div><div class="wh-sub">${esc(id||"—")}</div></td>
+        <td><span class="wh-amount">${esc(symbol(w))}${amount(w).toLocaleString(undefined,{maximumFractionDigits:2})}</span></td>
+        <td>${esc(currency(w)||"—")}</td>
+        <td>${esc(transaction)}</td>
+        <td>${esc(dateDisplay(dateOf(w)))}</td>
+        <td>${esc(comment)}</td>
+        <td><div class="wh-actions">
+          <button class="wh-edit" onclick="whOpenEdit(${i})">Edit</button>
+          <button class="wh-delete" onclick="whDeleteWage(${i})">Delete</button>
+        </div></td>
+      </tr>`;
     }).join("");
 
-    document.getElementById("whShowing").textContent =
-      "Showing " + data.length + " of " + whAllWages.length + " records";
+    document.getElementById("whShowing").textContent=
+      "Showing "+data.length+" of "+whAllWages.length+" records";
   }
 
-  window.whApplyFilters = function () {
-    const search = document.getElementById("whSearch").value
-      .trim().toLowerCase();
+  window.whApplyFilters=function(){
+    const search=document.getElementById("whSearch").value.trim().toLowerCase();
+    const from=document.getElementById("whFromDate").value;
+    const to=document.getElementById("whToDate").value;
+    const cur=document.getElementById("whCurrency").value;
 
-    const from = document.getElementById("whFromDate").value;
-    const to = document.getElementById("whToDate").value;
-    const currency = document.getElementById("whCurrency").value;
-
-    whFilteredWages = whAllWages.filter(wage => {
-      const company = whValue(wage, ["companyName", "Company Name"]);
-      const wageId = whValue(wage, ["wageId", "Wage ID"]);
-      const transaction = whValue(wage, ["transactionId", "Transaction ID"]);
-      const comment = whValue(wage, ["comment", "Comment"]);
-      const date = whDate(wage);
-
-      const searchText = [
-        company, wageId, transaction, comment,
-        whCurrency(wage), whAmount(wage)
+    whFilteredWages=whAllWages.filter(w=>{
+      const text=[
+        val(w,["companyName","Company Name"]),
+        val(w,["wageId","Wage ID"]),
+        val(w,["transactionId","Transaction ID"]),
+        val(w,["comment","Comment"]),currency(w),amount(w)
       ].join(" ").toLowerCase();
 
-      if (search && !searchText.includes(search)) return false;
-      if (from && date < from) return false;
-      if (to && date > to) return false;
-      if (currency && whCurrency(wage) !== currency) return false;
-
-      return true;
+      const d=dateOf(w);
+      return (!search||text.includes(search)) &&
+        (!from||d>=from) && (!to||d<=to) && (!cur||currency(w)===cur);
     });
 
-    whUpdateStats(whFilteredWages);
-    whRenderTable(whFilteredWages);
+    updateStats(whFilteredWages);
+    render(whFilteredWages);
   };
 
-  window.whClearFilters = function () {
-    document.getElementById("whSearch").value = "";
-    document.getElementById("whFromDate").value = "";
-    document.getElementById("whToDate").value = "";
-    document.getElementById("whCurrency").value = "";
+  window.whClearFilters=function(){
+    ["whSearch","whFromDate","whToDate","whCurrency"].forEach(id=>{
+      document.getElementById(id).value="";
+    });
     window.whApplyFilters();
   };
 
-  window.whLoadData = async function () {
-    const tbody = document.getElementById("whTableBody");
-    const button = document.getElementById("whRefreshBtn");
+  async function loadCurrencies(){
+    try {
+      const r=await fetch(API_URL+"?api=currencies",{cache:"no-store"});
+      const data=await r.json();
+      if(data.success && Array.isArray(data.currencies)) whCurrencies=data.currencies;
+    } catch(e) {
+      console.warn("Could not load currencies",e);
+    }
+  }
 
-    tbody.innerHTML = `
-      <tr><td colspan="8" class="wh-loading">Loading wage history...</td></tr>`;
-
-    button.disabled = true;
-    button.textContent = "Loading...";
+  window.whLoadData=async function(){
+    const tbody=document.getElementById("whTableBody");
+    const btn=document.getElementById("whRefreshBtn");
+    tbody.innerHTML='<tr><td colspan="8" class="wh-loading">Loading wage history...</td></tr>';
+    btn.disabled=true;btn.textContent="Loading...";
 
     try {
-      const response = await fetch(API_URL + "?api=wages", {
-        method: "GET",
-        cache: "no-store"
-      });
+      const [wageResponse]=await Promise.all([
+        fetch(API_URL+"?api=wages",{cache:"no-store"}),
+        loadCurrencies()
+      ]);
+      if(!wageResponse.ok) throw new Error("Server error: "+wageResponse.status);
 
-      if (!response.ok) {
-        throw new Error("Server error: " + response.status);
-      }
+      const result=await wageResponse.json();
+      if(!result.success) throw new Error(result.message||"Could not load wages.");
 
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.message || "Could not load wage history.");
-      }
-
-      whAllWages = Array.isArray(result.wages) ? result.wages : [];
-
-      whBuildCurrencyOptions();
+      whAllWages=Array.isArray(result.wages)?result.wages:[];
+      buildCurrencyOptions();
       window.whApplyFilters();
-
-    } catch (error) {
-      console.error("Wage History Error:", error);
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" class="wh-empty">
-            Failed to load wage history. Please refresh and try again.
-          </td>
-        </tr>`;
-      whShowMessage(error.message || "Failed to load data.", "error");
+    } catch(e) {
+      console.error(e);
+      tbody.innerHTML='<tr><td colspan="8" class="wh-empty">Failed to load wage history.</td></tr>';
+      message(e.message||"Failed to load data.","error");
     } finally {
-      button.disabled = false;
-      button.textContent = "↻ Refresh Data";
+      btn.disabled=false;btn.textContent="↻ Refresh Data";
     }
   };
 
-  window.whDeleteWage = async function (wageId) {
-    if (!wageId) {
-      whShowMessage("Wage ID not found.", "error");
+  window.whOpenEdit=function(index){
+    const w=whFilteredWages[index];
+    if(!w) return;
+
+    const id=val(w,["wageId","Wage ID"]);
+    document.getElementById("whEditWageId").value=id;
+    document.getElementById("whEditCompany").value=val(w,["companyName","Company Name"]);
+    document.getElementById("whEditAmount").value=amount(w);
+    document.getElementById("whEditTransaction").value=val(w,["transactionId","Transaction ID"]);
+    document.getElementById("whEditDate").value=dateOf(w);
+    document.getElementById("whEditComment").value=val(w,["comment","Comment"]);
+
+    const select=document.getElementById("whEditCurrency");
+    const currentCode=currency(w);
+    const match=whCurrencies.find(c=>currencyCode(c)===currentCode);
+    select.value=match?currencyId(match):"";
+
+    if(!select.value) {
+      message("This wage's currency is not available in the active currency list. Check Currency settings.","error");
       return;
     }
 
-    if (!confirm("Are you sure you want to delete this wage record? It will be moved to Deleted Wage.")) {
+    document.getElementById("whEditModal").classList.add("show");
+  };
+
+  window.whCloseEdit=function(){
+    document.getElementById("whEditModal").classList.remove("show");
+  };
+
+  window.whSaveEdit=async function(event){
+    event.preventDefault();
+
+    const wageId=document.getElementById("whEditWageId").value;
+    const currencySelect=document.getElementById("whEditCurrency");
+    const selected=currencySelect.options[currencySelect.selectedIndex];
+
+    const payload={
+      action:"editWage",
+      wageId:wageId,
+      companyName:document.getElementById("whEditCompany").value.trim(),
+      amount:Number(document.getElementById("whEditAmount").value),
+      currencyId:currencySelect.value,
+      transactionId:document.getElementById("whEditTransaction").value.trim(),
+      date:document.getElementById("whEditDate").value,
+      comment:document.getElementById("whEditComment").value.trim()
+    };
+
+    if(!payload.wageId||!payload.currencyId||!payload.date||!payload.amount||payload.amount<=0){
+      message("Please fill in all required fields correctly.","error");
       return;
     }
+
+    const btn=document.getElementById("whSaveBtn");
+    btn.disabled=true;btn.textContent="Saving...";
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          action: "deleteWage",
-          wageId: wageId
-        })
+      const response=await fetch(API_URL,{
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(payload)
       });
+      const result=await response.json();
 
-      const result = await response.json();
+      if(!result.success) throw new Error(result.message||"Could not update wage.");
 
-      if (!result.success) {
-        throw new Error(result.message || "Delete failed.");
-      }
-
-      whShowMessage("Wage record moved to Deleted Wage successfully.", "success");
+      whCloseEdit();
+      message("Wage record updated successfully.","success");
       await window.whLoadData();
-
-    } catch (error) {
-      console.error("Delete Wage Error:", error);
-      whShowMessage(error.message || "Could not delete wage record.", "error");
+    } catch(e) {
+      console.error(e);
+      message(e.message||"Update failed.","error");
+    } finally {
+      btn.disabled=false;btn.textContent="Save Changes";
     }
   };
+
+  window.whDeleteWage=async function(index){
+    const w=whFilteredWages[index];
+    if(!w) return;
+    const wageId=val(w,["wageId","Wage ID"]);
+    if(!confirm("Delete this wage record? It will be moved to Deleted Wage.")) return;
+
+    try {
+      const response=await fetch(API_URL,{
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify({action:"deleteWage",wageId:wageId})
+      });
+      const result=await response.json();
+      if(!result.success) throw new Error(result.message||"Delete failed.");
+
+      message("Wage moved to Deleted Wage successfully.","success");
+      await window.whLoadData();
+    } catch(e) {
+      message(e.message||"Could not delete wage.","error");
+    }
+  };
+
+  document.getElementById("whEditModal").addEventListener("click",function(e){
+    if(e.target===this) window.whCloseEdit();
+  });
 
   window.whLoadData();
 })();
