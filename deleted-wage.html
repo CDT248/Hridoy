@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,192 +6,294 @@
 <title>Wage Delete History</title>
 
 <style>
-#deletedWagePage {
-  width: 100%;
-  color: var(--text, #172033);
-  font-family: inherit;
+#deletedWagePage{
+  width:100%;
+  color:var(--text,#172033);
+  font-family:inherit;
 }
-#deletedWagePage * { box-sizing: border-box; }
+#deletedWagePage *{box-sizing:border-box;}
+#deletedWagePage button{font-family:inherit;cursor:pointer;}
 
-#deletedWagePage .page-header {
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;flex-wrap:wrap;margin-bottom:22px;
+#deletedWagePage .dw-header{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:20px;
 }
-#deletedWagePage .page-title h2 {
-  font-size:23px;margin:0 0 6px;font-weight:750;
+#deletedWagePage .dw-heading h2{
+  font-size:22px;font-weight:800;margin:0 0 5px;
 }
-#deletedWagePage .page-title p {
-  margin:0;color:var(--muted,#8490a3);font-size:13px;
+#deletedWagePage .dw-heading p{
+  font-size:12px;color:var(--muted,#8490a3);margin:0;
 }
-#deletedWagePage .header-actions {display:flex;gap:9px;flex-wrap:wrap;}
-#deletedWagePage button {font-family:inherit;cursor:pointer;}
-#deletedWagePage .btn {
-  border:1px solid var(--border,#e8edf3);border-radius:9px;
-  padding:10px 15px;font-size:13px;font-weight:650;
+#deletedWagePage .dw-btn{
+  border:1px solid var(--border,#e8edf3);
   background:var(--card,#fff);color:var(--text,#172033);
-  transition:.2s;
+  border-radius:9px;padding:10px 14px;
+  font-size:12px;font-weight:700;transition:.2s;
 }
-#deletedWagePage .btn:hover {
-  transform:translateY(-1px);background:var(--hover,#f1f8f5);
-}
-#deletedWagePage .btn-primary {
+#deletedWagePage .dw-btn:hover{opacity:.85;}
+#deletedWagePage .dw-primary{
   background:var(--primary,#087f5b);color:#fff;
   border-color:var(--primary,#087f5b);
 }
-#deletedWagePage .btn-danger {
-  color:#dc2626;border-color:#fecaca;background:#fff5f5;
+#deletedWagePage .dw-success{
+  background:#ecfdf5;color:#047857;border-color:#a7f3d0;
 }
-#deletedWagePage .btn-success {
-  color:#087f5b;border-color:#a7f3d0;background:#ecfdf5;
+#deletedWagePage .dw-danger{
+  background:#fff1f2;color:#dc2626;border-color:#fecaca;
 }
 
-#deletedWagePage .stats-grid {
+#deletedWagePage .dw-stats{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;margin-bottom:20px;
+  gap:13px;margin-bottom:20px;
 }
-#deletedWagePage .stat-card {
+#deletedWagePage .dw-stat{
   background:var(--card,#fff);border:1px solid var(--border,#e8edf3);
-  border-radius:13px;padding:18px;min-width:0;
+  border-radius:13px;padding:16px;min-width:0;
 }
-#deletedWagePage .stat-label {
-  color:var(--muted,#8490a3);font-size:12px;margin-bottom:10px;
+#deletedWagePage .dw-stat-icon{font-size:21px;margin-bottom:9px;}
+#deletedWagePage .dw-stat-label{
+  color:var(--muted,#8490a3);font-size:11px;margin-bottom:7px;
 }
-#deletedWagePage .stat-value {
-  font-size:23px;font-weight:750;overflow-wrap:anywhere;
+#deletedWagePage .dw-stat-value{
+  font-size:22px;font-weight:800;overflow-wrap:anywhere;
 }
-#deletedWagePage .stat-icon {font-size:20px;margin-bottom:10px;}
-
-#deletedWagePage .content-card {
+#deletedWagePage .dw-content{
   background:var(--card,#fff);border:1px solid var(--border,#e8edf3);
   border-radius:13px;overflow:hidden;
 }
-#deletedWagePage .content-top {
-  padding:17px;display:flex;justify-content:space-between;
+#deletedWagePage .dw-content-head{
+  padding:16px;display:flex;justify-content:space-between;
   align-items:center;gap:12px;flex-wrap:wrap;
   border-bottom:1px solid var(--border,#e8edf3);
 }
-#deletedWagePage .content-top h3 {margin:0;font-size:16px;}
-#deletedWagePage .search-box {width:min(100%,300px);}
-#deletedWagePage .search-box input {
+#deletedWagePage .dw-content-head h3{margin:0;font-size:15px;font-weight:800;}
+#deletedWagePage .dw-search{width:min(100%,300px);}
+#deletedWagePage .dw-search input{
   width:100%;padding:11px 13px;border:1px solid var(--border,#e8edf3);
-  border-radius:9px;outline:none;color:var(--text,#172033);
-  background:var(--bg,#f5f7fb);font-family:inherit;font-size:13px;
+  border-radius:9px;outline:none;background:var(--bg,#f5f7fb);
+  color:var(--text,#172033);font-family:inherit;font-size:13px;
 }
-#deletedWagePage .search-box input:focus {
-  border-color:var(--primary,#087f5b);
-}
-#deletedWagePage .table-wrap {width:100%;overflow-x:auto;}
-#deletedWagePage table {
-  width:100%;border-collapse:collapse;min-width:850px;
-}
-#deletedWagePage th {
-  text-align:left;padding:13px 15px;
+#deletedWagePage .dw-search input:focus{border-color:var(--primary,#087f5b);}
+
+#deletedWagePage .dw-table-wrap{width:100%;overflow-x:auto;}
+#deletedWagePage .dw-table{width:100%;border-collapse:collapse;min-width:850px;}
+#deletedWagePage .dw-table th{
   background:var(--bg,#f5f7fb);color:var(--muted,#8490a3);
-  font-size:11px;font-weight:750;text-transform:uppercase;white-space:nowrap;
+  font-size:10px;text-transform:uppercase;text-align:left;
+  padding:13px;white-space:nowrap;
 }
-#deletedWagePage td {
-  padding:14px 15px;border-top:1px solid var(--border,#e8edf3);
-  font-size:13px;vertical-align:middle;
+#deletedWagePage .dw-table td{
+  padding:13px;border-top:1px solid var(--border,#e8edf3);
+  font-size:12px;vertical-align:middle;
 }
-#deletedWagePage tbody tr:hover {background:var(--hover,#f1f8f5);}
-#deletedWagePage .amount {font-weight:750;white-space:nowrap;}
-#deletedWagePage .wage-id {
-  font-weight:700;color:var(--primary,#087f5b);
+#deletedWagePage .dw-table tr:hover{background:var(--hover,#f1f8f5);}
+#deletedWagePage .dw-id{color:var(--primary,#087f5b);font-weight:800;}
+#deletedWagePage .dw-amount{font-weight:800;white-space:nowrap;}
+#deletedWagePage .dw-badge{
+  display:inline-block;padding:5px 9px;border-radius:20px;
+  background:#fff1f2;color:#e11d48;font-size:10px;font-weight:800;
 }
-#deletedWagePage .deleted-badge {
-  display:inline-block;padding:5px 9px;background:#fff1f2;
-  color:#e11d48;border-radius:20px;font-size:10px;font-weight:750;
+#deletedWagePage .dw-actions{display:flex;align-items:center;gap:6px;}
+#deletedWagePage .dw-action{
+  padding:7px 9px;border-radius:7px;border:1px solid var(--border,#e8edf3);
+  background:var(--card,#fff);color:var(--text,#172033);
+  font-size:10px;font-weight:750;white-space:nowrap;
 }
-#deletedWagePage .action-group {
-  display:flex;gap:7px;align-items:center;
+#deletedWagePage .dw-action.restore{
+  color:#047857;background:#ecfdf5;border-color:#a7f3d0;
 }
-#deletedWagePage .action-btn {
-  padding:7px 10px;border-radius:7px;
+#deletedWagePage .dw-action.delete{
+  color:#dc2626;background:#fff1f2;border-color:#fecaca;
+}
+
+#deletedWagePage .dw-mobile-list{display:none;padding:12px;gap:11px;}
+#deletedWagePage .dw-card{
+  background:var(--bg,#f5f7fb);border:1px solid var(--border,#e8edf3);
+  border-radius:12px;padding:14px;min-width:0;
+}
+#deletedWagePage .dw-card-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:8px;margin-bottom:12px;
+}
+#deletedWagePage .dw-card-title{font-size:14px;font-weight:800;overflow-wrap:anywhere;}
+#deletedWagePage .dw-card-id{
+  color:var(--primary,#087f5b);font-size:10px;font-weight:750;margin-top:4px;
+}
+#deletedWagePage .dw-card-amount{
+  font-size:19px;font-weight:850;margin-bottom:12px;overflow-wrap:anywhere;
+}
+#deletedWagePage .dw-card-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;
+}
+#deletedWagePage .dw-card-info{min-width:0;}
+#deletedWagePage .dw-card-info small{
+  display:block;color:var(--muted,#8490a3);font-size:10px;margin-bottom:4px;
+}
+#deletedWagePage .dw-card-info strong{
+  display:block;font-size:11px;overflow-wrap:anywhere;
+}
+#deletedWagePage .dw-card-actions{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:7px;border-top:1px solid var(--border,#e8edf3);padding-top:12px;
+}
+#deletedWagePage .dw-card-actions button{
+  padding:9px 5px;border-radius:7px;font-size:10px;font-weight:750;
   border:1px solid var(--border,#e8edf3);
   background:var(--card,#fff);color:var(--text,#172033);
-  font-size:11px;font-weight:700;white-space:nowrap;
 }
-#deletedWagePage .action-btn.restore {
-  color:#087f5b;border-color:#a7f3d0;background:#ecfdf5;
+#deletedWagePage .dw-card-actions .restore{
+  color:#047857;background:#ecfdf5;border-color:#a7f3d0;
 }
-#deletedWagePage .action-btn.permanent {
-  color:#dc2626;border-color:#fecaca;background:#fff5f5;
+#deletedWagePage .dw-card-actions .delete{
+  color:#dc2626;background:#fff1f2;border-color:#fecaca;
 }
-#deletedWagePage .empty-state {
-  padding:55px 20px;text-align:center;color:var(--muted,#8490a3);
+#deletedWagePage .dw-empty{
+  text-align:center;padding:45px 15px;color:var(--muted,#8490a3);
 }
-#deletedWagePage .empty-icon {font-size:38px;margin-bottom:12px;}
-#deletedWagePage .empty-state h3 {
-  color:var(--text,#172033);margin:0 0 7px;font-size:16px;
+#deletedWagePage .dw-empty-icon{font-size:35px;margin-bottom:10px;}
+#deletedWagePage .dw-empty h3{
+  color:var(--text,#172033);font-size:15px;margin:0 0 6px;
 }
-#deletedWagePage .empty-state p {margin:0;font-size:13px;}
-#deletedWagePage .loading {
-  padding:45px 15px;text-align:center;color:var(--muted,#8490a3);
-  font-size:13px;
+#deletedWagePage .dw-empty p{font-size:12px;margin:0;}
+#deletedWagePage .dw-loading{
+  padding:35px 15px;text-align:center;color:var(--muted,#8490a3);font-size:12px;
 }
-#deletedWagePage .message {
-  display:none;margin-bottom:15px;padding:12px 14px;
-  border-radius:9px;font-size:13px;
+#deletedWagePage .dw-footer{
+  padding:13px 16px;border-top:1px solid var(--border,#e8edf3);
+  display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;
+  color:var(--muted,#8490a3);font-size:10px;
 }
-#deletedWagePage .message.success {
-  display:block;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;
+#deletedWagePage .dw-message{
+  display:none;margin-bottom:14px;padding:12px;border-radius:9px;font-size:12px;
 }
-#deletedWagePage .message.error {
-  display:block;background:#fff1f2;color:#be123c;border:1px solid #fecdd3;
+#deletedWagePage .dw-message.success{display:block;background:#ecfdf5;color:#047857;}
+#deletedWagePage .dw-message.error{display:block;background:#fff1f2;color:#be123c;}
+
+/* Professional popup system */
+#deletedWagePage .dw-popup-overlay{
+  display:none;position:fixed;inset:0;z-index:1000000;
+  background:rgba(8,15,30,.62);backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+  align-items:center;justify-content:center;padding:18px;
+  opacity:0;transition:opacity .2s ease;
 }
-#deletedWagePage .footer-info {
-  padding:13px 17px;border-top:1px solid var(--border,#e8edf3);
-  color:var(--muted,#8490a3);font-size:11px;
-  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+#deletedWagePage .dw-popup-overlay.show{
+  display:flex;opacity:1;
 }
-#deletedWagePage .modal-overlay {
-  display:none;position:fixed;inset:0;z-index:99999;
-  background:rgba(15,23,42,.55);align-items:center;
-  justify-content:center;padding:15px;
+#deletedWagePage .dw-popup{
+  width:100%;max-width:390px;
+  background:var(--card,#fff);color:var(--text,#172033);
+  border:1px solid var(--border,#e8edf3);
+  border-radius:19px;padding:25px 22px 21px;
+  text-align:center;
+  box-shadow:0 25px 80px rgba(0,0,0,.25);
+  transform:translateY(14px) scale(.97);
+  animation:dwPopupIn .25s ease forwards;
 }
-#deletedWagePage .modal-overlay.show {display:flex;}
-#deletedWagePage .modal {
-  width:100%;max-width:480px;background:var(--card,#fff);
-  color:var(--text,#172033);border-radius:15px;padding:22px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
+@keyframes dwPopupIn{
+  to{transform:translateY(0) scale(1);}
 }
-#deletedWagePage .modal h3 {margin:0 0 7px;font-size:18px;}
-#deletedWagePage .modal p {
-  color:var(--muted,#8490a3);font-size:13px;line-height:1.6;
-  margin:0 0 18px;
+#deletedWagePage .dw-popup-icon{
+  width:66px;height:66px;border-radius:50%;
+  margin:0 auto 16px;display:flex;align-items:center;
+  justify-content:center;font-size:29px;
 }
-#deletedWagePage .modal-actions {
-  display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;
+#deletedWagePage .dw-popup-icon.warning{
+  background:#fff7ed;color:#ea580c;
 }
-#deletedWagePage .detail-grid {
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:13px;margin-bottom:20px;
+#deletedWagePage .dw-popup-icon.restore{
+  background:#ecfdf5;color:#059669;
 }
-#deletedWagePage .detail-item {
-  padding:12px;border:1px solid var(--border,#e8edf3);
-  border-radius:9px;min-width:0;
+#deletedWagePage .dw-popup-icon.danger{
+  background:#fff1f2;color:#e11d48;
 }
-#deletedWagePage .detail-item small {
-  display:block;color:var(--muted,#8490a3);font-size:10px;margin-bottom:6px;
+#deletedWagePage .dw-popup-icon.success{
+  background:#ecfdf5;color:#059669;
 }
-#deletedWagePage .detail-item strong {
+#deletedWagePage .dw-popup-icon.error{
+  background:#fff1f2;color:#e11d48;
+}
+#deletedWagePage .dw-popup h3{
+  font-size:19px;font-weight:850;margin:0 0 9px;
+}
+#deletedWagePage .dw-popup-description{
+  color:var(--muted,#8490a3);font-size:12px;
+  line-height:1.7;margin:0 0 18px;
+}
+#deletedWagePage .dw-popup-record{
+  background:var(--bg,#f5f7fb);border:1px solid var(--border,#e8edf3);
+  border-radius:11px;padding:12px;margin-bottom:19px;text-align:left;
+}
+#deletedWagePage .dw-popup-record small{
+  display:block;color:var(--muted,#8490a3);font-size:10px;margin-bottom:5px;
+}
+#deletedWagePage .dw-popup-record strong{
   display:block;font-size:13px;overflow-wrap:anywhere;
 }
-#deletedWagePage .spinner {
-  display:inline-block;width:14px;height:14px;
+#deletedWagePage .dw-popup-buttons{
+  display:flex;gap:9px;
+}
+#deletedWagePage .dw-popup-buttons button{
+  flex:1;padding:12px 10px;border-radius:9px;
+  border:1px solid var(--border,#e8edf3);
+  font-size:12px;font-weight:800;
+}
+#deletedWagePage .dw-popup-cancel{
+  background:var(--bg,#f5f7fb);color:var(--text,#172033);
+}
+#deletedWagePage .dw-popup-confirm{
+  background:#e11d48;color:#fff;border-color:#e11d48;
+}
+#deletedWagePage .dw-popup-confirm.restore{
+  background:#059669;border-color:#059669;
+}
+#deletedWagePage .dw-popup-ok{
+  width:100%;padding:12px;border:0;border-radius:9px;
+  background:var(--primary,#087f5b);color:#fff;
+  font-size:12px;font-weight:800;
+}
+#deletedWagePage .dw-popup-loader{
+  width:24px;height:24px;border:3px solid #d1fae5;
+  border-top-color:#059669;border-radius:50%;
+  animation:dwSpin .7s linear infinite;margin:0 auto 15px;
+}
+@keyframes dwSpin{to{transform:rotate(360deg);}}
+#deletedWagePage .dw-detail-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;
+}
+#deletedWagePage .dw-detail{
+  border:1px solid var(--border,#e8edf3);padding:11px;border-radius:8px;
+  min-width:0;text-align:left;
+}
+#deletedWagePage .dw-detail small{
+  display:block;color:var(--muted,#8490a3);font-size:10px;margin-bottom:5px;
+}
+#deletedWagePage .dw-detail strong{
+  font-size:12px;overflow-wrap:anywhere;display:block;
+}
+#deletedWagePage .dw-spinner{
+  display:inline-block;width:13px;height:13px;
   border:2px solid currentColor;border-right-color:transparent;
   border-radius:50%;animation:dwSpin .7s linear infinite;
   vertical-align:middle;margin-right:5px;
 }
-@keyframes dwSpin {to{transform:rotate(360deg);}}
 
-@media(max-width:700px) {
-  #deletedWagePage .stats-grid {grid-template-columns:1fr 1fr;}
-  #deletedWagePage .stats-grid .stat-card:last-child {grid-column:span 2;}
-  #deletedWagePage .page-title h2 {font-size:20px;}
-  #deletedWagePage .header-actions {width:100%;}
-  #deletedWagePage .header-actions .btn {flex:1;}
-  #deletedWagePage .detail-grid {grid-template-columns:1fr;}
+@media(max-width:700px){
+  #deletedWagePage .dw-stats{grid-template-columns:1fr 1fr;gap:9px;}
+  #deletedWagePage .dw-stat{padding:13px;}
+  #deletedWagePage .dw-stat:last-child{grid-column:span 2;}
+  #deletedWagePage .dw-stat-value{font-size:19px;}
+  #deletedWagePage .dw-heading h2{font-size:19px;}
+  #deletedWagePage .dw-search{width:100%;}
+  #deletedWagePage .dw-content-head{align-items:stretch;}
+  #deletedWagePage .dw-table-wrap{display:none;}
+  #deletedWagePage .dw-mobile-list{display:grid;}
+  #deletedWagePage .dw-detail-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:360px){
+  #deletedWagePage .dw-stat-value{font-size:17px;}
+  #deletedWagePage .dw-card{padding:11px;}
+  #deletedWagePage .dw-popup{padding:21px 16px 17px;}
 }
 </style>
 </head>
@@ -200,475 +301,502 @@
 <body>
 <div id="deletedWagePage">
 
-  <div class="page-header">
-    <div class="page-title">
+  <div class="dw-header">
+    <div class="dw-heading">
       <h2>🗑️ Wage Delete History</h2>
-      <p>View, restore or permanently remove deleted wage records.</p>
+      <p>Manage your deleted wage records</p>
     </div>
-    <div class="header-actions">
-      <button class="btn" id="dwRefreshBtn" type="button">↻ Refresh</button>
+    <button class="dw-btn" id="dwRefreshBtn" type="button">↻ Refresh</button>
+  </div>
+
+  <div class="dw-message" id="dwMessage"></div>
+
+  <div class="dw-stats">
+    <div class="dw-stat">
+      <div class="dw-stat-icon">🗑️</div>
+      <div class="dw-stat-label">Deleted Wages</div>
+      <div class="dw-stat-value" id="dwTotal">0</div>
+    </div>
+    <div class="dw-stat">
+      <div class="dw-stat-icon">💰</div>
+      <div class="dw-stat-label">Total Deleted Amount</div>
+      <div class="dw-stat-value" id="dwAmount">0</div>
+    </div>
+    <div class="dw-stat">
+      <div class="dw-stat-icon">♻️</div>
+      <div class="dw-stat-label">Available Actions</div>
+      <div class="dw-stat-value" style="font-size:15px;">Restore / Delete</div>
     </div>
   </div>
 
-  <div id="dwMessage" class="message"></div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">🗑️</div>
-      <div class="stat-label">Deleted Wages</div>
-      <div class="stat-value" id="dwTotal">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-label">Total Deleted Amount</div>
-      <div class="stat-value" id="dwAmount">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">♻️</div>
-      <div class="stat-label">Available Actions</div>
-      <div class="stat-value" id="dwActions">Restore / Delete</div>
-    </div>
-  </div>
-
-  <div class="content-card">
-    <div class="content-top">
+  <div class="dw-content">
+    <div class="dw-content-head">
       <h3>Deleted Wage Records</h3>
-      <div class="search-box">
+      <div class="dw-search">
         <input type="search" id="dwSearch"
-          placeholder="Search company, ID, transaction..."
+          placeholder="🔍 Search wage, company, transaction..."
           autocomplete="off">
       </div>
     </div>
 
-    <div class="table-wrap">
-      <table>
+    <div class="dw-table-wrap">
+      <table class="dw-table">
         <thead>
           <tr>
-            <th>Wage ID</th>
-            <th>Company Name</th>
-            <th>Amount</th>
-            <th>Transaction ID</th>
-            <th>Date</th>
-            <th>Comment</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Wage ID</th><th>Company Name</th><th>Amount</th>
+            <th>Transaction ID</th><th>Date</th><th>Comment</th>
+            <th>Status</th><th>Actions</th>
           </tr>
         </thead>
         <tbody id="dwTableBody">
-          <tr><td colspan="8"><div class="loading">Loading deleted wages...</div></td></tr>
+          <tr><td colspan="8"><div class="dw-loading">Loading...</div></td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="footer-info">
+    <div class="dw-mobile-list" id="dwMobileList">
+      <div class="dw-loading">Loading deleted wages...</div>
+    </div>
+
+    <div class="dw-footer">
       <span id="dwResultCount">Showing 0 records</span>
-      <span>Deleted Wage History</span>
+      <span>Wage Delete History</span>
     </div>
   </div>
 
-  <div class="modal-overlay" id="dwDetailsModal">
-    <div class="modal">
+  <!-- Details Popup -->
+  <div class="dw-popup-overlay" id="dwDetailsModal">
+    <div class="dw-popup">
+      <div class="dw-popup-icon warning">📋</div>
       <h3>Wage Details</h3>
-      <p>Full information about this deleted wage.</p>
-      <div class="detail-grid" id="dwDetailGrid"></div>
-      <div class="modal-actions">
-        <button class="btn" type="button" id="dwCloseDetails">Close</button>
+      <p class="dw-popup-description">Complete information about this wage.</p>
+      <div class="dw-detail-grid" id="dwDetailGrid"></div>
+      <button class="dw-popup-ok" id="dwCloseDetails" type="button">Close</button>
+    </div>
+  </div>
+
+  <!-- Confirmation Popup -->
+  <div class="dw-popup-overlay" id="dwConfirmModal">
+    <div class="dw-popup">
+      <div class="dw-popup-icon danger" id="dwConfirmIcon">🗑️</div>
+      <h3 id="dwConfirmTitle">Are you sure?</h3>
+      <p class="dw-popup-description" id="dwConfirmText"></p>
+
+      <div class="dw-popup-record">
+        <small>Selected Wage</small>
+        <strong id="dwConfirmRecord">—</strong>
+      </div>
+
+      <div class="dw-popup-buttons">
+        <button class="dw-popup-cancel" id="dwCancelConfirm" type="button">Cancel</button>
+        <button class="dw-popup-confirm" id="dwConfirmAction" type="button">Confirm</button>
       </div>
     </div>
   </div>
 
-  <div class="modal-overlay" id="dwConfirmModal">
-    <div class="modal">
-      <h3 id="dwConfirmTitle">Confirm Action</h3>
-      <p id="dwConfirmText">Are you sure?</p>
-      <div class="modal-actions">
-        <button class="btn" type="button" id="dwCancelConfirm">Cancel</button>
-        <button class="btn btn-primary" type="button" id="dwConfirmAction">Confirm</button>
-      </div>
+  <!-- Processing Popup -->
+  <div class="dw-popup-overlay" id="dwProcessingModal">
+    <div class="dw-popup">
+      <div class="dw-popup-loader"></div>
+      <h3 id="dwProcessingTitle">Please Wait</h3>
+      <p class="dw-popup-description" id="dwProcessingText">Processing your request...</p>
+    </div>
+  </div>
+
+  <!-- Result Popup -->
+  <div class="dw-popup-overlay" id="dwResultModal">
+    <div class="dw-popup">
+      <div class="dw-popup-icon success" id="dwResultIcon">✓</div>
+      <h3 id="dwResultTitle">Success!</h3>
+      <p class="dw-popup-description" id="dwResultText">Action completed successfully.</p>
+      <button class="dw-popup-ok" id="dwResultOk" type="button">Continue</button>
     </div>
   </div>
 
 </div>
 
 <script>
-(function () {
+(function(){
   "use strict";
 
-  const ROOT = document.getElementById("deletedWagePage");
-  if (!ROOT || ROOT.dataset.initialized === "yes") return;
-  ROOT.dataset.initialized = "yes";
+  const ROOT=document.getElementById("deletedWagePage");
+  if(!ROOT || ROOT.dataset.initialized==="yes") return;
+  ROOT.dataset.initialized="yes";
 
-  const API_URL =
+  const API_URL=
     "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
 
-  let deletedWages = [];
-  let filteredWages = [];
-  let pendingAction = null;
-  let busy = false;
+  let deletedWages=[];
+  let filteredWages=[];
+  let pendingAction=null;
+  let busy=false;
 
-  const $ = id => ROOT.querySelector("#" + id);
+  const $=id=>ROOT.querySelector("#"+id);
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    })[char]);
+  function esc(value){
+    return String(value??"").replace(/[&<>"']/g,c=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",
+      '"':"&quot;","'":"&#39;"
+    })[c]);
   }
 
-  // Read amount from common backend field names.
-  function getWageAmount(wage) {
-    const keys = [
-      "amount",
-      "wageAmount",
-      "wage_amount",
-      "Wage Amount",
-      "wage amount",
-      "Amount",
-      "WAGE AMOUNT"
-    ];
-
-    for (const key of keys) {
-      if (wage[key] !== undefined && wage[key] !== null && wage[key] !== "") {
-        const parsed = Number(String(wage[key]).replace(/,/g, "").trim());
-        if (Number.isFinite(parsed)) return parsed;
+  function getWageAmount(w){
+    const keys=["amount","wageAmount","wage_amount","Wage Amount",
+      "wage amount","Amount","WAGE AMOUNT"];
+    for(const key of keys){
+      const value=w[key];
+      if(value!==undefined && value!==null && value!==""){
+        const number=Number(String(value).replace(/,/g,"").trim());
+        if(Number.isFinite(number)) return number;
       }
     }
-
     return 0;
   }
 
-  function getCurrencySymbol(wage) {
-    return wage.currencySymbol ??
-      wage.currency_symbol ??
-      wage["Currency Symbol"] ??
-      wage["currency symbol"] ??
-      "";
+  function getSymbol(w){
+    return w.currencySymbol??w.currency_symbol??
+      w["Currency Symbol"]??w["currency symbol"]??"";
   }
 
-  function formatAmount(wage) {
-    const amount = getWageAmount(wage);
-    const symbol = getCurrencySymbol(wage);
+  function getCode(w){
+    return w.currencyCode??w.currency_code??
+      w["Wage Currency"]??w["Currency Code"]??"";
+  }
 
-    return String(symbol) + amount.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
+  function formatAmount(w){
+    return String(getSymbol(w))+getWageAmount(w).toLocaleString(undefined,{
+      minimumFractionDigits:0,maximumFractionDigits:2
     });
   }
 
-  function formatDate(value) {
-    if (!value) return "—";
-    const date = new Date(value);
-    if (isNaN(date.getTime())) return String(value);
-
-    return date.toLocaleDateString(undefined, {
-      year:"numeric", month:"short", day:"numeric"
+  function formatDate(value){
+    if(!value)return "—";
+    const d=new Date(value);
+    if(isNaN(d.getTime()))return String(value);
+    return d.toLocaleDateString(undefined,{
+      year:"numeric",month:"short",day:"numeric"
     });
   }
 
-  function getRowNumber(wage) {
-    return Number(
-      wage._row ??
-      wage.deletedRow ??
-      wage.rowNumber ??
-      wage["Deleted Row"] ??
-      0
-    );
+  function getRow(w){
+    return Number(w._row??w.deletedRow??w.rowNumber??w["Deleted Row"]??0);
   }
 
-  function showMessage(message, type) {
-    const box = $("dwMessage");
-    box.textContent = message;
-    box.className = "message " + type;
-
+  function showMessage(message,type){
+    const box=$("dwMessage");
+    box.textContent=message;
+    box.className="dw-message "+type;
     clearTimeout(showMessage.timer);
-    showMessage.timer = setTimeout(() => {
-      box.className = "message";
-      box.textContent = "";
-    }, 4500);
+    showMessage.timer=setTimeout(()=>{
+      box.className="dw-message";
+      box.textContent="";
+    },4000);
   }
 
-  async function apiGet(action) {
-    const response = await fetch(
-      API_URL + "?api=" + encodeURIComponent(action),
-      {method:"GET", cache:"no-store"}
+  function openPopup(id){
+    $(id).classList.add("show");
+  }
+
+  function closePopup(id){
+    $(id).classList.remove("show");
+  }
+
+  async function apiGet(action){
+    const response=await fetch(
+      API_URL+"?api="+encodeURIComponent(action),
+      {method:"GET",cache:"no-store"}
     );
-    if (!response.ok) throw new Error("Server error: " + response.status);
-    return await response.json();
+    if(!response.ok)throw new Error("Server error: "+response.status);
+    return response.json();
   }
 
-  async function apiPost(payload) {
-    const response = await fetch(API_URL, {
+  async function apiPost(payload){
+    const response=await fetch(API_URL,{
       method:"POST",
       headers:{"Content-Type":"text/plain;charset=utf-8"},
       body:JSON.stringify(payload)
     });
-    if (!response.ok) throw new Error("Server error: " + response.status);
-    return await response.json();
+    if(!response.ok)throw new Error("Server error: "+response.status);
+    return response.json();
   }
 
-  async function loadDeletedWages() {
-    if (busy) return;
+  async function loadDeletedWages(){
+    if(busy)return;
 
-    const tbody = $("dwTableBody");
-    $("dwRefreshBtn").disabled = true;
-    $("dwRefreshBtn").innerHTML = '<span class="spinner"></span> Loading';
+    $("dwRefreshBtn").disabled=true;
+    $("dwRefreshBtn").innerHTML='<span class="dw-spinner"></span> Loading';
+    $("dwTableBody").innerHTML=
+      '<tr><td colspan="8"><div class="dw-loading">Loading...</div></td></tr>';
+    $("dwMobileList").innerHTML=
+      '<div class="dw-loading">Loading deleted wages...</div>';
 
-    tbody.innerHTML = `
-      <tr><td colspan="8"><div class="loading">Loading deleted wages...</div></td></tr>
-    `;
-
-    try {
-      const result = await apiGet("deletedWages");
-
-      if (!result || result.success === false) {
-        throw new Error(result?.message || "Unable to load deleted wages.");
+    try{
+      const result=await apiGet("deletedWages");
+      if(!result || result.success===false){
+        throw new Error(result?.message||"Unable to load deleted wages.");
       }
-
-      deletedWages = Array.isArray(result.deletedWages)
-        ? result.deletedWages
-        : [];
-
+      deletedWages=Array.isArray(result.deletedWages)?result.deletedWages:[];
       updateStats();
-      renderTable();
-
-    } catch (error) {
-      tbody.innerHTML = `
-        <tr><td colspan="8">
-          <div class="empty-state">
-            <div class="empty-icon">⚠️</div>
-            <h3>Unable to Load Data</h3>
-            <p>${escapeHTML(error.message || "Please try again.")}</p>
-          </div>
-        </td></tr>
-      `;
-      showMessage(error.message || "Failed to load deleted wages.", "error");
-
-    } finally {
-      $("dwRefreshBtn").disabled = false;
-      $("dwRefreshBtn").textContent = "↻ Refresh";
+      render();
+    }catch(error){
+      const empty=`
+        <div class="dw-empty">
+          <div class="dw-empty-icon">⚠️</div>
+          <h3>Unable to Load Data</h3>
+          <p>${esc(error.message)}</p>
+        </div>`;
+      $("dwTableBody").innerHTML=`<tr><td colspan="8">${empty}</td></tr>`;
+      $("dwMobileList").innerHTML=empty;
+      showMessage(error.message||"Failed to load data.","error");
+    }finally{
+      $("dwRefreshBtn").disabled=false;
+      $("dwRefreshBtn").textContent="↻ Refresh";
     }
   }
 
-  function updateStats() {
-    const total = deletedWages.length;
-
-    const totalAmount = deletedWages.reduce((sum, wage) => {
-      return sum + getWageAmount(wage);
-    }, 0);
-
-    $("dwTotal").textContent = total.toLocaleString();
-    $("dwAmount").textContent = totalAmount.toLocaleString(undefined, {
-      maximumFractionDigits:2
-    });
+  function updateStats(){
+    $("dwTotal").textContent=deletedWages.length.toLocaleString();
+    const total=deletedWages.reduce((sum,w)=>sum+getWageAmount(w),0);
+    $("dwAmount").textContent=total.toLocaleString(undefined,{maximumFractionDigits:2});
   }
 
-  function renderTable() {
-    const query = $("dwSearch").value.trim().toLowerCase();
+  function render(){
+    const query=$("dwSearch").value.trim().toLowerCase();
 
-    filteredWages = deletedWages.filter(wage => {
-      const searchable = [
-        wage.wageId,
-        wage.companyName,
-        getWageAmount(wage),
-        getCurrencySymbol(wage),
-        wage.currencyCode,
-        wage.transactionId,
-        wage.date,
-        wage.comment
-      ].join(" ").toLowerCase();
-
-      return searchable.includes(query);
+    filteredWages=deletedWages.filter(w=>{
+      return [
+        w.wageId,w.companyName,getWageAmount(w),getSymbol(w),
+        getCode(w),w.transactionId,w.date,w.comment
+      ].join(" ").toLowerCase().includes(query);
     });
 
-    $("dwResultCount").textContent =
-      "Showing " + filteredWages.length + " of " + deletedWages.length + " records";
+    $("dwResultCount").textContent=
+      "Showing "+filteredWages.length+" of "+deletedWages.length+" records";
 
-    const tbody = $("dwTableBody");
-
-    if (!filteredWages.length) {
-      tbody.innerHTML = `
-        <tr><td colspan="8">
-          <div class="empty-state">
-            <div class="empty-icon">📂</div>
-            <h3>${query ? "No Matching Records" : "No Deleted Wages"}</h3>
-            <p>${query ? "Try another keyword." : "Deleted wage records will appear here."}</p>
-          </div>
-        </td></tr>
-      `;
+    if(!filteredWages.length){
+      const empty=`
+        <div class="dw-empty">
+          <div class="dw-empty-icon">📂</div>
+          <h3>${query?"No Matching Records":"No Deleted Wages"}</h3>
+          <p>${query?"Try another search keyword.":"Deleted wages will appear here."}</p>
+        </div>`;
+      $("dwTableBody").innerHTML=`<tr><td colspan="8">${empty}</td></tr>`;
+      $("dwMobileList").innerHTML=empty;
       return;
     }
 
-    tbody.innerHTML = filteredWages.map((wage, index) => `
+    $("dwTableBody").innerHTML=filteredWages.map((w,i)=>`
       <tr>
-        <td><span class="wage-id">${escapeHTML(wage.wageId || "—")}</span></td>
-        <td><strong>${escapeHTML(wage.companyName || "—")}</strong></td>
-        <td class="amount">${escapeHTML(formatAmount(wage))}</td>
-        <td>${escapeHTML(wage.transactionId || "—")}</td>
-        <td>${escapeHTML(formatDate(wage.date))}</td>
-        <td>${escapeHTML(wage.comment || "—")}</td>
-        <td><span class="deleted-badge">DELETED</span></td>
+        <td><span class="dw-id">${esc(w.wageId||"—")}</span></td>
+        <td><strong>${esc(w.companyName||"—")}</strong></td>
+        <td class="dw-amount">${esc(formatAmount(w))}</td>
+        <td>${esc(w.transactionId||"—")}</td>
+        <td>${esc(formatDate(w.date))}</td>
+        <td>${esc(w.comment||"—")}</td>
+        <td><span class="dw-badge">DELETED</span></td>
         <td>
-          <div class="action-group">
-            <button class="action-btn" type="button" data-action="details" data-index="${index}">View</button>
-            <button class="action-btn restore" type="button" data-action="restore" data-index="${index}">Restore</button>
-            <button class="action-btn permanent" type="button" data-action="permanent" data-index="${index}">Delete</button>
+          <div class="dw-actions">
+            <button class="dw-action" data-action="details" data-index="${i}">View</button>
+            <button class="dw-action restore" data-action="restore" data-index="${i}">Restore</button>
+            <button class="dw-action delete" data-action="permanent" data-index="${i}">Delete</button>
           </div>
         </td>
       </tr>
     `).join("");
 
-    tbody.querySelectorAll("[data-action]").forEach(button => {
-      button.addEventListener("click", () => {
-        const wage = filteredWages[Number(button.dataset.index)];
-        if (!wage) return;
+    $("dwMobileList").innerHTML=filteredWages.map((w,i)=>`
+      <div class="dw-card">
+        <div class="dw-card-top">
+          <div>
+            <div class="dw-card-title">${esc(w.companyName||"Unnamed Company")}</div>
+            <div class="dw-card-id">${esc(w.wageId||"—")}</div>
+          </div>
+          <span class="dw-badge">DELETED</span>
+        </div>
+        <div class="dw-card-amount">${esc(formatAmount(w))}</div>
+        <div class="dw-card-grid">
+          <div class="dw-card-info"><small>Transaction ID</small><strong>${esc(w.transactionId||"—")}</strong></div>
+          <div class="dw-card-info"><small>Wage Date</small><strong>${esc(formatDate(w.date))}</strong></div>
+          <div class="dw-card-info"><small>Currency</small><strong>${esc(getCode(w)||getSymbol(w)||"—")}</strong></div>
+          <div class="dw-card-info"><small>Comment</small><strong>${esc(w.comment||"—")}</strong></div>
+        </div>
+        <div class="dw-card-actions">
+          <button data-action="details" data-index="${i}">View Details</button>
+          <button class="restore" data-action="restore" data-index="${i}">♻ Restore</button>
+          <button class="delete" data-action="permanent" data-index="${i}">Delete</button>
+        </div>
+      </div>
+    `).join("");
 
-        if (button.dataset.action === "details") showDetails(wage);
-        if (button.dataset.action === "restore") confirmAction("restore", wage);
-        if (button.dataset.action === "permanent") confirmAction("permanent", wage);
+    [$("dwTableBody"),$("dwMobileList")].forEach(container=>{
+      container.querySelectorAll("[data-action]").forEach(button=>{
+        button.addEventListener("click",()=>{
+          const wage=filteredWages[Number(button.dataset.index)];
+          if(!wage)return;
+          const action=button.dataset.action;
+          if(action==="details")showDetails(wage);
+          if(action==="restore")confirmAction("restore",wage);
+          if(action==="permanent")confirmAction("permanent",wage);
+        });
       });
     });
   }
 
-  function showDetails(wage) {
-    const fields = [
-      ["Wage ID", wage.wageId],
-      ["Company Name", wage.companyName],
-      ["Wage Amount", formatAmount(wage)],
-      ["Currency", wage.currencyCode],
-      ["Transaction ID", wage.transactionId],
-      ["Date", formatDate(wage.date)],
-      ["Comment", wage.comment],
-      ["Created At", wage.createdAt],
-      ["Deleted Row", getRowNumber(wage) || "Not available"]
+  function showDetails(w){
+    const fields=[
+      ["Wage ID",w.wageId],
+      ["Company Name",w.companyName],
+      ["Wage Amount",formatAmount(w)],
+      ["Currency",getCode(w)],
+      ["Transaction ID",w.transactionId],
+      ["Date",formatDate(w.date)],
+      ["Comment",w.comment],
+      ["Created At",w.createdAt],
+      ["Deleted Row",getRow(w)||"Not available"]
     ];
-
-    $("dwDetailGrid").innerHTML = fields.map(([label, value]) => `
-      <div class="detail-item">
-        <small>${escapeHTML(label)}</small>
-        <strong>${escapeHTML(value || "—")}</strong>
+    $("dwDetailGrid").innerHTML=fields.map(([label,value])=>`
+      <div class="dw-detail">
+        <small>${esc(label)}</small>
+        <strong>${esc(value||"—")}</strong>
       </div>
     `).join("");
-
-    $("dwDetailsModal").classList.add("show");
+    openPopup("dwDetailsModal");
   }
 
-  function confirmAction(action, wage) {
-    pendingAction = {action, wage};
+  function confirmAction(action,w){
+    pendingAction={action,wage:w};
 
-    if (action === "restore") {
-      $("dwConfirmTitle").textContent = "Restore Wage?";
-      $("dwConfirmText").textContent =
-        "This wage will be moved back to your active Wage History.";
-      $("dwConfirmAction").textContent = "Yes, Restore";
-      $("dwConfirmAction").className = "btn btn-success";
-    } else {
-      $("dwConfirmTitle").textContent = "Permanently Delete?";
-      $("dwConfirmText").textContent =
-        "This action cannot be undone. This wage will be permanently removed.";
-      $("dwConfirmAction").textContent = "Delete Permanently";
-      $("dwConfirmAction").className = "btn btn-danger";
+    if(action==="restore"){
+      $("dwConfirmIcon").className="dw-popup-icon restore";
+      $("dwConfirmIcon").textContent="♻️";
+      $("dwConfirmTitle").textContent="Restore This Wage?";
+      $("dwConfirmText").textContent=
+        "Are you sure you want to restore this wage? It will return to your active Wage History.";
+      $("dwConfirmAction").textContent="Yes, Restore";
+      $("dwConfirmAction").className="dw-popup-confirm restore";
+    }else{
+      $("dwConfirmIcon").className="dw-popup-icon danger";
+      $("dwConfirmIcon").textContent="🗑️";
+      $("dwConfirmTitle").textContent="Delete Permanently?";
+      $("dwConfirmText").textContent=
+        "This wage will be permanently removed. This action cannot be undone.";
+      $("dwConfirmAction").textContent="Yes, Delete";
+      $("dwConfirmAction").className="dw-popup-confirm";
     }
 
-    $("dwConfirmModal").classList.add("show");
+    $("dwConfirmRecord").textContent=
+      (w.companyName||"Unnamed Company")+" • "+formatAmount(w);
+
+    openPopup("dwConfirmModal");
   }
 
-  async function executePendingAction() {
-    if (!pendingAction || busy) return;
+  function showProcessing(action){
+    $("dwProcessingTitle").textContent=
+      action==="restore"?"Restoring Wage":"Deleting Wage";
+    $("dwProcessingText").textContent=
+      action==="restore"
+        ?"Please wait while your wage is being restored..."
+        :"Please wait while your wage is being permanently deleted...";
+    openPopup("dwProcessingModal");
+  }
 
-    const {action, wage} = pendingAction;
-    const deletedRow = getRowNumber(wage);
+  function showResult(success,action,error){
+    $("dwResultIcon").className=
+      "dw-popup-icon "+(success?"success":"error");
+    $("dwResultIcon").textContent=success?"✓":"!";
+    $("dwResultTitle").textContent=success
+      ?(action==="restore"?"Wage Restored!":"Wage Deleted!")
+      :"Action Failed";
+    $("dwResultText").textContent=success
+      ?(action==="restore"
+        ?"Your wage has been successfully restored to Wage History."
+        :"Your wage has been permanently deleted.")
+      :(error||"Something went wrong. Please try again.");
+    openPopup("dwResultModal");
+  }
 
-    if (!deletedRow) {
-      showMessage(
-        "Deleted row number is missing. Please check the backend response.",
-        "error"
-      );
+  async function executePendingAction(){
+    if(!pendingAction||busy)return;
+
+    const {action,wage}=pendingAction;
+    const deletedRow=getRow(wage);
+
+    if(!deletedRow){
+      closePopup("dwConfirmModal");
+      showResult(false,action,"Deleted row number is missing. Please check the backend response.");
       return;
     }
 
-    busy = true;
-    const button = $("dwConfirmAction");
-    button.disabled = true;
-    button.innerHTML = '<span class="spinner"></span> Processing';
+    busy=true;
+    $("dwConfirmAction").disabled=true;
+    closePopup("dwConfirmModal");
+    showProcessing(action);
 
-    try {
+    try{
       let result;
 
-      if (action === "restore") {
-        result = await apiPost({
+      if(action==="restore"){
+        result=await apiPost({
           action:"restoreWage",
           wageId:wage.wageId,
           deletedRow:deletedRow
         });
-      } else {
-        result = await apiPost({
+      }else{
+        result=await apiPost({
           action:"permanentDeleteWage",
           wageId:wage.wageId,
           deletedRow:deletedRow
         });
       }
 
-      if (!result || result.success !== true) {
-        throw new Error(result?.message || "Action failed.");
+      if(!result||result.success!==true){
+        throw new Error(result?.message||"Action failed.");
       }
 
-      $("dwConfirmModal").classList.remove("show");
-      pendingAction = null;
-
-      showMessage(
-        action === "restore"
-          ? "Wage successfully restored."
-          : "Wage permanently deleted.",
-        "success"
-      );
-
+      pendingAction=null;
       await loadDeletedWages();
+      closePopup("dwProcessingModal");
+      showResult(true,action);
 
-    } catch (error) {
-      showMessage(error.message || "Something went wrong.", "error");
-
-    } finally {
-      busy = false;
-      button.disabled = false;
-      button.textContent = action === "restore"
-        ? "Yes, Restore"
-        : "Delete Permanently";
+    }catch(error){
+      closePopup("dwProcessingModal");
+      showResult(false,action,error.message||"Something went wrong.");
+    }finally{
+      busy=false;
+      $("dwConfirmAction").disabled=false;
     }
   }
 
-  $("dwRefreshBtn").addEventListener("click", loadDeletedWages);
-  $("dwSearch").addEventListener("input", renderTable);
+  $("dwRefreshBtn").addEventListener("click",loadDeletedWages);
+  $("dwSearch").addEventListener("input",render);
 
-  $("dwCloseDetails").addEventListener("click", () => {
-    $("dwDetailsModal").classList.remove("show");
+  $("dwCloseDetails").addEventListener("click",()=>{
+    closePopup("dwDetailsModal");
   });
 
-  $("dwCancelConfirm").addEventListener("click", () => {
-    if (busy) return;
-    $("dwConfirmModal").classList.remove("show");
-    pendingAction = null;
+  $("dwCancelConfirm").addEventListener("click",()=>{
+    if(busy)return;
+    closePopup("dwConfirmModal");
+    pendingAction=null;
   });
 
-  $("dwConfirmAction").addEventListener("click", executePendingAction);
+  $("dwConfirmAction").addEventListener("click",executePendingAction);
 
-  $("dwDetailsModal").addEventListener("click", event => {
-    if (event.target === $("dwDetailsModal")) {
-      $("dwDetailsModal").classList.remove("show");
-    }
+  $("dwResultOk").addEventListener("click",()=>{
+    closePopup("dwResultModal");
   });
 
-  $("dwConfirmModal").addEventListener("click", event => {
-    if (event.target === $("dwConfirmModal") && !busy) {
-      $("dwConfirmModal").classList.remove("show");
-      pendingAction = null;
-    }
+  ["dwDetailsModal","dwConfirmModal","dwResultModal"].forEach(id=>{
+    $(id).addEventListener("click",event=>{
+      if(event.target===$(id)){
+        if(id==="dwConfirmModal"&&busy)return;
+        closePopup(id);
+        if(id==="dwConfirmModal")pendingAction=null;
+      }
+    });
   });
 
   loadDeletedWages();
-
 })();
 </script>
 </body>
