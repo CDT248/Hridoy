@@ -1,483 +1,86 @@
 
 <style>
-/* =========================================
-   RS NETWORK - DELETED WAGE
-   Dashboard Theme Compatible
-========================================= */
-
-.dw-page {
-  width:100%;
-  color:var(--text,#1e293b);
-  font-family:inherit;
-}
-
-.dw-page * {
-  box-sizing:border-box;
-}
-
-.dw-page .dw-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-
-.dw-page .dw-title h2 {
-  font-size:23px;
-  font-weight:800;
-  margin:0 0 6px;
-}
-
-.dw-page .dw-title p {
-  font-size:13px;
-  color:var(--muted,#64748b);
-  margin:0;
-}
-
-.dw-page .dw-refresh {
-  border:1px solid var(--border,#e2e8f0);
-  background:var(--card,#fff);
-  color:var(--text,#1e293b);
-  padding:10px 16px;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:700;
-}
-
-/* STATS */
-
-.dw-page .dw-stats {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;
-  margin-bottom:22px;
-}
-
-.dw-page .dw-stat {
-  background:var(--card,#fff);
-  border:1px solid var(--border,#e2e8f0);
-  border-radius:15px;
-  padding:19px;
-  min-width:0;
-}
-
-.dw-page .dw-stat-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.dw-page .dw-stat-label {
-  color:var(--muted,#64748b);
-  font-size:12px;
-  font-weight:700;
-}
-
-.dw-page .dw-stat-icon {
-  width:38px;
-  height:38px;
-  display:grid;
-  place-items:center;
-  border-radius:11px;
-  background:rgba(99,102,241,.12);
-  font-size:18px;
-}
-
-.dw-page .dw-stat-value {
-  font-size:25px;
-  font-weight:800;
-  margin-top:13px;
-  overflow-wrap:anywhere;
-}
-
-.dw-page .dw-stat-sub {
-  font-size:11px;
-  color:var(--muted,#64748b);
-  margin-top:5px;
-}
-
-/* PANEL */
-
-.dw-page .dw-panel {
-  background:var(--card,#fff);
-  border:1px solid var(--border,#e2e8f0);
-  border-radius:16px;
-  overflow:hidden;
-}
-
-.dw-page .dw-panel-head {
-  padding:19px 20px;
-  border-bottom:1px solid var(--border,#e2e8f0);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.dw-page .dw-panel-title {
-  font-size:16px;
-  font-weight:800;
-}
-
-.dw-page .dw-panel-subtitle {
-  color:var(--muted,#64748b);
-  font-size:12px;
-  margin-top:4px;
-}
-
-/* SEARCH */
-
-.dw-page .dw-search {
-  width:min(100%,320px);
-  position:relative;
-}
-
-.dw-page .dw-search input {
-  width:100%;
-  padding:11px 13px 11px 38px;
-  border:1px solid var(--border,#e2e8f0);
-  border-radius:10px;
-  outline:none;
-  background:var(--bg,#f8fafc);
-  color:var(--text,#1e293b);
-  font-family:inherit;
-  font-size:13px;
-}
-
-.dw-page .dw-search input:focus {
-  border-color:#6366f1;
-  box-shadow:0 0 0 3px rgba(99,102,241,.10);
-}
-
-.dw-page .dw-search-icon {
-  position:absolute;
-  left:13px;
-  top:50%;
-  transform:translateY(-50%);
-  color:var(--muted,#64748b);
-}
-
-/* TABLE */
-
-.dw-page .dw-table-wrap {
-  width:100%;
-  overflow-x:auto;
-}
-
-.dw-page table {
-  width:100%;
-  min-width:950px;
-  border-collapse:collapse;
-}
-
-.dw-page th {
-  background:var(--bg,#f8fafc);
-  color:var(--muted,#64748b);
-  font-size:11px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-  padding:14px 15px;
-  text-align:left;
-  white-space:nowrap;
-  border-bottom:1px solid var(--border,#e2e8f0);
-}
-
-.dw-page td {
-  padding:14px 15px;
-  border-bottom:1px solid var(--border,#e2e8f0);
-  font-size:12px;
-  color:var(--text,#1e293b);
-  white-space:nowrap;
-}
-
-.dw-page tbody tr:hover {
-  background:var(--hover,#f8fafc);
-}
-
-.dw-page .dw-company {
-  font-size:13px;
-  font-weight:800;
-}
-
-.dw-page .dw-id {
-  font-size:10px;
-  color:var(--muted,#64748b);
-  margin-top:4px;
-}
-
-.dw-page .dw-amount {
-  color:#818cf8;
-  font-size:13px;
-  font-weight:800;
-}
-
-.dw-page .dw-badge {
-  display:inline-flex;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:800;
-  color:#ef4444;
-  background:rgba(239,68,68,.10);
-}
-
-/* ACTION BUTTONS */
-
-.dw-page .dw-actions {
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-
-.dw-page .dw-btn {
-  border:0;
-  padding:8px 11px;
-  border-radius:8px;
-  font-size:11px;
-  font-weight:800;
-  cursor:pointer;
-  white-space:nowrap;
-  font-family:inherit;
-}
-
-.dw-page .dw-btn:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.dw-page .dw-restore {
-  color:#059669;
-  background:rgba(16,185,129,.12);
-}
-
-.dw-page .dw-restore:hover {
-  background:rgba(16,185,129,.22);
-}
-
-.dw-page .dw-delete {
-  color:#ef4444;
-  background:rgba(239,68,68,.11);
-}
-
-.dw-page .dw-delete:hover {
-  background:rgba(239,68,68,.22);
-}
-
-/* EMPTY STATE */
-
-.dw-page .dw-empty {
-  text-align:center;
-  padding:55px 15px;
-  color:var(--muted,#64748b);
-}
-
-.dw-page .dw-empty-icon {
-  font-size:38px;
-  margin-bottom:12px;
-}
-
-.dw-page .dw-empty h3 {
-  font-size:15px;
-  color:var(--text,#1e293b);
-  margin:0 0 7px;
-}
-
-.dw-page .dw-empty p {
-  font-size:12px;
-  margin:0;
-}
-
-.dw-page .dw-footer {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  padding:13px 18px;
-  border-top:1px solid var(--border,#e2e8f0);
-  color:var(--muted,#64748b);
-  font-size:11px;
-}
-
-/* TOAST */
-
-.dw-page .dw-toast {
-  position:fixed;
-  bottom:25px;
-  right:25px;
-  z-index:99999;
-  padding:13px 18px;
-  border-radius:10px;
-  background:#1e293b;
-  color:white;
-  font-size:13px;
-  font-weight:700;
-  display:none;
-  max-width:calc(100vw - 40px);
-  box-shadow:0 8px 25px rgba(0,0,0,.2);
-}
-
-.dw-page .dw-toast.show {
-  display:block;
-}
-
-.dw-page .dw-toast.error {
-  background:#dc2626;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:800px) {
-  .dw-page .dw-stats {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-
-@media(max-width:520px) {
-  .dw-page .dw-title h2 {
-    font-size:20px;
-  }
-
-  .dw-page .dw-stats {
-    gap:10px;
-  }
-
-  .dw-page .dw-stat {
-    padding:14px;
-  }
-
-  .dw-page .dw-stat-value {
-    font-size:21px;
-  }
-
-  .dw-page .dw-panel-head {
-    padding:15px;
-  }
-
-  .dw-page .dw-search {
-    width:100%;
-  }
-
-  .dw-page .dw-toast {
-    left:15px;
-    right:15px;
-    bottom:15px;
-  }
+#deletedWagePage{font-family:inherit;color:var(--text,#172033);max-width:950px;margin:auto}
+#deletedWagePage *{box-sizing:border-box}
+#deletedWagePage .hero{padding:25px;border-radius:18px;color:white;background:linear-gradient(120deg,#4338ca,#6366f1,#8b5cf6);margin-bottom:22px}
+#deletedWagePage .hero h2{margin:0 0 7px;font-size:25px;color:white}
+#deletedWagePage .hero p{margin:0;color:#e0e7ff;font-size:13px}
+#deletedWagePage .card{background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:17px;padding:24px;box-shadow:0 7px 25px #00000008;margin-bottom:20px}
+#deletedWagePage .heading{font-size:18px;font-weight:800;margin:0 0 22px;padding-bottom:16px;border-bottom:1px solid var(--border,#e5e7eb)}
+#deletedWagePage .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+#deletedWagePage .stat{background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:14px;padding:17px}
+#deletedWagePage .stat-label{font-size:12px;color:var(--muted,#888);margin-bottom:9px}
+#deletedWagePage .stat-value{font-size:23px;font-weight:800;overflow-wrap:anywhere}
+#deletedWagePage .toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:18px}
+#deletedWagePage input{width:100%;min-height:46px;padding:12px 13px;border-radius:10px;border:1px solid var(--border,#ddd);background:var(--bg,#f8fafc);color:var(--text,#172033);font:inherit;font-size:14px;outline:none}
+#deletedWagePage input:focus{border-color:#6366f1;box-shadow:0 0 0 3px #6366f11c}
+#deletedWagePage button{border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer;font:inherit}
+#deletedWagePage button:disabled{opacity:.55;cursor:not-allowed}
+#deletedWagePage .primary{background:linear-gradient(120deg,#4338ca,#7c3aed);color:white}
+#deletedWagePage .secondary{background:var(--bg,#f1f5f9);border:1px solid var(--border,#ddd);color:var(--text,#172033)}
+#deletedWagePage .restore{background:#dcfce7;color:#166534}
+#deletedWagePage .danger{background:#fee2e2;color:#991b1b}
+#deletedWagePage .message{display:none;padding:12px 14px;border-radius:10px;margin-bottom:18px;font-size:13px}
+#deletedWagePage .message.success{display:block;background:#dcfce7;color:#166534}
+#deletedWagePage .message.error{display:block;background:#fee2e2;color:#991b1b}
+#deletedWagePage .table-wrap{width:100%;overflow-x:auto}
+#deletedWagePage table{width:100%;border-collapse:collapse;min-width:850px;font-size:13px}
+#deletedWagePage th{background:var(--bg,#f8fafc);color:var(--muted,#777);font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:14px 12px;border-bottom:1px solid var(--border,#ddd);white-space:nowrap}
+#deletedWagePage td{padding:14px 12px;border-bottom:1px solid var(--border,#eee);vertical-align:middle}
+#deletedWagePage tbody tr:hover{background:var(--hover,rgba(99,102,241,.04))}
+#deletedWagePage .company{font-weight:800}
+#deletedWagePage .sub{font-size:11px;color:var(--muted,#888);margin-top:4px}
+#deletedWagePage .amount{font-weight:800;white-space:nowrap}
+#deletedWagePage .actions{display:flex;gap:7px;white-space:nowrap}
+#deletedWagePage .actions button{font-size:11px;padding:9px 11px}
+#deletedWagePage .empty{text-align:center;padding:35px 15px;color:var(--muted,#888)}
+#deletedWagePage .loading{text-align:center;padding:25px;color:var(--muted,#888);font-size:13px}
+#deletedWagePage .badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#fee2e2;color:#991b1b;font-size:11px;font-weight:800}
+#deletedWagePage .count{font-size:12px;color:var(--muted,#888);margin-bottom:12px}
+@media(max-width:650px){
+ #deletedWagePage .card{padding:17px}
+ #deletedWagePage .stats{grid-template-columns:1fr 1fr}
+ #deletedWagePage .stat:last-child{grid-column:1/-1}
+ #deletedWagePage .toolbar{grid-template-columns:1fr}
+ #deletedWagePage .toolbar button{width:100%}
 }
 </style>
 
-
-<!-- =====================================
-     DELETED WAGE CONTENT
-===================================== -->
-
-<div class="dw-page">
-
-  <!-- HEADER -->
-
-  <div class="dw-header">
-
-    <div class="dw-title">
-      <h2>Deleted Wage</h2>
-      <p>Manage and restore your deleted wage records.</p>
-    </div>
-
-    <button type="button" class="dw-refresh" id="dwRefresh">
-      ↻ Refresh
-    </button>
-
+<div id="deletedWagePage">
+  <div class="hero">
+    <h2>🗑️ Deleted Wage</h2>
+    <p>View, restore and permanently delete your removed wage records.</p>
   </div>
 
-
-  <!-- SUMMARY CARDS -->
-
-  <div class="dw-stats">
-
-    <div class="dw-stat">
-      <div class="dw-stat-top">
-        <div class="dw-stat-label">Deleted Records</div>
-        <div class="dw-stat-icon">🗑️</div>
-      </div>
-
-      <div class="dw-stat-value" id="dwTotal">0</div>
-
-      <div class="dw-stat-sub">
-        Total deleted wage records
-      </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Deleted Records</div>
+      <div class="stat-value" id="dwTotal">0</div>
     </div>
-
-
-    <div class="dw-stat">
-      <div class="dw-stat-top">
-        <div class="dw-stat-label">Latest Wage Date</div>
-        <div class="dw-stat-icon">📅</div>
-      </div>
-
-      <div class="dw-stat-value" id="dwLatest">—</div>
-
-      <div class="dw-stat-sub">
-        Latest transaction date
-      </div>
+    <div class="stat">
+      <div class="stat-label">Latest Deleted Wage Date</div>
+      <div class="stat-value" id="dwLatest" style="font-size:17px">—</div>
     </div>
-
-
-    <div class="dw-stat">
-      <div class="dw-stat-top">
-        <div class="dw-stat-label">Available Actions</div>
-        <div class="dw-stat-icon">⚙️</div>
-      </div>
-
-      <div class="dw-stat-value">2</div>
-
-      <div class="dw-stat-sub">
-        Restore or Delete Forever
-      </div>
+    <div class="stat">
+      <div class="stat-label">Available Actions</div>
+      <div class="stat-value" style="font-size:17px">Restore / Delete</div>
     </div>
-
   </div>
 
+  <div class="card">
+    <h3 class="heading">Deleted Wage Information</h3>
 
-  <!-- DELETED WAGE TABLE -->
+    <div id="dwMessage" class="message"></div>
 
-  <div class="dw-panel">
-
-    <div class="dw-panel-head">
-
-      <div>
-        <div class="dw-panel-title">
-          Deleted Wage Records
-        </div>
-
-        <div class="dw-panel-subtitle">
-          Restore records or permanently remove them.
-        </div>
-      </div>
-
-
-      <div class="dw-search">
-
-        <span class="dw-search-icon">⌕</span>
-
-        <input
-          type="search"
-          id="dwSearch"
-          placeholder="Search company, ID, transaction..."
-        >
-
-      </div>
-
+    <div class="toolbar">
+      <input id="dwSearch" type="search" placeholder="Search company, wage ID, transaction ID...">
+      <button type="button" class="primary" id="dwRefresh">↻ Refresh Records</button>
     </div>
 
+    <div class="count" id="dwCount">Showing 0 records</div>
 
-    <div class="dw-table-wrap">
-
+    <div class="table-wrap">
       <table>
-
         <thead>
           <tr>
             <th>SL</th>
@@ -490,571 +93,235 @@
             <th>Actions</th>
           </tr>
         </thead>
-
-        <tbody id="dwTableBody">
-
-          <tr>
-            <td colspan="8">
-
-              <div class="dw-empty">
-                <div class="dw-empty-icon">⏳</div>
-                <h3>Loading Deleted Wages...</h3>
-                <p>Please wait.</p>
-              </div>
-
-            </td>
-          </tr>
-
+        <tbody id="dwTable">
+          <tr><td colspan="8" class="loading">Loading deleted wages...</td></tr>
         </tbody>
-
       </table>
-
     </div>
-
-
-    <div class="dw-footer">
-
-      <span id="dwShowing">
-        Showing 0 records
-      </span>
-
-      <span>
-        RS Wage Management System
-      </span>
-
-    </div>
-
   </div>
-
-
-  <div class="dw-toast" id="dwToast"></div>
-
 </div>
 
-
 <script>
-(function() {
+(function(){
+  const root=document.getElementById("deletedWagePage");
+  if(!root || root.dataset.ready==="1")return;
+  root.dataset.ready="1";
 
-  "use strict";
+  const API="https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
+  const $=id=>root.querySelector("#"+id);
 
+  let wages=[];
+  let busy=false;
 
-  // =====================================
-  // API CONFIGURATION
-  // =====================================
-
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
-
-
-  // =====================================
-  // ELEMENTS
-  // =====================================
-
-  const root = document.querySelector(".dw-page");
-
-  if (!root) return;
-
-  const tableBody = root.querySelector("#dwTableBody");
-  const searchInput = root.querySelector("#dwSearch");
-  const totalElement = root.querySelector("#dwTotal");
-  const latestElement = root.querySelector("#dwLatest");
-  const showingElement = root.querySelector("#dwShowing");
-  const refreshButton = root.querySelector("#dwRefresh");
-  const toastElement = root.querySelector("#dwToast");
-
-  let deletedWages = [];
-  let busy = false;
-
-
-  // =====================================
-  // HELPER FUNCTIONS
-  // =====================================
-
-  function escapeHTML(value) {
-
-    return String(value == null ? "" : value)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-
+  function esc(value){
+    return String(value??"").replace(/[&<>"']/g,c=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
   }
 
-
-  function formatMoney(amount,symbol) {
-
-    const number = Number(amount || 0);
-
-    return escapeHTML(symbol || "") +
-      number.toLocaleString("en-US",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-      });
-
+  function msg(text,type){
+    $("dwMessage").textContent=text;
+    $("dwMessage").className="message "+type;
   }
 
-
-  function formatDate(value) {
-
-    if (!value) return "—";
-
-    const text = String(value).substring(0,10);
-    const parts = text.split("-");
-
-    if (parts.length === 3) {
-      return parts[2] + "/" + parts[1] + "/" + parts[0];
-    }
-
-    return escapeHTML(value);
-
+  function clearMsg(){
+    $("dwMessage").textContent="";
+    $("dwMessage").className="message";
   }
 
-
-  function showToast(message,isError) {
-
-    toastElement.textContent = message;
-
-    toastElement.classList.toggle("error",!!isError);
-
-    toastElement.classList.add("show");
-
-    setTimeout(function() {
-      toastElement.classList.remove("show");
-    },3000);
-
+  async function get(api){
+    const r=await fetch(API+"?api="+encodeURIComponent(api)+"&_="+Date.now(),{
+      cache:"no-store"
+    });
+    if(!r.ok)throw Error("HTTP "+r.status);
+    return r.json();
   }
 
-
-  // =====================================
-  // API GET
-  // =====================================
-
-  async function apiGet(action) {
-
-    const response = await fetch(
-      API_URL +
-      "?api=" + encodeURIComponent(action) +
-      "&_=" + Date.now(),
-      {
-        method:"GET",
-        cache:"no-store"
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Server connection failed.");
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error(result.message || "Request failed.");
-    }
-
-    return result;
-
-  }
-
-
-  // =====================================
-  // API POST
-  // =====================================
-
-  async function apiPost(data) {
-
-    const response = await fetch(API_URL,{
+  async function post(data){
+    const r=await fetch(API,{
       method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
       body:JSON.stringify(data)
     });
-
-    if (!response.ok) {
-      throw new Error("Server connection failed.");
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error(result.message || "Action failed.");
-    }
-
-    return result;
-
+    if(!r.ok)throw Error("HTTP "+r.status);
+    return r.json();
   }
 
-
-  // =====================================
-  // LOAD DELETED WAGES
-  // =====================================
-
-  async function loadDeletedWages() {
-
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="8">
-          <div class="dw-empty">
-            <div class="dw-empty-icon">⏳</div>
-            <h3>Loading...</h3>
-            <p>Fetching deleted wage records.</p>
-          </div>
-        </td>
-      </tr>
-    `;
-
-    refreshButton.disabled = true;
-
-    try {
-
-      const result = await apiGet("deletedWages");
-
-      deletedWages = Array.isArray(result.deletedWages)
-        ? result.deletedWages
-        : [];
-
-      updateStats();
-
-      renderTable();
-
-    } catch(error) {
-
-      tableBody.innerHTML = `
-        <tr>
-          <td colspan="8">
-            <div class="dw-empty">
-              <div class="dw-empty-icon">⚠️</div>
-              <h3>Unable to Load Data</h3>
-              <p>${escapeHTML(error.message)}</p>
-            </div>
-          </td>
-        </tr>
-      `;
-
-      showToast(error.message,true);
-
-    } finally {
-
-      refreshButton.disabled = false;
-
-    }
-
+  function amountText(w){
+    const symbol=w.currencySymbol||"";
+    const amount=Number(w.amount||0);
+    return symbol+" "+amount.toLocaleString(undefined,{
+      maximumFractionDigits:2
+    });
   }
 
+  function updateStats(){
+    $("dwTotal").textContent=wages.length;
 
-  // =====================================
-  // UPDATE SUMMARY
-  // =====================================
-
-  function updateStats() {
-
-    totalElement.textContent = deletedWages.length;
-
-    if (deletedWages.length) {
-
-      const sorted = [...deletedWages].sort(function(a,b) {
-
-        return String(b.date || "").localeCompare(
-          String(a.date || "")
-        );
-
-      });
-
-      latestElement.textContent = formatDate(sorted[0].date);
-
-    } else {
-
-      latestElement.textContent = "—";
-
+    if(wages.length){
+      const dates=wages.map(w=>String(w.date||"")).filter(Boolean).sort();
+      $("dwLatest").textContent=dates.length?dates[dates.length-1]:"—";
+    }else{
+      $("dwLatest").textContent="—";
     }
-
   }
 
+  function render(){
+    const q=$("dwSearch").value.trim().toLowerCase();
 
-  // =====================================
-  // RENDER TABLE
-  // =====================================
-
-  function renderTable() {
-
-    const query = searchInput.value.toLowerCase().trim();
-
-    const filtered = deletedWages.filter(function(wage) {
-
-      const searchable = [
-        wage.companyName,
-        wage.wageId,
-        wage.transactionId,
-        wage.currency,
-        wage.comment,
-        wage.date
+    const filtered=wages.filter(w=>{
+      const text=[
+        w.companyName,w.wageId,w.transactionId,
+        w.currencyCode,w.currencySymbol,w.comment,w.date,w.amount
       ].join(" ").toLowerCase();
-
-      return searchable.includes(query);
-
+      return text.includes(q);
     });
 
+    $("dwCount").textContent="Showing "+filtered.length+" of "+wages.length+" records";
 
-    if (!filtered.length) {
-
-      tableBody.innerHTML = `
-        <tr>
-          <td colspan="8">
-            <div class="dw-empty">
-              <div class="dw-empty-icon">🗑️</div>
-              <h3>${query ? "No Matching Records" : "No Deleted Wages"}</h3>
-              <p>${query
-                ? "Try another search keyword."
-                : "Deleted wage records will appear here."}</p>
-            </div>
-          </td>
-        </tr>
-      `;
-
-      showingElement.textContent = "Showing 0 records";
-
+    if(!filtered.length){
+      $("dwTable").innerHTML=
+        '<tr><td colspan="8" class="empty">'+
+        (wages.length?"No matching wage records found.":"No deleted wage records found.")+
+        '</td></tr>';
       return;
-
     }
 
-
-    tableBody.innerHTML = filtered.map(function(wage,index) {
+    $("dwTable").innerHTML=filtered.map((w,i)=>{
+      const row=Number(w._row||0);
+      const wageId=esc(w.wageId||"");
+      const company=esc(w.companyName||"No Company Name");
+      const transaction=esc(w.transactionId||"—");
+      const date=esc(w.date||"—");
+      const comment=esc(w.comment||"—");
 
       return `
         <tr>
-
-          <td>${index+1}</td>
-
+          <td>${i+1}</td>
           <td>
-            <div class="dw-company">
-              ${escapeHTML(wage.companyName || "No Company")}
-            </div>
-
-            <div class="dw-id">
-              ${escapeHTML(wage.wageId)}
-            </div>
+            <div class="company">${company}</div>
+            <div class="sub">ID: ${wageId}</div>
           </td>
-
+          <td class="amount">${esc(amountText(w))}</td>
+          <td>${transaction}</td>
+          <td>${date}</td>
+          <td>${comment}</td>
+          <td><span class="badge">Deleted</span></td>
           <td>
-            <div class="dw-amount">
-              ${formatMoney(wage.amount,wage.currencySymbol)}
-
-              <span style="font-size:10px;color:var(--muted)">
-                ${escapeHTML(wage.currency || "")}
-              </span>
-            </div>
-          </td>
-
-          <td>
-            ${escapeHTML(wage.transactionId || "—")}
-          </td>
-
-          <td>
-            ${formatDate(wage.date)}
-          </td>
-
-          <td>
-            ${escapeHTML(wage.comment || "—")}
-          </td>
-
-          <td>
-            <span class="dw-badge">Deleted</span>
-          </td>
-
-          <td>
-
-            <div class="dw-actions">
-
-              <button
-                type="button"
-                class="dw-btn dw-restore"
+            <div class="actions">
+              <button type="button" class="restore"
                 data-action="restore"
-                data-id="${escapeHTML(wage.wageId)}"
-                ${busy ? "disabled" : ""}
-              >
-                ↶ Restore
-              </button>
-
-              <button
-                type="button"
-                class="dw-btn dw-delete"
+                data-id="${wageId}"
+                data-row="${row}"
+                ${busy?"disabled":""}>↶ Restore</button>
+              <button type="button" class="danger"
                 data-action="permanent"
-                data-id="${escapeHTML(wage.wageId)}"
-                ${busy ? "disabled" : ""}
-              >
-                ✕ Delete Forever
-              </button>
-
+                data-id="${wageId}"
+                data-row="${row}"
+                ${busy?"disabled":""}>Delete Forever</button>
             </div>
-
           </td>
-
         </tr>
       `;
-
     }).join("");
-
-
-    showingElement.textContent =
-      "Showing " + filtered.length +
-      " of " + deletedWages.length + " records";
-
   }
 
+  async function loadDeletedWages(){
+    $("dwRefresh").disabled=true;
+    $("dwTable").innerHTML=
+      '<tr><td colspan="8" class="loading">Loading deleted wages...</td></tr>';
 
-  // =====================================
-  // RESTORE WAGE
-  // =====================================
+    try{
+      const data=await get("deletedWages");
+      if(!data.success)throw Error(data.message||"Could not load deleted wages");
 
-  async function restoreWage(wageId) {
+      wages=Array.isArray(data.deletedWages)?data.deletedWages:[];
+      updateStats();
+      render();
+    }catch(e){
+      $("dwTable").innerHTML=
+        '<tr><td colspan="8" class="empty">Failed to load: '+esc(e.message)+'</td></tr>';
+      msg("Load failed: "+e.message,"error");
+    }finally{
+      $("dwRefresh").disabled=false;
+    }
+  }
 
-    if (busy) return;
+  async function restoreWage(button){
+    const wageId=button.dataset.id;
+    const deletedRow=Number(button.dataset.row||0);
 
-    const wage = deletedWages.find(function(item) {
-      return String(item.wageId) === String(wageId);
-    });
+    if(!confirm("Are you sure you want to restore this wage?"))return;
 
-    if (!wage) return;
+    busy=true;
+    render();
+    clearMsg();
 
-    const confirmed = confirm(
-      "Restore this wage record?\n\n" +
-      (wage.companyName || "No Company") +
-      "\nAmount: " + wage.amount +
-      " " + (wage.currency || "") +
-      "\n\nIt will return to Wage History."
-    );
-
-    if (!confirmed) return;
-
-    busy = true;
-    renderTable();
-
-    try {
-
-      const result = await apiPost({
+    try{
+      const result=await post({
         action:"restoreWage",
-        wageId:wageId
+        wageId:wageId,
+        deletedRow:deletedRow
       });
 
-      showToast(
-        result.message || "Wage restored successfully."
-      );
+      if(!result.success)throw Error(result.message||"Restore failed");
 
+      msg("✓ "+(result.message||"Wage restored successfully."),"success");
       await loadDeletedWages();
-
-    } catch(error) {
-
-      showToast(error.message,true);
-
-    } finally {
-
-      busy = false;
-      renderTable();
-
+    }catch(e){
+      msg("Restore failed: "+e.message,"error");
+    }finally{
+      busy=false;
+      render();
     }
-
   }
 
+  async function deleteForever(button){
+    const wageId=button.dataset.id;
+    const deletedRow=Number(button.dataset.row||0);
 
-  // =====================================
-  // PERMANENT DELETE
-  // =====================================
+    if(!confirm("WARNING: This wage will be permanently deleted. This action cannot be undone. Continue?"))return;
 
-  async function deleteForever(wageId) {
+    busy=true;
+    render();
+    clearMsg();
 
-    if (busy) return;
-
-    const wage = deletedWages.find(function(item) {
-      return String(item.wageId) === String(wageId);
-    });
-
-    if (!wage) return;
-
-    const confirmed = confirm(
-      "WARNING: PERMANENT DELETE\n\n" +
-      "Are you sure you want to permanently delete this wage?\n\n" +
-      (wage.companyName || "No Company") +
-      "\nAmount: " + wage.amount +
-      " " + (wage.currency || "") +
-      "\n\nThis action cannot be undone!"
-    );
-
-    if (!confirmed) return;
-
-    busy = true;
-    renderTable();
-
-    try {
-
-      const result = await apiPost({
+    try{
+      const result=await post({
         action:"permanentDeleteWage",
-        wageId:wageId
+        wageId:wageId,
+        deletedRow:deletedRow
       });
 
-      showToast(
-        result.message || "Permanently deleted."
-      );
+      if(!result.success)throw Error(result.message||"Permanent delete failed");
 
+      msg("✓ "+(result.message||"Wage permanently deleted."),"success");
       await loadDeletedWages();
-
-    } catch(error) {
-
-      showToast(error.message,true);
-
-    } finally {
-
-      busy = false;
-      renderTable();
-
+    }catch(e){
+      msg("Delete failed: "+e.message,"error");
+    }finally{
+      busy=false;
+      render();
     }
-
   }
 
+  $("dwTable").addEventListener("click",e=>{
+    const button=e.target.closest("button[data-action]");
+    if(!button||busy)return;
 
-  // =====================================
-  // TABLE BUTTON EVENTS
-  // =====================================
-
-  tableBody.addEventListener("click",function(event) {
-
-    const button = event.target.closest("button[data-action]");
-
-    if (!button || busy) return;
-
-    const action = button.dataset.action;
-    const wageId = button.dataset.id;
-
-    if (action === "restore") {
-      restoreWage(wageId);
+    if(button.dataset.action==="restore"){
+      restoreWage(button);
+    }else if(button.dataset.action==="permanent"){
+      deleteForever(button);
     }
-
-    if (action === "permanent") {
-      deleteForever(wageId);
-    }
-
   });
 
-
-  // =====================================
-  // SEARCH
-  // =====================================
-
-  searchInput.addEventListener("input",renderTable);
-
-
-  // =====================================
-  // REFRESH
-  // =====================================
-
-  refreshButton.addEventListener(
-    "click",
-    loadDeletedWages
-  );
-
-
-  // =====================================
-  // INITIAL LOAD
-  // =====================================
+  $("dwSearch").addEventListener("input",render);
+  $("dwRefresh").addEventListener("click",()=>{
+    clearMsg();
+    loadDeletedWages();
+  });
 
   loadDeletedWages();
-
 })();
 </script>
