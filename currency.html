@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Currency Settings</title>
+<style>
+#currencyPage{font-family:inherit;color:var(--text,#172033);max-width:1100px;margin:auto}
+#currencyPage *{box-sizing:border-box}
+#currencyPage .hero{padding:24px;border-radius:18px;color:#fff;background:linear-gradient(120deg,#4338ca,#6366f1,#8b5cf6);margin-bottom:20px}
+#currencyPage .hero h2{margin:0 0 7px;color:#fff;font-size:24px}
+#currencyPage .hero p{margin:0;color:#e0e7ff;font-size:13px}
+#currencyPage .card{background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:16px;padding:21px;margin-bottom:20px;box-shadow:0 7px 25px #00000008}
+#currencyPage .card h3{font-size:17px;margin:0 0 18px}
+#currencyPage .formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#currencyPage label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}
+#currencyPage input{width:100%;height:45px;padding:11px 12px;border-radius:10px;border:1px solid var(--border,#ddd);background:var(--bg,#f8fafc);color:var(--text,#172033);font:inherit;outline:none}
+#currencyPage input:focus{border-color:#6366f1;box-shadow:0 0 0 3px #6366f11c}
+#currencyPage .btn{border:0;border-radius:9px;padding:11px 16px;font-weight:800;cursor:pointer;font:inherit}
+#currencyPage .primary{background:linear-gradient(120deg,#4338ca,#7c3aed);color:#fff}
+#currencyPage .secondary{background:var(--bg,#f1f5f9);color:var(--text,#172033);border:1px solid var(--border,#ddd)}
+#currencyPage .danger{background:#fee2e2;color:#b91c1c}
+#currencyPage button:disabled{opacity:.55;cursor:not-allowed}
+#currencyPage .formactions{display:flex;gap:10px;margin-top:17px;flex-wrap:wrap}
+#currencyPage .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:15px}
+#currencyPage .search{max-width:330px;flex:1}
+#currencyPage .tablewrap{overflow-x:auto}
+#currencyPage table{width:100%;border-collapse:collapse;min-width:650px}
+#currencyPage th,#currencyPage td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--border,#ddd);font-size:13px}
+#currencyPage th{color:var(--muted,#777);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+#currencyPage .pill{display:inline-block;padding:5px 10px;border-radius:20px;background:#dcfce7;color:#166534;font-size:11px;font-weight:800}
+#currencyPage .actions{display:flex;gap:7px}
+#currencyPage .actions button{padding:7px 10px;font-size:11px}
+#currencyPage .message{display:none;padding:12px;border-radius:10px;margin-bottom:15px;font-size:13px}
+#currencyPage .message.success{display:block;background:#dcfce7;color:#166534}
+#currencyPage .message.error{display:block;background:#fee2e2;color:#991b1b}
+#currencyPage .empty{text-align:center;padding:30px;color:var(--muted,#888)}
+#currencyPage .count{font-size:12px;color:var(--muted,#888)}
+@media(max-width:700px){#currencyPage .formgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){#currencyPage .formgrid{grid-template-columns:1fr}#currencyPage .card{padding:15px}#currencyPage .hero h2{font-size:21px}}
+</style>
+</head>
+<body>
+<div id="currencyPage">
+
+  <div class="hero">
+    <h2>💱 Currency Settings</h2>
+    <p>Add, edit and manage your wage currencies.</p>
+  </div>
+
+  <div class="card">
+    <h3 id="curFormTitle">＋ Add New Currency</h3>
+    <div id="curMessage" class="message"></div>
+
+    <form id="curForm">
+      <div class="formgrid">
+        <div>
+          <label>Currency Code *</label>
+          <input id="curCode" required maxlength="15" placeholder="Example: BDT">
+        </div>
+        <div>
+          <label>Currency Name *</label>
+          <input id="curName" required maxlength="80" placeholder="Example: Bangladeshi Taka">
+        </div>
+        <div>
+          <label>Currency Symbol *</label>
+          <input id="curSymbol" required maxlength="15" placeholder="Example: ৳">
+        </div>
+      </div>
+
+      <div class="formactions">
+        <button class="btn primary" id="curSave" type="submit">＋ Add Currency</button>
+        <button class="btn secondary" id="curCancel" type="button" style="display:none">Cancel Edit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <div>
+        <h3 style="margin:0 0 5px">Currency List</h3>
+        <div class="count" id="curCount">Loading...</div>
+      </div>
+      <input class="search" id="curSearch" placeholder="Search currency...">
+      <button class="btn secondary" id="curRefresh" type="button">↻ Refresh</button>
+    </div>
+
+    <div id="curTableMessage" class="message"></div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Currency Code</th>
+            <th>Currency Name</th>
+            <th>Symbol</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="curRows">
+          <tr><td colspan="5" class="empty">Loading currencies...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const root=document.getElementById("currencyPage");
+  if(root.dataset.ready==="1")return;
+  root.dataset.ready="1";
+
+  const API="https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
+  const $=id=>root.querySelector("#"+id);
+
+  let currencies=[];
+  let editingId=null;
+  let busy=false;
+
+  function escapeHTML(value){
+    return String(value??"").replace(/[&<>"']/g,c=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function showMessage(id,text,type){
+    $(id).textContent=text;
+    $(id).className="message "+type;
+  }
+
+  function hideMessage(id){
+    $(id).textContent="";
+    $(id).className="message";
+  }
+
+  async function get(api){
+    const r=await fetch(API+"?api="+encodeURIComponent(api)+"&_="+Date.now(),{cache:"no-store"});
+    if(!r.ok)throw Error("HTTP "+r.status);
+    return r.json();
+  }
+
+  async function post(data){
+    const r=await fetch(API,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(data)
+    });
+    if(!r.ok)throw Error("HTTP "+r.status);
+    return r.json();
+  }
+
+  async function loadCurrencies(){
+    $("curRows").innerHTML='<tr><td colspan="5" class="empty">Loading...</td></tr>';
+    try{
+      const result=await get("currencies");
+      if(!result.success)throw Error(result.message||"Could not load currencies");
+      currencies=result.currencies||[];
+      render();
+    }catch(e){
+      $("curRows").innerHTML='<tr><td colspan="5" class="empty">Failed to load: '+escapeHTML(e.message)+'</td></tr>';
+      $("curCount").textContent="Unable to load currencies";
+    }
+  }
+
+  function render(){
+    const q=$("curSearch").value.trim().toLowerCase();
+    const list=currencies.filter(x=>
+      [x.code,x.name,x.symbol,x.status].join(" ").toLowerCase().includes(q)
+    );
+
+    $("curCount").textContent=list.length+" currencies";
+
+    if(!list.length){
+      $("curRows").innerHTML='<tr><td colspan="5" class="empty">No currency found.</td></tr>';
+      return;
+    }
+
+    $("curRows").innerHTML=list.map(x=>`
+      <tr>
+        <td><strong>${escapeHTML(x.code)}</strong></td>
+        <td>${escapeHTML(x.name)}</td>
+        <td style="font-size:18px;font-weight:800">${escapeHTML(x.symbol)}</td>
+        <td><span class="pill">${escapeHTML(x.status||"Active")}</span></td>
+        <td>
+          <div class="actions">
+            <button class="btn secondary" data-edit="${escapeHTML(x.currencyId)}">Edit</button>
+            <button class="btn danger" data-delete="${escapeHTML(x.currencyId)}">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function resetForm(){
+    editingId=null;
+    $("curForm").reset();
+    $("curFormTitle").textContent="＋ Add New Currency";
+    $("curSave").textContent="＋ Add Currency";
+    $("curCancel").style.display="none";
+    hideMessage("curMessage");
+  }
+
+  $("curForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    if(busy)return;
+
+    const code=$("curCode").value.trim().toUpperCase();
+    const name=$("curName").value.trim();
+    const symbol=$("curSymbol").value.trim();
+
+    if(!code||!name||!symbol){
+      showMessage("curMessage","সবগুলো Currency Field পূরণ করুন।","error");
+      return;
+    }
+
+    const payload=editingId
+      ?{action:"editCurrency",currencyId:editingId,code,name,symbol}
+      :{action:"addCurrency",code,name,symbol};
+
+    busy=true;
+    $("curSave").disabled=true;
+    $("curSave").textContent="Saving...";
+
+    try{
+      const result=await post(payload);
+      if(!result.success)throw Error(result.message||"Operation failed");
+
+      showMessage("curMessage","✓ "+result.message,"success");
+      resetForm();
+      await loadCurrencies();
+    }catch(err){
+      showMessage("curMessage",err.message,"error");
+    }finally{
+      busy=false;
+      $("curSave").disabled=false;
+      $("curSave").textContent=editingId?"Save Changes":"＋ Add Currency";
+    }
+  });
+
+  $("curRows").addEventListener("click",async e=>{
+    const edit=e.target.closest("[data-edit]");
+    const del=e.target.closest("[data-delete]");
+
+    if(edit){
+      const item=currencies.find(x=>String(x.currencyId)===edit.dataset.edit);
+      if(!item)return;
+
+      editingId=item.currencyId;
+      $("curCode").value=item.code||"";
+      $("curName").value=item.name||"";
+      $("curSymbol").value=item.symbol||"";
+      $("curFormTitle").textContent="✎ Edit Currency";
+      $("curSave").textContent="Save Changes";
+      $("curCancel").style.display="inline-block";
+      hideMessage("curMessage");
+      root.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+
+    if(del){
+      const item=currencies.find(x=>String(x.currencyId)===del.dataset.delete);
+      if(!item)return;
+
+      if(!confirm("Delete "+item.code+" currency?\n\nExisting Wage History will keep its saved currency details."))return;
+
+      del.disabled=true;
+      try{
+        const result=await post({action:"deleteCurrency",currencyId:item.currencyId});
+        if(!result.success)throw Error(result.message||"Delete failed");
+        showMessage("curTableMessage","✓ "+result.message,"success");
+        await loadCurrencies();
+      }catch(err){
+        showMessage("curTableMessage",err.message,"error");
+      }finally{
+        del.disabled=false;
+      }
+    }
+  });
+
+  $("curCancel").addEventListener("click",resetForm);
+  $("curRefresh").addEventListener("click",loadCurrencies);
+  $("curSearch").addEventListener("input",render);
+
+  loadCurrencies();
+})();
+</script>
+</body>
+</html>
