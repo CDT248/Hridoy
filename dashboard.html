@@ -1,848 +1,826 @@
 
-<div class="wage-dashboard">
-
-<style>
-/* =====================================
-   RS WAGE DASHBOARD - GREEN THEME
-===================================== */
-
-#pageContainer .wage-dashboard {
-  --green:#078447;
-  --green-dark:#056638;
-  --green-light:#e5f7ed;
-  --green-border:#b8e5cb;
-  --wd-text:var(--text-color,var(--text,#172033));
-  --wd-muted:var(--muted-color,#748477);
-  width:100%;
-  color:var(--wd-text);
-  font-family:inherit;
-}
-
-/* HEADER */
-
-#pageContainer .wd-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-bottom:20px;
-}
-
-#pageContainer .wd-heading h2 {
-  margin:0 0 5px;
-  font-size:24px;
-  font-weight:800;
-}
-
-#pageContainer .wd-heading p {
-  margin:0;
-  color:var(--wd-muted);
-  font-size:13px;
-}
-
-#pageContainer .wd-refresh {
-  background:linear-gradient(135deg,#0b9956,#087443);
-  color:#fff;
-  border:0;
-  border-radius:11px;
-  padding:11px 17px;
-  font-weight:750;
-  cursor:pointer;
-  box-shadow:0 5px 14px rgba(0,130,70,.2);
-  transition:.2s;
-}
-
-#pageContainer .wd-refresh:hover {
-  transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(0,130,70,.28);
-}
-
-#pageContainer .wd-refresh:disabled {
-  opacity:.6;
-  cursor:wait;
-}
-
-/* STATUS */
-
-#pageContainer .wd-status {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--wd-muted);
-  font-size:12px;
-  margin-bottom:19px;
-}
-
-#pageContainer .wd-dot {
-  height:8px;
-  width:8px;
-  border-radius:50%;
-  background:#e9a23b;
-  display:inline-block;
-}
-
-#pageContainer .wd-dot.success {
-  background:#16a34a;
-}
-
-#pageContainer .wd-dot.error {
-  background:#dc2626;
-}
-
-/* DASHBOARD GRID */
-
-#pageContainer .wd-grid {
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:30px;
-}
-
-/* FULL GREEN STAT CARDS */
-
-#pageContainer .wd-stat {
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
-  background:linear-gradient(135deg,#0b9956 0%,#087443 100%) !important;
-  border:1px solid #078447 !important;
-  border-radius:17px;
-  padding:21px;
-  min-width:0;
-  color:#fff !important;
-  box-shadow:0 7px 20px rgba(0,110,55,.16);
-  transition:transform .22s,box-shadow .22s;
-}
-
-#pageContainer .wd-stat:hover {
-  transform:translateY(-4px);
-  box-shadow:0 12px 25px rgba(0,110,55,.25);
-}
-
-#pageContainer .wd-stat::before {
-  content:"";
-  position:absolute;
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:rgba(255,255,255,.08);
-  right:-55px;
-  top:-65px;
-  z-index:-1;
-}
-
-#pageContainer .wd-stat::after {
-  content:"";
-  position:absolute;
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  background:rgba(255,255,255,.06);
-  right:30px;
-  bottom:-75px;
-  z-index:-1;
-}
-
-#pageContainer .wd-stat-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:19px;
-}
-
-#pageContainer .wd-stat-label {
-  color:rgba(255,255,255,.88) !important;
-  font-size:13px;
-  font-weight:700;
-}
-
-#pageContainer .wd-icon {
-  width:44px;
-  height:44px;
-  border-radius:13px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-  flex-shrink:0;
-  background:rgba(255,255,255,.18) !important;
-  color:#fff !important;
-  border:1px solid rgba(255,255,255,.18);
-}
-
-#pageContainer .wd-stat-value {
-  color:#fff !important;
-  font-size:clamp(20px,2.2vw,28px);
-  font-weight:850;
-  line-height:1.4;
-  overflow-wrap:anywhere;
-}
-
-#pageContainer .wd-stat-note {
-  color:rgba(255,255,255,.76) !important;
-  font-size:11px;
-  margin-top:8px;
-}
-
-#pageContainer .wd-error {
-  color:#ffe2e2 !important;
-  font-size:11px;
-  margin-top:8px;
-  display:none;
-  overflow-wrap:anywhere;
-}
-
-/* QUICK ACCESS TITLE */
-
-#pageContainer .wd-section-title {
-  font-size:18px;
-  font-weight:800;
-  margin:0 0 15px;
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-#pageContainer .wd-section-title::before {
-  content:"";
-  width:4px;
-  height:20px;
-  border-radius:5px;
-  background:#0b9956;
-}
-
-/* QUICK ACCESS GREEN CARDS */
-
-#pageContainer .wd-links {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-
-#pageContainer .wd-link {
-  background:linear-gradient(135deg,#effaf3,#e1f5e9) !important;
-  border:1px solid #b8e5cb !important;
-  border-radius:15px;
-  padding:17px;
-  text-align:left;
-  color:#075c35 !important;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  width:100%;
-  transition:transform .2s,box-shadow .2s;
-}
-
-#pageContainer .wd-link:hover {
-  transform:translateY(-3px);
-  background:linear-gradient(135deg,#dff5e8,#c9eed8) !important;
-  box-shadow:0 7px 18px rgba(0,120,60,.12);
-}
-
-#pageContainer .wd-link-icon {
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:#0b9956 !important;
-  color:#fff !important;
-  font-size:20px;
-  flex-shrink:0;
-}
-
-#pageContainer .wd-link strong {
-  display:block;
-  font-size:13px;
-  margin-bottom:4px;
-  font-weight:800;
-  color:#075c35 !important;
-}
-
-#pageContainer .wd-link small {
-  color:#47745b !important;
-  font-size:11px;
-}
-
-#pageContainer .wd-arrow {
-  margin-left:auto;
-  color:#078447 !important;
-  font-size:21px;
-}
-
-/* =====================================
-   INDEX DARK MODE COMPATIBILITY
-===================================== */
-
-body.dark #pageContainer .wd-stat {
-  background:linear-gradient(135deg,#075d38 0%,#06472c 100%) !important;
-  border-color:#147b4c !important;
-  color:#fff !important;
-  box-shadow:0 7px 20px rgba(0,0,0,.24);
-}
-
-body.dark #pageContainer .wd-stat-label,
-body.dark #pageContainer .wd-stat-value,
-body.dark #pageContainer .wd-stat-note,
-body.dark #pageContainer .wd-icon {
-  color:#fff !important;
-}
-
-body.dark #pageContainer .wd-link {
-  background:linear-gradient(135deg,#103f2b,#0c3424) !important;
-  border-color:#1a6240 !important;
-  color:#fff !important;
-}
-
-body.dark #pageContainer .wd-link:hover {
-  background:linear-gradient(135deg,#155438,#10452e) !important;
-}
-
-body.dark #pageContainer .wd-link strong,
-body.dark #pageContainer .wd-link small,
-body.dark #pageContainer .wd-arrow {
-  color:#e3f9ec !important;
-}
-
-body.dark #pageContainer .wd-link-icon {
-  background:#137b4b !important;
-  color:#fff !important;
-}
-
-body.dark #pageContainer .wd-refresh {
-  background:linear-gradient(135deg,#159b5c,#087443);
-}
-
-/* RESPONSIVE */
-
-@media(max-width:1000px) {
-  #pageContainer .wd-grid {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  #pageContainer .wd-links {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-
-@media(max-width:560px) {
-  #pageContainer .wd-heading h2 {
-    font-size:21px;
-  }
-
-  #pageContainer .wd-grid {
-    gap:10px;
-  }
-
-  #pageContainer .wd-stat {
-    padding:14px;
-    border-radius:14px;
-  }
-
-  #pageContainer .wd-stat-top {
-    margin-bottom:13px;
-  }
-
-  #pageContainer .wd-icon {
-    width:35px;
-    height:35px;
-    font-size:17px;
-  }
-
-  #pageContainer .wd-stat-label {
-    font-size:11px;
-  }
-
-  #pageContainer .wd-stat-value {
-    font-size:19px;
-  }
-
-  #pageContainer .wd-stat-note {
-    font-size:10px;
-  }
-
-  #pageContainer .wd-links {
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  #pageContainer .wd-link {
-    padding:13px;
-  }
-
-  #pageContainer .wd-refresh {
-    padding:9px 13px;
-    font-size:12px;
-  }
-}
-</style>
-
-<!-- HEADER -->
-
-<div class="wd-top">
-  <div class="wd-heading">
-    <h2>Dashboard</h2>
-    <p>Welcome to your Wage Management System</p>
-  </div>
-
-  <button class="wd-refresh" id="wdRefresh"
-    type="button" onclick="wdLoadDashboard()">
-    ↻ Refresh Data
-  </button>
-</div>
-
-<!-- STATUS -->
-
-<div class="wd-status">
-  <span class="wd-dot" id="wdStatusDot"></span>
-  <span id="wdStatusText">Loading dashboard data...</span>
-</div>
-
-<!-- STATS -->
-
-<div class="wd-grid">
-
-  <div class="wd-stat" data-dashboard-card>
-    <div class="wd-stat-top">
-      <span class="wd-stat-label">Total Users</span>
-      <span class="wd-icon">👥</span>
+<div class="wage-dashboard" id="wageDashboard">
+
+  <style>
+    #pageContainer .wage-dashboard {
+      --green: #079653;
+      --green-dark: #056b3b;
+      --green-light: #e7f8ee;
+      --text: #172b22;
+      --muted: #718078;
+      --surface: #ffffff;
+      --border: #e4eee8;
+      color: var(--text);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    #pageContainer .wage-dashboard * {
+      box-sizing: border-box;
+    }
+
+    #pageContainer .wd-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    #pageContainer .wd-heading h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    #pageContainer .wd-heading p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    #pageContainer .wd-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    #pageContainer .wd-btn {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    #pageContainer .wd-btn-primary {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    #pageContainer .wd-section-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 22px 0 13px;
+    }
+
+    #pageContainer .wd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    #pageContainer .wd-stat {
+      position: relative;
+      min-width: 0;
+      min-height: 140px;
+      padding: 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#0ca45c,#08713f) !important;
+      color: #fff !important;
+      box-shadow: 0 5px 16px rgba(0,120,65,.13);
+      overflow: hidden;
+    }
+
+    #pageContainer .wd-stat::after {
+      content: "";
+      position: absolute;
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.10);
+      right: -28px;
+      bottom: -40px;
+    }
+
+    #pageContainer .wd-stat,
+    #pageContainer .wd-stat * {
+      color: #fff !important;
+    }
+
+    #pageContainer .wd-stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #pageContainer .wd-stat-label {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: .94;
+    }
+
+    #pageContainer .wd-stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.19);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    #pageContainer .wd-stat-value {
+      font-size: 25px;
+      font-weight: 850;
+      margin-top: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    #pageContainer .wd-stat-note {
+      font-size: 11px;
+      opacity: .85;
+      margin-top: 6px;
+    }
+
+    #pageContainer .wd-card-hide {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      z-index: 2;
+      width: 25px;
+      height: 25px;
+      border: 0;
+      border-radius: 7px;
+      background: rgba(0,0,0,.18);
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #pageContainer .wd-quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 13px;
+    }
+
+    #pageContainer .wd-link {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px;
+      border-radius: 14px;
+      border: 1px solid #ccebd8;
+      background: linear-gradient(135deg,#f0fff5,#dff6e8);
+      color: #075e35;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      min-width: 0;
+      transition: .2s;
+    }
+
+    #pageContainer .wd-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--green);
+    }
+
+    #pageContainer .wd-link-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: #c8f1d8;
+      border-radius: 12px;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    #pageContainer .wd-link strong {
+      display: block;
+      font-size: 14px;
+      color: inherit;
+    }
+
+    #pageContainer .wd-link small {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+      opacity: .75;
+      color: inherit;
+    }
+
+    #pageContainer .wd-status {
+      margin-top: 18px;
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #pageContainer .wd-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0,0,0,.55);
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
+
+    #pageContainer .wd-modal.show {
+      display: flex;
+    }
+
+    #pageContainer .wd-modal-box {
+      width: 100%;
+      max-width: 440px;
+      max-height: 85vh;
+      overflow: auto;
+      padding: 20px;
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    #pageContainer .wd-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    #pageContainer .wd-modal-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    #pageContainer .wd-modal-close {
+      border: 0;
+      background: transparent;
+      font-size: 23px;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    #pageContainer .wd-check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    #pageContainer .wd-check-row input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--green);
+    }
+
+    #pageContainer .wd-modal-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    #pageContainer .wd-modal-footer button {
+      flex: 1;
+    }
+
+    /* Dark mode compatibility */
+    body.dark #pageContainer .wage-dashboard {
+      --text: #e5f4eb;
+      --muted: #a5b9ad;
+      --surface: #17251e;
+      --border: #30453a;
+    }
+
+    body.dark #pageContainer .wd-stat {
+      background: linear-gradient(135deg,#087b48,#064b30) !important;
+      color: #fff !important;
+    }
+
+    body.dark #pageContainer .wd-link {
+      background: linear-gradient(135deg,#173c2a,#123323) !important;
+      border-color: #315b43;
+      color: #d9fbe5 !important;
+    }
+
+    body.dark #pageContainer .wd-link * {
+      color: #d9fbe5 !important;
+    }
+
+    body.dark #pageContainer .wd-link-icon {
+      background: #24583b;
+    }
+
+    @media(max-width:1000px) {
+      #pageContainer .wd-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+      #pageContainer .wd-quick-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media(max-width:560px) {
+      #pageContainer .wd-heading h2 {
+        font-size: 21px;
+      }
+      #pageContainer .wd-grid {
+        gap: 10px;
+      }
+      #pageContainer .wd-stat {
+        min-height: 125px;
+        padding: 13px;
+        border-radius: 13px;
+      }
+      #pageContainer .wd-stat-value {
+        font-size: 20px;
+      }
+      #pageContainer .wd-stat-label {
+        font-size: 11px;
+      }
+      #pageContainer .wd-stat-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+      }
+      #pageContainer .wd-quick-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="wd-header">
+    <div class="wd-heading">
+      <h2>Dashboard</h2>
+      <p>Wage Management Overview</p>
     </div>
-    <div class="wd-stat-value" id="wdTotalUsers">—</div>
-    <div class="wd-stat-note">Active user accounts</div>
-    <div class="wd-error" id="wdUserError"></div>
-  </div>
 
-  <div class="wd-stat" data-dashboard-card>
-    <div class="wd-stat-top">
-      <span class="wd-stat-label">Total Wage</span>
-      <span class="wd-icon">💰</span>
+    <div class="wd-actions">
+      <button class="wd-btn" onclick="wdOpenManage()">⚙ Manage Cards</button>
+      <button class="wd-btn wd-btn-primary" onclick="wdLoadDashboard()">↻ Refresh</button>
     </div>
-    <div class="wd-stat-value" id="wdTotalWage">—</div>
-    <div class="wd-stat-note">All wage records</div>
-    <div class="wd-error" id="wdWageError"></div>
   </div>
 
-  <div class="wd-stat" data-dashboard-card>
-    <div class="wd-stat-top">
-      <span class="wd-stat-label">Total Payment</span>
-      <span class="wd-icon">💳</span>
+  <div class="wd-section-title">Financial Overview</div>
+
+  <div class="wd-grid" id="wdCardGrid">
+
+    <div class="wd-stat" data-card="totalUsers">
+      <button class="wd-card-hide" onclick="wdHideCard('totalUsers')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Total Users</span><span class="wd-stat-icon">👥</span></div>
+      <div class="wd-stat-value" id="wdTotalUsers">0</div>
+      <div class="wd-stat-note">All registered users</div>
     </div>
-    <div class="wd-stat-value" id="wdTotalPayment">—</div>
-    <div class="wd-stat-note">All payment records</div>
-    <div class="wd-error" id="wdPaymentError"></div>
-  </div>
 
-  <div class="wd-stat" data-dashboard-card>
-    <div class="wd-stat-top">
-      <span class="wd-stat-label">Remaining Balance</span>
-      <span class="wd-icon">📊</span>
+    <div class="wd-stat" data-card="activeUsers">
+      <button class="wd-card-hide" onclick="wdHideCard('activeUsers')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Active Users</span><span class="wd-stat-icon">🟢</span></div>
+      <div class="wd-stat-value" id="wdActiveUsers">0</div>
+      <div class="wd-stat-note">Currently active users</div>
     </div>
-    <div class="wd-stat-value" id="wdRemaining">—</div>
-    <div class="wd-stat-note">Total Wage − Total Payment</div>
+
+    <div class="wd-stat" data-card="inactiveUsers">
+      <button class="wd-card-hide" onclick="wdHideCard('inactiveUsers')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Inactive Users</span><span class="wd-stat-icon">👤</span></div>
+      <div class="wd-stat-value" id="wdInactiveUsers">0</div>
+      <div class="wd-stat-note">Inactive accounts</div>
+    </div>
+
+    <div class="wd-stat" data-card="totalWage">
+      <button class="wd-card-hide" onclick="wdHideCard('totalWage')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Total Wage</span><span class="wd-stat-icon">💰</span></div>
+      <div class="wd-stat-value" id="wdTotalWage">৳0</div>
+      <div class="wd-stat-note">All wage records</div>
+    </div>
+
+    <div class="wd-stat" data-card="totalPayment">
+      <button class="wd-card-hide" onclick="wdHideCard('totalPayment')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Total Payment</span><span class="wd-stat-icon">💳</span></div>
+      <div class="wd-stat-value" id="wdTotalPayment">৳0</div>
+      <div class="wd-stat-note">All payment records</div>
+    </div>
+
+    <div class="wd-stat" data-card="remainingBalance">
+      <button class="wd-card-hide" onclick="wdHideCard('remainingBalance')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Remaining Balance</span><span class="wd-stat-icon">🏦</span></div>
+      <div class="wd-stat-value" id="wdRemaining">৳0</div>
+      <div class="wd-stat-note">Total wage minus payment</div>
+    </div>
+
+    <div class="wd-stat" data-card="duePayment">
+      <button class="wd-card-hide" onclick="wdHideCard('duePayment')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Due Payment</span><span class="wd-stat-icon">⏳</span></div>
+      <div class="wd-stat-value" id="wdDue">৳0</div>
+      <div class="wd-stat-note">Unpaid wage amount</div>
+    </div>
+
+    <div class="wd-stat" data-card="todayWage">
+      <button class="wd-card-hide" onclick="wdHideCard('todayWage')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Today Wage</span><span class="wd-stat-icon">📅</span></div>
+      <div class="wd-stat-value" id="wdTodayWage">৳0</div>
+      <div class="wd-stat-note">Wage added today</div>
+    </div>
+
+    <div class="wd-stat" data-card="todayPayment">
+      <button class="wd-card-hide" onclick="wdHideCard('todayPayment')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Today Payment</span><span class="wd-stat-icon">💵</span></div>
+      <div class="wd-stat-value" id="wdTodayPayment">৳0</div>
+      <div class="wd-stat-note">Payment made today</div>
+    </div>
+
+    <div class="wd-stat" data-card="monthWage">
+      <button class="wd-card-hide" onclick="wdHideCard('monthWage')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">This Month Wage</span><span class="wd-stat-icon">📊</span></div>
+      <div class="wd-stat-value" id="wdMonthWage">৳0</div>
+      <div class="wd-stat-note">Current month wage</div>
+    </div>
+
+    <div class="wd-stat" data-card="monthPayment">
+      <button class="wd-card-hide" onclick="wdHideCard('monthPayment')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">This Month Payment</span><span class="wd-stat-icon">📈</span></div>
+      <div class="wd-stat-value" id="wdMonthPayment">৳0</div>
+      <div class="wd-stat-note">Current month payment</div>
+    </div>
+
+    <div class="wd-stat" data-card="averageWage">
+      <button class="wd-card-hide" onclick="wdHideCard('averageWage')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Average Wage / User</span><span class="wd-stat-icon">🧮</span></div>
+      <div class="wd-stat-value" id="wdAverageWage">৳0</div>
+      <div class="wd-stat-note">Average wage per active user</div>
+    </div>
+
+    <div class="wd-stat" data-card="wageEntries">
+      <button class="wd-card-hide" onclick="wdHideCard('wageEntries')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Total Wage Entries</span><span class="wd-stat-icon">📝</span></div>
+      <div class="wd-stat-value" id="wdWageEntries">0</div>
+      <div class="wd-stat-note">Number of wage records</div>
+    </div>
+
+    <div class="wd-stat" data-card="paymentEntries">
+      <button class="wd-card-hide" onclick="wdHideCard('paymentEntries')">×</button>
+      <div class="wd-stat-top"><span class="wd-stat-label">Total Payment Entries</span><span class="wd-stat-icon">🧾</span></div>
+      <div class="wd-stat-value" id="wdPaymentEntries">0</div>
+      <div class="wd-stat-note">Number of payment records</div>
+    </div>
+
   </div>
 
-</div>
+  <div class="wd-section-title">Quick Access</div>
 
-<!-- QUICK ACCESS -->
+  <div class="wd-quick-grid">
+    <button class="wd-link" onclick="dashboardOpenPage('add-user')">
+      <span class="wd-link-icon">➕</span>
+      <span><strong>Add User</strong><small>Create a new user</small></span>
+    </button>
 
-<h3 class="wd-section-title">Quick Access</h3>
+    <button class="wd-link" onclick="dashboardOpenPage('user-list')">
+      <span class="wd-link-icon">👥</span>
+      <span><strong>User List</strong><small>View and manage users</small></span>
+    </button>
 
-<div class="wd-links">
+    <button class="wd-link" onclick="dashboardOpenPage('add-wage')">
+      <span class="wd-link-icon">💰</span>
+      <span><strong>Add Wage</strong><small>Add user wage</small></span>
+    </button>
 
-  <button class="wd-link" onclick="dashboardOpenPage('add-user')">
-    <span class="wd-link-icon">➕</span>
-    <span>
-      <strong>Add User</strong>
-      <small>Create a new user account</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+    <button class="wd-link" onclick="dashboardOpenPage('payment')">
+      <span class="wd-link-icon">💳</span>
+      <span><strong>User Payment</strong><small>Record a payment</small></span>
+    </button>
 
-  <button class="wd-link" onclick="dashboardOpenPage('user-list')">
-    <span class="wd-link-icon">👥</span>
-    <span>
-      <strong>User List</strong>
-      <small>View all user accounts</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+    <button class="wd-link" onclick="dashboardOpenPage('wage-history')">
+      <span class="wd-link-icon">📋</span>
+      <span><strong>Wage History</strong><small>View wage records</small></span>
+    </button>
 
-  <button class="wd-link" onclick="dashboardOpenPage('add-wage')">
-    <span class="wd-link-icon">💵</span>
-    <span>
-      <strong>Add Wage</strong>
-      <small>Add a wage entry</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+    <button class="wd-link" onclick="dashboardOpenPage('payment-history')">
+      <span class="wd-link-icon">📑</span>
+      <span><strong>Payment History</strong><small>View payment records</small></span>
+    </button>
+  </div>
 
-  <button class="wd-link" onclick="dashboardOpenPage('payment')">
-    <span class="wd-link-icon">💳</span>
-    <span>
-      <strong>User Payment</strong>
-      <small>Record user payments</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+  <div class="wd-status" id="wdStatus">Dashboard ready. Data loading...</div>
 
-  <button class="wd-link" onclick="dashboardOpenPage('wage-history')">
-    <span class="wd-link-icon">📜</span>
-    <span>
-      <strong>Wage History</strong>
-      <small>View wage records</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+  <div class="wd-modal" id="wdManageModal">
+    <div class="wd-modal-box">
+      <div class="wd-modal-head">
+        <h3>Manage Dashboard Cards</h3>
+        <button class="wd-modal-close" onclick="wdCloseManage()">×</button>
+      </div>
 
-  <button class="wd-link" onclick="dashboardOpenPage('payment-history')">
-    <span class="wd-link-icon">🧾</span>
-    <span>
-      <strong>Payment History</strong>
-      <small>View payment records</small>
-    </span>
-    <span class="wd-arrow">›</span>
-  </button>
+      <p style="font-size:12px;color:var(--muted);margin-top:0">
+        যে কার্ডগুলো দেখাতে চাও সেগুলো Select করে রাখো।
+      </p>
 
-</div>
+      <div id="wdCardOptions"></div>
+
+      <div class="wd-modal-footer">
+        <button class="wd-btn" onclick="wdShowAllCards()">Show All</button>
+        <button class="wd-btn wd-btn-primary" onclick="wdSaveCards()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 (function () {
-  "use strict";
-
-  // =====================================
-  // THREE API URLS
-  // =====================================
+  const root = document.getElementById("wageDashboard");
+  if (!root) return;
 
   const API = {
-    userAccount:
-      "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec",
-
-    wageHistory:
-      "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec",
-
-    userPayment:
-      "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec"
+    users: "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec",
+    wages: "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec",
+    payments: "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec"
   };
 
-  const CURRENCY = "৳";
-  let loading = false;
+  const CARD_NAMES = {
+    totalUsers: "Total Users",
+    activeUsers: "Active Users",
+    inactiveUsers: "Inactive Users",
+    totalWage: "Total Wage",
+    totalPayment: "Total Payment",
+    remainingBalance: "Remaining Balance",
+    duePayment: "Due Payment",
+    todayWage: "Today Wage",
+    todayPayment: "Today Payment",
+    monthWage: "This Month Wage",
+    monthPayment: "This Month Payment",
+    averageWage: "Average Wage / User",
+    wageEntries: "Total Wage Entries",
+    paymentEntries: "Total Payment Entries"
+  };
 
-  // =====================================
-  // HELPERS
-  // =====================================
+  const STORAGE_KEY = "wage_dashboard_hidden_cards_v2";
 
-  function setText(id,value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
+  function getHidden() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch (e) {
+      return [];
+    }
   }
 
-  function setError(id,message) {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    el.textContent = message || "";
-    el.style.display = message ? "block" : "none";
+  function setHidden(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   }
 
-  function setStatus(message,type) {
-    setText("wdStatusText",message);
+  function applyCardVisibility() {
+    const hidden = getHidden();
 
-    const dot = document.getElementById("wdStatusDot");
-    if (dot) dot.className = "wd-dot " + (type || "");
+    root.querySelectorAll("[data-card]").forEach(card => {
+      card.style.display = hidden.includes(card.dataset.card) ? "none" : "";
+    });
   }
 
-  function money(value) {
-    return CURRENCY + " " +
-      (Number(value) || 0).toLocaleString("en-BD",{
-        maximumFractionDigits:2
-      });
-  }
+  window.wdHideCard = function (key) {
+    const hidden = getHidden();
+    if (!hidden.includes(key)) hidden.push(key);
+    setHidden(hidden);
+    applyCardVisibility();
+  };
 
-  function numberValue(value) {
+  window.wdOpenManage = function () {
+    const hidden = getHidden();
+    const box = root.querySelector("#wdCardOptions");
+
+    box.innerHTML = Object.entries(CARD_NAMES).map(([key, name]) => `
+      <label class="wd-check-row">
+        <input type="checkbox" value="${key}" ${!hidden.includes(key) ? "checked" : ""}>
+        <span>${name}</span>
+      </label>
+    `).join("");
+
+    root.querySelector("#wdManageModal").classList.add("show");
+  };
+
+  window.wdCloseManage = function () {
+    root.querySelector("#wdManageModal").classList.remove("show");
+  };
+
+  window.wdShowAllCards = function () {
+    root.querySelectorAll("#wdCardOptions input").forEach(input => {
+      input.checked = true;
+    });
+  };
+
+  window.wdSaveCards = function () {
+    const hidden = [];
+    root.querySelectorAll("#wdCardOptions input").forEach(input => {
+      if (!input.checked) hidden.push(input.value);
+    });
+
+    setHidden(hidden);
+    applyCardVisibility();
+    wdCloseManage();
+  };
+
+  window.dashboardOpenPage = function (page) {
+    if (typeof window.loadPage === "function") {
+      window.loadPage(page, true);
+    } else {
+      alert("Page loader পাওয়া যায়নি। index.html পরীক্ষা করো।");
+    }
+  };
+
+  function number(value) {
     if (typeof value === "number") return value;
     if (value === null || value === undefined) return 0;
 
-    return Number(
-      String(value).replace(/[৳,\s]/g,"")
-    ) || 0;
+    const cleaned = String(value).replace(/[৳,\s]/g, "");
+    const result = parseFloat(cleaned);
+    return Number.isFinite(result) ? result : 0;
   }
 
-  function getArray(data,keys) {
+  function getAmount(item) {
+    const keys = [
+      "amount", "wage", "payment", "total",
+      "paidAmount", "wageAmount", "paymentAmount",
+      "salary", "money", "value"
+    ];
+
+    for (const key of keys) {
+      if (item[key] !== undefined && item[key] !== null && item[key] !== "") {
+        return number(item[key]);
+      }
+    }
+    return 0;
+  }
+
+  function getDate(item) {
+    const keys = [
+      "date", "createdAt", "timestamp",
+      "paymentDate", "wageDate", "created",
+      "time", "entryDate"
+    ];
+
+    for (const key of keys) {
+      if (item[key]) {
+        const d = new Date(item[key]);
+        if (!isNaN(d.getTime())) return d;
+      }
+    }
+    return null;
+  }
+
+  function isToday(date) {
+    if (!date) return false;
+    const now = new Date();
+    return date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate();
+  }
+
+  function isThisMonth(date) {
+    if (!date) return false;
+    const now = new Date();
+    return date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth();
+  }
+
+  function extractArray(data, keys) {
     if (Array.isArray(data)) return data;
 
     for (const key of keys) {
-      if (data && Array.isArray(data[key])) {
-        return data[key];
-      }
+      if (Array.isArray(data && data[key])) return data[key];
     }
 
-    if (data && data.data) {
-      if (Array.isArray(data.data)) return data.data;
-
-      for (const key of keys) {
-        if (Array.isArray(data.data[key])) {
-          return data.data[key];
-        }
-      }
+    if (data && data.data && Array.isArray(data.data)) {
+      return data.data;
     }
 
     return [];
   }
 
-  function getAmount(item) {
-    const keys = [
-      "amount",
-      "wage",
-      "payment",
-      "total",
-      "paidAmount",
-      "wageAmount",
-      "paymentAmount"
-    ];
-
-    for (const key of keys) {
-      if (item && item[key] !== undefined &&
-          item[key] !== null) {
-        return numberValue(item[key]);
-      }
-    }
-
-    return 0;
-  }
-
-  function sumRecords(records) {
-    return records.reduce(
-      (sum,item) => sum + getAmount(item),0
-    );
-  }
-
-  // =====================================
-  // API REQUEST
-  // =====================================
-
-  function makeUrl(base,action) {
-    const url = new URL(base);
-    url.searchParams.set("api",action);
-    return url.toString();
-  }
-
-  async function fetchApi(base,action) {
-    const response = await fetch(
-      makeUrl(base,action),
-      {
-        method:"GET",
-        cache:"no-store",
-        redirect:"follow"
-      }
-    );
+  async function fetchApi(url, action) {
+    const response = await fetch(url + "?api=" + encodeURIComponent(action), {
+      method: "GET",
+      cache: "no-store"
+    });
 
     if (!response.ok) {
-      throw new Error("HTTP " + response.status);
+      throw new Error("API request failed: " + response.status);
     }
 
-    const raw = await response.text();
+    return await response.json();
+  }
 
-    let result;
+  function setText(id, value) {
+    const el = root.querySelector("#" + id);
+    if (el) el.textContent = value;
+  }
+
+  function money(value) {
+    return "৳" + Number(value || 0).toLocaleString("en-US", {
+      maximumFractionDigits: 2
+    });
+  }
+
+  function userIsActive(user) {
+    const status = String(
+      user.status || user.Status || user.accountStatus || "active"
+    ).toLowerCase();
+
+    return !["inactive", "deleted", "disabled", "off"].includes(status);
+  }
+
+  async function loadDashboard() {
+    const status = root.querySelector("#wdStatus");
+    status.textContent = "Loading dashboard data...";
 
     try {
-      result = JSON.parse(raw);
+      const results = await Promise.allSettled([
+        fetchApi(API.users, "active"),
+        fetchApi(API.wages, "wages"),
+        fetchApi(API.payments, "payments")
+      ]);
+
+      const errors = [];
+
+      const users = results[0].status === "fulfilled"
+        ? extractArray(results[0].value, ["users", "accounts", "activeUsers", "records"])
+        : (errors.push("Users API"), []);
+
+      const wages = results[1].status === "fulfilled"
+        ? extractArray(results[1].value, ["entries", "wages", "history", "records"])
+        : (errors.push("Wage API"), []);
+
+      const payments = results[2].status === "fulfilled"
+        ? extractArray(results[2].value, ["entries", "payments", "history", "records"])
+        : (errors.push("Payment API"), []);
+
+      const activeUsers = users.filter(userIsActive).length;
+      const inactiveUsers = Math.max(0, users.length - activeUsers);
+
+      const totalWage = wages.reduce((sum, item) => sum + getAmount(item), 0);
+      const totalPayment = payments.reduce((sum, item) => sum + getAmount(item), 0);
+
+      const todayWage = wages.reduce((sum, item) => {
+        return sum + (isToday(getDate(item)) ? getAmount(item) : 0);
+      }, 0);
+
+      const todayPayment = payments.reduce((sum, item) => {
+        return sum + (isToday(getDate(item)) ? getAmount(item) : 0);
+      }, 0);
+
+      const monthWage = wages.reduce((sum, item) => {
+        return sum + (isThisMonth(getDate(item)) ? getAmount(item) : 0);
+      }, 0);
+
+      const monthPayment = payments.reduce((sum, item) => {
+        return sum + (isThisMonth(getDate(item)) ? getAmount(item) : 0);
+      }, 0);
+
+      const remaining = totalWage - totalPayment;
+
+      setText("wdTotalUsers", users.length.toLocaleString("en-US"));
+      setText("wdActiveUsers", activeUsers.toLocaleString("en-US"));
+      setText("wdInactiveUsers", inactiveUsers.toLocaleString("en-US"));
+
+      setText("wdTotalWage", money(totalWage));
+      setText("wdTotalPayment", money(totalPayment));
+      setText("wdRemaining", money(remaining));
+      setText("wdDue", money(Math.max(0, remaining)));
+
+      setText("wdTodayWage", money(todayWage));
+      setText("wdTodayPayment", money(todayPayment));
+      setText("wdMonthWage", money(monthWage));
+      setText("wdMonthPayment", money(monthPayment));
+
+      setText("wdAverageWage", money(
+        activeUsers ? totalWage / activeUsers : 0
+      ));
+
+      setText("wdWageEntries", wages.length.toLocaleString("en-US"));
+      setText("wdPaymentEntries", payments.length.toLocaleString("en-US"));
+
+      if (errors.length) {
+        status.textContent =
+          "কিছু API থেকে ডেটা পাওয়া যায়নি: " + errors.join(", ") +
+          ". API action এবং response format পরীক্ষা করতে হবে।";
+      } else {
+        status.textContent =
+          "Dashboard updated successfully • " +
+          new Date().toLocaleTimeString();
+      }
+
     } catch (error) {
-      throw new Error("Invalid JSON response");
+      console.error("Dashboard error:", error);
+      status.textContent =
+        "Dashboard data load হয়নি। API URL, deployment permission এবং response format পরীক্ষা করো।";
     }
 
-    if (result && result.success === false) {
-      throw new Error(
-        result.message || result.error || "API request failed"
-      );
-    }
-
-    return result;
+    applyCardVisibility();
   }
 
-  // =====================================
-  // USER ACCOUNT API
-  // =====================================
+  window.wdLoadDashboard = loadDashboard;
 
-  async function loadUsers() {
-    const data = await fetchApi(API.userAccount,"active");
-
-    const users = getArray(data,[
-      "users",
-      "accounts",
-      "activeUsers",
-      "records"
-    ]);
-
-    return users.filter(user => {
-      const status = String(
-        user.status || "active"
-      ).toLowerCase();
-
-      return ![
-        "inactive",
-        "deleted",
-        "disabled"
-      ].includes(status);
-    }).length;
-  }
-
-  // =====================================
-  // WAGE HISTORY API
-  // =====================================
-
-  async function loadWages() {
-    const data = await fetchApi(
-      API.wageHistory,"wages"
-    );
-
-    const wages = getArray(data,[
-      "entries",
-      "wages",
-      "history",
-      "records"
-    ]);
-
-    return sumRecords(wages);
-  }
-
-  // =====================================
-  // USER PAYMENT API
-  // =====================================
-
-  async function loadPayments() {
-    const data = await fetchApi(
-      API.userPayment,"payments"
-    );
-
-    const payments = getArray(data,[
-      "entries",
-      "payments",
-      "history",
-      "records"
-    ]);
-
-    return sumRecords(payments);
-  }
-
-  // =====================================
-  // DASHBOARD DATA
-  // =====================================
-
-  window.wdLoadDashboard = async function() {
-    if (loading) return;
-
-    loading = true;
-
-    const button = document.getElementById("wdRefresh");
-    if (button) button.disabled = true;
-
-    setStatus("Connecting to 3 APIs...","");
-
-    [
-      "wdUserError",
-      "wdWageError",
-      "wdPaymentError"
-    ].forEach(id => setError(id,""));
-
-    const results = await Promise.allSettled([
-      loadUsers(),
-      loadWages(),
-      loadPayments()
-    ]);
-
-    let totalUsers = null;
-    let totalWage = null;
-    let totalPayment = null;
-
-    if (results[0].status === "fulfilled") {
-      totalUsers = results[0].value;
-
-      setText(
-        "wdTotalUsers",
-        totalUsers.toLocaleString("en-BD")
-      );
-    } else {
-      setText("wdTotalUsers","Error");
-      setError(
-        "wdUserError",
-        results[0].reason.message
-      );
-    }
-
-    if (results[1].status === "fulfilled") {
-      totalWage = results[1].value;
-      setText("wdTotalWage",money(totalWage));
-    } else {
-      setText("wdTotalWage","Error");
-      setError(
-        "wdWageError",
-        results[1].reason.message
-      );
-    }
-
-    if (results[2].status === "fulfilled") {
-      totalPayment = results[2].value;
-      setText("wdTotalPayment",money(totalPayment));
-    } else {
-      setText("wdTotalPayment","Error");
-      setError(
-        "wdPaymentError",
-        results[2].reason.message
-      );
-    }
-
-    if (totalWage !== null && totalPayment !== null) {
-      setText(
-        "wdRemaining",
-        money(totalWage-totalPayment)
-      );
-    } else {
-      setText("wdRemaining","—");
-    }
-
-    const successCount = results.filter(
-      item => item.status === "fulfilled"
-    ).length;
-
-    if (successCount === 3) {
-      setStatus(
-        "All 3 APIs connected successfully",
-        "success"
-      );
-    } else if (successCount > 0) {
-      setStatus(
-        successCount + " of 3 APIs connected. Check failed API.",
-        "error"
-      );
-    } else {
-      setStatus(
-        "API connection failed. Check API settings.",
-        "error"
-      );
-    }
-
-    loading = false;
-    if (button) button.disabled = false;
-  };
-
-  // =====================================
-  // INDEX PAGE NAVIGATION
-  // =====================================
-
-  window.dashboardOpenPage = function(page) {
-    if (typeof window.loadPage === "function") {
-      window.loadPage(page,true);
-    } else {
-      console.error("Index page loader not found");
-    }
-  };
-
-  // INITIAL LOAD
-
-  window.wdLoadDashboard();
+  applyCardVisibility();
+  loadDashboard();
 
 })();
 </script>
