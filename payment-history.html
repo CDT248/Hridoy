@@ -75,68 +75,134 @@
   display:inline-block;padding:5px 9px;border-radius:20px;
   background:var(--ph-bg);font-size:10px;font-weight:800
 }
+
+/* PROFILE SEARCH */
+#paymentHistoryPage .ph-profile-search{
+  display:flex;gap:10px;align-items:center;margin-bottom:15px
+}
+#paymentHistoryPage .ph-profile-search input{
+  flex:1;min-width:0;border:1px solid var(--ph-border);
+  border-radius:10px;padding:12px;background:var(--ph-bg);
+  color:var(--ph-text);outline:none;min-height:44px
+}
+#paymentHistoryPage .ph-profile-search input:focus{
+  border-color:var(--ph-primary)
+}
+#paymentHistoryPage .ph-profile-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:10px
+}
+#paymentHistoryPage .ph-profile-card{
+  display:flex;align-items:center;gap:10px;
+  width:100%;padding:11px;border:1px solid var(--ph-border);
+  border-radius:12px;background:var(--ph-card);
+  color:var(--ph-text);text-align:left;cursor:pointer;
+  transition:.15s
+}
+#paymentHistoryPage .ph-profile-card:hover{
+  border-color:var(--ph-primary)
+}
+#paymentHistoryPage .ph-profile-card.active{
+  border-color:var(--ph-primary);
+  background:var(--ph-bg);
+  box-shadow:0 0 0 1px var(--ph-primary)
+}
+#paymentHistoryPage .ph-avatar{
+  width:42px;height:42px;flex:0 0 42px;
+  border-radius:50%;background:var(--ph-primary);
+  color:#fff;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:800;
+  overflow:hidden
+}
+#paymentHistoryPage .ph-avatar img{
+  width:100%;height:100%;object-fit:cover
+}
+#paymentHistoryPage .ph-profile-info{
+  min-width:0;flex:1
+}
+#paymentHistoryPage .ph-profile-info strong{
+  display:block;font-size:12px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap
+}
+#paymentHistoryPage .ph-profile-info small{
+  display:block;color:var(--ph-muted);
+  font-size:10px;margin-top:4px
+}
+#paymentHistoryPage .ph-profile-count{
+  font-size:10px;color:var(--ph-muted);
+  white-space:nowrap
+}
+#paymentHistoryPage .ph-all-profile{
+  display:flex;align-items:center;justify-content:center;
+  min-height:64px;border:1px dashed var(--ph-border);
+  border-radius:12px;padding:10px;font-size:12px;
+  font-weight:800;color:var(--ph-muted);cursor:pointer
+}
+#paymentHistoryPage .ph-all-profile.active{
+  color:var(--ph-primary);border-color:var(--ph-primary);
+  background:var(--ph-bg)
+}
 #paymentHistoryPage .ph-toolbar{
   display:grid;
-  grid-template-columns:minmax(180px,1fr) repeat(3,minmax(130px,auto));
+  grid-template-columns:minmax(180px,1fr) repeat(2,minmax(130px,auto));
   gap:10px;margin-bottom:15px
 }
-#paymentHistoryPage .ph-toolbar input,
-#paymentHistoryPage .ph-toolbar select{
+#paymentHistoryPage .ph-toolbar input{
   width:100%;min-width:0;border:1px solid var(--ph-border);
   border-radius:10px;padding:10px 12px;
   background:var(--ph-bg);color:var(--ph-text);
   outline:none;min-height:42px;font-size:12px
 }
-#paymentHistoryPage .ph-toolbar input:focus,
-#paymentHistoryPage .ph-toolbar select:focus{
+#paymentHistoryPage .ph-toolbar input:focus{
   border-color:var(--ph-primary)
 }
-#paymentHistoryPage .ph-table-wrap{overflow-x:auto}
-#paymentHistoryPage table{
-  width:100%;border-collapse:collapse;min-width:900px
+
+/* HISTORY CARDS */
+#paymentHistoryPage .ph-history-list{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px
 }
-#paymentHistoryPage th{
-  font-size:11px;color:var(--ph-muted);font-weight:800;
-  text-align:left;padding:12px;
-  border-bottom:1px solid var(--ph-border);
-  white-space:nowrap
+#paymentHistoryPage .ph-history-card{
+  border:1px solid var(--ph-border);
+  background:var(--ph-card);border-radius:13px;padding:14px;
+  min-width:0
 }
-#paymentHistoryPage td{
-  padding:12px;border-bottom:1px solid var(--ph-border);
-  font-size:12px;vertical-align:middle
+#paymentHistoryPage .ph-history-user{
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:12px;border-bottom:1px solid var(--ph-border)
 }
-#paymentHistoryPage tbody tr:last-child td{border-bottom:0}
-#paymentHistoryPage .ph-user-cell{
-  display:flex;align-items:center;gap:9px;min-width:145px
+#paymentHistoryPage .ph-history-user .ph-avatar{
+  width:42px;height:42px;flex-basis:42px
 }
-#paymentHistoryPage .ph-avatar{
-  width:34px;height:34px;flex:0 0 34px;
-  border-radius:50%;background:var(--ph-primary);
-  color:#fff;display:flex;align-items:center;
-  justify-content:center;font-size:12px;font-weight:800
+#paymentHistoryPage .ph-history-user-info{
+  flex:1;min-width:0
 }
-#paymentHistoryPage .ph-user-cell strong{
-  display:block;font-size:12px
+#paymentHistoryPage .ph-history-user-info strong{
+  display:block;font-size:13px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap
 }
-#paymentHistoryPage .ph-user-cell small{
+#paymentHistoryPage .ph-history-user-info small{
   display:block;color:var(--ph-muted);
-  font-size:10px;margin-top:3px
+  font-size:10px;margin-top:4px
 }
-#paymentHistoryPage .ph-action{
-  display:inline-block;padding:5px 9px;border-radius:20px;
-  font-size:10px;font-weight:800;background:var(--ph-bg);
-  color:var(--ph-text);white-space:nowrap
+#paymentHistoryPage .ph-history-details{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;margin:13px 0
 }
-#paymentHistoryPage .ph-action.add{background:#e6f8ef;color:#118653}
-#paymentHistoryPage .ph-action.edit{background:#eaf2ff;color:#2871c9}
-#paymentHistoryPage .ph-action.delete{background:#fdeaea;color:#d83b3b}
-#paymentHistoryPage .ph-action.restore{background:#fff4df;color:#a66b00}
-#paymentHistoryPage .ph-action.permanent-delete{background:#fce4e4;color:#b42318}
+#paymentHistoryPage .ph-history-details span{
+  display:block;color:var(--ph-muted);
+  font-size:10px;margin-bottom:5px
+}
+#paymentHistoryPage .ph-history-details strong{
+  font-size:12px;overflow-wrap:anywhere
+}
 #paymentHistoryPage .ph-view-btn{
-  border:1px solid var(--ph-border);background:var(--ph-card);
-  color:var(--ph-text);border-radius:8px;padding:7px 10px;
-  font-size:11px;font-weight:700
+  width:100%;border:1px solid var(--ph-primary);
+  background:var(--ph-primary);color:#fff;
+  border-radius:9px;padding:10px;font-size:12px;
+  font-weight:800
 }
+#paymentHistoryPage .ph-view-btn:hover{opacity:.9}
 #paymentHistoryPage .ph-loading{
   display:none;text-align:center;padding:22px;
   color:var(--ph-muted);font-size:13px
@@ -144,34 +210,16 @@
 #paymentHistoryPage .ph-loading.show{display:block}
 #paymentHistoryPage .ph-empty{
   text-align:center;padding:30px;color:var(--ph-muted);
-  font-size:13px
+  font-size:13px;grid-column:1/-1
 }
 #paymentHistoryPage .ph-pagination{
   display:flex;justify-content:space-between;align-items:center;
-  gap:10px;flex-wrap:wrap;margin-top:14px;
+  gap:10px;flex-wrap:wrap;margin-top:15px;
   font-size:12px;color:var(--ph-muted)
 }
-#paymentHistoryPage .ph-pagination-actions{
-  display:flex;gap:7px
-}
-#paymentHistoryPage .ph-mobile-list{display:none}
-#paymentHistoryPage .ph-mobile-card{
-  border:1px solid var(--ph-border);border-radius:12px;
-  padding:13px;margin-bottom:10px
-}
-#paymentHistoryPage .ph-mobile-top{
-  display:flex;justify-content:space-between;align-items:center;gap:8px
-}
-#paymentHistoryPage .ph-mobile-details{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:11px;margin:13px 0;font-size:11px
-}
-#paymentHistoryPage .ph-mobile-details span{
-  display:block;color:var(--ph-muted);margin-bottom:4px
-}
-#paymentHistoryPage .ph-mobile-details strong{
-  font-size:12px;overflow-wrap:anywhere
-}
+#paymentHistoryPage .ph-pagination-actions{display:flex;gap:7px}
+
+/* VIEW POPUP */
 #paymentHistoryPage .ph-modal{
   display:none;position:fixed;inset:0;background:#0008;
   z-index:9999;align-items:center;justify-content:center;padding:15px
@@ -195,8 +243,23 @@
   border:0;background:transparent;color:var(--ph-muted);
   font-size:24px;line-height:1;padding:3px 7px
 }
+#paymentHistoryPage .ph-view-profile{
+  display:flex;align-items:center;gap:13px;
+  padding:14px;background:var(--ph-bg);
+  border-radius:12px;margin-bottom:15px
+}
+#paymentHistoryPage .ph-view-profile .ph-avatar{
+  width:58px;height:58px;flex-basis:58px;font-size:17px
+}
+#paymentHistoryPage .ph-view-profile strong{
+  display:block;font-size:15px
+}
+#paymentHistoryPage .ph-view-profile small{
+  display:block;color:var(--ph-muted);
+  font-size:11px;margin-top:5px
+}
 #paymentHistoryPage .ph-detail-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:13px
+  display:grid;grid-template-columns:1fr 1fr;gap:10px
 }
 #paymentHistoryPage .ph-detail{
   padding:11px;border:1px solid var(--ph-border);
@@ -225,30 +288,39 @@
 }
 @keyframes phSpin{to{transform:rotate(360deg)}}
 
-@media(max-width:900px){
+@media(max-width:850px){
   #paymentHistoryPage .ph-stats{
     grid-template-columns:repeat(2,minmax(0,1fr))
   }
-  #paymentHistoryPage .ph-toolbar{
-    grid-template-columns:repeat(2,minmax(0,1fr))
-  }
-  #paymentHistoryPage .ph-toolbar input{grid-column:1/-1}
 }
-@media(max-width:600px){
+@media(max-width:650px){
   #paymentHistoryPage .ph-wrap{padding:0}
   #paymentHistoryPage .ph-heading h2{font-size:20px}
   #paymentHistoryPage .ph-panel{padding:13px}
   #paymentHistoryPage .ph-stat{padding:12px}
   #paymentHistoryPage .ph-stat strong{font-size:18px}
   #paymentHistoryPage .ph-stat small{font-size:10px}
-  #paymentHistoryPage .ph-table-wrap{display:none}
-  #paymentHistoryPage .ph-mobile-list{display:block}
-  #paymentHistoryPage .ph-toolbar{gap:8px}
-  #paymentHistoryPage .ph-toolbar input{grid-column:1/-1}
+  #paymentHistoryPage .ph-profile-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  #paymentHistoryPage .ph-profile-card{padding:9px;gap:8px}
+  #paymentHistoryPage .ph-profile-card .ph-avatar{
+    width:36px;height:36px;flex-basis:36px
+  }
+  #paymentHistoryPage .ph-toolbar{
+    grid-template-columns:1fr 1fr
+  }
+  #paymentHistoryPage .ph-toolbar input:first-child{
+    grid-column:1/-1
+  }
+  #paymentHistoryPage .ph-history-list{grid-template-columns:1fr}
   #paymentHistoryPage .ph-modal{padding:10px}
   #paymentHistoryPage .ph-modal-box{
     padding:16px;border-radius:16px;max-height:90dvh
   }
+}
+@media(max-width:360px){
+  #paymentHistoryPage .ph-profile-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -260,54 +332,66 @@
   <div class="ph-heading">
     <div>
       <h2>Payment History</h2>
-      <div class="ph-sub">Track every payment activity and changes</div>
+      <div class="ph-sub">View user payment records and history</div>
     </div>
     <button class="ph-btn" id="phRefreshBtn" type="button">↻ Refresh</button>
   </div>
 
-  <!-- SUMMARY -->
   <div class="ph-stats">
     <div class="ph-stat">
-      <small>Total Activities</small>
+      <small>Total History</small>
       <strong id="phTotal">0</strong>
     </div>
     <div class="ph-stat">
-      <small>Payment Added</small>
-      <strong id="phAdded">0</strong>
+      <small>Total Users</small>
+      <strong id="phUserCount">0</strong>
     </div>
     <div class="ph-stat">
-      <small>Payment Edited</small>
-      <strong id="phEdited">0</strong>
+      <small>Total Payment Amount</small>
+      <strong id="phAmount">0</strong>
     </div>
     <div class="ph-stat">
-      <small>Payment Deleted</small>
-      <strong id="phDeleted">0</strong>
+      <small>Selected User Records</small>
+      <strong id="phSelectedCount">0</strong>
     </div>
   </div>
 
-  <!-- HISTORY TABLE -->
+  <!-- SEARCH PROFILE -->
   <div class="ph-panel">
     <div class="ph-panel-head">
-      <h3>All Payment Activities</h3>
+      <h3>Search Profile</h3>
+      <span class="ph-pill" id="phProfileCount">0 USERS</span>
+    </div>
+
+    <div class="ph-profile-search">
+      <input
+        type="search"
+        id="phProfileSearch"
+        placeholder="Search profile by name or user ID..."
+      >
+      <button class="ph-btn primary" type="button" id="phProfileSearchBtn">
+        Search
+      </button>
+    </div>
+
+    <div class="ph-profile-grid" id="phProfileGrid">
+      <div class="ph-empty">Loading profiles...</div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="ph-panel">
+    <div class="ph-panel-head">
+      <h3 id="phHistoryTitle">All Payment History</h3>
       <span class="ph-pill" id="phRecordCount">0 RECORDS</span>
     </div>
 
     <div class="ph-toolbar">
       <input
         type="search"
-        id="phSearch"
-        placeholder="Search user, payment ID, transaction..."
+        id="phHistorySearch"
+        placeholder="Search payment ID, transaction ID..."
       >
-
-      <select id="phActionFilter">
-        <option value="">All Actions</option>
-        <option value="ADD">Payment Added</option>
-        <option value="EDIT">Payment Edited</option>
-        <option value="DELETE">Payment Deleted</option>
-        <option value="RESTORE">Payment Restored</option>
-        <option value="PERMANENT DELETE">Permanent Delete</option>
-      </select>
-
       <input type="date" id="phFromDate" title="From Date">
       <input type="date" id="phToDate" title="To Date">
     </div>
@@ -317,25 +401,7 @@
       Loading payment history...
     </div>
 
-    <div class="ph-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>USER</th>
-            <th>ACTIVITY</th>
-            <th>AMOUNT</th>
-            <th>PAYMENT ID</th>
-            <th>TRANSACTION ID</th>
-            <th>PAYMENT DATE</th>
-            <th>ACTION DATE</th>
-            <th>DETAILS</th>
-          </tr>
-        </thead>
-        <tbody id="phTableBody"></tbody>
-      </table>
-    </div>
-
-    <div class="ph-mobile-list" id="phMobileList"></div>
+    <div class="ph-history-list" id="phHistoryList"></div>
 
     <div class="ph-pagination">
       <span id="phPageInfo">Showing 0 records</span>
@@ -345,16 +411,19 @@
       </div>
     </div>
   </div>
+
 </div>
 
-<!-- DETAILS POPUP -->
+<!-- PAYMENT VIEW POPUP -->
 <div class="ph-modal" id="phDetailsModal">
   <div class="ph-modal-box">
     <div class="ph-modal-head">
-      <h3>History Details</h3>
+      <h3>Payment Details</h3>
       <button class="ph-close" type="button" id="phCloseDetails">×</button>
     </div>
+
     <div id="phDetailsContent"></div>
+
     <div style="display:flex;justify-content:flex-end;margin-top:17px">
       <button class="ph-btn primary" type="button" id="phDetailsOK">Close</button>
     </div>
@@ -372,16 +441,24 @@ const ROOT=document.getElementById("paymentHistoryPage");
 if(!ROOT || ROOT.dataset.initialized==="yes") return;
 ROOT.dataset.initialized="yes";
 
-/* SAME PAYMENT API */
+/* API URL */
 const PAYMENT_API=
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
+const USER_API=
+"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+
+/* STATE */
+let historyRecords=[];
+let users=[];
+let profiles=[];
+let selectedUserId="";
+let currentPage=1;
+const pageSize=10;
+
 const $=id=>document.getElementById(id);
 
-let historyRecords=[];
-let currentPage=1;
-let pageSize=15;
-
+/* HELPERS */
 function escapeHTML(value){
   return String(value==null?"":value).replace(/[&<>"']/g,c=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
@@ -408,48 +485,59 @@ function showLoading(show){
 
 function formatDate(value){
   if(!value) return "—";
-
   const d=new Date(value);
   if(isNaN(d.getTime())) return String(value);
-
   return d.toLocaleDateString();
 }
 
 function formatDateTime(value){
   if(!value) return "—";
-
   const d=new Date(value);
   if(isNaN(d.getTime())) return String(value);
-
   return d.toLocaleString();
-}
-
-function getAction(action){
-  const a=String(action||"").trim().toUpperCase();
-
-  if(a==="ADD") return {label:"PAYMENT ADDED",cls:"add"};
-  if(a==="EDIT") return {label:"PAYMENT EDITED",cls:"edit"};
-  if(a==="DELETE") return {label:"PAYMENT DELETED",cls:"delete"};
-  if(a==="RESTORE") return {label:"PAYMENT RESTORED",cls:"restore"};
-
-  if(a==="PERMANENT DELETE"||a==="PERMANENT_DELETE"){
-    return {label:"PERMANENT DELETE",cls:"permanent-delete"};
-  }
-
-  return {label:a||"UNKNOWN",cls:""};
 }
 
 function initials(name){
   const parts=String(name||"?").trim().split(/\s+/).filter(Boolean);
-  return parts.slice(0,2).map(x=>x[0].toUpperCase()).join("")||"?";
+  return parts.slice(0,2).map(x=>x.charAt(0).toUpperCase()).join("")||"?";
 }
 
-function avatarHTML(name){
-  return `<span class="ph-avatar">${escapeHTML(initials(name))}</span>`;
+function getImageURL(value){
+  let url=String(value||"").trim();
+  if(!url) return "";
+
+  if(/^[a-zA-Z0-9_-]{20,}$/.test(url)){
+    return "https://drive.google.com/thumbnail?id="+
+      encodeURIComponent(url)+"&sz=w300";
+  }
+
+  let match=url.match(/\/file\/d\/([^/]+)/);
+  if(!match) match=url.match(/[?&]id=([^&]+)/);
+
+  if(match && match[1]){
+    return "https://drive.google.com/thumbnail?id="+
+      encodeURIComponent(match[1])+"&sz=w300";
+  }
+
+  return url;
 }
 
-/* ================= LOAD HISTORY API ================= */
+function avatarHTML(user,size=""){
+  const name=user?.userName||"Unknown User";
+  const image=getImageURL(user?.profilePicture);
 
+  if(image){
+    return `<span class="ph-avatar ${size}">
+      <img src="${escapeHTML(image)}" alt="${escapeHTML(name)}"
+        referrerpolicy="no-referrer"
+        onerror="this.parentElement.textContent='${escapeHTML(initials(name))}'">
+    </span>`;
+  }
+
+  return `<span class="ph-avatar ${size}">${escapeHTML(initials(name))}</span>`;
+}
+
+/* LOAD PAYMENT HISTORY */
 async function loadHistory(){
   const response=await fetch(PAYMENT_API+"?api=history",{
     method:"GET",
@@ -473,91 +561,216 @@ async function loadHistory(){
   }else{
     historyRecords=[];
   }
+}
 
-  historyRecords.sort((a,b)=>
-    String(b.actionDate||"").localeCompare(String(a.actionDate||""))
+/* LOAD USERS WITH PROFILE PICTURES */
+async function loadUsers(){
+  const response=await fetch(USER_API+"?api=active",{
+    method:"GET",
+    cache:"no-store"
+  });
+
+  if(!response.ok){
+    throw new Error("User API request failed: "+response.status);
+  }
+
+  const data=await response.json();
+
+  users=Array.isArray(data.users)?data.users:[];
+}
+
+/* CREATE UNIQUE HISTORY PROFILES */
+function buildProfiles(){
+  const map=new Map();
+
+  historyRecords.forEach(h=>{
+    const id=String(h.userId||"").trim();
+    if(!id) return;
+
+    const existing=map.get(id);
+    if(existing){
+      existing.count++;
+      if(!existing.profilePicture && h.profilePicture){
+        existing.profilePicture=h.profilePicture;
+      }
+      if(!existing.userName && h.userName){
+        existing.userName=h.userName;
+      }
+      return;
+    }
+
+    map.set(id,{
+      userId:id,
+      userName:h.userName||"",
+      profilePicture:h.profilePicture||"",
+      count:1
+    });
+  });
+
+  profiles=Array.from(map.values()).map(p=>{
+    const user=users.find(u=>String(u.userId)===p.userId);
+
+    return {
+      ...p,
+      userName:user?.userName||p.userName||"Unknown User",
+      profilePicture:
+        user?.profilePicture||p.profilePicture||""
+    };
+  });
+
+  profiles.sort((a,b)=>
+    a.userName.localeCompare(b.userName)
   );
+
+  $("phProfileCount").textContent=profiles.length+" USERS";
+  $("phUserCount").textContent=profiles.length;
 }
 
-/* ================= SUMMARY ================= */
+/* PROFILE SEARCH */
+function renderProfiles(){
+  const q=$("phProfileSearch").value.trim().toLowerCase();
 
-function updateStats(){
-  const added=historyRecords.filter(x=>
-    String(x.action).toUpperCase()==="ADD"
-  ).length;
+  const filtered=profiles.filter(p=>
+    p.userName.toLowerCase().includes(q)||
+    p.userId.toLowerCase().includes(q)
+  );
 
-  const edited=historyRecords.filter(x=>
-    String(x.action).toUpperCase()==="EDIT"
-  ).length;
+  let html=`
+    <button type="button"
+      class="ph-all-profile ${!selectedUserId?"active":""}"
+      data-profile-id="">
+      All Profiles
+    </button>
+  `;
 
-  const deleted=historyRecords.filter(x=>
-    String(x.action).toUpperCase()==="DELETE"
-  ).length;
+  if(!filtered.length){
+    html+=`<div class="ph-empty">No matching profiles found.</div>`;
+  }else{
+    html+=filtered.map(p=>`
+      <button type="button"
+        class="ph-profile-card ${selectedUserId===p.userId?"active":""}"
+        data-profile-id="${escapeHTML(p.userId)}">
 
-  $("phTotal").textContent=historyRecords.length;
-  $("phAdded").textContent=added;
-  $("phEdited").textContent=edited;
-  $("phDeleted").textContent=deleted;
+        ${avatarHTML(p)}
 
-  $("phRecordCount").textContent=historyRecords.length+" RECORDS";
+        <span class="ph-profile-info">
+          <strong>${escapeHTML(p.userName)}</strong>
+          <small>${escapeHTML(p.userId)}</small>
+        </span>
+
+        <span class="ph-profile-count">${p.count}</span>
+      </button>
+    `).join("");
+  }
+
+  $("phProfileGrid").innerHTML=html;
 }
 
-/* ================= FILTER ================= */
+function selectProfile(userId){
+  selectedUserId=String(userId||"");
+  currentPage=1;
 
-function getFiltered(){
-  const q=$("phSearch").value.trim().toLowerCase();
-  const action=$("phActionFilter").value.toUpperCase();
+  const selected=profiles.find(p=>p.userId===selectedUserId);
+
+  $("phHistoryTitle").textContent=selected
+    ?selected.userName+"'s Payment History"
+    :"All Payment History";
+
+  renderProfiles();
+  renderHistory();
+}
+
+$("phProfileGrid").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-profile-id]");
+  if(!btn) return;
+
+  selectProfile(btn.dataset.profileId);
+});
+
+$("phProfileSearchBtn").addEventListener("click",()=>{
+  renderProfiles();
+});
+
+$("phProfileSearch").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    e.preventDefault();
+    renderProfiles();
+  }
+});
+
+$("phProfileSearch").addEventListener("input",()=>{
+  renderProfiles();
+});
+
+/* PROFILE DETAILS FOR HISTORY */
+function getHistoryUser(h){
+  const user=profiles.find(p=>p.userId===String(h.userId||""));
+
+  return {
+    userId:h.userId||"",
+    userName:user?.userName||h.userName||"Unknown User",
+    profilePicture:user?.profilePicture||h.profilePicture||""
+  };
+}
+
+/* FILTER HISTORY */
+function getFilteredHistory(){
+  const q=$("phHistorySearch").value.trim().toLowerCase();
   const from=$("phFromDate").value;
   const to=$("phToDate").value;
 
   return historyRecords.filter(h=>{
-    const searchable=[
-      h.historyId,
-      h.paymentId,
-      h.action,
-      h.userId,
-      h.userName,
-      h.amount,
-      h.currencyCode,
-      h.paymentMethod,
-      h.transactionId,
-      h.comment
-    ].join(" ").toLowerCase();
+    const userId=String(h.userId||"");
 
-    const recordAction=String(h.action||"")
-      .trim().toUpperCase();
+    if(selectedUserId && userId!==selectedUserId){
+      return false;
+    }
+
+    const searchable=[
+      h.historyId,h.paymentId,h.userId,h.userName,
+      h.transactionId,h.paymentMethod,h.currencyCode,
+      h.amount,h.comment
+    ].join(" ").toLowerCase();
 
     const date=String(h.actionDate||"").slice(0,10);
 
-    const searchMatch=!q||searchable.includes(q);
-    const actionMatch=!action||recordAction===action;
-    const fromMatch=!from||date>=from;
-    const toMatch=!to||date<=to;
-
-    return searchMatch&&actionMatch&&fromMatch&&toMatch;
-  });
+    return (!q||searchable.includes(q))&&
+      (!from||date>=from)&&
+      (!to||date<=to);
+  }).sort((a,b)=>
+    String(b.actionDate||"").localeCompare(String(a.actionDate||""))
+  );
 }
 
-/* ================= DETAILS POPUP ================= */
+/* SUMMARY */
+function updateStats(){
+  const selected=selectedUserId
+    ?historyRecords.filter(h=>String(h.userId)===selectedUserId)
+    :historyRecords;
 
-function viewDetails(index){
-  const h=index;
+  const total=selected.reduce((sum,h)=>
+    sum+Number(h.amount||0),0
+  );
 
-  const action=getAction(h.action);
+  $("phTotal").textContent=historyRecords.length;
+  $("phAmount").textContent=money(total);
+  $("phSelectedCount").textContent=selected.length;
+}
+
+/* VIEW DETAILS */
+function viewPayment(h){
+  const user=getHistoryUser(h);
 
   $("phDetailsContent").innerHTML=`
-    <div style="margin-bottom:16px">
-      <span class="ph-action ${action.cls}">
-        ${escapeHTML(action.label)}
-      </span>
+    <div class="ph-view-profile">
+      ${avatarHTML(user)}
+      <div>
+        <strong>${escapeHTML(user.userName)}</strong>
+        <small>User ID: ${escapeHTML(user.userId||"—")}</small>
+      </div>
     </div>
 
     <div class="ph-detail-grid">
-
-      <div class="ph-detail">
-        <span>History ID</span>
-        <strong>${escapeHTML(h.historyId||"—")}</strong>
-      </div>
 
       <div class="ph-detail">
         <span>Payment ID</span>
@@ -565,18 +778,13 @@ function viewDetails(index){
       </div>
 
       <div class="ph-detail">
-        <span>User Name</span>
-        <strong>${escapeHTML(h.userName||"Unknown User")}</strong>
-      </div>
-
-      <div class="ph-detail">
-        <span>User ID</span>
-        <strong>${escapeHTML(h.userId||"—")}</strong>
-      </div>
-
-      <div class="ph-detail">
         <span>Amount</span>
         <strong>${escapeHTML(h.currencyCode||"")} ${money(h.amount)}</strong>
+      </div>
+
+      <div class="ph-detail">
+        <span>Currency</span>
+        <strong>${escapeHTML(h.currencyName||h.currencyCode||"—")}</strong>
       </div>
 
       <div class="ph-detail">
@@ -600,27 +808,29 @@ function viewDetails(index){
       </div>
 
       <div class="ph-detail full">
-        <span>Activity Date</span>
+        <span>History Date</span>
         <strong>${escapeHTML(formatDateTime(h.actionDate))}</strong>
       </div>
+
     </div>
   `;
 
   $("phDetailsModal").classList.add("show");
 }
 
-/* ================= RENDER ================= */
-
+/* RENDER HISTORY CARDS */
 function renderHistory(){
   updateStats();
 
-  const list=getFiltered();
+  const list=getFilteredHistory();
   const totalPages=Math.max(1,Math.ceil(list.length/pageSize));
 
   currentPage=Math.min(currentPage,totalPages);
 
   const start=(currentPage-1)*pageSize;
   const visible=list.slice(start,start+pageSize);
+
+  $("phRecordCount").textContent=list.length+" RECORDS";
 
   $("phPageInfo").textContent=list.length
     ?`Showing ${start+1}-${Math.min(start+pageSize,list.length)} of ${list.length}`
@@ -630,87 +840,37 @@ function renderHistory(){
   $("phNext").disabled=currentPage>=totalPages;
 
   if(!visible.length){
-    $("phTableBody").innerHTML=`
-      <tr><td colspan="8" class="ph-empty">
-        No payment history found.
-      </td></tr>
-    `;
-
-    $("phMobileList").innerHTML=`
+    $("phHistoryList").innerHTML=`
       <div class="ph-empty">No payment history found.</div>
     `;
     return;
   }
 
-  $("phTableBody").innerHTML=visible.map(h=>{
-    const action=getAction(h.action);
+  $("phHistoryList").innerHTML=visible.map(h=>{
+    const user=getHistoryUser(h);
 
     return `
-      <tr>
-        <td>
-          <div class="ph-user-cell">
-            ${avatarHTML(h.userName)}
-            <div>
-              <strong>${escapeHTML(h.userName||"Unknown User")}</strong>
-              <small>${escapeHTML(h.userId||"—")}</small>
-            </div>
+      <div class="ph-history-card">
+
+        <div class="ph-history-user">
+          ${avatarHTML(user)}
+
+          <div class="ph-history-user-info">
+            <strong>${escapeHTML(user.userName)}</strong>
+            <small>${escapeHTML(user.userId)}</small>
           </div>
-        </td>
-
-        <td>
-          <span class="ph-action ${action.cls}">
-            ${escapeHTML(action.label)}
-          </span>
-        </td>
-
-        <td>
-          <strong>
-            ${escapeHTML(h.currencyCode||"")} ${money(h.amount)}
-          </strong>
-        </td>
-
-        <td>${escapeHTML(h.paymentId||"—")}</td>
-        <td>${escapeHTML(h.transactionId||"—")}</td>
-        <td>${escapeHTML(formatDate(h.paymentDate))}</td>
-        <td>${escapeHTML(formatDateTime(h.actionDate))}</td>
-
-        <td>
-          <button class="ph-view-btn" data-history-index="${historyRecords.indexOf(h)}">
-            View
-          </button>
-        </td>
-      </tr>
-    `;
-  }).join("");
-
-  $("phMobileList").innerHTML=visible.map(h=>{
-    const action=getAction(h.action);
-
-    return `
-      <div class="ph-mobile-card">
-        <div class="ph-mobile-top">
-          <div class="ph-user-cell">
-            ${avatarHTML(h.userName)}
-            <div>
-              <strong>${escapeHTML(h.userName||"Unknown User")}</strong>
-              <small>${escapeHTML(h.userId||"—")}</small>
-            </div>
-          </div>
-
-          <span class="ph-action ${action.cls}">
-            ${escapeHTML(action.label)}
-          </span>
         </div>
 
-        <div class="ph-mobile-details">
+        <div class="ph-history-details">
+
           <div>
             <span>Amount</span>
             <strong>${escapeHTML(h.currencyCode||"")} ${money(h.amount)}</strong>
           </div>
 
           <div>
-            <span>Payment ID</span>
-            <strong>${escapeHTML(h.paymentId||"—")}</strong>
+            <span>Payment Method</span>
+            <strong>${escapeHTML(h.paymentMethod||"—")}</strong>
           </div>
 
           <div>
@@ -723,46 +883,47 @@ function renderHistory(){
             <strong>${escapeHTML(formatDate(h.paymentDate))}</strong>
           </div>
 
-          <div style="grid-column:1/-1">
-            <span>Activity Date</span>
+          <div>
+            <span>History Date</span>
             <strong>${escapeHTML(formatDateTime(h.actionDate))}</strong>
           </div>
+
+          <div>
+            <span>Payment ID</span>
+            <strong>${escapeHTML(h.paymentId||"—")}</strong>
+          </div>
+
         </div>
 
-        <button class="ph-view-btn"
-          data-history-index="${historyRecords.indexOf(h)}">
-          View Full Details
+        <button class="ph-view-btn" data-view-id="${historyRecords.indexOf(h)}">
+          View Payment
         </button>
+
       </div>
     `;
   }).join("");
 }
 
-/* ================= EVENTS ================= */
-
-$("phTableBody").addEventListener("click",e=>{
-  const btn=e.target.closest("[data-history-index]");
+/* VIEW BUTTON */
+$("phHistoryList").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-view-id]");
   if(!btn) return;
 
-  const index=Number(btn.dataset.historyIndex);
-  if(historyRecords[index]) viewDetails(historyRecords[index]);
+  const index=Number(btn.dataset.viewId);
+  const h=historyRecords[index];
+
+  if(h) viewPayment(h);
 });
 
-$("phMobileList").addEventListener("click",e=>{
-  const btn=e.target.closest("[data-history-index]");
-  if(!btn) return;
-
-  const index=Number(btn.dataset.historyIndex);
-  if(historyRecords[index]) viewDetails(historyRecords[index]);
-});
-
-["phSearch","phActionFilter","phFromDate","phToDate"].forEach(id=>{
-  $(id).addEventListener(id==="phSearch"?"input":"change",()=>{
+/* HISTORY SEARCH */
+["phHistorySearch","phFromDate","phToDate"].forEach(id=>{
+  $(id).addEventListener(id==="phHistorySearch"?"input":"change",()=>{
     currentPage=1;
     renderHistory();
   });
 });
 
+/* PAGINATION */
 $("phPrev").addEventListener("click",()=>{
   if(currentPage>1){
     currentPage--;
@@ -775,6 +936,7 @@ $("phNext").addEventListener("click",()=>{
   renderHistory();
 });
 
+/* CLOSE POPUP */
 function closeDetails(){
   $("phDetailsModal").classList.remove("show");
 }
@@ -790,8 +952,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape") closeDetails();
 });
 
-/* ================= REFRESH ================= */
-
+/* REFRESH */
 async function refreshHistory(){
   const btn=$("phRefreshBtn");
 
@@ -801,13 +962,24 @@ async function refreshHistory(){
   showLoading(true);
 
   try{
-    await loadHistory();
-    currentPage=1;
+    await Promise.all([
+      loadHistory(),
+      loadUsers()
+    ]);
+
+    buildProfiles();
+    renderProfiles();
     renderHistory();
 
   }catch(err){
     console.error("Payment History Error:",err);
     toast(err.message||"Could not load payment history.");
+
+    $("phHistoryList").innerHTML=`
+      <div class="ph-empty">
+        Could not load payment history. Please refresh.
+      </div>
+    `;
 
   }finally{
     showLoading(false);
