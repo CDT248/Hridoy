@@ -4,942 +4,847 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVA ADMIN Dashboard</title>
+<title>Dashboard</title>
 
 <style>
-:root {
-  --bg:#f4f6fb;
-  --card:#ffffff;
-  --text:#172033;
-  --muted:#8490a5;
-  --primary:#635bff;
-  --border:#e9edf5;
-  --sidebar:#111827;
-  --green:#10b981;
-  --red:#ef4444;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
+/* =================================
+   DASHBOARD ONLY
+================================= */
+
+.dashboard-page{
+  width:100%;
   color:var(--text);
-  min-height:100vh;
 }
-button{font:inherit;cursor:pointer}
-.app{display:flex;min-height:100vh}
 
-/* SIDEBAR */
-.sidebar{
-  width:255px;
-  background:var(--sidebar);
-  color:white;
-  position:fixed;
-  top:0;left:0;bottom:0;
-  z-index:100;
-  padding:22px 15px;
+.dashboard-welcome{
   display:flex;
-  flex-direction:column;
-  transition:.25s;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-bottom:22px;
 }
-.brand{
-  display:flex;align-items:center;gap:12px;
-  padding:5px 9px 28px;
+
+.dashboard-welcome h2{
+  font-size:22px;
+  font-weight:850;
+  letter-spacing:-.5px;
 }
-.brand-logo{
-  width:42px;height:42px;border-radius:13px;
-  background:linear-gradient(135deg,#8178ff,#5145e8);
-  display:grid;place-items:center;font-size:21px;font-weight:800;
+
+.dashboard-welcome p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
 }
-.brand h2{font-size:19px;letter-spacing:1px}
-.brand small{display:block;color:#9ca3af;font-size:10px;margin-top:3px}
-.menu-label{
-  color:#6b7280;font-size:10px;font-weight:800;
-  letter-spacing:1.5px;padding:12px 12px 9px;
-}
-.nav-btn{
-  display:flex;align-items:center;gap:12px;
-  width:100%;padding:12px 13px;
-  margin:3px 0;border:0;border-radius:10px;
-  background:transparent;color:#aeb8ca;
-  text-align:left;font-size:13px;
-  transition:.2s;
-}
-.nav-btn:hover,.nav-btn.active{
-  color:white;background:#293247;
-}
-.nav-btn.active{box-shadow:inset 3px 0 #8178ff}
-.nav-icon{width:21px;text-align:center;font-size:17px}
-.sidebar-bottom{margin-top:auto}
-.profile{
-  border-top:1px solid #30394a;
-  padding:17px 8px 5px;
-  display:flex;align-items:center;gap:10px;
-}
-.avatar{
-  width:37px;height:37px;border-radius:50%;
-  background:#5145e8;display:grid;place-items:center;
+
+.dashboard-refresh{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:10px 15px;
+  border-radius:9px;
+  font-size:12px;
   font-weight:700;
-}
-.profile small{color:#9ca3af;display:block;margin-top:3px}
-.logout{
-  margin-left:auto;background:none;border:0;color:#9ca3af;
-  font-size:18px;
+  cursor:pointer;
 }
 
-/* MAIN */
-.main{
-  margin-left:255px;width:calc(100% - 255px);
+.dashboard-refresh:hover{
+  background:var(--hover);
+  color:var(--primary);
+}
+
+/* SUMMARY CARDS */
+
+.dashboard-stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:25px;
+}
+
+.dashboard-stat-card{
+  position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:20px;
+  box-shadow:var(--shadow);
   min-width:0;
+  transition:transform .2s,border-color .2s;
 }
-.topbar{
-  height:70px;background:white;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;position:sticky;top:0;z-index:50;
-}
-.top-left{display:flex;align-items:center;gap:12px}
-.topbar h3{font-size:17px}
-.topbar small{color:var(--muted);font-size:11px}
-.top-right{display:flex;align-items:center;gap:12px}
-.date-label{font-size:12px;color:var(--muted)}
-.menu-toggle{
-  display:none;border:0;background:#f1f2f8;
-  border-radius:9px;width:38px;height:38px;font-size:20px;
-}
-.content{padding:27px;max-width:1500px;margin:auto}
-.page-heading{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:12px;margin-bottom:22px;
-}
-.page-heading h1{font-size:24px}
-.page-heading p{font-size:12px;color:var(--muted);margin-top:6px}
-.btn{
-  border:0;border-radius:9px;padding:10px 15px;
-  background:var(--primary);color:white;font-size:12px;
-}
-.btn.secondary{background:#eef0ff;color:var(--primary)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* DASHBOARD CARDS */
-.stats{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px;margin-bottom:25px;
-}
-.stat{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:15px;padding:19px;
-  box-shadow:0 3px 12px #1b2a4406;
-}
-.stat-top{display:flex;justify-content:space-between;align-items:center}
-.stat-icon{
-  width:39px;height:39px;border-radius:12px;
-  display:grid;place-items:center;font-size:19px;
-  background:#efedff;color:var(--primary);
-}
-.stat-label{font-size:12px;color:var(--muted)}
-.stat-value{font-size:25px;font-weight:800;margin-top:14px}
-.stat-note{font-size:10px;color:var(--muted);margin-top:5px}
-.section-title{
-  font-size:16px;font-weight:750;margin:24px 0 14px;
-}
-.quick-grid{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-.quick-card{
-  background:white;border:1px solid var(--border);
-  border-radius:13px;padding:17px;text-align:left;
-  display:flex;align-items:center;gap:13px;
-  color:var(--text);transition:.2s;
-}
-.quick-card:hover,.file-card:hover{
+.dashboard-stat-card:hover{
   transform:translateY(-3px);
-  border-color:#b9b4ff;
-  box-shadow:0 8px 22px #312e8110;
+  border-color:var(--primary);
 }
-.quick-icon{
-  width:42px;height:42px;border-radius:12px;
-  background:#f0efff;display:grid;place-items:center;
-  font-size:20px;flex-shrink:0;
-}
-.quick-card strong{font-size:13px;display:block}
-.quick-card small{font-size:10px;color:var(--muted);display:block;margin-top:5px}
 
-/* FILE MANAGER */
-.file-toolbar{
-  background:white;border:1px solid var(--border);
-  padding:14px;border-radius:13px;
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:17px;
-}
-.search{
-  width:100%;max-width:350px;padding:11px 13px;
-  border:1px solid var(--border);border-radius:9px;
-  outline:none;font-size:12px;background:#fafbfe;
-}
-.search:focus{border-color:var(--primary)}
-.file-count{margin-left:auto;color:var(--muted);font-size:11px}
-.file-grid{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:13px;
-}
-.file-card{
-  background:white;border:1px solid var(--border);
-  border-radius:13px;padding:16px;
-  cursor:pointer;text-align:left;color:var(--text);
-  transition:.2s;min-width:0;
-}
-.file-icon{
-  width:43px;height:43px;border-radius:12px;
-  display:grid;place-items:center;
-  background:#fff0f0;color:#e34b4b;font-size:21px;
-  margin-bottom:13px;
-}
-.file-card strong{
-  font-size:12px;display:block;
-  overflow-wrap:anywhere;
-}
-.file-card small{
-  color:var(--muted);font-size:10px;
-  display:block;margin-top:7px;
-}
-.status{
-  display:inline-block;margin-top:10px;
-  font-size:9px;color:#0d9b6c;
-  background:#e8faf3;padding:5px 8px;border-radius:20px;
-}
-.empty{
-  background:white;border:1px dashed #cbd2df;
-  border-radius:13px;padding:40px 15px;
-  text-align:center;color:var(--muted);font-size:13px;
-  grid-column:1/-1;
-}
-.notice{
-  background:#f0efff;color:#5b54c9;
-  padding:12px 14px;border-radius:10px;
-  font-size:11px;margin-bottom:15px;line-height:1.7;
-}
-.error{background:#fff0f0;color:#c43d3d}
-.loading{text-align:center;padding:35px;color:var(--muted);font-size:12px}
-
-/* FILE VIEWER */
-.viewer{
-  background:white;border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;
-  min-height:70vh;
-}
-.viewer-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 15px;border-bottom:1px solid var(--border);
+.dashboard-stat-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap:10px;
 }
-.viewer-title{font-size:12px;font-weight:700;overflow-wrap:anywhere}
-.viewer-actions{display:flex;gap:7px}
-.viewer iframe{width:100%;height:calc(100vh - 190px);min-height:550px;border:0}
-.back-btn{
-  background:#f0efff;color:var(--primary);
-  border:0;padding:9px 12px;border-radius:8px;font-size:11px;
+
+.dashboard-stat-label{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:650;
 }
 
-/* SETTINGS */
-.settings-card{
-  background:white;border:1px solid var(--border);
-  padding:20px;border-radius:13px;margin-bottom:15px;
-}
-.settings-card h3{font-size:14px;margin-bottom:12px}
-.settings-card p{font-size:12px;color:var(--muted);line-height:1.7}
-.settings-card input{
-  width:100%;padding:11px;border:1px solid var(--border);
-  border-radius:8px;margin:7px 0 12px;font-size:12px;
+.dashboard-stat-icon{
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  flex-shrink:0;
 }
 
-/* MOBILE */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:#0008;z-index:90;
+.dashboard-stat-icon.green{
+  background:#e7f7ef;
+  color:#087f5b;
 }
+
+.dashboard-stat-icon.blue{
+  background:#eaf2ff;
+  color:#3478df;
+}
+
+.dashboard-stat-icon.orange{
+  background:#fff3e5;
+  color:#e58b25;
+}
+
+.dashboard-stat-icon.purple{
+  background:#f1eaff;
+  color:#8054d6;
+}
+
+body.dark .dashboard-stat-icon.green{
+  background:#17392e;
+}
+
+body.dark .dashboard-stat-icon.blue{
+  background:#192e49;
+}
+
+body.dark .dashboard-stat-icon.orange{
+  background:#3c2d1d;
+}
+
+body.dark .dashboard-stat-icon.purple{
+  background:#302344;
+}
+
+.dashboard-stat-value{
+  font-size:27px;
+  font-weight:850;
+  margin-top:17px;
+  line-height:1.2;
+  overflow-wrap:anywhere;
+}
+
+.dashboard-stat-description{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:8px;
+}
+
+.dashboard-stat-line{
+  width:100%;
+  height:4px;
+  background:var(--bg);
+  border-radius:20px;
+  margin-top:15px;
+  overflow:hidden;
+}
+
+.dashboard-stat-line span{
+  display:block;
+  height:100%;
+  width:100%;
+  border-radius:20px;
+  background:var(--primary);
+}
+
+/* QUICK ACTIONS */
+
+.dashboard-section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:27px 0 14px;
+}
+
+.dashboard-section-heading h3{
+  font-size:15px;
+  font-weight:800;
+}
+
+.dashboard-section-heading span{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.dashboard-quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.dashboard-quick-card{
+  width:100%;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:17px;
+  border-radius:13px;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  box-shadow:var(--shadow);
+  transition:.2s;
+}
+
+.dashboard-quick-card:hover{
+  border-color:var(--primary);
+  transform:translateY(-3px);
+}
+
+.dashboard-quick-icon{
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  flex-shrink:0;
+}
+
+.dashboard-quick-info{
+  min-width:0;
+}
+
+.dashboard-quick-info strong{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+}
+
+.dashboard-quick-info small{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+/* API STATUS */
+
+.dashboard-api-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:22px;
+  padding:12px 14px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+
+.dashboard-status-dot{
+  width:8px;
+  height:8px;
+  background:#e5a02c;
+  border-radius:50%;
+  flex-shrink:0;
+}
+
+.dashboard-status-dot.online{
+  background:#10b981;
+}
+
+.dashboard-status-dot.offline{
+  background:#ef4444;
+}
+
+/* LOADING */
+
+.dashboard-loading{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.dashboard-error{
+  color:#dc4444;
+  font-size:11px;
+}
+
+/* RESPONSIVE */
+
 @media(max-width:1100px){
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .file-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dashboard-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .dashboard-quick-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
 }
-@media(max-width:700px){
-  .sidebar{transform:translateX(-100%);width:270px}
-  .sidebar.open{transform:translateX(0)}
-  .overlay.show{display:block}
-  .main{margin-left:0;width:100%}
-  .menu-toggle{display:block}
-  .topbar{height:62px;padding:0 14px}
-  .topbar h3{font-size:15px}
-  .date-label{display:none}
-  .content{padding:17px 13px}
-  .page-heading h1{font-size:20px}
-  .stats{gap:10px}
-  .stat{padding:13px}
-  .stat-value{font-size:21px}
-  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .quick-card{padding:12px;gap:9px}
-  .quick-icon{width:36px;height:36px;font-size:17px}
-  .quick-card strong{font-size:11px}
-  .file-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .file-card{padding:13px}
-  .file-toolbar{flex-wrap:wrap}
-  .search{max-width:none}
-  .file-count{margin-left:0}
-  .viewer iframe{height:75vh;min-height:450px}
+
+@media(max-width:600px){
+
+  .dashboard-welcome{
+    align-items:flex-start;
+  }
+
+  .dashboard-welcome h2{
+    font-size:19px;
+  }
+
+  .dashboard-refresh{
+    padding:9px 12px;
+  }
+
+  .dashboard-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .dashboard-stat-card{
+    padding:14px;
+    border-radius:12px;
+  }
+
+  .dashboard-stat-icon{
+    width:35px;
+    height:35px;
+    font-size:17px;
+  }
+
+  .dashboard-stat-label{
+    font-size:10px;
+  }
+
+  .dashboard-stat-value{
+    font-size:21px;
+    margin-top:13px;
+  }
+
+  .dashboard-stat-description{
+    font-size:9px;
+    line-height:1.5;
+  }
+
+  .dashboard-quick-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+  }
+
+  .dashboard-quick-card{
+    padding:12px;
+    gap:9px;
+    border-radius:11px;
+  }
+
+  .dashboard-quick-icon{
+    width:35px;
+    height:35px;
+    font-size:17px;
+  }
+
+  .dashboard-quick-info strong{
+    font-size:10px;
+  }
+
+  .dashboard-quick-info small{
+    font-size:9px;
+  }
+
+  .dashboard-section-heading h3{
+    font-size:14px;
+  }
 }
-@media(max-width:360px){
-  .stats{grid-template-columns:1fr 1fr}
-  .quick-grid{grid-template-columns:1fr}
+
+@media(max-width:350px){
+  .dashboard-stat-card{
+    padding:11px;
+  }
+
+  .dashboard-stat-value{
+    font-size:18px;
+  }
+
+  .dashboard-quick-card{
+    padding:10px;
+  }
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="dashboard-page">
 
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-logo">N</div>
-      <div>
-        <h2>NOVA ADMIN</h2>
-        <small>MANAGEMENT SYSTEM</small>
-      </div>
+  <!-- WELCOME -->
+  <div class="dashboard-welcome">
+    <div>
+      <h2>Dashboard Overview</h2>
+      <p>Welcome back, Administrator. Here's your system summary.</p>
     </div>
 
-    <div class="menu-label">MAIN MENU</div>
-
-    <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard',this)">
-      <span class="nav-icon">▦</span> Dashboard
+    <button class="dashboard-refresh" onclick="refreshDashboard()">
+      ↻ Refresh Data
     </button>
+  </div>
 
-    <button class="nav-btn" data-page="files" onclick="showPage('files',this)">
-      <span class="nav-icon">📁</span> File Location
-    </button>
+  <!-- SUMMARY CARDS -->
+  <div class="dashboard-stats">
 
-    <div class="menu-label">ACCOUNT</div>
+    <!-- TOTAL USERS -->
+    <div class="dashboard-stat-card stat-card"
+         data-dashboard-card="total-users">
 
-    <button class="nav-btn" onclick="showPage('settings',this)">
-      <span class="nav-icon">⚙</span> GitHub Settings
-    </button>
-
-    <div class="sidebar-bottom">
-      <div class="profile">
-        <div class="avatar">A</div>
-        <div>
-          <strong style="font-size:12px">Administrator</strong>
-          <small>Admin Account</small>
-        </div>
-        <button class="logout" title="Logout" onclick="logout()">↪</button>
+      <div class="dashboard-stat-top">
+        <span class="dashboard-stat-label">Total Users</span>
+        <div class="dashboard-stat-icon green">♙</div>
       </div>
+
+      <div class="dashboard-stat-value" id="dashTotalUsers">
+        <span class="dashboard-loading">Loading...</span>
+      </div>
+
+      <div class="dashboard-stat-description">
+        Currently active users
+      </div>
+
+      <div class="dashboard-stat-line">
+        <span></span>
+      </div>
+
     </div>
-  </aside>
 
-  <main class="main">
-    <header class="topbar">
-      <div class="top-left">
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <div>
-          <h3 id="topTitle">Dashboard</h3>
-          <small>NOVA ADMIN MANAGEMENT</small>
-        </div>
-      </div>
-      <div class="top-right">
-        <span class="date-label" id="today"></span>
-        <div class="avatar" style="width:34px;height:34px">A</div>
-      </div>
-    </header>
+    <!-- TOTAL WAGE -->
+    <div class="dashboard-stat-card stat-card"
+         data-dashboard-card="total-wage">
 
-    <section class="content" id="content"></section>
-  </main>
+      <div class="dashboard-stat-top">
+        <span class="dashboard-stat-label">Total Wage</span>
+        <div class="dashboard-stat-icon blue">💰</div>
+      </div>
+
+      <div class="dashboard-stat-value" id="dashTotalWage">
+        <span class="dashboard-loading">Loading...</span>
+      </div>
+
+      <div class="dashboard-stat-description">
+        Total wage added to all users
+      </div>
+
+      <div class="dashboard-stat-line">
+        <span></span>
+      </div>
+
+    </div>
+
+    <!-- TOTAL PAYMENT -->
+    <div class="dashboard-stat-card stat-card"
+         data-dashboard-card="total-payment">
+
+      <div class="dashboard-stat-top">
+        <span class="dashboard-stat-label">Total Payment</span>
+        <div class="dashboard-stat-icon orange">৳</div>
+      </div>
+
+      <div class="dashboard-stat-value" id="dashTotalPayment">
+        <span class="dashboard-loading">Loading...</span>
+      </div>
+
+      <div class="dashboard-stat-description">
+        Total payment received from users
+      </div>
+
+      <div class="dashboard-stat-line">
+        <span></span>
+      </div>
+
+    </div>
+
+    <!-- REMAINING BALANCE -->
+    <div class="dashboard-stat-card stat-card"
+         data-dashboard-card="remaining-balance">
+
+      <div class="dashboard-stat-top">
+        <span class="dashboard-stat-label">Remaining Balance</span>
+        <div class="dashboard-stat-icon purple">◈</div>
+      </div>
+
+      <div class="dashboard-stat-value" id="dashRemaining">
+        <span class="dashboard-loading">Loading...</span>
+      </div>
+
+      <div class="dashboard-stat-description">
+        Total Wage − Total Payment
+      </div>
+
+      <div class="dashboard-stat-line">
+        <span></span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- QUICK ACCESS -->
+  <div class="dashboard-section-heading">
+    <h3>Quick Access</h3>
+    <span>Frequently used pages</span>
+  </div>
+
+  <div class="dashboard-quick-grid">
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-add-user"
+            onclick="dashboardOpenPage('add-user')">
+
+      <div class="dashboard-quick-icon">＋</div>
+
+      <div class="dashboard-quick-info">
+        <strong>Add User</strong>
+        <small>Create a new user profile</small>
+      </div>
+
+    </button>
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-user-list"
+            onclick="dashboardOpenPage('user-list')">
+
+      <div class="dashboard-quick-icon">♙</div>
+
+      <div class="dashboard-quick-info">
+        <strong>User List</strong>
+        <small>Manage all users</small>
+      </div>
+
+    </button>
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-add-wage"
+            onclick="dashboardOpenPage('add-wage')">
+
+      <div class="dashboard-quick-icon">💰</div>
+
+      <div class="dashboard-quick-info">
+        <strong>Add Wage</strong>
+        <small>Add wage for a user</small>
+      </div>
+
+    </button>
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-payment"
+            onclick="dashboardOpenPage('payment')">
+
+      <div class="dashboard-quick-icon">৳</div>
+
+      <div class="dashboard-quick-info">
+        <strong>User Payment</strong>
+        <small>Record user payment</small>
+      </div>
+
+    </button>
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-wage-history"
+            onclick="dashboardOpenPage('wage-history')">
+
+      <div class="dashboard-quick-icon">◷</div>
+
+      <div class="dashboard-quick-info">
+        <strong>Wage History</strong>
+        <small>View all wage records</small>
+      </div>
+
+    </button>
+
+    <button class="dashboard-quick-card dashboard-card"
+            data-dashboard-card="quick-payment-history"
+            onclick="dashboardOpenPage('payment-history')">
+
+      <div class="dashboard-quick-icon">📋</div>
+
+      <div class="dashboard-quick-info">
+        <strong>Payment History</strong>
+        <small>View payment records</small>
+      </div>
+
+    </button>
+
+  </div>
+
+  <!-- API CONNECTION STATUS -->
+  <div class="dashboard-api-status">
+    <span class="dashboard-status-dot" id="dashStatusDot"></span>
+    <span id="dashStatusText">Connecting to database...</span>
+  </div>
+
 </div>
 
 <script>
-/* =====================================================
-   NOVA ADMIN — GITHUB FILE MANAGER CONFIGURATION
+/* =========================================
+   WAGE MANAGEMENT DASHBOARD API
+========================================= */
 
-   নিচের ৪টি সেটিংস নিজের GitHub অনুযায়ী পরিবর্তন করবে।
-   ===================================================== */
+/*
+  তোমার Apps Script Web App URL এখানে বসাবে।
+  উদাহরণ:
+  const DASHBOARD_API = "https://script.google.com/macros/s/XXXXX/exec";
 
-const GITHUB_OWNER = "YOUR_GITHUB_USERNAME";
-const GITHUB_REPO = "YOUR_REPOSITORY_NAME";
-const GITHUB_BRANCH = "main";
+  আগের API URL থাকলে সেটিই ব্যবহার করবে।
+*/
 
-/* ফাইলগুলো যে Folder-এ আছে।
-   Root folder হলে খালি রাখবে: "" */
-const GITHUB_FOLDER = "";
+const DASHBOARD_API = "PASTE_YOUR_WAGE_MANAGEMENT_API_URL_HERE";
 
-/* GitHub Pages website address.
-   উদাহরণ: https://username.github.io/repository */
-const GITHUB_PAGES_BASE = "https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY_NAME";
+/* Currency symbol */
+const DASHBOARD_CURRENCY = "৳";
 
-/* Dashboard-এর নিজের index.html আবার File Card-এ দেখাবে না */
-const EXCLUDED_FILES = ["index.html", "dashboard.html"];
+/* =========================================
+   NUMBER FORMAT
+========================================= */
 
-/* =====================================================
-   APP
-   ===================================================== */
+function dashboardNumber(value){
 
-const content = document.getElementById("content");
-let allFiles = [];
-let currentPage = "dashboard";
-let currentFile = null;
-
-document.getElementById("today").textContent =
-  new Date().toLocaleDateString("en-US", {
-    weekday:"short",year:"numeric",month:"short",day:"numeric"
-  });
-
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("open");
-  document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-  document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("overlay").classList.remove("show");
-}
-
-function showPage(page,button){
-  currentPage = page;
-  currentFile = null;
-  closeMenu();
-
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  if(button) button.classList.add("active");
-
-  const titles = {
-    dashboard:"Dashboard",
-    files:"File Location",
-    settings:"GitHub Settings"
-  };
-
-  document.getElementById("topTitle").textContent = titles[page] || "NOVA ADMIN";
-
-  if(page==="dashboard") renderDashboard();
-  if(page==="files") renderFiles();
-  if(page==="settings") renderSettings();
-}
-
-/* DASHBOARD */
-function renderDashboard(){
-  content.innerHTML = `
-    <div class="page-heading">
-      <div>
-        <h1>Welcome to NOVA ADMIN</h1>
-        <p>Your management dashboard at a glance.</p>
-      </div>
-      <button class="btn" onclick="showPage('files',document.querySelector('[data-page=files]'))">
-        📁 Open Files
-      </button>
-    </div>
-
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-top"><span class="stat-label">Total Files</span><span class="stat-icon">📁</span></div>
-        <div class="stat-value" id="totalFiles">—</div>
-        <div class="stat-note">GitHub HTML files</div>
-      </div>
-      <div class="stat">
-        <div class="stat-top"><span class="stat-label">File Types</span><span class="stat-icon">📄</span></div>
-        <div class="stat-value">HTML</div>
-        <div class="stat-note">Web pages</div>
-      </div>
-      <div class="stat">
-        <div class="stat-top"><span class="stat-label">Storage</span><span class="stat-icon">☁️</span></div>
-        <div class="stat-value">GitHub</div>
-        <div class="stat-note">Repository storage</div>
-      </div>
-      <div class="stat">
-        <div class="stat-top"><span class="stat-label">Connection</span><span class="stat-icon">🔗</span></div>
-        <div class="stat-value" id="connectionStatus">Checking</div>
-        <div class="stat-note">Repository connection</div>
-      </div>
-    </div>
-
-    <div class="section-title">Quick Access</div>
-    <div class="quick-grid">
-      <button class="quick-card" onclick="openNamedFile('add-user.html')">
-        <span class="quick-icon">👤</span><span><strong>Add User</strong><small>Open add-user.html</small></span>
-      </button>
-      <button class="quick-card" onclick="openNamedFile('add-wage.html')">
-        <span class="quick-icon">💰</span><span><strong>Add Wage</strong><small>Open add-wage.html</small></span>
-      </button>
-      <button class="quick-card" onclick="openNamedFile('payment.html')">
-        <span class="quick-icon">💳</span><span><strong>Payment</strong><small>Open payment.html</small></span>
-      </button>
-      <button class="quick-card" onclick="openNamedFile('user-list.html')">
-        <span class="quick-icon">👥</span><span><strong>User List</strong><small>Open user-list.html</small></span>
-      </button>
-      <button class="quick-card" onclick="openNamedFile('payment-history.html')">
-        <span class="quick-icon">📜</span><span><strong>Payment History</strong><small>Open payment-history.html</small></span>
-      </button>
-      <button class="quick-card" onclick="showPage('files',document.querySelector('[data-page=files]'))">
-        <span class="quick-icon">🗂️</span><span><strong>All Files</strong><small>Browse all HTML files</small></span>
-      </button>
-    </div>
-
-    <div class="section-title">Recently Added Files</div>
-    <div class="file-grid" id="recentFiles">
-      <div class="loading">Loading files...</div>
-    </div>
-  `;
-
-  loadGithubFiles();
-}
-
-/* GITHUB FILE LIST */
-function githubConfigured(){
-  return GITHUB_OWNER !== "YOUR_GITHUB_USERNAME" &&
-         GITHUB_REPO !== "YOUR_REPOSITORY_NAME";
-}
-
-function getApiUrl(){
-  const folder = GITHUB_FOLDER.replace(/^\/|\/$/g,"");
-  return `https://api.github.com/repos/${encodeURIComponent(GITHUB_OWNER)}/${encodeURIComponent(GITHUB_REPO)}/contents/${folder}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
-}
-
-async function loadGithubFiles(){
-  if(!githubConfigured()){
-    setConnection(false);
-    showConfigMessage();
-    return;
-  }
-
-  try{
-    const response = await fetch(getApiUrl(),{
-      headers:{"Accept":"application/vnd.github+json"}
-    });
-
-    if(!response.ok){
-      throw new Error(response.status===404
-        ? "Repository বা Folder পাওয়া যায়নি।"
-        : "GitHub API Error: "+response.status);
-    }
-
-    const data = await response.json();
-
-    allFiles = data.filter(item=>
-      item.type==="file" &&
-      item.name.toLowerCase().endsWith(".html") &&
-      !EXCLUDED_FILES.includes(item.name.toLowerCase())
-    );
-
-    allFiles.sort((a,b)=>a.name.localeCompare(b.name));
-
-    setConnection(true);
-
-    const total = document.getElementById("totalFiles");
-    if(total) total.textContent = allFiles.length;
-
-    renderRecentFiles();
-    if(currentPage==="files") renderFileGrid();
-
-  }catch(error){
-    setConnection(false);
-    showFileError(error.message);
-  }
-}
-
-function setConnection(connected){
-  const el=document.getElementById("connectionStatus");
-  if(el) el.textContent=connected?"Online":"Offline";
-}
-
-function showConfigMessage(){
-  const recent=document.getElementById("recentFiles");
-  if(recent) recent.innerHTML=`
-    <div class="empty">
-      GitHub Settings-এ Owner, Repository, Branch এবং Folder সেট করো।
-      <br><br>
-      <button class="btn" onclick="showPage('settings',null)">Open Settings</button>
-    </div>`;
-}
-
-function showFileError(message){
-  const recent=document.getElementById("recentFiles");
-  if(recent) recent.innerHTML=`<div class="empty">${escapeHTML(message)}</div>`;
-  const grid=document.getElementById("fileGrid");
-  if(grid) grid.innerHTML=`<div class="empty">${escapeHTML(message)}</div>`;
-}
-
-/* FILE NAME FORMAT */
-function prettyName(filename){
-  return filename
-    .replace(/\.html$/i,"")
-    .replace(/[-_]/g," ")
-    .replace(/\b\w/g,c=>c.toUpperCase());
-}
-
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
-
-/* RECENT FILES */
-function renderRecentFiles(){
-  const box=document.getElementById("recentFiles");
-  if(!box) return;
-
-  const recent=allFiles.slice(0,6);
-  box.innerHTML=recent.length
-    ? recent.map(file=>fileCard(file)).join("")
-    : `<div class="empty">No HTML files found.</div>`;
-}
-
-function fileCard(file){
-  return `
-    <button class="file-card" onclick="openFile('${encodeURIComponent(file.name)}')">
-      <div class="file-icon">🌐</div>
-      <strong>${escapeHTML(prettyName(file.name))}</strong>
-      <small>${escapeHTML(file.name)}</small>
-      <span class="status">● Available</span>
-    </button>`;
-}
-
-/* FILE LOCATION PAGE */
-function renderFiles(){
-  content.innerHTML=`
-    <div class="page-heading">
-      <div>
-        <h1>File Location</h1>
-        <p>All HTML files from your GitHub folder.</p>
-      </div>
-      <button class="btn" onclick="loadGithubFiles()">↻ Refresh</button>
-    </div>
-
-    <div class="notice">
-      নতুন HTML ফাইল GitHub Folder-এ Upload করলে Refresh চাপলেই নতুন Card তৈরি হবে।
-      Sidebar একই থাকবে এবং ফাইল Main Content-এ খুলবে।
-    </div>
-
-    <div class="file-toolbar">
-      <input class="search" id="fileSearch" placeholder="Search file name..." oninput="renderFileGrid()">
-      <span class="file-count" id="fileCount">Loading...</span>
-    </div>
-
-    <div class="file-grid" id="fileGrid">
-      <div class="loading">Loading GitHub files...</div>
-    </div>
-  `;
-
-  if(allFiles.length) renderFileGrid();
-  else loadGithubFiles();
-}
-
-function renderFileGrid(){
-  const grid=document.getElementById("fileGrid");
-  if(!grid) return;
-
-  const search=(document.getElementById("fileSearch")?.value||"").toLowerCase();
-  const filtered=allFiles.filter(file=>
-    file.name.toLowerCase().includes(search)
+  const number = Number(
+    String(value ?? 0).replace(/,/g,"")
   );
 
-  const count=document.getElementById("fileCount");
-  if(count) count.textContent=filtered.length+" Files";
+  return Number.isFinite(number) ? number : 0;
 
-  grid.innerHTML=filtered.length
-    ? filtered.map(file=>fileCard(file)).join("")
-    : `<div class="empty">No matching HTML file found.</div>`;
 }
 
-/* OPEN FILE INSIDE MAIN AREA */
-function openFile(encodedName){
-  const filename=decodeURIComponent(encodedName);
-  const file=allFiles.find(f=>f.name===filename);
+function dashboardMoney(value){
 
-  if(!file){
-    alert("File not found. Please refresh.");
+  return DASHBOARD_CURRENCY + " " +
+    dashboardNumber(value).toLocaleString("en-BD",{
+      maximumFractionDigits:2
+    });
+
+}
+
+/* =========================================
+   API REQUEST
+========================================= */
+
+async function dashboardFetch(apiName){
+
+  const url = new URL(DASHBOARD_API);
+
+  url.searchParams.set("api",apiName);
+
+  const response = await fetch(url.toString(),{
+    method:"GET",
+    cache:"no-store"
+  });
+
+  if(!response.ok){
+    throw new Error("API request failed: " + apiName);
+  }
+
+  const result = await response.json();
+
+  if(result.success === false){
+    throw new Error(result.message || "API returned an error");
+  }
+
+  return result;
+
+}
+
+/* =========================================
+   TOTAL AMOUNT CALCULATION
+========================================= */
+
+function dashboardSum(entries){
+
+  if(!Array.isArray(entries)) return 0;
+
+  return entries.reduce((total,item)=>{
+
+    return total + dashboardNumber(item.amount);
+
+  },0);
+
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+function dashboardSetStatus(status,message){
+
+  const dot = document.getElementById("dashStatusDot");
+  const text = document.getElementById("dashStatusText");
+
+  if(!dot || !text) return;
+
+  dot.className = "dashboard-status-dot";
+
+  if(status==="online"){
+    dot.classList.add("online");
+  }
+
+  if(status==="offline"){
+    dot.classList.add("offline");
+  }
+
+  text.textContent = message;
+
+}
+
+/* =========================================
+   LOAD DASHBOARD DATA
+========================================= */
+
+let dashboardLoading = false;
+
+async function refreshDashboard(){
+
+  if(dashboardLoading) return;
+
+  if(
+    !DASHBOARD_API ||
+    DASHBOARD_API.includes("PASTE_YOUR")
+  ){
+
+    dashboardSetStatus(
+      "offline",
+      "API URL is not configured. Set DASHBOARD_API first."
+    );
+
+    document.getElementById("dashTotalUsers").textContent="—";
+    document.getElementById("dashTotalWage").textContent="—";
+    document.getElementById("dashTotalPayment").textContent="—";
+    document.getElementById("dashRemaining").textContent="—";
+
     return;
   }
 
-  currentFile=file;
+  dashboardLoading = true;
 
-  const folder=GITHUB_FOLDER.replace(/^\/|\/$/g,"");
-  const relativePath=(folder?folder+"/":"")+filename;
-  const pageUrl=GITHUB_PAGES_BASE.replace(/\/$/,"")+"/"+relativePath;
+  dashboardSetStatus("loading","Loading dashboard data...");
 
-  document.getElementById("topTitle").textContent=prettyName(filename);
-
-  content.innerHTML=`
-    <div class="page-heading">
-      <div>
-        <h1>${escapeHTML(prettyName(filename))}</h1>
-        <p>${escapeHTML(relativePath)}</p>
-      </div>
-      <button class="back-btn" onclick="showPage('files',document.querySelector('[data-page=files]'))">
-        ← Back to Files
-      </button>
-    </div>
-
-    <div class="viewer">
-      <div class="viewer-head">
-        <span class="viewer-title">📄 ${escapeHTML(filename)}</span>
-        <div class="viewer-actions">
-          <button class="btn secondary" onclick="reloadCurrentFile()">↻ Reload</button>
-          <button class="btn" onclick="openCurrentInNewTab()">↗ Open</button>
-        </div>
-      </div>
-      <iframe id="fileFrame" src="${escapeHTML(pageUrl)}"
-        title="${escapeHTML(filename)}"></iframe>
-    </div>
-  `;
-
-  closeMenu();
-}
-
-function openNamedFile(name){
-  if(!allFiles.length){
-    showPage("files",document.querySelector('[data-page=files]'));
-    return;
-  }
-  const file=allFiles.find(f=>f.name.toLowerCase()===name.toLowerCase());
-  if(file) openFile(encodeURIComponent(file.name));
-  else{
-    showPage("files",document.querySelector('[data-page=files]'));
-    alert(name+" GitHub Folder-এ পাওয়া যায়নি।");
-  }
-}
-
-function reloadCurrentFile(){
-  const frame=document.getElementById("fileFrame");
-  if(frame) frame.src=frame.src;
-}
-
-function openCurrentInNewTab(){
-  if(!currentFile) return;
-  const folder=GITHUB_FOLDER.replace(/^\/|\/$/g,"");
-  const path=(folder?folder+"/":"")+currentFile.name;
-  window.open(GITHUB_PAGES_BASE.replace(/\/$/,"")+"/"+path,"_blank");
-}
-
-/* GITHUB SETTINGS */
-function renderSettings(){
-  content.innerHTML=`
-    <div class="page-heading">
-      <div>
-        <h1>GitHub Settings</h1>
-        <p>Connect your repository to NOVA ADMIN File Location.</p>
-      </div>
-    </div>
-
-    <div class="settings-card">
-      <h3>GitHub Repository Configuration</h3>
-      <p>এখানে তোমার GitHub তথ্য বসিয়ে Save করো। এই সেটিংস এই Browser-এর LocalStorage-এ থাকবে।</p>
-
-      <label style="font-size:11px">GitHub Username / Owner</label>
-      <input id="ownerInput" placeholder="Your GitHub username" value="${escapeHTML(GITHUB_OWNER)}">
-
-      <label style="font-size:11px">Repository Name</label>
-      <input id="repoInput" placeholder="Your repository name" value="${escapeHTML(GITHUB_REPO)}">
-
-      <label style="font-size:11px">Branch</label>
-      <input id="branchInput" placeholder="main" value="${escapeHTML(GITHUB_BRANCH)}">
-
-      <label style="font-size:11px">Folder Path (Root হলে খালি রাখবে)</label>
-      <input id="folderInput" placeholder="Example: files or pages" value="${escapeHTML(GITHUB_FOLDER)}">
-
-      <label style="font-size:11px">GitHub Pages Website URL</label>
-      <input id="pagesInput" placeholder="https://username.github.io/repository" value="${escapeHTML(GITHUB_PAGES_BASE)}">
-
-      <button class="btn" onclick="saveGithubSettings()">Save & Connect</button>
-      <button class="btn secondary" onclick="resetGithubSettings()">Reset</button>
-    </div>
-
-    <div class="settings-card">
-      <h3>How Auto File Location Works</h3>
-      <p>
-        1. GitHub Folder-এ HTML ফাইল রাখবে।<br>
-        2. Dashboard GitHub Contents API থেকে ফাইলের নাম পড়বে।<br>
-        3. প্রতিটি HTML ফাইলের জন্য Card তৈরি হবে।<br>
-        4. নতুন ফাইল যোগ করলে Refresh করলেই Card দেখা যাবে।<br>
-        5. File Card-এ ক্লিক করলে GitHub Pages-এর ফাইল Main Content-এ খুলবে।
-      </p>
-    </div>
-  `;
-}
-
-function saveGithubSettings(){
-  const settings={
-    owner:document.getElementById("ownerInput").value.trim(),
-    repo:document.getElementById("repoInput").value.trim(),
-    branch:document.getElementById("branchInput").value.trim()||"main",
-    folder:document.getElementById("folderInput").value.trim(),
-    pages:document.getElementById("pagesInput").value.trim()
-  };
-
-  if(!settings.owner||!settings.repo||!settings.pages){
-    alert("Owner, Repository এবং Pages URL দিতে হবে।");
-    return;
-  }
-
-  localStorage.setItem("novaGithubSettings",JSON.stringify(settings));
-  alert("GitHub Settings saved!");
-  location.reload();
-}
-
-function resetGithubSettings(){
-  if(confirm("GitHub Settings reset করতে চাও?")){
-    localStorage.removeItem("novaGithubSettings");
-    location.reload();
-  }
-}
-
-/* LOAD SAVED CONFIG */
-function applySavedSettings(){
   try{
-    const s=JSON.parse(localStorage.getItem("novaGithubSettings")||"null");
-    if(!s) return;
 
-    window.GITHUB_OWNER=s.owner;
-    window.GITHUB_REPO=s.repo;
-    window.GITHUB_BRANCH=s.branch;
-    window.GITHUB_FOLDER=s.folder;
-    window.GITHUB_PAGES_BASE=s.pages;
-  }catch(e){}
-}
+    /*
+      Existing backend GET APIs:
+      active   = active users
+      wages    = all wage history
+      payments = all payment history
+    */
 
-/* LOGOUT DEMO */
-function logout(){
-  if(confirm("Dashboard থেকে বের হতে চাও?")){
-    alert("Demo Dashboard: এখানে তোমার existing login system connect করতে হবে।");
+    const [userResult,wageResult,paymentResult] =
+      await Promise.all([
+        dashboardFetch("active"),
+        dashboardFetch("wages"),
+        dashboardFetch("payments")
+      ]);
+
+    const users = Array.isArray(userResult.users)
+      ? userResult.users
+      : [];
+
+    const wages = Array.isArray(wageResult.entries)
+      ? wageResult.entries
+      : [];
+
+    const payments = Array.isArray(paymentResult.entries)
+      ? paymentResult.entries
+      : [];
+
+    const totalUsers = users.length;
+
+    const totalWage = dashboardSum(wages);
+
+    const totalPayment = dashboardSum(payments);
+
+    const remaining = totalWage - totalPayment;
+
+    /* UPDATE CARDS */
+
+    document.getElementById("dashTotalUsers").textContent =
+      totalUsers.toLocaleString("en-BD");
+
+    document.getElementById("dashTotalWage").textContent =
+      dashboardMoney(totalWage);
+
+    document.getElementById("dashTotalPayment").textContent =
+      dashboardMoney(totalPayment);
+
+    document.getElementById("dashRemaining").textContent =
+      dashboardMoney(remaining);
+
+    dashboardSetStatus(
+      "online",
+      "Connected successfully • Dashboard data updated"
+    );
+
+  }catch(error){
+
+    console.error("Dashboard API Error:",error);
+
+    dashboardSetStatus(
+      "offline",
+      "Could not load dashboard data. Check API URL and backend."
+    );
+
+    document.getElementById("dashTotalUsers").textContent="Error";
+    document.getElementById("dashTotalWage").textContent="Error";
+    document.getElementById("dashTotalPayment").textContent="Error";
+    document.getElementById("dashRemaining").textContent="Error";
+
+  }finally{
+
+    dashboardLoading = false;
+
   }
+
 }
 
-/* START */
-applySavedSettings();
+/* =========================================
+   OPEN PAGE THROUGH EXISTING INDEX ROUTER
+========================================= */
 
-/* Settings saved values override the initial configuration */
-if(window.GITHUB_OWNER) {
-  // Use saved configuration throughout the app.
-  Object.defineProperty(window,"NOVA_GITHUB_CONFIG",{value:true});
-  // Update configuration variables through app-level settings.
-  // The settings loader below applies the saved values.
-  const saved=JSON.parse(localStorage.getItem("novaGithubSettings")||"null");
-  if(saved){
-    // Reassigning is handled by the configuration proxy below.
-    githubConfig.owner=saved.owner;
-    githubConfig.repo=saved.repo;
-    githubConfig.branch=saved.branch;
-    githubConfig.folder=saved.folder;
-    githubConfig.pages=saved.pages;
+function dashboardOpenPage(page){
+
+  if(typeof window.loadPage === "function"){
+
+    window.loadPage(page,true);
+
+  }else{
+
+    location.hash = page;
+
   }
+
 }
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+refreshDashboard();
+
 </script>
 
-<script>
-/* Configuration proxy used by all File Manager functions */
-const githubConfig={
-  owner:GITHUB_OWNER,
-  repo:GITHUB_REPO,
-  branch:GITHUB_BRANCH,
-  folder:GITHUB_FOLDER,
-  pages:GITHUB_PAGES_BASE
-};
-
-/* Override configuration accessors */
-Object.defineProperties(window,{
-  NOVA_OWNER:{get:()=>githubConfig.owner},
-  NOVA_REPO:{get:()=>githubConfig.repo},
-  NOVA_BRANCH:{get:()=>githubConfig.branch},
-  NOVA_FOLDER:{get:()=>githubConfig.folder},
-  NOVA_PAGES:{get:()=>githubConfig.pages}
-});
-
-/* Apply settings to the file manager */
-function githubConfigured(){
-  return githubConfig.owner!=="YOUR_GITHUB_USERNAME" &&
-         githubConfig.repo!=="YOUR_REPOSITORY_NAME" &&
-         !!githubConfig.owner && !!githubConfig.repo;
-}
-function getApiUrl(){
-  const folder=githubConfig.folder.replace(/^\/|\/$/g,"");
-  return `https://api.github.com/repos/${encodeURIComponent(githubConfig.owner)}/${encodeURIComponent(githubConfig.repo)}/contents/${folder}?ref=${encodeURIComponent(githubConfig.branch)}`;
-}
-function openFile(encodedName){
-  const filename=decodeURIComponent(encodedName);
-  const file=allFiles.find(f=>f.name===filename);
-  if(!file){alert("File not found. Please refresh.");return;}
-  currentFile=file;
-  const folder=githubConfig.folder.replace(/^\/|\/$/g,"");
-  const path=(folder?folder+"/":"")+filename;
-  const pageUrl=githubConfig.pages.replace(/\/$/,"")+"/"+path;
-  document.getElementById("topTitle").textContent=prettyName(filename);
-  content.innerHTML=`
-    <div class="page-heading">
-      <div><h1>${escapeHTML(prettyName(filename))}</h1><p>${escapeHTML(path)}</p></div>
-      <button class="back-btn" onclick="showPage('files',document.querySelector('[data-page=files]'))">← Back to Files</button>
-    </div>
-    <div class="viewer">
-      <div class="viewer-head">
-        <span class="viewer-title">📄 ${escapeHTML(filename)}</span>
-        <div class="viewer-actions">
-          <button class="btn secondary" onclick="reloadCurrentFile()">↻ Reload</button>
-          <button class="btn" onclick="openCurrentInNewTab()">↗ Open</button>
-        </div>
-      </div>
-      <iframe id="fileFrame" src="${escapeHTML(pageUrl)}" title="${escapeHTML(filename)}"></iframe>
-    </div>`;
-  closeMenu();
-}
-function openCurrentInNewTab(){
-  if(!currentFile)return;
-  const folder=githubConfig.folder.replace(/^\/|\/$/g,"");
-  const path=(folder?folder+"/":"")+currentFile.name;
-  window.open(githubConfig.pages.replace(/\/$/,"")+"/"+path,"_blank");
-}
-function openNamedFile(name){
-  if(!allFiles.length){
-    showPage("files",document.querySelector('[data-page=files]'));
-    return;
-  }
-  const file=allFiles.find(f=>f.name.toLowerCase()===name.toLowerCase());
-  if(file)openFile(encodeURIComponent(file.name));
-  else{
-    showPage("files",document.querySelector('[data-page=files]'));
-    alert(name+" GitHub Folder-এ পাওয়া যায়নি।");
-  }
-}
-function saveGithubSettings(){
-  const settings={
-    owner:document.getElementById("ownerInput").value.trim(),
-    repo:document.getElementById("repoInput").value.trim(),
-    branch:document.getElementById("branchInput").value.trim()||"main",
-    folder:document.getElementById("folderInput").value.trim(),
-    pages:document.getElementById("pagesInput").value.trim()
-  };
-  if(!settings.owner||!settings.repo||!settings.pages){
-    alert("Owner, Repository এবং Pages URL দিতে হবে.");return;
-  }
-  localStorage.setItem("novaGithubSettings",JSON.stringify(settings));
-  alert("GitHub Settings saved!");
-  location.reload();
-}
-function renderSettings(){
-  content.innerHTML=`
-    <div class="page-heading"><div><h1>GitHub Settings</h1><p>Connect your GitHub repository.</p></div></div>
-    <div class="settings-card">
-      <h3>Repository Configuration</h3>
-      <p>তোমার GitHub তথ্য দিয়ে Save করো।</p>
-      <label style="font-size:11px">GitHub Owner</label>
-      <input id="ownerInput" placeholder="GitHub username" value="${escapeHTML(githubConfig.owner)}">
-      <label style="font-size:11px">Repository</label>
-      <input id="repoInput" placeholder="Repository name" value="${escapeHTML(githubConfig.repo)}">
-      <label style="font-size:11px">Branch</label>
-      <input id="branchInput" value="${escapeHTML(githubConfig.branch)}">
-      <label style="font-size:11px">Folder Path (Root হলে খালি রাখবে)</label>
-      <input id="folderInput" value="${escapeHTML(githubConfig.folder)}">
-      <label style="font-size:11px">GitHub Pages URL</label>
-      <input id="pagesInput" placeholder="https://username.github.io/repository" value="${escapeHTML(githubConfig.pages)}">
-      <button class="btn" onclick="saveGithubSettings()">Save & Connect</button>
-    </div>
-    <div class="settings-card">
-      <h3>Automatic File Cards</h3>
-      <p>GitHub Folder-এ নতুন .html ফাইল যোগ করলে File Location-এ Refresh চাপলে সেটির Card তৈরি হবে। index.html এবং dashboard.html আলাদা করে বাদ রাখা হয়েছে।</p>
-    </div>`;
-}
-</script>
 </body>
 </html>
