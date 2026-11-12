@@ -546,6 +546,10 @@ body:not(.card-hide-mode) .is-card-hidden{
         Payment History
       </button>
 
+      <button class="nav-item" data-page="delete-payment">
+        <span class="nav-icon">▤</span>
+        Delet Payment History
+      </button>
       <!-- SETTINGS -->
 
       <div class="nav-label">SETTINGS</div>
@@ -704,6 +708,12 @@ const PAGE_CONFIG = {
     section:"Payment Management"
   },
 
+    "delete-payment":{
+    file:"delete-payment.html",
+    title:"delete-payment",
+    section:"Payment Management"
+  },
+  
   "currency":{
     file:"currency.html",
     title:"Add Currency",
