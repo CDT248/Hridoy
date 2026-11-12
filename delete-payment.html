@@ -4,659 +4,577 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deleted Payment History | RS NETWORK</title>
+<title>Deleted Payment | RS NETWORK</title>
 
 <style>
-:root {
-  --ph-primary: var(--primary, #087f5b);
-  --ph-accent: var(--accent, #12b886);
-  --ph-bg: var(--bg, #f5f7fb);
-  --ph-card: var(--card, #ffffff);
-  --ph-text: var(--text, #172033);
-  --ph-muted: var(--muted, #8490a3);
-  --ph-border: var(--border, #e8edf3);
-  --ph-danger: #e05252;
-  --ph-shadow: 0 8px 25px rgba(20,40,60,.07);
+:root{
+  --dp-primary:var(--primary,#087f5b);
+  --dp-accent:var(--accent,#12b886);
+  --dp-bg:var(--bg,#f5f7fb);
+  --dp-card:var(--card,#ffffff);
+  --dp-text:var(--text,#172033);
+  --dp-muted:var(--muted,#8490a3);
+  --dp-border:var(--border,#e8edf3);
+  --dp-danger:#e05252;
+  --dp-shadow:0 7px 22px rgba(20,40,60,.06);
 }
 
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  padding:18px;
+  background:var(--dp-bg);
+  color:var(--dp-text);
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-body {
-  margin: 0;
-  padding: 20px;
-  background: var(--ph-bg);
-  color: var(--ph-text);
-  font-family: Arial, Helvetica, sans-serif;
+button,input{font:inherit}
+
+.dp-container{
+  width:100%;
+  max-width:1250px;
+  margin:auto;
 }
 
-button, input {
-  font: inherit;
+.dp-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
 }
 
-.dph-container {
-  width: 100%;
-  max-width: 1250px;
-  margin: auto;
+.dp-title h2{
+  margin:0;
+  font-size:22px;
+  font-weight:750;
 }
 
-.dph-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 22px;
-  flex-wrap: wrap;
+.dp-title p{
+  margin:6px 0 0;
+  color:var(--dp-muted);
+  font-size:12px;
 }
 
-.dph-heading h2 {
-  margin: 0;
-  font-size: 23px;
-  font-weight: 750;
+.dp-btn{
+  border:0;
+  border-radius:8px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:700;
+  transition:.2s;
 }
 
-.dph-heading p {
-  margin: 6px 0 0;
-  color: var(--ph-muted);
-  font-size: 13px;
+.dp-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
 }
 
-.dph-btn {
-  border: 0;
-  border-radius: 9px;
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 650;
-  transition: .2s;
+.dp-refresh{
+  background:var(--dp-primary);
+  color:#fff;
 }
 
-.dph-btn:disabled {
-  opacity: .55;
-  cursor: not-allowed;
+.dp-refresh:hover{filter:brightness(.92)}
+
+.dp-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:18px;
 }
 
-.dph-refresh {
-  background: var(--ph-primary);
-  color: white;
+.dp-stat{
+  min-width:0;
+  padding:14px;
+  background:var(--dp-card);
+  border:1px solid var(--dp-border);
+  border-radius:11px;
+  box-shadow:var(--dp-shadow);
 }
 
-.dph-refresh:hover {
-  filter: brightness(.92);
+.dp-stat-label{
+  color:var(--dp-muted);
+  font-size:11px;
+  font-weight:650;
+  margin-bottom:7px;
 }
 
-.dph-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
-  margin-bottom: 20px;
+.dp-stat-value{
+  font-size:21px;
+  font-weight:750;
+  overflow-wrap:anywhere;
 }
 
-.dph-stat {
-  background: var(--ph-card);
-  border: 1px solid var(--ph-border);
-  border-radius: 12px;
-  padding: 14px 16px;
-  box-shadow: var(--ph-shadow);
-  min-width: 0;
+.dp-toolbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:13px;
+  background:var(--dp-card);
+  border:1px solid var(--dp-border);
+  border-radius:11px;
+  margin-bottom:14px;
+  box-shadow:var(--dp-shadow);
 }
 
-.dph-stat-label {
-  color: var(--ph-muted);
-  font-size: 11px;
-  font-weight: 650;
-  margin-bottom: 7px;
+.dp-search{
+  flex:1;
+  min-width:200px;
 }
 
-.dph-stat-value {
-  font-size: 22px;
-  font-weight: 750;
-  overflow-wrap: anywhere;
+.dp-search input{
+  width:100%;
+  height:41px;
+  padding:0 13px;
+  border:1px solid var(--dp-border);
+  border-radius:8px;
+  outline:none;
+  background:var(--dp-bg);
+  color:var(--dp-text);
 }
 
-.dph-stat-value.danger {
-  color: var(--ph-danger);
+.dp-search input:focus{
+  border-color:var(--dp-primary);
 }
 
-.dph-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  background: var(--ph-card);
-  border: 1px solid var(--ph-border);
-  border-radius: 12px;
-  padding: 13px;
-  margin-bottom: 15px;
-  box-shadow: var(--ph-shadow);
+.dp-count{
+  font-size:12px;
+  color:var(--dp-muted);
 }
 
-.dph-search {
-  flex: 1;
-  min-width: 200px;
-  position: relative;
+.dp-list{
+  display:grid;
+  gap:12px;
 }
 
-.dph-search input {
-  width: 100%;
-  height: 41px;
-  border: 1px solid var(--ph-border);
-  border-radius: 8px;
-  padding: 0 13px;
-  background: var(--ph-bg);
-  color: var(--ph-text);
-  outline: none;
+.dp-item{
+  min-width:0;
+  padding:16px;
+  border:1px solid var(--dp-border);
+  border-radius:12px;
+  background:var(--dp-card);
+  box-shadow:var(--dp-shadow);
 }
 
-.dph-search input:focus {
-  border-color: var(--ph-primary);
+.dp-item-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:13px;
 }
 
-.dph-count {
-  color: var(--ph-muted);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
+.dp-user-name{
+  font-size:15px;
+  font-weight:750;
+  overflow-wrap:anywhere;
 }
 
-.dph-list {
-  display: grid;
-  gap: 12px;
+.dp-id{
+  margin-top:5px;
+  color:var(--dp-muted);
+  font-size:11px;
+  overflow-wrap:anywhere;
 }
 
-.dph-item {
-  background: var(--ph-card);
-  border: 1px solid var(--ph-border);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: var(--ph-shadow);
-  min-width: 0;
+.dp-tag{
+  padding:5px 9px;
+  border-radius:20px;
+  background:rgba(224,82,82,.10);
+  color:var(--dp-danger);
+  font-size:10px;
+  font-weight:750;
 }
 
-.dph-item-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 13px;
+.dp-details{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;
+  padding:13px 0;
+  border-top:1px solid var(--dp-border);
+  border-bottom:1px solid var(--dp-border);
 }
 
-.dph-user {
-  min-width: 0;
+.dp-label{
+  color:var(--dp-muted);
+  font-size:10px;
+  margin-bottom:5px;
 }
 
-.dph-user-name {
-  font-size: 15px;
-  font-weight: 750;
-  overflow-wrap: anywhere;
+.dp-value{
+  font-size:12px;
+  font-weight:650;
+  overflow-wrap:anywhere;
 }
 
-.dph-payment-id {
-  color: var(--ph-muted);
-  font-size: 11px;
-  margin-top: 5px;
-  overflow-wrap: anywhere;
+.dp-amount{
+  color:var(--dp-primary);
+  font-size:15px;
+  font-weight:800;
 }
 
-.dph-deleted-tag {
-  display: inline-block;
-  padding: 5px 9px;
-  border-radius: 20px;
-  background: rgba(224,82,82,.10);
-  color: var(--ph-danger);
-  font-size: 10px;
-  font-weight: 750;
-  white-space: nowrap;
+.dp-comment{
+  color:var(--dp-muted);
+  font-size:12px;
+  margin-top:10px;
+  overflow-wrap:anywhere;
 }
 
-.dph-details {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  padding: 13px 0;
-  border-top: 1px solid var(--ph-border);
-  border-bottom: 1px solid var(--ph-border);
+.dp-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:13px;
 }
 
-.dph-detail-label {
-  color: var(--ph-muted);
-  font-size: 10px;
-  margin-bottom: 5px;
+.dp-delete{
+  background:var(--dp-danger);
+  color:white;
 }
 
-.dph-detail-value {
-  font-size: 12px;
-  font-weight: 650;
-  overflow-wrap: anywhere;
+.dp-delete:hover{filter:brightness(.92)}
+
+.dp-loading,
+.dp-empty,
+.dp-error{
+  padding:35px 15px;
+  text-align:center;
+  background:var(--dp-card);
+  border:1px solid var(--dp-border);
+  border-radius:11px;
+  color:var(--dp-muted);
+  font-size:13px;
 }
 
-.dph-amount {
-  color: var(--ph-primary);
-  font-size: 15px;
-  font-weight: 800;
+.dp-error{color:var(--dp-danger)}
+
+.dp-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
 }
 
-.dph-comment {
-  margin-top: 11px;
-  color: var(--ph-muted);
-  font-size: 12px;
-  overflow-wrap: anywhere;
+.dp-overlay.show{display:flex}
+
+.dp-modal{
+  width:100%;
+  max-width:410px;
+  padding:22px;
+  border-radius:14px;
+  background:var(--dp-card);
+  color:var(--dp-text);
+  border:1px solid var(--dp-border);
+  box-shadow:0 18px 60px rgba(0,0,0,.2);
 }
 
-.dph-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 13px;
+.dp-modal-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(224,82,82,.12);
+  color:var(--dp-danger);
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:12px;
 }
 
-.dph-delete-btn {
-  background: var(--ph-danger);
-  color: white;
+.dp-modal h3{
+  margin:0 0 8px;
+  font-size:18px;
 }
 
-.dph-delete-btn:hover {
-  filter: brightness(.92);
+.dp-modal p{
+  margin:0;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--dp-muted);
 }
 
-.dph-empty,
-.dph-loading,
-.dph-error {
-  background: var(--ph-card);
-  border: 1px solid var(--ph-border);
-  border-radius: 12px;
-  padding: 35px 15px;
-  text-align: center;
-  color: var(--ph-muted);
-  font-size: 13px;
+.dp-modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:22px;
 }
 
-.dph-error {
-  color: var(--ph-danger);
+.dp-cancel{
+  background:var(--dp-bg);
+  border:1px solid var(--dp-border);
+  color:var(--dp-text);
 }
 
-.dph-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(0,0,0,.55);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+.dp-confirm{
+  background:var(--dp-danger);
+  color:white;
 }
 
-.dph-overlay.show {
-  display: flex;
+.dp-toast{
+  position:fixed;
+  z-index:100000;
+  bottom:20px;
+  right:20px;
+  max-width:calc(100vw - 40px);
+  padding:12px 17px;
+  border-radius:9px;
+  color:white;
+  background:#172033;
+  font-size:13px;
+  display:none;
 }
 
-.dph-modal {
-  width: 100%;
-  max-width: 420px;
-  background: var(--ph-card);
-  color: var(--ph-text);
-  border: 1px solid var(--ph-border);
-  border-radius: 15px;
-  padding: 22px;
-  box-shadow: 0 18px 60px rgba(0,0,0,.2);
-}
+.dp-toast.show{display:block}
+.dp-toast.success{background:#087f5b}
+.dp-toast.error{background:#c83e3e}
 
-.dph-modal-icon {
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  background: rgba(224,82,82,.12);
-  color: var(--ph-danger);
-  display: grid;
-  place-items: center;
-  font-size: 21px;
-  font-weight: 800;
-  margin-bottom: 13px;
-}
-
-.dph-modal h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
-}
-
-.dph-modal p {
-  color: var(--ph-muted);
-  font-size: 13px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.dph-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 9px;
-  margin-top: 22px;
-}
-
-.dph-cancel {
-  background: var(--ph-bg);
-  border: 1px solid var(--ph-border);
-  color: var(--ph-text);
-}
-
-.dph-confirm {
-  background: var(--ph-danger);
-  color: white;
-}
-
-.dph-toast {
-  position: fixed;
-  z-index: 100000;
-  bottom: 22px;
-  right: 22px;
-  max-width: calc(100vw - 35px);
-  background: #172033;
-  color: white;
-  padding: 12px 17px;
-  border-radius: 9px;
-  font-size: 13px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.2);
-  display: none;
-}
-
-.dph-toast.show {
-  display: block;
-}
-
-.dph-toast.success {
-  background: #087f5b;
-}
-
-.dph-toast.error {
-  background: #c83e3e;
-}
-
-@media(max-width: 800px) {
-  .dph-details {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .dph-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media(max-width:800px){
+  .dp-details{
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
 
-@media(max-width: 560px) {
-  body {
-    padding: 12px;
-  }
+@media(max-width:560px){
+  body{padding:12px}
 
-  .dph-heading h2 {
-    font-size: 19px;
-  }
+  .dp-title h2{font-size:19px}
 
-  .dph-stats {
-    gap: 8px;
-  }
+  .dp-stats{gap:8px}
 
-  .dph-stat {
-    padding: 11px;
-  }
+  .dp-stat{padding:10px}
 
-  .dph-stat-label {
-    font-size: 10px;
-  }
+  .dp-stat-label{font-size:10px}
 
-  .dph-stat-value {
-    font-size: 17px;
-  }
+  .dp-stat-value{font-size:17px}
 
-  .dph-toolbar {
-    padding: 10px;
-  }
+  .dp-search{min-width:100%}
 
-  .dph-search {
-    min-width: 100%;
-  }
+  .dp-count{width:100%}
 
-  .dph-count {
-    width: 100%;
-  }
+  .dp-item{padding:13px}
 
-  .dph-item {
-    padding: 13px;
-  }
+  .dp-actions{justify-content:stretch}
 
-  .dph-details {
-    gap: 11px 8px;
-  }
+  .dp-actions button{width:100%}
 
-  .dph-actions {
-    justify-content: stretch;
-  }
-
-  .dph-actions button {
-    flex: 1;
-  }
-
-  .dph-toast {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    text-align: center;
+  .dp-toast{
+    left:12px;
+    right:12px;
+    bottom:12px;
+    text-align:center;
   }
 }
 
-@media(max-width: 350px) {
-  .dph-stats {
-    grid-template-columns: 1fr 1fr;
-  }
+@media(max-width:350px){
+  .dp-stats{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 
 <body>
 
-<div class="dph-container">
+<div class="dp-container">
 
-  <header class="dph-header">
-    <div class="dph-heading">
+  <header class="dp-header">
+    <div class="dp-title">
       <h2>Deleted Payment History</h2>
       <p>Manage deleted payments and permanently remove records.</p>
     </div>
 
-    <button class="dph-btn dph-refresh" id="refreshBtn">
+    <button class="dp-btn dp-refresh" id="refreshBtn">
       ↻ Refresh
     </button>
   </header>
 
-  <section class="dph-stats">
-    <div class="dph-stat">
-      <div class="dph-stat-label">Deleted Payments</div>
-      <div class="dph-stat-value" id="totalDeleted">0</div>
+  <section class="dp-stats">
+
+    <div class="dp-stat">
+      <div class="dp-stat-label">Deleted Payments</div>
+      <div class="dp-stat-value" id="totalDeleted">0</div>
     </div>
 
-    <div class="dph-stat">
-      <div class="dph-stat-label">Total Deleted Amount</div>
-      <div class="dph-stat-value" id="totalAmount">0</div>
+    <div class="dp-stat">
+      <div class="dp-stat-label">Total Deleted Amount</div>
+      <div class="dp-stat-value" id="totalAmount">0</div>
     </div>
 
-    <div class="dph-stat">
-      <div class="dph-stat-label">Showing Records</div>
-      <div class="dph-stat-value" id="showingCount">0</div>
+    <div class="dp-stat">
+      <div class="dp-stat-label">Showing Records</div>
+      <div class="dp-stat-value" id="showingCount">0</div>
     </div>
+
   </section>
 
-  <section class="dph-toolbar">
-    <div class="dph-search">
+  <section class="dp-toolbar">
+    <div class="dp-search">
       <input
         type="search"
         id="searchInput"
-        placeholder="Search user, payment ID, transaction ID..."
-        autocomplete="off"
+        placeholder="Search user, Payment ID, transaction ID..."
       >
     </div>
 
-    <div class="dph-count" id="resultLabel">
-      Loading records...
+    <div class="dp-count" id="resultLabel">
+      Loading...
     </div>
   </section>
 
-  <section class="dph-list" id="paymentList">
-    <div class="dph-loading">Loading deleted payments...</div>
+  <section class="dp-list" id="paymentList">
+    <div class="dp-loading">Loading deleted payments...</div>
   </section>
 
 </div>
 
-<!-- PERMANENT DELETE CONFIRMATION -->
-<div class="dph-overlay" id="confirmOverlay">
-  <div class="dph-modal">
-    <div class="dph-modal-icon">!</div>
+<!-- CONFIRMATION MODAL -->
+
+<div class="dp-overlay" id="confirmOverlay">
+  <div class="dp-modal">
+
+    <div class="dp-modal-icon">!</div>
 
     <h3>Permanent Delete?</h3>
 
     <p>
       Are you sure you want to permanently delete this payment?
-      This action cannot be undone. The payment will be removed
-      from the Deleted Payment sheet.
+      It will be removed from the DELETED PAYMENT sheet.
+      This action cannot be undone.
     </p>
 
-    <div class="dph-modal-actions">
-      <button class="dph-btn dph-cancel" id="cancelDelete">
+    <div class="dp-modal-actions">
+      <button class="dp-btn dp-cancel" id="cancelBtn">
         Cancel
       </button>
 
-      <button class="dph-btn dph-confirm" id="confirmDelete">
+      <button class="dp-btn dp-confirm" id="confirmBtn">
         Permanently Delete
       </button>
     </div>
+
   </div>
 </div>
 
-<div class="dph-toast" id="toast"></div>
+<div class="dp-toast" id="toast"></div>
+
 
 <script>
+"use strict";
+
 /************************************************************
  * RS NETWORK — DELETED PAYMENT HISTORY
- * Uses existing USER PAYMENT SYSTEM backend.
+ * Compatible with the existing Code.gs.
+ * No backend changes required.
  ************************************************************/
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
 let deletedPayments = [];
-let pendingDelete = null;
+let pendingPayment = null;
 let isDeleting = false;
 
-
-// ==========================================================
-// DOM
-// ==========================================================
-
-const paymentList = document.getElementById("paymentList");
-const searchInput = document.getElementById("searchInput");
-const refreshBtn = document.getElementById("refreshBtn");
-
-const totalDeletedEl = document.getElementById("totalDeleted");
-const totalAmountEl = document.getElementById("totalAmount");
-const showingCountEl = document.getElementById("showingCount");
-const resultLabel = document.getElementById("resultLabel");
-
-const confirmOverlay = document.getElementById("confirmOverlay");
-const cancelDeleteBtn = document.getElementById("cancelDelete");
-const confirmDeleteBtn = document.getElementById("confirmDelete");
+const $ = id => document.getElementById(id);
 
 
 // ==========================================================
-// HELPERS
+// ESCAPE HTML
 // ==========================================================
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, function(char) {
-    return {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[char];
-  });
-}
-
-
-function formatAmount(amount, currency) {
-  const number = Number(amount) || 0;
-
-  return number.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2
-  }) + (currency ? " " + currency : "");
-}
-
-
-function showToast(message, type) {
-  const toast = document.getElementById("toast");
-
-  toast.textContent = message;
-  toast.className = "dph-toast show " + (type || "");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(function() {
-    toast.className = "dph-toast";
-  }, 3500);
-}
-
-
-function showLoading(message) {
-  paymentList.innerHTML =
-    '<div class="dph-loading">' +
-    escapeHTML(message || "Loading...") +
-    '</div>';
-}
-
-
-function showError(message) {
-  paymentList.innerHTML =
-    '<div class="dph-error">' +
-    escapeHTML(message) +
-    '</div>';
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
 }
 
 
 // ==========================================================
-// API REQUEST
+// TOAST
 // ==========================================================
 
-async function apiGet(api) {
-  const url = PAYMENT_API +
+let toastTimer;
+
+function showToast(message,type=""){
+  const el = $("toast");
+
+  el.textContent = message;
+  el.className = "dp-toast show " + type;
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(()=>{
+    el.className = "dp-toast";
+  },3500);
+}
+
+
+// ==========================================================
+// API GET
+// ==========================================================
+
+async function apiGet(api){
+
+  const url =
+    PAYMENT_API +
     "?api=" + encodeURIComponent(api) +
     "&t=" + Date.now();
 
-  const response = await fetch(url, {
-    method: "GET",
-    cache: "no-store"
+  const response = await fetch(url,{
+    method:"GET",
+    cache:"no-store"
   });
 
-  if (!response.ok) {
-    throw new Error("Server request failed: " + response.status);
+  if(!response.ok){
+    throw new Error("HTTP Error: " + response.status);
   }
 
-  return await response.json();
+  const result = await response.json();
+
+  if(result.success !== true){
+    throw new Error(result.message || "API request failed.");
+  }
+
+  return result;
 }
 
 
-async function apiPost(data) {
-  const response = await fetch(PAYMENT_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
+// ==========================================================
+// API POST
+// ==========================================================
+
+async function apiPost(data){
+
+  const response = await fetch(PAYMENT_API,{
+    method:"POST",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
     },
-    body: JSON.stringify(data)
+    body:JSON.stringify(data)
   });
 
-  if (!response.ok) {
-    throw new Error("Server request failed: " + response.status);
+  if(!response.ok){
+    throw new Error("HTTP Error: " + response.status);
   }
 
-  return await response.json();
+  const result = await response.json();
+
+  if(result.success !== true){
+    throw new Error(result.message || "Server operation failed.");
+  }
+
+  return result;
 }
 
 
@@ -664,18 +582,19 @@ async function apiPost(data) {
 // LOAD DELETED PAYMENTS
 // ==========================================================
 
-async function loadDeletedPayments() {
-  refreshBtn.disabled = true;
-  refreshBtn.textContent = "Loading...";
+async function loadDeletedPayments(){
 
-  showLoading("Loading deleted payment records...");
+  const refresh = $("refreshBtn");
 
-  try {
+  refresh.disabled = true;
+  refresh.textContent = "Loading...";
+
+  $("paymentList").innerHTML =
+    '<div class="dp-loading">Loading deleted payments...</div>';
+
+  try{
+
     const result = await apiGet("deletedPayments");
-
-    if (!result.success) {
-      throw new Error(result.message || "Unable to load records.");
-    }
 
     deletedPayments = Array.isArray(result.deletedPayments)
       ? result.deletedPayments
@@ -684,22 +603,25 @@ async function loadDeletedPayments() {
     updateStats();
     renderPayments();
 
-  } catch (error) {
-    console.error(error);
+  }catch(error){
 
-    showError(
-      error.message ||
-      "Could not load deleted payment records."
-    );
+    console.error("Payment API Error:",error);
 
-    showToast(
-      error.message || "Loading failed.",
-      "error"
-    );
+    $("paymentList").innerHTML =
+      '<div class="dp-error">' +
+      escapeHTML(error.message) +
+      '<br><br>Check your Apps Script Web App access and deployment.' +
+      '</div>';
 
-  } finally {
-    refreshBtn.disabled = false;
-    refreshBtn.textContent = "↻ Refresh";
+    $("resultLabel").textContent = "Loading failed";
+
+    showToast(error.message,"error");
+
+  }finally{
+
+    refresh.disabled = false;
+    refresh.textContent = "↻ Refresh";
+
   }
 }
 
@@ -708,20 +630,24 @@ async function loadDeletedPayments() {
 // UPDATE STATS
 // ==========================================================
 
-function updateStats() {
+function updateStats(){
+
   const total = deletedPayments.length;
 
-  const totalAmount = deletedPayments.reduce(function(sum, item) {
+  const amount = deletedPayments.reduce((sum,item)=>{
     return sum + (Number(item.amount) || 0);
-  }, 0);
+  },0);
 
-  totalDeletedEl.textContent = total.toLocaleString("en-US");
+  $("totalDeleted").textContent =
+    total.toLocaleString("en-US");
 
-  totalAmountEl.textContent = totalAmount.toLocaleString("en-US", {
-    maximumFractionDigits: 2
-  });
+  $("totalAmount").textContent =
+    amount.toLocaleString("en-US",{
+      maximumFractionDigits:2
+    });
 
-  showingCountEl.textContent = total.toLocaleString("en-US");
+  $("showingCount").textContent =
+    total.toLocaleString("en-US");
 }
 
 
@@ -729,13 +655,15 @@ function updateStats() {
 // SEARCH
 // ==========================================================
 
-function getFilteredPayments() {
-  const query = searchInput.value.trim().toLowerCase();
+function getFilteredPayments(){
 
-  if (!query) return deletedPayments;
+  const query = $("searchInput").value.trim().toLowerCase();
 
-  return deletedPayments.filter(function(item) {
-    const searchable = [
+  if(!query) return deletedPayments;
+
+  return deletedPayments.filter(item=>{
+
+    const content = [
       item.paymentId,
       item.userId,
       item.userName,
@@ -747,7 +675,8 @@ function getFilteredPayments() {
       item.comment
     ].join(" ").toLowerCase();
 
-    return searchable.includes(query);
+    return content.includes(query);
+
   });
 }
 
@@ -756,136 +685,171 @@ function getFilteredPayments() {
 // RENDER PAYMENTS
 // ==========================================================
 
-function renderPayments() {
-  const filtered = getFilteredPayments();
+function renderPayments(){
 
-  showingCountEl.textContent =
-    filtered.length.toLocaleString("en-US");
+  const list = $("paymentList");
+  const records = getFilteredPayments();
 
-  resultLabel.textContent =
-    filtered.length + " of " + deletedPayments.length + " records";
+  $("showingCount").textContent =
+    records.length.toLocaleString("en-US");
 
-  if (!filtered.length) {
-    paymentList.innerHTML =
-      '<div class="dph-empty">' +
+  $("resultLabel").textContent =
+    records.length + " of " + deletedPayments.length + " records";
+
+  if(!records.length){
+
+    list.innerHTML =
+      '<div class="dp-empty">' +
       (
         deletedPayments.length
           ? "No matching payment records found."
-          : "No deleted payments found."
+          : "No deleted payments found. Delete a payment from your Payment page first."
       ) +
       '</div>';
 
     return;
   }
 
-  paymentList.innerHTML = filtered.map(function(item) {
-    const paymentId = escapeHTML(item.paymentId);
-    const userName = escapeHTML(item.userName || "Unknown User");
-    const userId = escapeHTML(item.userId || "—");
-    const amount = formatAmount(item.amount, item.currencyCode);
-    const method = escapeHTML(item.paymentMethod || "—");
-    const transactionId = escapeHTML(item.transactionId || "—");
-    const paymentDate = escapeHTML(item.paymentDate || "—");
-    const deletedAt = escapeHTML(item.deletedAt || "—");
-    const comment = escapeHTML(item.comment || "");
+  list.innerHTML = records.map(item=>{
+
+    const amount = Number(item.amount) || 0;
+
+    const amountText =
+      amount.toLocaleString("en-US",{
+        maximumFractionDigits:2
+      }) +
+      (item.currencyCode ? " " + item.currencyCode : "");
+
+    const rowNumber = Number(item._row);
 
     return `
-      <article class="dph-item">
 
-        <div class="dph-item-top">
-          <div class="dph-user">
-            <div class="dph-user-name">${userName}</div>
-            <div class="dph-payment-id">
-              Payment ID: ${paymentId}
+      <article class="dp-item">
+
+        <div class="dp-item-head">
+
+          <div>
+            <div class="dp-user-name">
+              ${escapeHTML(item.userName || "Unknown User")}
+            </div>
+
+            <div class="dp-id">
+              Payment ID: ${escapeHTML(item.paymentId)}
               &nbsp; | &nbsp;
-              User ID: ${userId}
+              User ID: ${escapeHTML(item.userId || "—")}
             </div>
           </div>
 
-          <span class="dph-deleted-tag">
-            DELETED
-          </span>
+          <span class="dp-tag">DELETED</span>
+
         </div>
 
-        <div class="dph-details">
+        <div class="dp-details">
 
           <div>
-            <div class="dph-detail-label">Payment Amount</div>
-            <div class="dph-amount">${escapeHTML(amount)}</div>
+            <div class="dp-label">Payment Amount</div>
+            <div class="dp-amount">
+              ${escapeHTML(amountText)}
+            </div>
           </div>
 
           <div>
-            <div class="dph-detail-label">Payment Method</div>
-            <div class="dph-detail-value">${method}</div>
+            <div class="dp-label">Payment Method</div>
+            <div class="dp-value">
+              ${escapeHTML(item.paymentMethod || "—")}
+            </div>
           </div>
 
           <div>
-            <div class="dph-detail-label">Payment Date</div>
-            <div class="dph-detail-value">${paymentDate}</div>
+            <div class="dp-label">Payment Date</div>
+            <div class="dp-value">
+              ${escapeHTML(item.paymentDate || "—")}
+            </div>
           </div>
 
           <div>
-            <div class="dph-detail-label">Transaction ID</div>
-            <div class="dph-detail-value">${transactionId}</div>
+            <div class="dp-label">Transaction ID</div>
+            <div class="dp-value">
+              ${escapeHTML(item.transactionId || "—")}
+            </div>
           </div>
 
           <div>
-            <div class="dph-detail-label">Deleted At</div>
-            <div class="dph-detail-value">${deletedAt}</div>
+            <div class="dp-label">Deleted At</div>
+            <div class="dp-value">
+              ${escapeHTML(item.deletedAt || "—")}
+            </div>
           </div>
 
         </div>
 
         ${
-          comment
-            ? `<div class="dph-comment">Comment: ${comment}</div>`
-            : ""
+          item.comment
+          ? `<div class="dp-comment">Comment: ${escapeHTML(item.comment)}</div>`
+          : ""
         }
 
-        <div class="dph-actions">
+        <div class="dp-actions">
+
           <button
-            class="dph-btn dph-delete-btn"
-            data-payment-id="${paymentId}"
-            data-row="${Number(item._row) || 0}"
-            onclick="askPermanentDelete(this)"
+            class="dp-btn dp-delete"
+            data-id="${escapeHTML(item.paymentId)}"
+            data-row="${Number.isInteger(rowNumber) ? rowNumber : 0}"
+            onclick="askDelete(this)"
           >
             Permanently Delete
           </button>
+
         </div>
 
       </article>
+
     `;
+
   }).join("");
+
 }
 
 
 // ==========================================================
-// OPEN CONFIRMATION
+// OPEN DELETE CONFIRMATION
 // ==========================================================
 
-function askPermanentDelete(button) {
-  const paymentId = button.getAttribute("data-payment-id");
-  const deletedRow = Number(button.getAttribute("data-row"));
+function askDelete(button){
 
-  if (!paymentId || !Number.isInteger(deletedRow) || deletedRow < 2) {
-    showToast("Invalid payment record. Refresh and try again.", "error");
+  const paymentId = button.dataset.id;
+  const deletedRow = Number(button.dataset.row);
+
+  if(!paymentId || !Number.isInteger(deletedRow) || deletedRow < 2){
+
+    showToast(
+      "Invalid payment information. Please refresh.",
+      "error"
+    );
+
     return;
   }
 
-  pendingDelete = {
-    paymentId: paymentId,
-    deletedRow: deletedRow
+  pendingPayment = {
+    paymentId:paymentId,
+    deletedRow:deletedRow
   };
 
-  confirmOverlay.classList.add("show");
+  $("confirmOverlay").classList.add("show");
 }
 
 
-function closeConfirmation() {
-  if (isDeleting) return;
+// ==========================================================
+// CLOSE MODAL
+// ==========================================================
 
-  confirmOverlay.classList.remove("show");
-  pendingDelete = null;
+function closeModal(){
+
+  if(isDeleting) return;
+
+  pendingPayment = null;
+
+  $("confirmOverlay").classList.remove("show");
 }
 
 
@@ -893,53 +857,66 @@ function closeConfirmation() {
 // PERMANENT DELETE
 // ==========================================================
 
-async function permanentlyDeletePayment() {
-  if (!pendingDelete || isDeleting) return;
+async function permanentDelete(){
+
+  if(!pendingPayment || isDeleting) return;
 
   isDeleting = true;
 
-  confirmDeleteBtn.disabled = true;
-  cancelDeleteBtn.disabled = true;
-  confirmDeleteBtn.textContent = "Deleting...";
+  $("confirmBtn").disabled = true;
+  $("cancelBtn").disabled = true;
 
-  try {
+  $("confirmBtn").textContent = "Deleting...";
+
+  try{
+
+    // Send both fields required by the existing Code.gs.
     const result = await apiPost({
-      action: "permanentDeletePayment",
-      paymentId: pendingDelete.paymentId,
-      deletedRow: pendingDelete.deletedRow
+
+      action:"permanentDeletePayment",
+
+      paymentId:pendingPayment.paymentId,
+
+      deletedRow:pendingPayment.deletedRow
+
     });
 
-    if (!result.success) {
-      throw new Error(
-        result.message || "Permanent delete failed."
-      );
+    if(!result.success){
+      throw new Error(result.message || "Delete failed.");
     }
 
-    confirmOverlay.classList.remove("show");
-    pendingDelete = null;
+    const deletedId = pendingPayment.paymentId;
+
+    $("confirmOverlay").classList.remove("show");
+
+    pendingPayment = null;
 
     showToast(
-      "Payment permanently deleted successfully.",
+      "Payment permanently deleted: " + deletedId,
       "success"
     );
 
-    // Row numbers change after deletion, so reload all records.
+    // Reload because Google Sheet row numbers change.
     await loadDeletedPayments();
 
-  } catch (error) {
-    console.error(error);
+  }catch(error){
+
+    console.error("Permanent Delete Error:",error);
 
     showToast(
       error.message || "Permanent delete failed.",
       "error"
     );
 
-  } finally {
+  }finally{
+
     isDeleting = false;
 
-    confirmDeleteBtn.disabled = false;
-    cancelDeleteBtn.disabled = false;
-    confirmDeleteBtn.textContent = "Permanently Delete";
+    $("confirmBtn").disabled = false;
+    $("cancelBtn").disabled = false;
+
+    $("confirmBtn").textContent = "Permanently Delete";
+
   }
 }
 
@@ -948,21 +925,32 @@ async function permanentlyDeletePayment() {
 // EVENTS
 // ==========================================================
 
-refreshBtn.addEventListener("click", loadDeletedPayments);
-
-searchInput.addEventListener("input", renderPayments);
-
-cancelDeleteBtn.addEventListener("click", closeConfirmation);
-
-confirmDeleteBtn.addEventListener(
+$("refreshBtn").addEventListener(
   "click",
-  permanentlyDeletePayment
+  loadDeletedPayments
 );
 
-confirmOverlay.addEventListener("click", function(event) {
-  if (event.target === confirmOverlay) {
-    closeConfirmation();
+$("searchInput").addEventListener(
+  "input",
+  renderPayments
+);
+
+$("cancelBtn").addEventListener(
+  "click",
+  closeModal
+);
+
+$("confirmBtn").addEventListener(
+  "click",
+  permanentDelete
+);
+
+$("confirmOverlay").addEventListener("click",event=>{
+
+  if(event.target === $("confirmOverlay")){
+    closeModal();
   }
+
 });
 
 
