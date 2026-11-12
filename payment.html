@@ -247,6 +247,33 @@
 }
 #userPaymentPage .up-success-footer button{min-width:120px}
 
+/* NEW: processing and error popup spinner/icon */
+#userPaymentPage .up-process-spinner{
+  width:48px;height:48px;
+  border:4px solid var(--up-border);
+  border-top-color:var(--up-primary);
+  border-radius:50%;
+  margin:0 auto 16px;
+  animation:upPopupSpin .8s linear infinite;
+}
+@keyframes upPopupSpin{to{transform:rotate(360deg)}}
+#userPaymentPage .up-popup-title{
+  text-align:center;font-size:19px;font-weight:800;margin-bottom:8px
+}
+#userPaymentPage .up-popup-message{
+  text-align:center;color:var(--up-muted);font-size:13px;
+  line-height:1.6;overflow-wrap:anywhere
+}
+#userPaymentPage .up-popup-icon{
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 15px;font-size:30px;font-weight:800;
+  background:#e6f8ef;color:#11965b
+}
+#userPaymentPage .up-popup-icon.error{
+  background:#fdeaea;color:#dc3545
+}
+
 @media(max-width:850px){
   #userPaymentPage .up-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -507,16 +534,41 @@
   </div>
 </div>
 
+<!-- PROCESSING POPUP -->
+<div class="up-modal" id="upProcessingModal">
+  <div class="up-modal-box" style="max-width:380px;text-align:center">
+    <div class="up-process-spinner"></div>
+    <div class="up-popup-title">Processing...</div>
+    <div class="up-popup-message" id="upProcessingMessage">
+      Please wait. Your request is being processed.
+    </div>
+  </div>
+</div>
+
 <!-- SUCCESS POPUP -->
 <div class="up-modal" id="upSuccessModal">
   <div class="up-modal-box" style="max-width:380px;text-align:center">
     <div class="up-success-icon">✓</div>
-    <div class="up-success-title" id="upSuccessTitle">Successful!</div>
+    <div class="up-success-title" id="upSuccessTitle">Save Entry</div>
     <div class="up-success-message" id="upSuccessMessage">
       Your operation has been completed successfully.
     </div>
     <div class="up-success-footer">
       <button class="up-btn primary" type="button" id="upSuccessOK">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ERROR POPUP -->
+<div class="up-modal" id="upErrorModal">
+  <div class="up-modal-box" style="max-width:380px;text-align:center">
+    <div class="up-popup-icon error">!</div>
+    <div class="up-popup-title">Error!</div>
+    <div class="up-popup-message" id="upErrorMessage">
+      Your request could not be completed.
+    </div>
+    <div class="up-success-footer">
+      <button class="up-btn primary" type="button" id="upErrorOK">OK</button>
     </div>
   </div>
 </div>
@@ -551,6 +603,9 @@ let editingPaymentId="";
 let deletingPaymentId="";
 let currentPage=1;
 let pageSize=10;
+let editSaving=false;
+let addSaving=false;
+let deleteSaving=false;
 
 const $=id=>document.getElementById(id);
 
@@ -582,10 +637,15 @@ function toast(message){
   toast.timer=setTimeout(()=>el.classList.remove("show"),3200);
 }
 
-function showSuccess(message,title="Successful!"){
+function showSuccess(message,title="Save Entry"){
   $("upSuccessTitle").textContent=title;
   $("upSuccessMessage").textContent=message;
   $("upSuccessModal").classList.add("show");
+}
+
+function showError(message){
+  $("upErrorMessage").textContent=message||"Your request could not be completed.";
+  $("upErrorModal").classList.add("show");
 }
 
 function closeModal(id){
@@ -601,6 +661,18 @@ function formatDate(value){
   const d=new Date(value);
   if(isNaN(d.getTime())) return String(value);
   return d.toLocaleDateString();
+}
+
+/* ================= PROCESSING POPUP ================= */
+
+function showProcessing(message){
+  $("upProcessingMessage").textContent=
+    message||"Please wait. Your request is being processed.";
+  $("upProcessingModal").classList.add("show");
+}
+
+function hideProcessing(){
+  $("upProcessingModal").classList.remove("show");
 }
 
 /* ================= PROCESSING BUTTON ================= */
@@ -1020,30 +1092,47 @@ function getAddPayload(){
 $("upPaymentForm").addEventListener("submit",async e=>{
   e.preventDefault();
 
-  const btn=$("upSubmitBtn");
-  if(btn.disabled) return;
+  if(addSaving) return;
 
+  const btn=$("upSubmitBtn");
   const normalText="+ Add Payment";
-  setProcessing(btn,true,normalText);
+
+  let payload;
 
   try{
-    const payload=getAddPayload();
+    payload=getAddPayload();
+  }catch(err){
+    showError(err.message);
+    return;
+  }
+
+  addSaving=true;
+  setProcessing(btn,true,normalText);
+  showProcessing("Please wait. Your payment is being added.");
+
+  try{
     payload.action="addPayment";
 
     const result=await postJSON(payload);
 
     resetAddForm();
+
     await loadPayments();
     renderPayments();
 
+    hideProcessing();
+
     showSuccess(
       result.message||"Payment has been added successfully.",
-      "Payment Added!"
+      "Save Entry"
     );
 
   }catch(err){
-    toast(err.message||"Payment could not be saved.");
+    hideProcessing();
+    showError(err.message||"Payment could not be saved.");
+
   }finally{
+    addSaving=false;
     setProcessing(btn,false,normalText);
   }
 });
@@ -1055,10 +1144,13 @@ $("upResetBtn").addEventListener("click",()=>{
 /* ================= EDIT PAYMENT POPUP ================= */
 
 function editPayment(paymentId){
-  if($("upEditSaveBtn").disabled) return;
+  if(editSaving) return;
 
   const p=payments.find(x=>String(x.paymentId)===String(paymentId));
-  if(!p) return;
+  if(!p){
+    showError("Payment record not found.");
+    return;
+  }
 
   editingPaymentId=String(p.paymentId);
 
@@ -1078,28 +1170,17 @@ function editPayment(paymentId){
   $("upEditModal").classList.add("show");
 }
 
-/*
- * IMPORTANT:
- * 1. Save click = Processing immediately.
- * 2. Edit modal stays open while server is saving.
- * 3. If saving fails, form stays open.
- * 4. If saving succeeds, modal closes immediately.
- * 5. Then success popup appears.
- */
-
 $("upEditForm").addEventListener("submit",async e=>{
   e.preventDefault();
 
-  if(!editingPaymentId) return;
+  if(editSaving || !editingPaymentId) return;
 
   const btn=$("upEditSaveBtn");
-  if(btn.disabled) return;
-
   const normalText="Save Changes";
 
-  // Show processing immediately.
-  setProcessing(btn,true,normalText);
+  let payload;
 
+  /* Validate first */
   try{
     const amount=Number($("upEditAmount").value);
 
@@ -1107,7 +1188,7 @@ $("upEditForm").addEventListener("submit",async e=>{
       throw new Error("Enter a valid payment amount.");
     }
 
-    const payload={
+    payload={
       action:"editPayment",
       paymentId:editingPaymentId,
       userId:$("upEditUser").value,
@@ -1124,35 +1205,49 @@ $("upEditForm").addEventListener("submit",async e=>{
     if(!payload.methodId) throw new Error("Please select payment method.");
     if(!payload.paymentDate) throw new Error("Please select payment date.");
 
-    // Wait for the actual backend response.
-    // The edit popup remains open during this request.
+  }catch(err){
+    showError(err.message);
+    return;
+  }
+
+  editSaving=true;
+
+  btn.disabled=true;
+  btn.innerHTML='<span class="up-spinner"></span>Processing...';
+
+  /* Close edit form immediately and show processing popup */
+  closeModal("upEditModal");
+  showProcessing("Please wait. Your payment is being updated.");
+
+  try{
     const result=await postJSON(payload);
 
-    // Backend confirmed success.
-    // Close edit form immediately.
-    closeModal("upEditModal");
-    editingPaymentId="";
-
-    // Update payment records.
+    /* Refresh the latest records */
     await loadPayments();
     renderPayments();
 
-    // Show success entry popup.
+    editingPaymentId="";
+
+    $("upEditForm").reset();
+
+    hideProcessing();
+
     showSuccess(
-      result.message||"Payment entry has been updated successfully.",
-      "Payment Updated Successfully!"
+      result.message||"Payment updated successfully.",
+      "Save Entry"
     );
 
   }catch(err){
-    // Do not close the edit popup on error.
-    // Keep the form values so the user can retry.
-    toast(err.message||"Payment could not be updated.");
+    hideProcessing();
+
+    showError(
+      err.message||"Payment update failed. Please try again."
+    );
 
   }finally{
-    // Restore the button if the modal is still open.
-    if($("upEditModal").classList.contains("show")){
-      setProcessing(btn,false,normalText);
-    }
+    editSaving=false;
+    btn.disabled=false;
+    btn.textContent=normalText;
   }
 });
 
@@ -1203,13 +1298,14 @@ function openDelete(paymentId){
 }
 
 $("upConfirmDelete").addEventListener("click",async()=>{
-  if(!deletingPaymentId) return;
+  if(!deletingPaymentId || deleteSaving) return;
 
   const btn=$("upConfirmDelete");
-  if(btn.disabled) return;
-
   const normalText="Delete Payment";
+
+  deleteSaving=true;
   setProcessing(btn,true,normalText);
+  showProcessing("Please wait. Your payment is being deleted.");
 
   try{
     const result=await postJSON({
@@ -1223,14 +1319,19 @@ $("upConfirmDelete").addEventListener("click",async()=>{
     await loadPayments();
     renderPayments();
 
+    hideProcessing();
+
     showSuccess(
       result.message||"Payment has been deleted successfully.",
       "Payment Deleted!"
     );
 
   }catch(err){
-    toast(err.message||"Could not delete payment.");
+    hideProcessing();
+    showError(err.message||"Could not delete payment.");
+
   }finally{
+    deleteSaving=false;
     setProcessing(btn,false,normalText);
   }
 });
@@ -1282,7 +1383,7 @@ $("upNextPage").addEventListener("click",()=>{
 /* ================= MODAL CONTROLS ================= */
 
 $("upEditCancelBtn").addEventListener("click",()=>{
-  if($("upEditSaveBtn").disabled) return;
+  if(editSaving) return;
 
   closeModal("upEditModal");
   editingPaymentId="";
@@ -1292,10 +1393,8 @@ ROOT.querySelectorAll("[data-close]").forEach(btn=>{
   btn.addEventListener("click",()=>{
     const modalId=btn.dataset.close;
 
-    // Do not allow closing the edit form during saving.
-    if(modalId==="upEditModal" && $("upEditSaveBtn").disabled){
-      return;
-    }
+    if(modalId==="upEditModal" && editSaving) return;
+    if(modalId==="upDeleteModal" && deleteSaving) return;
 
     closeModal(modalId);
 
@@ -1308,10 +1407,9 @@ ROOT.querySelectorAll(".up-modal").forEach(modal=>{
   modal.addEventListener("click",e=>{
     if(e.target!==modal) return;
 
-    // Keep edit popup open during processing.
-    if(modal.id==="upEditModal" && $("upEditSaveBtn").disabled){
-      return;
-    }
+    if(modal.id==="upProcessingModal") return;
+    if(modal.id==="upEditModal" && editSaving) return;
+    if(modal.id==="upDeleteModal" && deleteSaving) return;
 
     modal.classList.remove("show");
 
@@ -1324,11 +1422,20 @@ $("upSuccessOK").addEventListener("click",()=>{
   closeModal("upSuccessModal");
 });
 
+$("upErrorOK").addEventListener("click",()=>{
+  closeModal("upErrorModal");
+});
+
 document.addEventListener("keydown",e=>{
   if(e.key!=="Escape") return;
 
   ROOT.querySelectorAll(".up-modal.show").forEach(modal=>{
-    if(modal.id==="upEditModal" && $("upEditSaveBtn").disabled){
+    if(modal.id==="upProcessingModal") return;
+    if(modal.id==="upEditModal" && editSaving) return;
+    if(modal.id==="upDeleteModal" && deleteSaving) return;
+
+    if(modal.id==="upSuccessModal" || modal.id==="upErrorModal"){
+      modal.classList.remove("show");
       return;
     }
 
