@@ -3,879 +3,960 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#087f5b">
-<title>Payment History</title>
+<title>Payment History | Wage Management</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --primary:var(--primary,#087f5b);
-  --accent:var(--accent,#12b886);
-  --bg:var(--bg,#f5f7fb);
-  --card:var(--card,#ffffff);
-  --text:var(--text,#172033);
-  --muted:var(--muted,#8490a3);
-  --border:var(--border,#e8edf3);
-  --shadow:0 5px 20px rgba(20,40,60,.06);
+  --primary:#087f5b;
+  --primary-dark:#066b4e;
+  --primary-light:#e6f5ef;
+  --primary-soft:#f0faf6;
+  --accent:#12b886;
+
+  --bg:#f4f8f6;
+  --card:#ffffff;
+  --text:#172b2a;
+  --muted:#71817f;
+  --border:#e1ebe6;
+
+  --green:#15803d;
+  --green-bg:#e8f7ee;
+
+  --blue:#2563eb;
+  --blue-bg:#eaf2ff;
+
+  --orange:#d97706;
+  --orange-bg:#fff5e8;
+
+  --red:#dc2626;
+  --red-bg:#fff0f0;
+
+  --shadow:0 8px 28px rgba(15,55,42,.07);
+  --radius:15px;
 }
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
 }
 
 html{
-  width:100%;
-  overflow-x:hidden;
+  scroll-behavior:smooth;
 }
 
 body{
   margin:0;
-  width:100%;
-  overflow-x:hidden;
-  font-family:Arial,Helvetica,sans-serif;
+  padding:0;
   background:var(--bg);
   color:var(--text);
+  font-family:'Inter',Arial,sans-serif;
 }
 
-button,input{
+button,input,select{
   font:inherit;
 }
 
 button{
-  touch-action:manipulation;
+  cursor:pointer;
 }
 
-.ph-wrap{
+.app{
   width:100%;
-  max-width:1500px;
-  margin:auto;
-  padding:20px;
+  min-height:100vh;
+  padding:26px;
 }
 
-.ph-header{
+.container{
+  max-width:1450px;
+  margin:0 auto;
+}
+
+/* HEADER */
+
+.page-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  margin-bottom:20px;
-}
-
-.ph-title{
-  font-size:24px;
-  font-weight:800;
-  margin:0 0 5px;
-}
-
-.ph-subtitle{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.ph-refresh{
-  border:0;
-  background:var(--primary);
-  color:white;
-  padding:11px 15px;
-  border-radius:9px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-.ph-stats{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:13px;
-  margin-bottom:18px;
-}
-
-.ph-stat{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:16px;
-  min-width:0;
-  box-shadow:var(--shadow);
-}
-
-.ph-stat-label{
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:9px;
-}
-
-.ph-stat-value{
-  font-size:23px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.ph-panel{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:18px;
-  margin-bottom:17px;
-  box-shadow:var(--shadow);
-  min-width:0;
-}
-
-.ph-section-title{
-  font-size:16px;
-  font-weight:800;
-  margin:0 0 14px;
-}
-
-/* SEARCH */
-
-.ph-search-row{
-  display:flex;
-  gap:9px;
-  align-items:center;
-  width:100%;
-}
-
-.ph-search-wrap{
-  flex:1;
-  min-width:0;
-  position:relative;
-}
-
-.ph-search{
-  width:100%;
-  height:46px;
-  border:1px solid var(--border);
-  background:var(--bg);
-  color:var(--text);
-  outline:none;
-  border-radius:9px;
-  padding:0 12px;
-  font-size:14px;
-  min-width:0;
-}
-
-.ph-search:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(8,127,91,.08);
-}
-
-.ph-select-btn{
-  height:46px;
-  min-width:140px;
-  border:0;
-  border-radius:9px;
-  padding:0 12px;
-  background:var(--primary);
-  color:#fff;
-  font-weight:700;
-  font-size:13px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  white-space:nowrap;
-}
-
-.ph-dropdown{
-  display:none;
-  position:absolute;
-  top:53px;
-  left:0;
-  width:100%;
-  min-width:270px;
-  max-height:330px;
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:11px;
-  box-shadow:0 12px 30px rgba(0,0,0,.15);
-  padding:6px;
-  z-index:1000;
-}
-
-.ph-dropdown.show{
-  display:block;
-}
-
-.ph-profile-option{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  border-radius:9px;
-  cursor:pointer;
-  min-height:58px;
-}
-
-.ph-profile-option:hover,
-.ph-profile-option.active{
-  background:rgba(8,127,91,.09);
-}
-
-.ph-avatar{
-  width:42px;
-  height:42px;
-  flex:0 0 42px;
-  border-radius:50%;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(8,127,91,.12);
-  color:var(--primary);
-  font-size:16px;
-  font-weight:800;
-}
-
-.ph-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.ph-profile-info{
-  flex:1;
-  min-width:0;
-}
-
-.ph-profile-name{
-  font-size:13px;
-  font-weight:800;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.ph-profile-id{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.ph-profile-count{
-  font-size:10px;
-  font-weight:700;
-  color:var(--primary);
-  white-space:nowrap;
-}
-
-.ph-dropdown-empty{
-  padding:20px 8px;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
-
-/* SELECTED PROFILE */
-
-.ph-selected{
-  display:none;
-  align-items:center;
-  gap:10px;
-  background:rgba(8,127,91,.07);
-  border:1px solid rgba(8,127,91,.18);
-  padding:11px;
-  border-radius:10px;
-  margin-top:12px;
-  min-width:0;
-}
-
-.ph-selected.show{
-  display:flex;
-}
-
-.ph-selected-info{
-  flex:1;
-  min-width:0;
-}
-
-.ph-selected-name{
-  font-size:13px;
-  font-weight:800;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.ph-selected-id{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.ph-clear{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  border-radius:8px;
-  padding:8px 11px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* HISTORY */
-
-.ph-history-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  gap:15px;
   flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:14px;
+  margin-bottom:25px;
 }
 
-.ph-history-count{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.ph-history-list{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:13px;
-}
-
-.ph-history-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:14px;
-  min-width:0;
-}
-
-.ph-card-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding-bottom:12px;
-  border-bottom:1px solid var(--border);
-  min-width:0;
-}
-
-.ph-card-user-info{
-  flex:1;
-  min-width:0;
-}
-
-.ph-card-user-name{
-  font-size:14px;
-  font-weight:800;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.ph-card-user-id{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:4px;
-  overflow-wrap:anywhere;
-}
-
-.ph-amount{
-  font-size:18px;
-  font-weight:800;
-  color:var(--primary);
-  white-space:nowrap;
-}
-
-.ph-details{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:13px 10px;
-  padding:13px 0;
-}
-
-.ph-detail-label{
-  color:var(--muted);
-  font-size:10px;
-  margin-bottom:5px;
-}
-
-.ph-detail-value{
-  font-size:12px;
-  font-weight:700;
-  overflow-wrap:anywhere;
-}
-
-.ph-card-footer{
-  border-top:1px solid var(--border);
-  padding-top:11px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-
-.ph-date{
-  font-size:10px;
-  color:var(--muted);
-}
-
-.ph-view-btn{
-  border:0;
-  background:var(--primary);
-  color:white;
-  border-radius:8px;
-  padding:10px 13px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-.ph-empty{
-  grid-column:1/-1;
-  text-align:center;
-  padding:35px 12px;
-  border:1px dashed var(--border);
-  border-radius:11px;
-  color:var(--muted);
-}
-
-.ph-empty-icon{
-  font-size:30px;
-  margin-bottom:10px;
-}
-
-/* MODAL */
-
-.ph-modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:rgba(10,20,30,.58);
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.ph-modal.show{
-  display:flex;
-}
-
-.ph-modal-box{
-  width:100%;
-  max-width:460px;
-  max-height:90dvh;
-  overflow-y:auto;
-  background:var(--card);
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
-}
-
-.ph-modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:15px;
-}
-
-.ph-modal-title{
-  font-size:17px;
-  font-weight:800;
-}
-
-.ph-close{
-  border:0;
-  width:34px;
-  height:34px;
-  border-radius:8px;
-  background:var(--bg);
-  color:var(--text);
-  font-size:20px;
-  cursor:pointer;
-}
-
-.ph-modal-user{
-  text-align:center;
-  padding:10px 0 17px;
-  border-bottom:1px solid var(--border);
-}
-
-.ph-modal-avatar{
-  width:76px;
-  height:76px;
-  border-radius:50%;
-  margin:0 auto 10px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(8,127,91,.12);
-  color:var(--primary);
+.header-title h1{
+  margin:0;
   font-size:25px;
   font-weight:800;
+  color:var(--text);
 }
 
-.ph-modal-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.header-title p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font-size:13px;
 }
 
-.ph-modal-user-name{
-  font-size:16px;
+.header-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--green-bg);
+  color:var(--green);
+  border:1px solid #c9ecd6;
+  padding:9px 14px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#16a34a;
+}
+
+/* SUMMARY CARDS */
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:17px;
+  margin-bottom:25px;
+}
+
+.summary-card{
+  position:relative;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:21px;
+  min-height:135px;
+  box-shadow:var(--shadow);
+}
+
+.summary-card:after{
+  content:"";
+  position:absolute;
+  right:-24px;
+  top:-28px;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  opacity:.10;
+  background:currentColor;
+}
+
+.summary-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.summary-label{
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+.summary-icon{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  font-size:19px;
   font-weight:800;
 }
 
-.ph-modal-user-id{
+.summary-value{
+  margin-top:16px;
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-.7px;
+}
+
+.summary-note{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.card-total{
+  color:var(--primary);
+}
+.card-total .summary-icon{
+  background:var(--primary-light);
+  color:var(--primary);
+}
+
+.card-users{
+  color:var(--blue);
+}
+.card-users .summary-icon{
+  background:var(--blue-bg);
+  color:var(--blue);
+}
+
+.card-amount{
+  color:var(--green);
+}
+.card-amount .summary-icon{
+  background:var(--green-bg);
+  color:var(--green);
+}
+
+.card-selected{
+  color:var(--orange);
+}
+.card-selected .summary-icon{
+  background:var(--orange-bg);
+  color:var(--orange);
+}
+
+/* PANEL */
+
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  margin-bottom:22px;
+  overflow:visible;
+}
+
+.panel-header{
+  padding:20px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.panel-title{
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.panel-subtitle{
   color:var(--muted);
   font-size:11px;
   margin-top:5px;
 }
 
-.ph-modal-amount{
-  text-align:center;
-  padding:17px 0;
+.panel-body{
+  padding:21px;
 }
 
-.ph-modal-amount-label{
+/* PROFILE SEARCH */
+
+.search-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:11px;
+  align-items:end;
+}
+
+.field-label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+  color:#40534e;
+}
+
+.search-input-wrap{
+  position:relative;
+}
+
+.search-input{
+  width:100%;
+  height:45px;
+  border:1px solid #d7e4dd;
+  border-radius:10px;
+  background:#fff;
+  padding:0 14px 0 40px;
+  outline:none;
+  color:var(--text);
+  font-size:13px;
+  transition:.2s;
+}
+
+.search-input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(8,127,91,.10);
+}
+
+.search-symbol{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:17px;
+}
+
+.primary-btn{
+  height:45px;
+  padding:0 19px;
+  border:0;
+  border-radius:10px;
+  background:var(--primary);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+  white-space:nowrap;
+}
+
+.primary-btn:hover{
+  background:var(--primary-dark);
+  transform:translateY(-1px);
+}
+
+.primary-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* PROFILE DROPDOWN */
+
+.profile-dropdown-wrap{
+  position:relative;
+}
+
+.profile-dropdown{
+  display:none;
+  position:absolute;
+  top:calc(100% + 9px);
+  left:0;
+  right:0;
+  z-index:50;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 15px 35px rgba(15,55,42,.15);
+  max-height:300px;
+  overflow-y:auto;
+}
+
+.profile-dropdown.show{
+  display:block;
+}
+
+.dropdown-heading{
+  padding:12px 14px;
+  font-size:10px;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  background:#f8fbf9;
+  border-bottom:1px solid var(--border);
+}
+
+.profile-option{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  width:100%;
+  padding:11px 13px;
+  background:#fff;
+  border:0;
+  border-bottom:1px solid #f0f4f1;
+  text-align:left;
+  transition:.15s;
+}
+
+.profile-option:last-child{
+  border-bottom:0;
+}
+
+.profile-option:hover{
+  background:var(--primary-soft);
+}
+
+.profile-option-name{
+  font-size:12px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.profile-option-id{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.profile-empty{
+  padding:22px;
+  text-align:center;
   color:var(--muted);
   font-size:12px;
-  margin-bottom:6px;
 }
 
-.ph-modal-amount-value{
-  color:var(--primary);
-  font-size:29px;
-  font-weight:900;
-  overflow-wrap:anywhere;
+/* AVATAR */
+
+.avatar{
+  width:43px;
+  height:43px;
+  min-width:43px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#087f5b,#12b886);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:15px;
+  font-weight:800;
+  overflow:hidden;
+  border:2px solid #e2f4eb;
 }
 
-.ph-modal-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
 }
 
-.ph-modal-item{
-  padding:12px 6px;
-  border-top:1px solid var(--border);
+.avatar.small{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  font-size:12px;
+}
+
+/* SELECTED PROFILE */
+
+.selected-profile{
+  display:none;
+  margin-top:16px;
+  padding:13px 15px;
+  border:1px solid #cdebdc;
+  background:var(--primary-soft);
+  border-radius:12px;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.selected-profile.show{
+  display:flex;
+}
+
+.selected-user{
+  display:flex;
+  align-items:center;
+  gap:11px;
   min-width:0;
 }
 
-.ph-modal-label{
-  color:var(--muted);
-  font-size:11px;
-  margin-bottom:5px;
-}
-
-.ph-modal-value{
-  font-size:12px;
-  font-weight:700;
+.selected-user-name{
+  font-size:13px;
+  font-weight:800;
+  color:var(--text);
   overflow-wrap:anywhere;
 }
 
-.ph-modal-done{
-  width:100%;
-  border:0;
-  background:var(--primary);
-  color:white;
-  border-radius:9px;
-  padding:13px;
-  margin-top:15px;
+.selected-user-id{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.clear-btn{
+  border:1px solid #f2caca;
+  background:#fff;
+  color:var(--red);
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:11px;
+  font-weight:800;
+  flex-shrink:0;
+}
+
+.clear-btn:hover{
+  background:var(--red-bg);
+}
+
+/* HISTORY SECTION */
+
+.history-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.result-count{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.history-list{
+  display:grid;
+  gap:13px;
+  padding:18px;
+}
+
+.history-card{
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  transition:.2s;
+}
+
+.history-card:hover{
+  border-color:#b8dfcd;
+  box-shadow:0 5px 18px rgba(8,127,91,.07);
+  transform:translateY(-1px);
+}
+
+.history-left{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:0;
+  flex:1;
+}
+
+.history-user{
+  min-width:0;
+}
+
+.history-name{
   font-size:13px;
   font-weight:800;
-  cursor:pointer;
+  color:var(--text);
+  overflow-wrap:anywhere;
 }
 
-.ph-loading{
-  text-align:center;
-  padding:35px 10px;
+.history-user-id{
   color:var(--muted);
-  font-size:13px;
+  font-size:10px;
+  margin-top:5px;
 }
 
-/* TABLET */
+.history-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px 15px;
+  margin-top:9px;
+}
 
-@media(max-width:900px){
-  .ph-stats{
+.meta-item{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.meta-item strong{
+  color:#43564f;
+  font-weight:700;
+}
+
+.history-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:9px;
+  flex-shrink:0;
+}
+
+.amount{
+  color:var(--green);
+  font-size:17px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.method-badge{
+  background:var(--blue-bg);
+  color:var(--blue);
+  border-radius:20px;
+  padding:5px 9px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.view-btn{
+  background:var(--primary-light);
+  color:var(--primary-dark);
+  border:1px solid #c8e8d9;
+  border-radius:8px;
+  padding:8px 13px;
+  font-size:11px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.view-btn:hover{
+  background:var(--primary);
+  color:#fff;
+}
+
+/* EMPTY / LOADING */
+
+.state-box{
+  padding:55px 20px;
+  text-align:center;
+}
+
+.state-icon{
+  width:55px;
+  height:55px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  background:var(--primary-light);
+  color:var(--primary);
+  font-size:25px;
+  margin:0 auto 13px;
+}
+
+.state-title{
+  font-size:14px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.state-text{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:7px;
+}
+
+.spinner{
+  width:29px;
+  height:29px;
+  border:3px solid #dcefe5;
+  border-top-color:var(--primary);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 13px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* MODAL */
+
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(12,31,25,.58);
+  padding:18px;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:100%;
+  max-width:490px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:#fff;
+  border-radius:17px;
+  box-shadow:0 20px 65px rgba(0,0,0,.22);
+  animation:modalIn .2s ease;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(10px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.modal-header{
+  padding:19px 21px;
+  background:linear-gradient(135deg,#087f5b,#12a879);
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.modal-header h3{
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+}
+
+.modal-close{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:8px;
+  color:#fff;
+  background:rgba(255,255,255,.18);
+  font-size:19px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+.modal-user{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:15px;
+  background:var(--primary-soft);
+  border:1px solid #d7eee2;
+  border-radius:12px;
+  margin-bottom:18px;
+}
+
+.modal-user-name{
+  font-size:14px;
+  font-weight:800;
+}
+
+.modal-user-id{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.detail-item{
+  padding:12px;
+  background:#f8faf9;
+  border:1px solid #edf1ee;
+  border-radius:10px;
+  min-width:0;
+}
+
+.detail-label{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.detail-value{
+  font-size:12px;
+  color:var(--text);
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+.detail-value.highlight{
+  color:var(--green);
+  font-size:16px;
+}
+
+.modal-footer{
+  padding:15px 21px;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:flex-end;
+}
+
+.close-action{
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  padding:10px 20px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:800;
+}
+
+/* ERROR */
+
+.error-message{
+  display:none;
+  padding:12px 14px;
+  background:var(--red-bg);
+  border:1px solid #f3caca;
+  color:var(--red);
+  border-radius:10px;
+  font-size:12px;
+  margin-bottom:15px;
+}
+
+.error-message.show{
+  display:block;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .summary-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
-
-  .ph-history-list{
-    grid-template-columns:1fr;
-  }
 }
 
-/* MOBILE */
-
-@media(max-width:600px){
-
-  .ph-wrap{
-    padding:12px;
+@media(max-width:650px){
+  .app{
+    padding:15px 12px;
   }
 
-  .ph-header{
-    margin-bottom:15px;
-    align-items:center;
+  .page-header{
+    margin-bottom:18px;
   }
 
-  .ph-title{
-    font-size:20px;
+  .header-title h1{
+    font-size:21px;
   }
 
-  .ph-subtitle{
+  .header-title p{
     font-size:11px;
   }
 
-  .ph-refresh{
-    padding:10px 12px;
-    font-size:12px;
+  .summary-grid{
+    gap:10px;
+    margin-bottom:17px;
   }
 
-  .ph-stats{
-    gap:9px;
-    margin-bottom:13px;
+  .summary-card{
+    padding:14px;
+    min-height:116px;
   }
 
-  .ph-stat{
-    padding:12px;
-    border-radius:11px;
+  .summary-value{
+    font-size:22px;
+    margin-top:12px;
   }
 
-  .ph-stat-label{
-    font-size:10px;
-    margin-bottom:7px;
-    line-height:1.4;
+  .summary-icon{
+    width:33px;
+    height:33px;
+    font-size:16px;
   }
 
-  .ph-stat-value{
-    font-size:19px;
-  }
-
-  .ph-panel{
-    padding:13px;
-    margin-bottom:13px;
-    border-radius:11px;
-  }
-
-  .ph-section-title{
-    font-size:14px;
-    margin-bottom:12px;
-  }
-
-  .ph-search-row{
-    gap:7px;
-  }
-
-  .ph-search{
-    height:43px;
-    font-size:12px;
-    padding:0 10px;
-  }
-
-  .ph-select-btn{
-    height:43px;
-    min-width:112px;
-    padding:0 8px;
-    font-size:11px;
-  }
-
-  .ph-dropdown{
-    top:49px;
-    min-width:0;
-    width:calc(100vw - 26px);
-    max-width:420px;
-    max-height:45dvh;
-  }
-
-  .ph-profile-option{
-    min-height:56px;
-    padding:8px;
-    gap:8px;
-  }
-
-  .ph-avatar{
-    width:38px;
-    height:38px;
-    flex-basis:38px;
-    font-size:14px;
-  }
-
-  .ph-profile-name{
-    font-size:12px;
-  }
-
-  .ph-profile-id{
+  .summary-label{
     font-size:10px;
   }
 
-  .ph-profile-count{
+  .summary-note{
     font-size:9px;
   }
 
-  .ph-selected{
-    padding:9px;
-    gap:8px;
+  .panel-header{
+    padding:15px;
   }
 
-  .ph-selected-name{
-    font-size:12px;
+  .panel-body{
+    padding:14px;
   }
 
-  .ph-clear{
-    padding:8px 9px;
-    font-size:11px;
+  .search-layout{
+    grid-template-columns:1fr;
   }
 
-  .ph-history-head{
-    margin-bottom:11px;
+  .primary-btn{
+    width:100%;
   }
 
-  .ph-history-count{
-    font-size:10px;
-  }
-
-  .ph-history-list{
+  .history-list{
+    padding:11px;
     gap:10px;
   }
 
-  .ph-history-card{
-    padding:12px;
-    border-radius:10px;
-  }
-
-  .ph-card-user{
-    gap:9px;
-    padding-bottom:10px;
-  }
-
-  .ph-card-user-name{
-    font-size:13px;
-  }
-
-  .ph-card-user-id{
-    font-size:10px;
-  }
-
-  .ph-amount{
-    font-size:16px;
-  }
-
-  .ph-details{
-    gap:11px 8px;
-    padding:11px 0;
-  }
-
-  .ph-detail-label{
-    font-size:9px;
-  }
-
-  .ph-detail-value{
-    font-size:11px;
-  }
-
-  .ph-card-footer{
-    padding-top:10px;
-  }
-
-  .ph-date{
-    font-size:9px;
-  }
-
-  .ph-view-btn{
-    padding:10px 11px;
-    font-size:11px;
-  }
-
-  .ph-modal{
-    padding:10px;
-    align-items:flex-end;
-  }
-
-  .ph-modal-box{
-    max-width:100%;
-    max-height:88dvh;
-    padding:17px;
-    border-radius:17px 17px 12px 12px;
-  }
-
-  .ph-modal-title{
-    font-size:16px;
-  }
-
-  .ph-modal-avatar{
-    width:68px;
-    height:68px;
-  }
-
-  .ph-modal-amount-value{
-    font-size:26px;
-  }
-
-  .ph-modal-item{
-    padding:11px 5px;
-  }
-
-  .ph-modal-label{
-    font-size:10px;
-  }
-
-  .ph-modal-value{
-    font-size:11px;
-  }
-
-  .ph-modal-done{
+  .history-card{
     padding:13px;
-  }
-}
-
-/* VERY SMALL MOBILE */
-
-@media(max-width:360px){
-
-  .ph-wrap{
-    padding:9px;
+    align-items:flex-start;
+    gap:9px;
   }
 
-  .ph-title{
-    font-size:18px;
+  .history-left{
+    gap:9px;
   }
 
-  .ph-refresh{
-    padding:9px;
-    font-size:11px;
+  .history-card .avatar{
+    width:37px;
+    height:37px;
+    min-width:37px;
   }
 
-  .ph-stat{
-    padding:10px;
-  }
-
-  .ph-stat-value{
-    font-size:17px;
-  }
-
-  .ph-select-btn{
-    min-width:102px;
-    font-size:10px;
-  }
-
-  .ph-search{
-    font-size:11px;
-  }
-
-  .ph-card-user-name{
+  .history-name{
     font-size:12px;
   }
 
-  .ph-amount{
+  .history-meta{
+    gap:6px 10px;
+  }
+
+  .meta-item{
+    font-size:9px;
+  }
+
+  .amount{
     font-size:14px;
   }
 
-  .ph-view-btn{
-    padding:9px;
+  .view-btn{
+    padding:7px 10px;
     font-size:10px;
+  }
+
+  .method-badge{
+    font-size:9px;
+    padding:4px 7px;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:390px){
+  .history-card{
+    flex-direction:column;
+  }
+
+  .history-right{
+    width:100%;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    padding-left:46px;
+  }
+
+  .summary-card{
+    padding:12px;
+  }
+
+  .summary-value{
+    font-size:19px;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .selected-profile{
+    align-items:flex-start;
   }
 }
 </style>
@@ -883,142 +964,198 @@ button{
 
 <body>
 
-<div class="ph-wrap">
+<div class="app">
+<div class="container">
 
-  <div class="ph-header">
-    <div>
-      <h1 class="ph-title">Payment History</h1>
-      <div class="ph-subtitle">View payment records and details</div>
-    </div>
-    <button class="ph-refresh" id="phRefresh">↻ Refresh</button>
-  </div>
-
-  <div class="ph-stats">
-
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total History</div>
-      <div class="ph-stat-value" id="phTotalHistory">0</div>
+  <header class="page-header">
+    <div class="header-title">
+      <h1>Payment History</h1>
+      <p>View and manage all user payment records</p>
     </div>
 
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total Users</div>
-      <div class="ph-stat-value" id="phTotalUsers">0</div>
+    <div class="header-status">
+      <span class="status-dot"></span>
+      Payment Records
+    </div>
+  </header>
+
+  <!-- SUMMARY CARDS -->
+
+  <section class="summary-grid">
+
+    <div class="summary-card card-total">
+      <div class="summary-top">
+        <div class="summary-label">Total History</div>
+        <div class="summary-icon">▤</div>
+      </div>
+      <div class="summary-value" id="totalHistory">0</div>
+      <div class="summary-note">All payment records</div>
     </div>
 
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total Payment Amount</div>
-      <div class="ph-stat-value" id="phTotalAmount">৳0</div>
+    <div class="summary-card card-users">
+      <div class="summary-top">
+        <div class="summary-label">Total Users</div>
+        <div class="summary-icon">♙</div>
+      </div>
+      <div class="summary-value" id="totalUsers">0</div>
+      <div class="summary-note">Unique payment profiles</div>
     </div>
 
-    <div class="ph-stat">
-      <div class="ph-stat-label">Selected User Records</div>
-      <div class="ph-stat-value" id="phSelectedRecords">All</div>
+    <div class="summary-card card-amount">
+      <div class="summary-top">
+        <div class="summary-label">Total Payment</div>
+        <div class="summary-icon">৳</div>
+      </div>
+      <div class="summary-value" id="totalAmount">৳ 0</div>
+      <div class="summary-note">Combined payment amount</div>
     </div>
 
-  </div>
+    <div class="summary-card card-selected">
+      <div class="summary-top">
+        <div class="summary-label">Selected Records</div>
+        <div class="summary-icon">◷</div>
+      </div>
+      <div class="summary-value" id="selectedRecords">0</div>
+      <div class="summary-note">Records for selected user</div>
+    </div>
 
-  <!-- SEARCH PROFILE -->
-  <div class="ph-panel">
+  </section>
 
-    <h3 class="ph-section-title">Search Profile</h3>
+  <!-- PROFILE SEARCH -->
 
-    <div class="ph-search-row">
+  <section class="panel">
 
-      <div class="ph-search-wrap">
+    <div class="panel-header">
+      <div>
+        <h2 class="panel-title">Search Profile</h2>
+        <div class="panel-subtitle">Find a user to filter their payment history</div>
+      </div>
+    </div>
 
-        <input
-          type="search"
-          class="ph-search"
-          id="phProfileSearch"
-          placeholder="Search profile..."
-          autocomplete="off"
-        >
+    <div class="panel-body">
 
-        <div class="ph-dropdown" id="phProfileDropdown">
-          <div id="phProfileOptions"></div>
+      <div id="errorMessage" class="error-message"></div>
+
+      <div class="search-layout">
+
+        <div class="profile-dropdown-wrap">
+
+          <label class="field-label" for="profileSearch">
+            Search User
+          </label>
+
+          <div class="search-input-wrap">
+            <span class="search-symbol">⌕</span>
+            <input
+              type="text"
+              class="search-input"
+              id="profileSearch"
+              placeholder="Search by user name or user ID..."
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-heading">Select User Profile</div>
+            <div id="profileOptions"></div>
+          </div>
+
         </div>
 
+        <button class="primary-btn" id="selectProfileBtn" type="button">
+          Select Profile
+        </button>
+
       </div>
 
-      <button class="ph-select-btn" id="phSelectButton" type="button">
-        Select Profile⌄
-      </button>
+      <div class="selected-profile" id="selectedProfile">
 
-    </div>
+        <div class="selected-user">
+          <div class="avatar" id="selectedAvatar">U</div>
 
-    <div class="ph-selected" id="phSelectedProfile">
+          <div>
+            <div class="selected-user-name" id="selectedName">User Name</div>
+            <div class="selected-user-id" id="selectedId">User ID</div>
+          </div>
+        </div>
 
-      <div class="ph-avatar" id="phSelectedAvatar"></div>
+        <button class="clear-btn" id="clearProfileBtn" type="button">
+          ✕ Clear
+        </button>
 
-      <div class="ph-selected-info">
-        <div class="ph-selected-name" id="phSelectedName"></div>
-        <div class="ph-selected-id" id="phSelectedId"></div>
       </div>
 
-      <button class="ph-clear" id="phClearProfile" type="button">
-        Clear
-      </button>
-
     </div>
+  </section>
 
-  </div>
+  <!-- PAYMENT HISTORY -->
 
-  <!-- HISTORY -->
-  <div class="ph-panel">
+  <section class="panel">
 
-    <div class="ph-history-head">
-      <h3 class="ph-section-title" style="margin:0">
-        Payment History Records
-      </h3>
+    <div class="panel-header">
+      <div>
+        <h2 class="panel-title">Payment Records</h2>
+        <div class="panel-subtitle">All recorded user payments</div>
+      </div>
 
-      <div class="ph-history-count" id="phHistoryCount">
-        Loading...
+      <div class="history-toolbar">
+        <span class="result-count" id="resultCount">0 records</span>
       </div>
     </div>
 
-    <div class="ph-history-list" id="phHistoryList">
-      <div class="ph-loading">Loading payment history...</div>
+    <div id="historyContainer" class="history-list">
+
+      <div class="state-box">
+        <div class="spinner"></div>
+        <div class="state-title">Loading Payment History</div>
+        <div class="state-text">Please wait...</div>
+      </div>
+
     </div>
 
-  </div>
+  </section>
 
 </div>
+</div>
 
-<!-- DETAILS MODAL -->
-<div class="ph-modal" id="phViewModal">
+<!-- PAYMENT DETAILS MODAL -->
 
-  <div class="ph-modal-box">
+<div class="modal-overlay" id="paymentModal">
 
-    <div class="ph-modal-head">
-      <div class="ph-modal-title">Payment Details</div>
-      <button class="ph-close" id="phModalClose">×</button>
+  <div class="modal">
+
+    <div class="modal-header">
+      <h3>Payment Details</h3>
+      <button class="modal-close" id="modalClose" type="button">×</button>
     </div>
 
-    <div class="ph-modal-user">
-      <div class="ph-modal-avatar" id="phModalAvatar"></div>
-      <div class="ph-modal-user-name" id="phModalName"></div>
-      <div class="ph-modal-user-id" id="phModalUserId"></div>
+    <div class="modal-body">
+
+      <div class="modal-user">
+        <div class="avatar" id="modalAvatar">U</div>
+        <div>
+          <div class="modal-user-name" id="modalUserName">User Name</div>
+          <div class="modal-user-id" id="modalUserId">User ID</div>
+        </div>
+      </div>
+
+      <div class="detail-grid" id="paymentDetails"></div>
+
     </div>
 
-    <div class="ph-modal-amount">
-      <div class="ph-modal-amount-label">Payment Amount</div>
-      <div class="ph-modal-amount-value" id="phModalAmount">৳0</div>
+    <div class="modal-footer">
+      <button class="close-action" id="modalDone" type="button">
+        Close
+      </button>
     </div>
-
-    <div class="ph-modal-grid" id="phModalDetails"></div>
-
-    <button class="ph-modal-done" id="phModalDone">
-      Close
-    </button>
 
   </div>
-
 </div>
 
 <script>
-"use strict";
-
-/* API */
+/* =====================================================
+   API CONFIGURATION
+===================================================== */
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
@@ -1027,127 +1164,189 @@ const USER_API =
 "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
 
-/* STATE */
+/* =====================================================
+   STATE
+===================================================== */
 
-let paymentHistory=[];
-let allProfiles=[];
-let selectedUserId="";
-let isDropdownOpen=false;
-
-const $=id=>document.getElementById(id);
+let allHistory = [];
+let allUsers = [];
+let profiles = [];
+let selectedProfileId = "";
 
 
-/* HELPERS */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-function esc(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
-}
+const $ = id => document.getElementById(id);
 
-function getValue(obj,keys,fallback=""){
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function getValue(obj, keys, fallback=""){
   for(const key of keys){
-    if(obj && obj[key]!==undefined &&
-       obj[key]!==null && obj[key]!==""){
+    if(obj && obj[key] !== undefined &&
+       obj[key] !== null && obj[key] !== ""){
       return obj[key];
     }
   }
   return fallback;
 }
 
-function money(value){
-  return "৳"+Number(value||0).toLocaleString("en-BD",{
-    maximumFractionDigits:2
-  });
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
 }
 
-function formatDate(value){
-  if(!value)return "—";
-  const d=new Date(value);
-  if(Number.isNaN(d.getTime()))return String(value);
-
-  return d.toLocaleDateString("en-GB",{
-    day:"2-digit",
-    month:"short",
-    year:"numeric"
-  });
+function getUserId(obj){
+  return String(getValue(obj,[
+    "userId","User ID","User Id","userid","user_id"
+  ])).trim();
 }
 
-function getUserId(x){
-  return String(getValue(x,["userId","User ID","userid"],""));
+function getUserName(obj){
+  return String(getValue(obj,[
+    "userName","User Name","name","Name","username"
+  ])).trim();
 }
 
-function getUserName(x){
-  return String(getValue(x,["userName","User Name","name","Name"],"Unknown User"));
-}
-
-function getProfilePicture(x){
-  return String(getValue(x,[
+function getProfilePicture(obj){
+  return String(getValue(obj,[
     "profilePicture",
     "Profile Picture",
     "photoURL",
     "photoUrl",
     "image",
     "avatar"
-  ],""));
+  ])).trim();
+}
+
+function getAmount(obj){
+  const value = getValue(obj,[
+    "amount","Amount","paymentAmount","Payment Amount"
+  ],0);
+
+  const n = Number(String(value).replace(/,/g,""));
+  return Number.isFinite(n) ? n : 0;
+}
+
+function formatMoney(value){
+  return "৳ " + Number(value || 0).toLocaleString("en-BD",{
+    maximumFractionDigits:2
+  });
+}
+
+function formatDate(value){
+  if(!value) return "—";
+
+  const date = new Date(value);
+
+  if(isNaN(date.getTime())) return String(value);
+
+  return date.toLocaleDateString("en-GB",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+  });
+}
+
+function formatDateTime(value){
+  if(!value) return "—";
+
+  const date = new Date(value);
+
+  if(isNaN(date.getTime())) return String(value);
+
+  return date.toLocaleString("en-GB",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+}
+
+function initials(name){
+  const value = String(name || "U").trim();
+
+  if(!value) return "U";
+
+  return value.split(/\s+/)
+    .slice(0,2)
+    .map(x=>x.charAt(0))
+    .join("")
+    .toUpperCase();
 }
 
 function getImageURL(value){
-  if(!value)return "";
+  if(!value) return "";
 
-  let url=String(value).trim();
+  let url = String(value).trim();
 
-  if(!url.startsWith("http")&&!url.startsWith("data:")){
-    return "https://drive.google.com/thumbnail?id="+
-      encodeURIComponent(url)+"&sz=w300";
+  const driveFile = url.match(/\/file\/d\/([^/]+)/);
+  const driveId = url.match(/[?&]id=([^&]+)/);
+
+  if(driveFile){
+    return "https://drive.google.com/uc?export=view&id="+driveFile[1];
   }
 
-  const match=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-  if(match){
-    return "https://drive.google.com/thumbnail?id="+
-      match[1]+"&sz=w300";
+  if(driveId && url.includes("drive.google.com")){
+    return "https://drive.google.com/uc?export=view&id="+driveId[1];
   }
 
-  const idMatch=url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-
-  if(idMatch&&url.includes("drive.google.com")){
-    return "https://drive.google.com/thumbnail?id="+
-      idMatch[1]+"&sz=w300";
+  if(/^[a-zA-Z0-9_-]{20,}$/.test(url)){
+    return "https://drive.google.com/uc?export=view&id="+url;
   }
 
   return url;
 }
 
-function avatarHTML(name,picture,extraClass=""){
-  const initial=esc(
-    String(name||"U").trim().charAt(0).toUpperCase()
-  );
-
-  const image=getImageURL(picture);
+function avatarHTML(name,picture,small=false){
+  const safeName = escapeHTML(name || "User");
+  const safeInitial = escapeHTML(initials(name));
+  const image = getImageURL(picture);
+  const sizeClass = small ? " small" : "";
 
   if(!image){
-    return `<div class="${extraClass}">${initial}</div>`;
+    return `<div class="avatar${sizeClass}">${safeInitial}</div>`;
   }
 
   return `
-    <div class="${extraClass}">
+    <div class="avatar${sizeClass}">
       <img
-        src="${esc(image)}"
-        alt="${esc(name)}"
+        src="${escapeHTML(image)}"
+        alt="${safeName}"
         referrerpolicy="no-referrer"
-        onerror="this.parentElement.innerHTML='${initial}'"
+        onerror="this.parentElement.textContent=${JSON.stringify(initials(name))}"
       >
     </div>
   `;
 }
 
+function showError(message){
+  $("errorMessage").textContent = message;
+  $("errorMessage").classList.add("show");
+}
+
+function hideError(){
+  $("errorMessage").textContent = "";
+  $("errorMessage").classList.remove("show");
+}
+
+
+/* =====================================================
+   API REQUEST
+===================================================== */
+
 async function apiGet(url){
-  const response=await fetch(url,{
+  const response = await fetch(url,{
     method:"GET",
     cache:"no-store"
   });
@@ -1156,483 +1355,691 @@ async function apiGet(url){
     throw new Error("API request failed: "+response.status);
   }
 
-  return await response.json();
+  const data = await response.json();
+
+  if(data && data.success === false){
+    throw new Error(data.message || "API returned an error.");
+  }
+
+  return data;
 }
 
 
-/* LOAD */
+/* =====================================================
+   NORMALIZE PAYMENT HISTORY
+===================================================== */
 
-async function loadPaymentHistory(){
+function normalizePayment(item){
 
-  $("phHistoryList").innerHTML=
-    `<div class="ph-loading">Loading payment history...</div>`;
+  const userId = getUserId(item);
 
-  $("phHistoryCount").textContent="Loading...";
+  const userName = getUserName(item) || "Unknown User";
+
+  const picture = getProfilePicture(item);
+
+  return {
+    raw:item,
+
+    userId:userId,
+
+    userName:userName,
+
+    profilePicture:picture,
+
+    amount:getAmount(item),
+
+    currencyCode:getValue(item,[
+      "currencyCode","Currency Code"
+    ],"BDT"),
+
+    currencyName:getValue(item,[
+      "currencyName","Currency Name"
+    ],"Bangladeshi Taka"),
+
+    paymentMethod:getValue(item,[
+      "paymentMethod","Payment Method","method","Method"
+    ],"—"),
+
+    transactionId:getValue(item,[
+      "transactionId","Transaction ID","trxId","Trx ID"
+    ],"—"),
+
+    paymentDate:getValue(item,[
+      "paymentDate","Payment Date","date","Date"
+    ],""),
+
+    comment:getValue(item,[
+      "comment","Comment","description","Description","note","Note"
+    ],"—"),
+
+    actionDate:getValue(item,[
+      "actionDate","Action Date","createdAt","Created At","timestamp","Timestamp"
+    ],""),
+
+    paymentId:getValue(item,[
+      "paymentId","Payment ID","historyId","History ID","id","ID"
+    ],"—")
+  };
+}
+
+
+/* =====================================================
+   LOAD DATA
+===================================================== */
+
+async function loadData(){
+
+  hideError();
+
+  $("historyContainer").innerHTML=`
+    <div class="state-box">
+      <div class="spinner"></div>
+      <div class="state-title">Loading Payment History</div>
+      <div class="state-text">Please wait...</div>
+    </div>
+  `;
 
   try{
 
-    const [historyResponse,userResponse]=await Promise.all([
+    const [historyResponse,userResponse] = await Promise.all([
+
       apiGet(PAYMENT_API+"?api=history&t="+Date.now()),
+
       apiGet(USER_API+"?api=active&t="+Date.now())
+
     ]);
 
-    if(historyResponse.success===false){
-      throw new Error(historyResponse.message||"History loading failed.");
+    const historyData =
+      historyResponse.history ||
+      historyResponse.data ||
+      historyResponse.entries ||
+      [];
+
+    const userData =
+      userResponse.users ||
+      userResponse.data ||
+      [];
+
+    if(!Array.isArray(historyData)){
+      throw new Error("Payment history API returned an invalid history list.");
     }
 
-    const historyData=
-      historyResponse.history||
-      historyResponse.data||
-      historyResponse.entries||
-      [];
+    if(!Array.isArray(userData)){
+      throw new Error("User API returned an invalid user list.");
+    }
 
-    const usersData=
-      userResponse.users||
-      userResponse.data||
-      [];
+    allHistory = historyData.map(normalizePayment);
 
-    paymentHistory=Array.isArray(historyData)?historyData:[];
+    allUsers = userData;
 
-    buildProfiles(usersData);
+    buildProfiles();
 
-    updateSummary();
-    renderProfileDropdown();
+    renderSummary();
+
+    renderProfiles();
+
     renderHistory();
 
   }catch(error){
 
     console.error(error);
 
-    $("phHistoryList").innerHTML=`
-      <div class="ph-empty">
-        <div class="ph-empty-icon">⚠️</div>
-        <b>Unable to load payment history</b>
-        <p>${esc(error.message)}</p>
+    showError(error.message || "Unable to load payment history.");
+
+    $("historyContainer").innerHTML=`
+      <div class="state-box">
+        <div class="state-icon">!</div>
+        <div class="state-title">Unable to Load Data</div>
+        <div class="state-text">${escapeHTML(error.message)}</div>
+        <br>
+        <button class="primary-btn" onclick="loadData()">
+          Try Again
+        </button>
       </div>
     `;
 
-    $("phHistoryCount").textContent="Loading failed";
   }
 }
 
 
-/* BUILD PROFILES */
+/* =====================================================
+   BUILD PROFILES
+===================================================== */
 
-function buildProfiles(users){
+function buildProfiles(){
 
-  const map=new Map();
+  const map = new Map();
 
-  paymentHistory.forEach(h=>{
+  // First collect profiles from payment history.
 
-    const id=getUserId(h);
-    if(!id)return;
+  allHistory.forEach(payment=>{
 
-    map.set(id,{
-      userId:id,
-      userName:getUserName(h),
-      profilePicture:getProfilePicture(h),
-      count:0
-    });
+    if(!payment.userId) return;
 
-  });
+    const id = payment.userId;
 
-  (Array.isArray(users)?users:[]).forEach(user=>{
+    if(!map.has(id)){
 
-    const id=getUserId(user);
-    if(!id)return;
+      map.set(id,{
+        userId:id,
+        userName:payment.userName || "Unknown User",
+        profilePicture:payment.profilePicture || ""
+      });
 
-    const old=map.get(id);
+    }else{
 
-    if(old){
+      const old = map.get(id);
 
-      old.userName=getUserName(user)||old.userName;
+      if((!old.userName || old.userName==="Unknown User")
+          && payment.userName){
+        old.userName=payment.userName;
+      }
 
-      old.profilePicture=
-        getProfilePicture(user)||
-        old.profilePicture;
+      if(!old.profilePicture && payment.profilePicture){
+        old.profilePicture=payment.profilePicture;
+      }
 
     }
 
   });
 
-  paymentHistory.forEach(h=>{
-    const p=map.get(getUserId(h));
-    if(p)p.count++;
+
+  // Enrich profiles with active user information.
+
+  allUsers.forEach(user=>{
+
+    const id = getUserId(user);
+
+    if(!id) return;
+
+    const name = getUserName(user);
+    const picture = getProfilePicture(user);
+
+    if(map.has(id)){
+
+      const old = map.get(id);
+
+      if(name) old.userName=name;
+
+      if(picture) old.profilePicture=picture;
+
+    }else{
+
+      map.set(id,{
+        userId:id,
+        userName:name || "Unknown User",
+        profilePicture:picture
+      });
+
+    }
+
   });
 
-  allProfiles=Array.from(map.values()).sort((a,b)=>
+
+  profiles = Array.from(map.values());
+
+  profiles.sort((a,b)=>
     a.userName.localeCompare(b.userName)
   );
+
 }
 
 
-/* SUMMARY */
+/* =====================================================
+   SUMMARY
+===================================================== */
 
-function updateSummary(){
+function renderSummary(){
 
-  const totalAmount=paymentHistory.reduce((sum,h)=>
-    sum+Number(getValue(h,["amount","Amount","paymentAmount"],0)),0
+  const uniqueUsers = new Set(
+    allHistory
+      .map(x=>x.userId)
+      .filter(Boolean)
   );
 
-  $("phTotalHistory").textContent=paymentHistory.length;
-  $("phTotalUsers").textContent=allProfiles.length;
-  $("phTotalAmount").textContent=money(totalAmount);
-
-  updateSelectedCount();
-}
-
-function updateSelectedCount(){
-
-  $("phSelectedRecords").textContent=selectedUserId
-    ?paymentHistory.filter(h=>getUserId(h)===selectedUserId).length
-    :"All";
-}
-
-
-/* PROFILE DROPDOWN */
-
-function renderProfileDropdown(){
-
-  const search=$("phProfileSearch").value.trim().toLowerCase();
-
-  const profiles=allProfiles.filter(p=>
-    p.userName.toLowerCase().includes(search)||
-    p.userId.toLowerCase().includes(search)
+  const total = allHistory.reduce(
+    (sum,item)=>sum+item.amount,0
   );
 
-  let html=`
-    <div class="ph-profile-option ${!selectedUserId?"active":""}"
-         data-user-id="">
-      <div class="ph-avatar">ALL</div>
-      <div class="ph-profile-info">
-        <div class="ph-profile-name">All Profiles</div>
-        <div class="ph-profile-id">Show all payment history</div>
-      </div>
-      <div class="ph-profile-count">${paymentHistory.length}</div>
-    </div>
-  `;
+  $("totalHistory").textContent =
+    allHistory.length.toLocaleString("en-BD");
 
-  profiles.forEach(p=>{
+  $("totalUsers").textContent =
+    uniqueUsers.size.toLocaleString("en-BD");
 
-    html+=`
-      <div class="ph-profile-option ${
-        selectedUserId===p.userId?"active":""
-      }" data-user-id="${esc(p.userId)}">
+  $("totalAmount").textContent =
+    formatMoney(total);
 
-        ${avatarHTML(p.userName,p.profilePicture,"ph-avatar")}
+}
 
-        <div class="ph-profile-info">
-          <div class="ph-profile-name">${esc(p.userName)}</div>
-          <div class="ph-profile-id">${esc(p.userId)}</div>
-        </div>
 
-        <div class="ph-profile-count">${p.count} Payments</div>
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
 
-      </div>
-    `;
+function renderProfiles(){
+
+  const query=$("profileSearch").value
+    .trim()
+    .toLowerCase();
+
+  const list=profiles.filter(profile=>{
+
+    const name=profile.userName.toLowerCase();
+
+    const id=profile.userId.toLowerCase();
+
+    return name.includes(query) || id.includes(query);
 
   });
-
-  if(!profiles.length&&search){
-    html+=`<div class="ph-dropdown-empty">No matching profile found.</div>`;
-  }
-
-  if(!allProfiles.length){
-    html+=`<div class="ph-dropdown-empty">No profiles found.</div>`;
-  }
-
-  $("phProfileOptions").innerHTML=html;
-
-  $("phProfileOptions")
-    .querySelectorAll("[data-user-id]")
-    .forEach(item=>{
-      item.addEventListener("click",()=>{
-        selectProfile(item.dataset.userId);
-      });
-    });
-}
-
-function toggleDropdown(force){
-
-  isDropdownOpen=typeof force==="boolean"
-    ?force
-    :!isDropdownOpen;
-
-  $("phProfileDropdown").classList.toggle("show",isDropdownOpen);
-
-  if(isDropdownOpen){
-    renderProfileDropdown();
-    $("phProfileSearch").focus();
-  }
-}
-
-function selectProfile(userId){
-
-  selectedUserId=String(userId||"");
-
-  toggleDropdown(false);
-
-  if(selectedUserId){
-
-    const p=allProfiles.find(x=>x.userId===selectedUserId);
-
-    if(p){
-
-      $("phSelectedProfile").classList.add("show");
-
-      $("phSelectedAvatar").innerHTML=
-        avatarHTML(p.userName,p.profilePicture,"ph-avatar");
-
-      $("phSelectedName").textContent=p.userName;
-      $("phSelectedId").textContent="User ID: "+p.userId;
-
-      $("phProfileSearch").value=p.userName;
-
-      $("phSelectButton").textContent="Change Profile ⌄";
-    }
-
-  }else{
-
-    $("phSelectedProfile").classList.remove("show");
-    $("phProfileSearch").value="";
-    $("phSelectButton").textContent="Select Profile ⌄";
-
-  }
-
-  updateSelectedCount();
-  renderProfileDropdown();
-  renderHistory();
-}
-
-
-/* HISTORY */
-
-function renderHistory(){
-
-  let list=paymentHistory.slice();
-
-  if(selectedUserId){
-    list=list.filter(h=>getUserId(h)===selectedUserId);
-  }
-
-  list.sort((a,b)=>{
-
-    const da=new Date(getValue(
-      a,["actionDate","createdAt","timestamp","date","paymentDate"],0
-    )).getTime()||0;
-
-    const db=new Date(getValue(
-      b,["actionDate","createdAt","timestamp","date","paymentDate"],0
-    )).getTime()||0;
-
-    return db-da;
-  });
-
-  $("phHistoryCount").textContent=list.length+" record(s) found";
 
   if(!list.length){
 
-    $("phHistoryList").innerHTML=`
-      <div class="ph-empty">
-        <div class="ph-empty-icon">📭</div>
-        <b>No Payment History Found</b>
-        <p>No payment records available for this selection.</p>
+    $("profileOptions").innerHTML=`
+      <div class="profile-empty">
+        No matching profile found
       </div>
     `;
 
     return;
   }
 
-  $("phHistoryList").innerHTML=list.map((h,index)=>{
+  $("profileOptions").innerHTML=list.map(profile=>`
 
-    const id=getUserId(h);
-    const p=allProfiles.find(x=>x.userId===id);
+    <button
+      class="profile-option"
+      type="button"
+      data-profile-id="${escapeHTML(profile.userId)}"
+    >
 
-    const name=p?.userName||getUserName(h);
-    const picture=p?.profilePicture||getProfilePicture(h);
+      ${avatarHTML(
+        profile.userName,
+        profile.profilePicture,
+        true
+      )}
 
-    const amount=getValue(h,["amount","Amount","paymentAmount"],0);
-    const method=getValue(h,["paymentMethod","method","Method"],"—");
-    const trx=getValue(h,["transactionId","Transaction ID","trxId"],"—");
-    const date=getValue(h,["paymentDate","date","Date"],"");
-    const historyDate=getValue(h,["actionDate","createdAt","timestamp","Created At"],"");
-    const paymentId=getValue(h,["paymentId","Payment ID","historyId","entryId"],"—");
-
-    return `
-      <div class="ph-history-card">
-
-        <div class="ph-card-user">
-
-          ${avatarHTML(name,picture,"ph-avatar")}
-
-          <div class="ph-card-user-info">
-            <div class="ph-card-user-name">${esc(name)}</div>
-            <div class="ph-card-user-id">User ID: ${esc(id)}</div>
-          </div>
-
-          <div class="ph-amount">${money(amount)}</div>
-
+      <div>
+        <div class="profile-option-name">
+          ${escapeHTML(profile.userName)}
         </div>
 
-        <div class="ph-details">
-
-          <div>
-            <div class="ph-detail-label">Payment Method</div>
-            <div class="ph-detail-value">${esc(method)}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Transaction ID</div>
-            <div class="ph-detail-value">${esc(trx)}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Payment Date</div>
-            <div class="ph-detail-value">${esc(formatDate(date))}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Payment ID</div>
-            <div class="ph-detail-value">${esc(paymentId)}</div>
-          </div>
-
+        <div class="profile-option-id">
+          ID: ${escapeHTML(profile.userId)}
         </div>
+      </div>
 
-        <div class="ph-card-footer">
-          <div class="ph-date">History: ${esc(formatDate(historyDate))}</div>
+    </button>
 
-          <button class="ph-view-btn" type="button" data-view="${index}">
-            View Payment
-          </button>
+  `).join("");
+
+  $("profileOptions")
+    .querySelectorAll("[data-profile-id]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        selectProfile(button.dataset.profileId);
+
+      });
+
+    });
+
+}
+
+
+/* =====================================================
+   SELECT PROFILE
+===================================================== */
+
+function selectProfile(id){
+
+  const profile=profiles.find(
+    x=>String(x.userId)===String(id)
+  );
+
+  if(!profile) return;
+
+  selectedProfileId=String(id);
+
+  $("selectedAvatar").innerHTML=avatarHTML(
+    profile.userName,
+    profile.profilePicture
+  );
+
+  $("selectedName").textContent=profile.userName;
+
+  $("selectedId").textContent="ID: "+profile.userId;
+
+  $("selectedProfile").classList.add("show");
+
+  $("profileSearch").value=profile.userName;
+
+  $("profileDropdown").classList.remove("show");
+
+  renderHistory();
+
+}
+
+
+/* =====================================================
+   CLEAR PROFILE
+===================================================== */
+
+function clearProfile(){
+
+  selectedProfileId="";
+
+  $("profileSearch").value="";
+
+  $("selectedProfile").classList.remove("show");
+
+  $("profileDropdown").classList.remove("show");
+
+  renderProfiles();
+
+  renderHistory();
+
+}
+
+
+/* =====================================================
+   RENDER HISTORY
+===================================================== */
+
+function renderHistory(){
+
+  let list=[...allHistory];
+
+  if(selectedProfileId){
+
+    list=list.filter(
+      item=>String(item.userId)===selectedProfileId
+    );
+
+  }
+
+  // Sort newest first.
+
+  list.sort((a,b)=>{
+
+    const da=new Date(a.actionDate || a.paymentDate).getTime();
+
+    const db=new Date(b.actionDate || b.paymentDate).getTime();
+
+    return (isNaN(db)?0:db)-(isNaN(da)?0:da);
+
+  });
+
+
+  $("selectedRecords").textContent =
+    selectedProfileId ? list.length.toLocaleString("en-BD") : "0";
+
+  $("resultCount").textContent =
+    list.length.toLocaleString("en-BD")+" records";
+
+
+  if(!list.length){
+
+    $("historyContainer").innerHTML=`
+      <div class="state-box">
+        <div class="state-icon">▤</div>
+        <div class="state-title">No Payment Records Found</div>
+        <div class="state-text">
+          There are no payment records to display.
         </div>
-
       </div>
     `;
 
-  }).join("");
+    return;
 
-  $("phHistoryList")
-    .querySelectorAll("[data-view]")
+  }
+
+
+  $("historyContainer").innerHTML=list.map((payment,index)=>`
+
+    <article class="history-card">
+
+      <div class="history-left">
+
+        ${avatarHTML(
+          payment.userName,
+          payment.profilePicture
+        )}
+
+        <div class="history-user">
+
+          <div class="history-name">
+            ${escapeHTML(payment.userName)}
+          </div>
+
+          <div class="history-user-id">
+            ID: ${escapeHTML(payment.userId || "—")}
+          </div>
+
+          <div class="history-meta">
+
+            <div class="meta-item">
+              Payment:
+              <strong>${escapeHTML(formatDate(payment.paymentDate))}</strong>
+            </div>
+
+            <div class="meta-item">
+              Transaction:
+              <strong>${escapeHTML(payment.transactionId)}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="history-right">
+
+        <div class="amount">
+          ${escapeHTML(formatMoney(payment.amount))}
+        </div>
+
+        <div class="method-badge">
+          ${escapeHTML(payment.paymentMethod)}
+        </div>
+
+        <button
+          class="view-btn"
+          type="button"
+          data-view-index="${index}"
+        >
+          View Payment
+        </button>
+
+      </div>
+
+    </article>
+
+  `).join("");
+
+
+  // Attach View Payment actions.
+
+  $("historyContainer")
+    .querySelectorAll("[data-view-index]")
     .forEach(button=>{
+
       button.addEventListener("click",()=>{
-        const item=list[Number(button.dataset.view)];
-        if(item)openPaymentDetails(item);
+
+        const index=Number(button.dataset.viewIndex);
+
+        openPaymentDetails(list[index]);
+
       });
+
     });
+
 }
 
 
-/* DETAILS */
+/* =====================================================
+   PAYMENT DETAILS MODAL
+===================================================== */
 
-function openPaymentDetails(h){
+function openPaymentDetails(payment){
 
-  const id=getUserId(h);
-  const p=allProfiles.find(x=>x.userId===id);
-
-  const name=p?.userName||getUserName(h);
-  const picture=p?.profilePicture||getProfilePicture(h);
-
-  $("phModalAvatar").innerHTML=
-    avatarHTML(name,picture,"ph-modal-avatar");
-
-  $("phModalName").textContent=name;
-  $("phModalUserId").textContent="User ID: "+id;
-
-  $("phModalAmount").textContent=money(
-    getValue(h,["amount","Amount","paymentAmount"],0)
+  $("modalAvatar").innerHTML=avatarHTML(
+    payment.userName,
+    payment.profilePicture
   );
+
+  $("modalUserName").textContent=payment.userName;
+
+  $("modalUserId").textContent="ID: "+payment.userId;
+
 
   const details=[
 
-    ["Payment ID",getValue(h,["paymentId","Payment ID","historyId","entryId"],"—")],
+    ["Payment Amount",formatMoney(payment.amount),"highlight"],
 
-    ["Payment Method",getValue(h,["paymentMethod","method","Method"],"—")],
+    ["Payment Method",payment.paymentMethod,""],
 
-    ["Transaction ID",getValue(h,["transactionId","Transaction ID","trxId"],"—")],
+    ["Transaction ID",payment.transactionId,""],
 
-    ["Payment Date",formatDate(getValue(h,["paymentDate","date","Date"],""))],
+    ["Payment Date",formatDate(payment.paymentDate),""] ,
 
-    ["History Date",formatDate(getValue(h,["actionDate","createdAt","timestamp","Created At"],""))],
+    ["Payment ID",payment.paymentId,""],
 
-    ["Currency",getValue(h,["currencyName","currencyCode"],"BDT")],
-
-    ["Description",getValue(h,["comment","description","note","Description"],"—")]
+    ["History Date",formatDateTime(payment.actionDate),""]
 
   ];
 
-  $("phModalDetails").innerHTML=details.map(item=>`
-    <div class="ph-modal-item">
-      <div class="ph-modal-label">${esc(item[0])}</div>
-      <div class="ph-modal-value">${esc(item[1])}</div>
+
+  $("paymentDetails").innerHTML=details.map(item=>`
+
+    <div class="detail-item">
+
+      <div class="detail-label">
+        ${escapeHTML(item[0])}
+      </div>
+
+      <div class="detail-value ${item[2]}">
+        ${escapeHTML(item[1] || "—")}
+      </div>
+
     </div>
+
   `).join("");
 
-  $("phViewModal").classList.add("show");
+
+  $("paymentModal").classList.add("show");
+
 }
 
-function closePaymentModal(){
-  $("phViewModal").classList.remove("show");
+
+/* =====================================================
+   MODAL CLOSE
+===================================================== */
+
+function closeModal(){
+
+  $("paymentModal").classList.remove("show");
+
 }
 
 
-/* EVENTS */
+/* =====================================================
+   EVENT LISTENERS
+===================================================== */
 
-$("phSelectButton").addEventListener("click",()=>{
-  toggleDropdown();
+$("profileSearch").addEventListener("focus",()=>{
+
+  renderProfiles();
+
+  $("profileDropdown").classList.add("show");
+
 });
 
-$("phProfileSearch").addEventListener("focus",()=>{
-  if(!isDropdownOpen)toggleDropdown(true);
+$("profileSearch").addEventListener("input",()=>{
+
+  renderProfiles();
+
+  $("profileDropdown").classList.add("show");
+
 });
 
-$("phProfileSearch").addEventListener("input",()=>{
-  if(!isDropdownOpen)toggleDropdown(true);
-  renderProfileDropdown();
+$("selectProfileBtn").addEventListener("click",()=>{
+
+  const dropdown=$("profileDropdown");
+
+  if(dropdown.classList.contains("show")){
+
+    dropdown.classList.remove("show");
+
+  }else{
+
+    renderProfiles();
+
+    dropdown.classList.add("show");
+
+    $("profileSearch").focus();
+
+  }
+
 });
 
-$("phClearProfile").addEventListener("click",()=>{
-  selectProfile("");
-});
+$("clearProfileBtn").addEventListener(
+  "click",
+  clearProfile
+);
 
-$("phRefresh").addEventListener("click",()=>{
-  loadPaymentHistory();
-});
+$("modalClose").addEventListener(
+  "click",
+  closeModal
+);
 
-$("phModalClose").addEventListener("click",closePaymentModal);
-$("phModalDone").addEventListener("click",closePaymentModal);
+$("modalDone").addEventListener(
+  "click",
+  closeModal
+);
 
-$("phViewModal").addEventListener("click",event=>{
-  if(event.target===$("phViewModal"))closePaymentModal();
+$("paymentModal").addEventListener("click",event=>{
+
+  if(event.target===$("paymentModal")){
+
+    closeModal();
+
+  }
+
 });
 
 document.addEventListener("click",event=>{
 
-  const dropdown=$("phProfileDropdown");
-  const wrap=document.querySelector(".ph-search-wrap");
-  const button=$("phSelectButton");
+  const wrap=$("profileSearch").closest(".profile-dropdown-wrap");
 
-  if(
-    isDropdownOpen&&
-    !dropdown.contains(event.target)&&
-    !wrap.contains(event.target)&&
-    !button.contains(event.target)
-  ){
-    toggleDropdown(false);
+  if(!wrap.contains(event.target) &&
+     event.target!==$("selectProfileBtn")){
+
+    $("profileDropdown").classList.remove("show");
+
   }
 
 });
 
 document.addEventListener("keydown",event=>{
+
   if(event.key==="Escape"){
-    toggleDropdown(false);
-    closePaymentModal();
+
+    closeModal();
+
+    $("profileDropdown").classList.remove("show");
+
   }
+
 });
 
 
-/* START */
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
 
-loadPaymentHistory();
+loadData();
 
 </script>
 
