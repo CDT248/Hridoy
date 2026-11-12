@@ -2,21 +2,24 @@
 <div class="wage-dashboard">
 
 <style>
+/* =====================================
+   RS WAGE DASHBOARD - GREEN THEME
+===================================== */
+
 #pageContainer .wage-dashboard {
-  --green:#138b55;
-  --green-dark:#087443;
-  --green-light:#e8f7ef;
-  --green-soft:#f2fbf6;
-  --wd-card:var(--card-bg,var(--surface,#fff));
+  --green:#078447;
+  --green-dark:#056638;
+  --green-light:#e5f7ed;
+  --green-border:#b8e5cb;
   --wd-text:var(--text-color,var(--text,#172033));
-  --wd-muted:var(--muted-color,#7b8495);
-  --wd-border:var(--border-color,#e4eee8);
+  --wd-muted:var(--muted-color,#748477);
   width:100%;
   color:var(--wd-text);
   font-family:inherit;
 }
 
-/* Header */
+/* HEADER */
+
 #pageContainer .wd-top {
   display:flex;
   justify-content:space-between;
@@ -25,38 +28,43 @@
   gap:12px;
   margin-bottom:20px;
 }
+
 #pageContainer .wd-heading h2 {
   margin:0 0 5px;
   font-size:24px;
   font-weight:800;
-  letter-spacing:-.5px;
 }
+
 #pageContainer .wd-heading p {
   margin:0;
   color:var(--wd-muted);
   font-size:13px;
 }
+
 #pageContainer .wd-refresh {
-  border:0;
-  border-radius:10px;
-  background:var(--green);
+  background:linear-gradient(135deg,#0b9956,#087443);
   color:#fff;
+  border:0;
+  border-radius:11px;
   padding:11px 17px;
-  font-weight:700;
+  font-weight:750;
   cursor:pointer;
+  box-shadow:0 5px 14px rgba(0,130,70,.2);
   transition:.2s;
-  box-shadow:0 4px 12px rgba(19,139,85,.18);
 }
+
 #pageContainer .wd-refresh:hover {
-  background:var(--green-dark);
-  transform:translateY(-1px);
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(0,130,70,.28);
 }
+
 #pageContainer .wd-refresh:disabled {
   opacity:.6;
   cursor:wait;
 }
 
-/* API Status */
+/* STATUS */
+
 #pageContainer .wd-status {
   display:flex;
   align-items:center;
@@ -65,95 +73,128 @@
   font-size:12px;
   margin-bottom:19px;
 }
+
 #pageContainer .wd-dot {
-  width:8px;
   height:8px;
+  width:8px;
   border-radius:50%;
   background:#e9a23b;
   display:inline-block;
 }
-#pageContainer .wd-dot.success {background:#16a34a}
-#pageContainer .wd-dot.error {background:#dc2626}
 
-/* Stats */
+#pageContainer .wd-dot.success {
+  background:#16a34a;
+}
+
+#pageContainer .wd-dot.error {
+  background:#dc2626;
+}
+
+/* DASHBOARD GRID */
+
 #pageContainer .wd-grid {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:16px;
   margin-bottom:30px;
 }
+
+/* FULL GREEN STAT CARDS */
+
 #pageContainer .wd-stat {
   position:relative;
   overflow:hidden;
-  background:var(--wd-card);
-  border:1px solid var(--wd-border);
-  border-radius:16px;
-  padding:20px;
+  isolation:isolate;
+  background:linear-gradient(135deg,#0b9956 0%,#087443 100%) !important;
+  border:1px solid #078447 !important;
+  border-radius:17px;
+  padding:21px;
   min-width:0;
-  box-shadow:0 4px 15px rgba(0,70,35,.035);
-  transition:transform .2s,border-color .2s,box-shadow .2s;
+  color:#fff !important;
+  box-shadow:0 7px 20px rgba(0,110,55,.16);
+  transition:transform .22s,box-shadow .22s;
 }
+
 #pageContainer .wd-stat:hover {
-  transform:translateY(-3px);
-  border-color:#8ed5ad;
-  box-shadow:0 8px 22px rgba(0,100,50,.08);
+  transform:translateY(-4px);
+  box-shadow:0 12px 25px rgba(0,110,55,.25);
 }
+
+#pageContainer .wd-stat::before {
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  right:-55px;
+  top:-65px;
+  z-index:-1;
+}
+
 #pageContainer .wd-stat::after {
   content:"";
   position:absolute;
-  width:90px;
-  height:90px;
+  width:100px;
+  height:100px;
   border-radius:50%;
-  background:rgba(22,163,74,.045);
-  right:-30px;
-  bottom:-40px;
+  background:rgba(255,255,255,.06);
+  right:30px;
+  bottom:-75px;
+  z-index:-1;
 }
+
 #pageContainer .wd-stat-top {
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
-  margin-bottom:18px;
+  margin-bottom:19px;
 }
+
 #pageContainer .wd-stat-label {
-  color:var(--wd-muted);
+  color:rgba(255,255,255,.88) !important;
   font-size:13px;
-  font-weight:650;
+  font-weight:700;
 }
+
 #pageContainer .wd-icon {
-  width:43px;
-  height:43px;
+  width:44px;
+  height:44px;
   border-radius:13px;
   display:grid;
   place-items:center;
-  font-size:20px;
+  font-size:21px;
   flex-shrink:0;
+  background:rgba(255,255,255,.18) !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,.18);
 }
-#pageContainer .wd-green-icon {
-  background:#e6f7ed;
-  color:#138b55;
-}
+
 #pageContainer .wd-stat-value {
+  color:#fff !important;
   font-size:clamp(20px,2.2vw,28px);
   font-weight:850;
-  line-height:1.35;
+  line-height:1.4;
   overflow-wrap:anywhere;
-  color:var(--wd-text);
 }
+
 #pageContainer .wd-stat-note {
-  color:var(--wd-muted);
+  color:rgba(255,255,255,.76) !important;
   font-size:11px;
   margin-top:8px;
 }
+
 #pageContainer .wd-error {
-  color:#dc2626;
+  color:#ffe2e2 !important;
   font-size:11px;
   margin-top:8px;
   display:none;
   overflow-wrap:anywhere;
 }
 
-/* Section */
+/* QUICK ACCESS TITLE */
+
 #pageContainer .wd-section-title {
   font-size:18px;
   font-weight:800;
@@ -162,133 +203,175 @@
   align-items:center;
   gap:9px;
 }
+
 #pageContainer .wd-section-title::before {
   content:"";
   width:4px;
-  height:19px;
+  height:20px;
   border-radius:5px;
-  background:var(--green);
+  background:#0b9956;
 }
 
-/* Quick Access */
+/* QUICK ACCESS GREEN CARDS */
+
 #pageContainer .wd-links {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:14px;
 }
+
 #pageContainer .wd-link {
-  background:var(--wd-card);
-  border:1px solid var(--wd-border);
-  border-radius:14px;
+  background:linear-gradient(135deg,#effaf3,#e1f5e9) !important;
+  border:1px solid #b8e5cb !important;
+  border-radius:15px;
   padding:17px;
   text-align:left;
-  color:var(--wd-text);
+  color:#075c35 !important;
   cursor:pointer;
   display:flex;
   align-items:center;
   gap:13px;
   width:100%;
-  transition:.2s;
+  transition:transform .2s,box-shadow .2s;
 }
+
 #pageContainer .wd-link:hover {
   transform:translateY(-3px);
-  border-color:#80cba0;
-  background:var(--wd-card);
-  box-shadow:0 6px 18px rgba(19,139,85,.08);
+  background:linear-gradient(135deg,#dff5e8,#c9eed8) !important;
+  box-shadow:0 7px 18px rgba(0,120,60,.12);
 }
+
 #pageContainer .wd-link-icon {
   width:44px;
   height:44px;
   display:grid;
   place-items:center;
   border-radius:13px;
-  background:var(--green-light);
-  color:var(--green);
+  background:#0b9956 !important;
+  color:#fff !important;
   font-size:20px;
   flex-shrink:0;
 }
+
 #pageContainer .wd-link strong {
   display:block;
   font-size:13px;
   margin-bottom:4px;
-  font-weight:750;
+  font-weight:800;
+  color:#075c35 !important;
 }
+
 #pageContainer .wd-link small {
-  color:var(--wd-muted);
+  color:#47745b !important;
   font-size:11px;
 }
+
 #pageContainer .wd-arrow {
   margin-left:auto;
-  color:var(--green);
+  color:#078447 !important;
   font-size:21px;
 }
 
-/* Dark theme */
-body.dark #pageContainer .wage-dashboard,
-#pageContainer .wage-dashboard.dark {
-  --green:#25b875;
-  --green-dark:#16945b;
-  --green-light:rgba(37,184,117,.15);
-  --green-soft:rgba(37,184,117,.07);
-  --wd-border:rgba(255,255,255,.09);
-}
-body.dark #pageContainer .wd-stat::after {
-  background:rgba(37,184,117,.06);
-}
-body.dark #pageContainer .wd-green-icon,
-body.dark #pageContainer .wd-link-icon {
-  background:rgba(37,184,117,.15);
-  color:#42d58e;
+/* =====================================
+   INDEX DARK MODE COMPATIBILITY
+===================================== */
+
+body.dark #pageContainer .wd-stat {
+  background:linear-gradient(135deg,#075d38 0%,#06472c 100%) !important;
+  border-color:#147b4c !important;
+  color:#fff !important;
+  box-shadow:0 7px 20px rgba(0,0,0,.24);
 }
 
-/* Responsive */
+body.dark #pageContainer .wd-stat-label,
+body.dark #pageContainer .wd-stat-value,
+body.dark #pageContainer .wd-stat-note,
+body.dark #pageContainer .wd-icon {
+  color:#fff !important;
+}
+
+body.dark #pageContainer .wd-link {
+  background:linear-gradient(135deg,#103f2b,#0c3424) !important;
+  border-color:#1a6240 !important;
+  color:#fff !important;
+}
+
+body.dark #pageContainer .wd-link:hover {
+  background:linear-gradient(135deg,#155438,#10452e) !important;
+}
+
+body.dark #pageContainer .wd-link strong,
+body.dark #pageContainer .wd-link small,
+body.dark #pageContainer .wd-arrow {
+  color:#e3f9ec !important;
+}
+
+body.dark #pageContainer .wd-link-icon {
+  background:#137b4b !important;
+  color:#fff !important;
+}
+
+body.dark #pageContainer .wd-refresh {
+  background:linear-gradient(135deg,#159b5c,#087443);
+}
+
+/* RESPONSIVE */
+
 @media(max-width:1000px) {
   #pageContainer .wd-grid {
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
+
   #pageContainer .wd-links {
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
 @media(max-width:560px) {
-  #pageContainer .wd-top {
-    align-items:flex-start;
-  }
   #pageContainer .wd-heading h2 {
     font-size:21px;
   }
+
+  #pageContainer .wd-grid {
+    gap:10px;
+  }
+
   #pageContainer .wd-stat {
     padding:14px;
-    border-radius:13px;
+    border-radius:14px;
   }
+
   #pageContainer .wd-stat-top {
     margin-bottom:13px;
   }
+
   #pageContainer .wd-icon {
     width:35px;
     height:35px;
     font-size:17px;
-    border-radius:11px;
   }
+
   #pageContainer .wd-stat-label {
     font-size:11px;
   }
+
   #pageContainer .wd-stat-value {
     font-size:19px;
   }
+
   #pageContainer .wd-stat-note {
     font-size:10px;
   }
-  #pageContainer .wd-grid {
-    gap:10px;
-  }
+
   #pageContainer .wd-links {
     grid-template-columns:1fr;
     gap:10px;
   }
+
   #pageContainer .wd-link {
     padding:13px;
   }
+
   #pageContainer .wd-refresh {
     padding:9px 13px;
     font-size:12px;
@@ -296,7 +379,8 @@ body.dark #pageContainer .wd-link-icon {
 }
 </style>
 
-<!-- Dashboard Header -->
+<!-- HEADER -->
+
 <div class="wd-top">
   <div class="wd-heading">
     <h2>Dashboard</h2>
@@ -309,19 +393,21 @@ body.dark #pageContainer .wd-link-icon {
   </button>
 </div>
 
-<!-- API Status -->
+<!-- STATUS -->
+
 <div class="wd-status">
   <span class="wd-dot" id="wdStatusDot"></span>
   <span id="wdStatusText">Loading dashboard data...</span>
 </div>
 
-<!-- Dashboard Cards -->
+<!-- STATS -->
+
 <div class="wd-grid">
 
   <div class="wd-stat" data-dashboard-card>
     <div class="wd-stat-top">
       <span class="wd-stat-label">Total Users</span>
-      <span class="wd-icon wd-green-icon">👥</span>
+      <span class="wd-icon">👥</span>
     </div>
     <div class="wd-stat-value" id="wdTotalUsers">—</div>
     <div class="wd-stat-note">Active user accounts</div>
@@ -331,7 +417,7 @@ body.dark #pageContainer .wd-link-icon {
   <div class="wd-stat" data-dashboard-card>
     <div class="wd-stat-top">
       <span class="wd-stat-label">Total Wage</span>
-      <span class="wd-icon wd-green-icon">💰</span>
+      <span class="wd-icon">💰</span>
     </div>
     <div class="wd-stat-value" id="wdTotalWage">—</div>
     <div class="wd-stat-note">All wage records</div>
@@ -341,7 +427,7 @@ body.dark #pageContainer .wd-link-icon {
   <div class="wd-stat" data-dashboard-card>
     <div class="wd-stat-top">
       <span class="wd-stat-label">Total Payment</span>
-      <span class="wd-icon wd-green-icon">💳</span>
+      <span class="wd-icon">💳</span>
     </div>
     <div class="wd-stat-value" id="wdTotalPayment">—</div>
     <div class="wd-stat-note">All payment records</div>
@@ -351,7 +437,7 @@ body.dark #pageContainer .wd-link-icon {
   <div class="wd-stat" data-dashboard-card>
     <div class="wd-stat-top">
       <span class="wd-stat-label">Remaining Balance</span>
-      <span class="wd-icon wd-green-icon">📊</span>
+      <span class="wd-icon">📊</span>
     </div>
     <div class="wd-stat-value" id="wdRemaining">—</div>
     <div class="wd-stat-note">Total Wage − Total Payment</div>
@@ -359,7 +445,8 @@ body.dark #pageContainer .wd-link-icon {
 
 </div>
 
-<!-- Quick Access -->
+<!-- QUICK ACCESS -->
+
 <h3 class="wd-section-title">Quick Access</h3>
 
 <div class="wd-links">
@@ -425,9 +512,9 @@ body.dark #pageContainer .wd-link-icon {
 (function () {
   "use strict";
 
-  // =========================================
+  // =====================================
   // THREE API URLS
-  // =========================================
+  // =====================================
 
   const API = {
     userAccount:
@@ -443,52 +530,62 @@ body.dark #pageContainer .wd-link-icon {
   const CURRENCY = "৳";
   let loading = false;
 
-  // =========================================
+  // =====================================
   // HELPERS
-  // =========================================
+  // =====================================
 
-  function setText(id, value) {
+  function setText(id,value) {
     const el = document.getElementById(id);
     if (el) el.textContent = value;
   }
 
-  function setError(id, message) {
+  function setError(id,message) {
     const el = document.getElementById(id);
     if (!el) return;
+
     el.textContent = message || "";
     el.style.display = message ? "block" : "none";
   }
 
-  function setStatus(message, type) {
-    setText("wdStatusText", message);
+  function setStatus(message,type) {
+    setText("wdStatusText",message);
+
     const dot = document.getElementById("wdStatusDot");
     if (dot) dot.className = "wd-dot " + (type || "");
   }
 
   function money(value) {
-    return CURRENCY + " " + (Number(value) || 0).toLocaleString("en-BD", {
-      maximumFractionDigits:2
-    });
+    return CURRENCY + " " +
+      (Number(value) || 0).toLocaleString("en-BD",{
+        maximumFractionDigits:2
+      });
   }
 
   function numberValue(value) {
     if (typeof value === "number") return value;
     if (value === null || value === undefined) return 0;
-    return Number(String(value).replace(/[৳,\s]/g,"")) || 0;
+
+    return Number(
+      String(value).replace(/[৳,\s]/g,"")
+    ) || 0;
   }
 
-  function getArray(data, keys) {
+  function getArray(data,keys) {
     if (Array.isArray(data)) return data;
 
     for (const key of keys) {
-      if (data && Array.isArray(data[key])) return data[key];
+      if (data && Array.isArray(data[key])) {
+        return data[key];
+      }
     }
 
     if (data && data.data) {
       if (Array.isArray(data.data)) return data.data;
 
       for (const key of keys) {
-        if (Array.isArray(data.data[key])) return data.data[key];
+        if (Array.isArray(data.data[key])) {
+          return data.data[key];
+        }
       }
     }
 
@@ -497,110 +594,146 @@ body.dark #pageContainer .wd-link-icon {
 
   function getAmount(item) {
     const keys = [
-      "amount","wage","payment","total",
-      "paidAmount","wageAmount","paymentAmount"
+      "amount",
+      "wage",
+      "payment",
+      "total",
+      "paidAmount",
+      "wageAmount",
+      "paymentAmount"
     ];
 
     for (const key of keys) {
-      if (item && item[key] !== undefined && item[key] !== null) {
+      if (item && item[key] !== undefined &&
+          item[key] !== null) {
         return numberValue(item[key]);
       }
     }
+
     return 0;
   }
 
   function sumRecords(records) {
-    return records.reduce((sum,item) => sum + getAmount(item),0);
+    return records.reduce(
+      (sum,item) => sum + getAmount(item),0
+    );
   }
 
-  // =========================================
+  // =====================================
   // API REQUEST
-  // =========================================
+  // =====================================
 
-  function makeUrl(base, action) {
+  function makeUrl(base,action) {
     const url = new URL(base);
     url.searchParams.set("api",action);
     return url.toString();
   }
 
-  async function fetchApi(base, action) {
-    const response = await fetch(makeUrl(base,action), {
-      method:"GET",
-      cache:"no-store",
-      redirect:"follow"
-    });
+  async function fetchApi(base,action) {
+    const response = await fetch(
+      makeUrl(base,action),
+      {
+        method:"GET",
+        cache:"no-store",
+        redirect:"follow"
+      }
+    );
 
     if (!response.ok) {
       throw new Error("HTTP " + response.status);
     }
 
     const raw = await response.text();
+
     let result;
 
     try {
       result = JSON.parse(raw);
-    } catch (e) {
+    } catch (error) {
       throw new Error("Invalid JSON response");
     }
 
     if (result && result.success === false) {
-      throw new Error(result.message || result.error || "API request failed");
+      throw new Error(
+        result.message || result.error || "API request failed"
+      );
     }
 
     return result;
   }
 
-  // =========================================
-  // USER ACCOUNT
-  // =========================================
+  // =====================================
+  // USER ACCOUNT API
+  // =====================================
 
   async function loadUsers() {
     const data = await fetchApi(API.userAccount,"active");
 
     const users = getArray(data,[
-      "users","accounts","activeUsers","records"
+      "users",
+      "accounts",
+      "activeUsers",
+      "records"
     ]);
 
     return users.filter(user => {
-      const status = String(user.status || "active").toLowerCase();
-      return !["inactive","deleted","disabled"].includes(status);
+      const status = String(
+        user.status || "active"
+      ).toLowerCase();
+
+      return ![
+        "inactive",
+        "deleted",
+        "disabled"
+      ].includes(status);
     }).length;
   }
 
-  // =========================================
-  // WAGE HISTORY
-  // =========================================
+  // =====================================
+  // WAGE HISTORY API
+  // =====================================
 
   async function loadWages() {
-    const data = await fetchApi(API.wageHistory,"wages");
+    const data = await fetchApi(
+      API.wageHistory,"wages"
+    );
 
     const wages = getArray(data,[
-      "entries","wages","history","records"
+      "entries",
+      "wages",
+      "history",
+      "records"
     ]);
 
     return sumRecords(wages);
   }
 
-  // =========================================
-  // USER PAYMENT
-  // =========================================
+  // =====================================
+  // USER PAYMENT API
+  // =====================================
 
   async function loadPayments() {
-    const data = await fetchApi(API.userPayment,"payments");
+    const data = await fetchApi(
+      API.userPayment,"payments"
+    );
 
     const payments = getArray(data,[
-      "entries","payments","history","records"
+      "entries",
+      "payments",
+      "history",
+      "records"
     ]);
 
     return sumRecords(payments);
   }
 
-  // =========================================
-  // DASHBOARD REFRESH
-  // =========================================
+  // =====================================
+  // DASHBOARD DATA
+  // =====================================
 
-  window.wdLoadDashboard = async function () {
+  window.wdLoadDashboard = async function() {
     if (loading) return;
+
     loading = true;
 
     const button = document.getElementById("wdRefresh");
@@ -608,8 +741,11 @@ body.dark #pageContainer .wd-link-icon {
 
     setStatus("Connecting to 3 APIs...","");
 
-    ["wdUserError","wdWageError","wdPaymentError"]
-      .forEach(id => setError(id,""));
+    [
+      "wdUserError",
+      "wdWageError",
+      "wdPaymentError"
+    ].forEach(id => setError(id,""));
 
     const results = await Promise.allSettled([
       loadUsers(),
@@ -623,10 +759,17 @@ body.dark #pageContainer .wd-link-icon {
 
     if (results[0].status === "fulfilled") {
       totalUsers = results[0].value;
-      setText("wdTotalUsers",totalUsers.toLocaleString("en-BD"));
+
+      setText(
+        "wdTotalUsers",
+        totalUsers.toLocaleString("en-BD")
+      );
     } else {
       setText("wdTotalUsers","Error");
-      setError("wdUserError",results[0].reason.message);
+      setError(
+        "wdUserError",
+        results[0].reason.message
+      );
     }
 
     if (results[1].status === "fulfilled") {
@@ -634,7 +777,10 @@ body.dark #pageContainer .wd-link-icon {
       setText("wdTotalWage",money(totalWage));
     } else {
       setText("wdTotalWage","Error");
-      setError("wdWageError",results[1].reason.message);
+      setError(
+        "wdWageError",
+        results[1].reason.message
+      );
     }
 
     if (results[2].status === "fulfilled") {
@@ -642,11 +788,17 @@ body.dark #pageContainer .wd-link-icon {
       setText("wdTotalPayment",money(totalPayment));
     } else {
       setText("wdTotalPayment","Error");
-      setError("wdPaymentError",results[2].reason.message);
+      setError(
+        "wdPaymentError",
+        results[2].reason.message
+      );
     }
 
     if (totalWage !== null && totalPayment !== null) {
-      setText("wdRemaining",money(totalWage-totalPayment));
+      setText(
+        "wdRemaining",
+        money(totalWage-totalPayment)
+      );
     } else {
       setText("wdRemaining","—");
     }
@@ -656,20 +808,29 @@ body.dark #pageContainer .wd-link-icon {
     ).length;
 
     if (successCount === 3) {
-      setStatus("All 3 APIs connected successfully","success");
+      setStatus(
+        "All 3 APIs connected successfully",
+        "success"
+      );
     } else if (successCount > 0) {
-      setStatus(successCount+" of 3 APIs connected. Check failed API.","error");
+      setStatus(
+        successCount + " of 3 APIs connected. Check failed API.",
+        "error"
+      );
     } else {
-      setStatus("API connection failed. Check API settings.","error");
+      setStatus(
+        "API connection failed. Check API settings.",
+        "error"
+      );
     }
 
     loading = false;
     if (button) button.disabled = false;
   };
 
-  // =========================================
-  // INDEX.HTML PAGE NAVIGATION
-  // =========================================
+  // =====================================
+  // INDEX PAGE NAVIGATION
+  // =====================================
 
   window.dashboardOpenPage = function(page) {
     if (typeof window.loadPage === "function") {
@@ -679,7 +840,8 @@ body.dark #pageContainer .wd-link-icon {
     }
   };
 
-  // Initial load
+  // INITIAL LOAD
+
   window.wdLoadDashboard();
 
 })();
