@@ -11,15 +11,14 @@
   --primary:#087f5b;
   --primary-light:#e8f7ef;
   --bg:#f5f7fb;
-  --card:#ffffff;
-  --sidebar:#ffffff;
+  --card:#fff;
+  --sidebar:#fff;
   --text:#172033;
   --muted:#8490a3;
   --border:#e8edf3;
   --hover:#f1f8f5;
   --shadow:0 3px 15px rgba(20,35,60,.045);
 }
-
 body.dark{
   --bg:#101722;
   --card:#192432;
@@ -31,13 +30,7 @@ body.dark{
   --primary-light:#17392e;
   --shadow:0 3px 15px rgba(0,0,0,.15);
 }
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Inter,Arial,sans-serif;
   background:var(--bg);
@@ -45,444 +38,226 @@ body{
   overflow-x:hidden;
   transition:background .2s,color .2s;
 }
-
-button{
-  font-family:inherit;
-}
-
-.app{
-  min-height:100vh;
-}
+button{font-family:inherit}
+.app{min-height:100vh}
 
 /* SIDEBAR */
-
 .sidebar{
-  width:255px;
-  height:100vh;
-  position:fixed;
-  top:0;
-  left:0;
-  background:var(--sidebar);
-  border-right:1px solid var(--border);
-  z-index:1000;
-  display:flex;
-  flex-direction:column;
+  width:255px;height:100vh;position:fixed;top:0;left:0;
+  background:var(--sidebar);border-right:1px solid var(--border);
+  z-index:1000;display:flex;flex-direction:column;
   transition:transform .25s,background .2s;
 }
-
 .brand{
-  height:76px;
-  padding:0 22px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  border-bottom:1px solid var(--border);
+  height:76px;padding:0 22px;display:flex;align-items:center;
+  gap:12px;border-bottom:1px solid var(--border);
 }
-
 .brand-logo{
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  background:var(--primary);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:17px;
+  width:39px;height:39px;border-radius:12px;
+  background:var(--primary);color:white;display:flex;
+  align-items:center;justify-content:center;font-weight:900;font-size:17px;
 }
-
-.brand-name{
-  font-size:17px;
-  font-weight:800;
-  letter-spacing:-.4px;
-}
-
-.brand-sub{
-  font-size:10px;
-  color:var(--muted);
-  margin-top:3px;
-  letter-spacing:1px;
-}
-
-.sidebar-content{
-  flex:1;
-  overflow-y:auto;
-  padding:20px 13px;
-}
-
+.brand-name{font-size:17px;font-weight:800;letter-spacing:-.4px}
+.brand-sub{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:1px}
+.sidebar-content{flex:1;overflow-y:auto;padding:20px 13px}
 .nav-label{
-  font-size:10px;
-  color:var(--muted);
-  font-weight:800;
-  letter-spacing:1.2px;
-  padding:12px 12px 9px;
+  font-size:10px;color:var(--muted);font-weight:800;
+  letter-spacing:1.2px;padding:12px 12px 9px;
 }
-
 .nav-item{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 13px;
-  border:0;
-  border-radius:9px;
-  background:transparent;
-  color:var(--muted);
-  font-size:13px;
-  font-weight:600;
-  text-align:left;
-  cursor:pointer;
-  margin-bottom:4px;
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:12px 13px;border:0;border-radius:9px;
+  background:transparent;color:var(--muted);font-size:13px;
+  font-weight:600;text-align:left;cursor:pointer;margin-bottom:4px;
   transition:.2s;
 }
-
-.nav-item:hover{
-  background:var(--hover);
-  color:var(--primary);
-}
-
-.nav-item.active{
-  background:var(--primary-light);
-  color:var(--primary);
-  font-weight:800;
-}
-
-.nav-icon{
-  width:20px;
-  text-align:center;
-  font-size:17px;
-}
-
-.sidebar-bottom{
-  border-top:1px solid var(--border);
-  padding:15px;
-}
-
-.sidebar-user{
-  display:flex;
-  align-items:center;
-  gap:11px;
-}
-
+.nav-item:hover{background:var(--hover);color:var(--primary)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:800}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-bottom{border-top:1px solid var(--border);padding:15px}
+.sidebar-user{display:flex;align-items:center;gap:11px}
 .sidebar-avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:var(--primary-light);
-  color:var(--primary);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--primary-light);color:var(--primary);
+  display:flex;align-items:center;justify-content:center;font-weight:800;
 }
+.sidebar-user-name{font-size:12px;font-weight:800}
+.sidebar-user-role{color:var(--muted);font-size:10px;margin-top:3px}
 
-.sidebar-user-name{
-  font-size:12px;
-  font-weight:800;
-}
-
-.sidebar-user-role{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px;
-}
-
-/* MAIN AREA */
-
-.main{
-  margin-left:255px;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-/* HEADER */
-
+/* MAIN */
+.main{margin-left:255px;min-height:100vh;display:flex;flex-direction:column}
 .topbar{
-  height:76px;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  padding:0 28px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:500;
+  height:76px;background:var(--card);border-bottom:1px solid var(--border);
+  padding:0 28px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:500;
 }
-
-.topbar-left{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.page-heading{
-  font-size:18px;
-  font-weight:800;
-}
-
-.page-breadcrumb{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.topbar-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
+.topbar-left{display:flex;align-items:center;gap:14px}
+.page-heading{font-size:18px;font-weight:800}
+.page-breadcrumb{font-size:11px;color:var(--muted);margin-top:4px}
+.topbar-right{display:flex;align-items:center;gap:10px}
 .icon-btn{
-  width:39px;
-  height:39px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  cursor:pointer;
-  font-size:17px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:39px;height:39px;border-radius:10px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;
 }
-
-.icon-btn:hover{
-  background:var(--hover);
-  color:var(--primary);
+.icon-btn:hover{background:var(--hover);color:var(--primary)}
+.menu-toggle{display:none}
+.logout-top{
+  padding:10px 14px;border:1px solid var(--border);
+  background:var(--card);color:#dc2626;border-radius:9px;
+  cursor:pointer;font-weight:700;font-size:12px;
 }
-
-.menu-toggle{
-  display:none;
-}
-
-/* CONTENT */
-
-.content{
-  padding:27px;
-  flex:1;
-  min-width:0;
-}
-
-#pageContainer{
-  width:100%;
-  min-height:300px;
-}
-
+.content{padding:27px;flex:1;min-width:0}
+#pageContainer{width:100%;min-height:300px}
 .loading-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:50px 20px;
-  text-align:center;
-  color:var(--muted);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:50px 20px;text-align:center;color:var(--muted);
 }
-
 .loading-spinner{
-  width:30px;
-  height:30px;
-  border:3px solid var(--border);
-  border-top-color:var(--primary);
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  margin:0 auto 15px;
+  width:30px;height:30px;border:3px solid var(--border);
+  border-top-color:var(--primary);border-radius:50%;
+  animation:spin .7s linear infinite;margin:0 auto 15px;
 }
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
+@keyframes spin{to{transform:rotate(360deg)}}
 .error-box{
-  background:var(--card);
-  border:1px solid #f3b9b9;
-  border-radius:14px;
-  padding:25px;
-  text-align:center;
-  color:var(--text);
+  background:var(--card);border:1px solid #f3b9b9;
+  border-radius:14px;padding:25px;text-align:center;color:var(--text);
 }
-
-.error-box h3{
-  margin-bottom:9px;
-  color:#d64545;
-}
-
-.error-box p{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:16px;
-}
-
+.error-box h3{margin-bottom:9px;color:#d64545}
+.error-box p{font-size:13px;color:var(--muted);margin-bottom:16px}
 .error-box button{
-  padding:10px 18px;
-  border:0;
-  background:var(--primary);
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
+  padding:10px 18px;border:0;background:var(--primary);
+  color:white;border-radius:8px;cursor:pointer;font-weight:700;
 }
 
-/* CARD HIDE CONTROLS */
-
+/* CARD HIDE */
 .card-hide-toolbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px;
-  padding:13px 16px;
-  margin-bottom:18px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:12px;
-  color:var(--text);
-  font-size:13px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;padding:13px 16px;margin-bottom:18px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;color:var(--text);font-size:13px;
 }
-
 .card-hide-toolbar button{
-  padding:9px 15px;
-  background:var(--primary);
-  color:#fff;
-  border:0;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
+  padding:9px 15px;background:var(--primary);color:#fff;
+  border:0;border-radius:8px;cursor:pointer;font-weight:700;
 }
-
 .card-hide-control{
-  display:none;
-  position:absolute;
-  top:9px;
-  right:9px;
-  z-index:20;
-  padding:7px 11px;
-  border:0;
-  border-radius:7px;
-  background:#dc2626;
-  color:#fff;
-  font-size:11px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  display:none;position:absolute;top:9px;right:9px;z-index:20;
+  padding:7px 11px;border:0;border-radius:7px;
+  background:#dc2626;color:#fff;font-size:11px;font-weight:700;
+  cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
-
-.card-hide-control.is-hidden{
-  background:#087f5b;
-}
-
-.card-hide-target{
-  position:relative !important;
-}
-
-body.card-hide-mode .card-hide-control{
-  display:block;
-}
-
-body.card-hide-mode .card-hide-target{
-  outline:2px dashed var(--primary);
-  outline-offset:3px;
-}
-
-body.card-hide-mode .card-hide-target.is-card-hidden{
-  opacity:.65;
-  outline-color:#dc2626;
-}
-
-body:not(.card-hide-mode) .is-card-hidden{
-  display:none !important;
-}
-
-/* FOOTER */
+.card-hide-control.is-hidden{background:#087f5b}
+.card-hide-target{position:relative!important}
+body.card-hide-mode .card-hide-control{display:block}
+body.card-hide-mode .card-hide-target{outline:2px dashed var(--primary);outline-offset:3px}
+body.card-hide-mode .card-hide-target.is-card-hidden{opacity:.65;outline-color:#dc2626}
+body:not(.card-hide-mode) .is-card-hidden{display:none!important}
 
 .footer{
-  padding:15px 27px;
-  border-top:1px solid var(--border);
-  font-size:11px;
-  color:var(--muted);
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
+  padding:15px 27px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--muted);display:flex;
+  justify-content:space-between;gap:10px;
 }
-
-/* MOBILE OVERLAY */
-
 .mobile-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  z-index:900;
-  display:none;
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:900;display:none;
 }
+.mobile-overlay.show{display:block}
 
-.mobile-overlay.show{
-  display:block;
+/* LOGIN SCREEN */
+#loginScreen{
+  position:fixed;inset:0;z-index:99999;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:var(--bg);
 }
+.login-card{
+  width:100%;max-width:410px;background:var(--card);
+  border:1px solid var(--border);border-radius:20px;
+  padding:32px;box-shadow:var(--shadow);
+}
+.login-logo{
+  width:58px;height:58px;border-radius:17px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--primary);color:white;font-size:25px;
+  font-weight:900;margin:0 auto 17px;
+}
+.login-title{text-align:center;font-size:23px;font-weight:900}
+.login-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 27px}
+.login-label{display:block;font-size:12px;font-weight:800;margin:15px 0 7px}
+.login-input{
+  width:100%;height:46px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);border-radius:9px;
+  padding:0 13px;font-size:14px;outline:none;
+}
+.login-input:focus{border-color:var(--primary)}
+.login-button{
+  width:100%;height:47px;margin-top:22px;
+  background:var(--primary);color:#fff;border:0;
+  border-radius:9px;font-weight:800;font-size:14px;cursor:pointer;
+}
+.login-button:disabled{opacity:.6;cursor:not-allowed}
+.login-message{
+  display:none;padding:11px;border-radius:8px;
+  font-size:12px;margin-top:14px;text-align:center;
+}
+.login-message.error{display:block;background:#fee2e2;color:#b91c1c}
+.login-message.success{display:block;background:#dcfce7;color:#166534}
+.login-footer{text-align:center;font-size:10px;color:var(--muted);margin-top:20px}
 
 /* RESPONSIVE */
-
 @media(max-width:900px){
-
-  .sidebar{
-    transform:translateX(-100%);
-  }
-
-  .sidebar.open{
-    transform:translateX(0);
-  }
-
-  .main{
-    margin-left:0;
-  }
-
-  .menu-toggle{
-    display:flex;
-  }
-
-  .content{
-    padding:20px;
-  }
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .menu-toggle{display:flex}
+  .content{padding:20px}
 }
-
 @media(max-width:600px){
-
-  .topbar{
-    height:65px;
-    padding:0 14px;
-  }
-
-  .page-heading{
-    font-size:16px;
-  }
-
-  .content{
-    padding:14px;
-  }
-
-  .footer{
-    padding:13px;
-    font-size:10px;
-  }
-
-  .brand{
-    height:68px;
-  }
+  .topbar{height:65px;padding:0 14px}
+  .page-heading{font-size:16px}
+  .content{padding:14px}
+  .footer{padding:13px;font-size:10px}
+  .brand{height:68px}
+  .login-card{padding:25px 20px}
+  .logout-top{padding:9px 10px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">W</div>
+    <div class="login-title">Admin Login</div>
+    <div class="login-sub">WAGE MANAGEMENT SYSTEM</div>
 
-  <!-- SIDEBAR -->
+    <form id="loginForm">
+      <label class="login-label" for="loginEmail">Admin Email</label>
+      <input class="login-input" id="loginEmail" type="email"
+        placeholder="Enter admin email" autocomplete="username" required>
+
+      <label class="login-label" for="loginPassword">Password</label>
+      <input class="login-input" id="loginPassword" type="password"
+        placeholder="Enter password" autocomplete="current-password" required>
+
+      <button class="login-button" id="loginButton" type="submit">
+        Login to Dashboard
+      </button>
+      <div class="login-message" id="loginMessage"></div>
+    </form>
+
+    <div class="login-footer">Secure Administrator Access</div>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
 
   <aside class="sidebar" id="sidebar">
-
     <div class="brand">
       <div class="brand-logo">W</div>
-
       <div>
         <div class="brand-name">WAGE MANAGER</div>
         <div class="brand-sub">MANAGEMENT SYSTEM</div>
@@ -490,140 +265,60 @@ body:not(.card-hide-mode) .is-card-hidden{
     </div>
 
     <div class="sidebar-content">
-
       <div class="nav-label">MAIN MENU</div>
-
       <button class="nav-item active" data-page="dashboard">
-        <span class="nav-icon">▦</span>
-        Dashboard
+        <span class="nav-icon">▦</span>Dashboard
       </button>
 
       <div class="nav-label">USER MANAGEMENT</div>
-
-      <button class="nav-item" data-page="add-user">
-        <span class="nav-icon">＋</span>
-        Add User
-      </button>
-
-      <button class="nav-item" data-page="user-list">
-        <span class="nav-icon">♙</span>
-        User List
-      </button>
-
-      <button class="nav-item" data-page="deleted-user">
-        <span class="nav-icon">▤</span>
-        Deleted Users
-      </button>
+      <button class="nav-item" data-page="add-user"><span class="nav-icon">＋</span>Add User</button>
+      <button class="nav-item" data-page="user-list"><span class="nav-icon">♙</span>User List</button>
+      <button class="nav-item" data-page="deleted-user"><span class="nav-icon">▤</span>Deleted Users</button>
 
       <div class="nav-label">WAGE MANAGEMENT</div>
-
-      <button class="nav-item" data-page="add-wage">
-        <span class="nav-icon">＋</span>
-        Add Wage
-      </button>
-
-      <button class="nav-item" data-page="wage-history">
-        <span class="nav-icon">◷</span>
-        Wage History
-      </button>
-
-      <!-- NEW: WAGE DELETE HISTORY -->
-
-      <button class="nav-item" data-page="deleted-wage">
-        <span class="nav-icon">🗑️</span>
-        Wage Delete History
-      </button>
+      <button class="nav-item" data-page="add-wage"><span class="nav-icon">＋</span>Add Wage</button>
+      <button class="nav-item" data-page="wage-history"><span class="nav-icon">◷</span>Wage History</button>
+      <button class="nav-item" data-page="deleted-wage"><span class="nav-icon">🗑️</span>Wage Delete History</button>
 
       <div class="nav-label">PAYMENT MANAGEMENT</div>
-
-      <button class="nav-item" data-page="payment">
-        <span class="nav-icon">৳</span>
-        User Payment
-      </button>
-
-      <button class="nav-item" data-page="payment-history">
-        <span class="nav-icon">▤</span>
-        Payment History
-      </button>
-
-      <button class="nav-item" data-page="delete-payment">
-        <span class="nav-icon">▤</span>
-        Delet Payment History
-      </button>
-      <!-- SETTINGS -->
+      <button class="nav-item" data-page="payment"><span class="nav-icon">৳</span>User Payment</button>
+      <button class="nav-item" data-page="payment-history"><span class="nav-icon">▤</span>Payment History</button>
+      <button class="nav-item" data-page="delete-payment"><span class="nav-icon">▤</span>Delet Payment History</button>
 
       <div class="nav-label">SETTINGS</div>
-
-      <button class="nav-item" data-page="currency">
-        <span class="nav-icon">💱</span>
-        Add Currency
-      </button>
-
-      <button class="nav-item" data-page="payment-method">
-        <span class="nav-icon">💳</span>
-        Add Payment Method
-      </button>
-
-      <!-- NEW: CARD HIDE OPTION -->
-
+      <button class="nav-item" data-page="currency"><span class="nav-icon">💱</span>Add Currency</button>
+      <button class="nav-item" data-page="payment-method"><span class="nav-icon">💳</span>Add Payment Method</button>
       <button class="nav-item" id="cardHideMenuButton" data-action="card-hide">
-        <span class="nav-icon">▣</span>
-        Card Hide / Show
+        <span class="nav-icon">▣</span><span class="card-hide-label">Card Hide / Show</span>
       </button>
-
     </div>
 
     <div class="sidebar-bottom">
       <div class="sidebar-user">
-
         <div class="sidebar-avatar">W</div>
-
         <div>
-          <div class="sidebar-user-name">Administrator</div>
-          <div class="sidebar-user-role">System Admin</div>
+          <div class="sidebar-user-name" id="sidebarAdminName">Administrator</div>
+          <div class="sidebar-user-role" id="sidebarAdminRole">System Admin</div>
         </div>
-
       </div>
     </div>
-
   </aside>
 
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <!-- MAIN SECTION -->
-
   <main class="main">
-
     <header class="topbar">
-
       <div class="topbar-left">
-
-        <button class="icon-btn menu-toggle"
-          id="menuToggle"
-          aria-label="Open menu">
-          ☰
-        </button>
-
+        <button class="icon-btn menu-toggle" id="menuToggle">☰</button>
         <div>
-          <div class="page-heading" id="pageTitle">
-            Dashboard
-          </div>
-
-          <div class="page-breadcrumb" id="pageBreadcrumb">
-            Home / Dashboard
-          </div>
+          <div class="page-heading" id="pageTitle">Dashboard</div>
+          <div class="page-breadcrumb" id="pageBreadcrumb">Home / Dashboard</div>
         </div>
-
       </div>
-
       <div class="topbar-right">
-        <button class="icon-btn"
-          id="themeToggle"
-          title="Change Theme">
-          ☾
-        </button>
+        <button class="icon-btn" id="themeToggle" title="Change Theme">☾</button>
+        <button class="logout-top" id="logoutButton">Logout ↗</button>
       </div>
-
     </header>
 
     <section class="content">
@@ -639,95 +334,300 @@ body:not(.card-hide-mode) .is-card-hidden{
       <span>Wage Management System</span>
       <span>© 2026 All Rights Reserved</span>
     </footer>
-
   </main>
-
 </div>
 
 <script>
+/* =====================================
+   AUTH CONFIGURATION
+===================================== */
+
+const AUTH_API_URL =
+"https://script.google.com/macros/s/AKfycbw5QMutQWocx1jg3qT6dmKKxh5GXYw6HeClidJ8_swh-z_iklKMVZ-UMGYuxLrGsFi6/exec";
+
+const AUTH_TOKEN_KEY = "wage_admin_auth_token";
+const AUTH_ADMIN_KEY = "wage_admin_profile";
+
+/* 10 minutes idle timeout */
+const IDLE_TIMEOUT = 10 * 60 * 1000;
+
+let idleTimer = null;
+let authToken = "";
+let currentAdmin = null;
+let isAuthenticated = false;
+let isLoggingOut = false;
+
+/* =====================================
+   AUTH API REQUEST
+===================================== */
+
+async function authRequest(payload){
+  const response = await fetch(AUTH_API_URL,{
+    method:"POST",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
+    },
+    body:JSON.stringify(payload),
+    cache:"no-store"
+  });
+
+  if(!response.ok){
+    throw new Error("Authentication server error: "+response.status);
+  }
+
+  return await response.json();
+}
+
+function getApiData(result){
+  return result && result.data ? result.data : result;
+}
+
+function apiSuccess(result){
+  return !!(
+    result &&
+    (result.success === true || result.ok === true)
+  );
+}
+
+function showLoginMessage(message,type){
+  const box = document.getElementById("loginMessage");
+  box.textContent = message;
+  box.className = "login-message "+type;
+}
+
+function showLogin(){
+  document.getElementById("app").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  document.getElementById("loginEmail").focus();
+}
+
+function showApplication(){
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+
+  if(currentAdmin){
+    document.getElementById("sidebarAdminName").textContent =
+      currentAdmin.name || currentAdmin.email || "Administrator";
+
+    document.getElementById("sidebarAdminRole").textContent =
+      currentAdmin.role || "System Admin";
+  }
+}
+
+/* =====================================
+   LOGIN
+===================================== */
+
+document.getElementById("loginForm").addEventListener("submit",async function(event){
+  event.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const button = document.getElementById("loginButton");
+
+  button.disabled = true;
+  button.textContent = "Checking...";
+  showLoginMessage("Verifying administrator account...","success");
+
+  try{
+    const result = await authRequest({
+      action:"login",
+      email:email,
+      password:password
+    });
+
+    if(!apiSuccess(result)){
+      throw new Error(result.message || result.error || "Invalid email or password.");
+    }
+
+    const data = getApiData(result);
+    const token = data.token || data.sessionToken || result.token;
+
+    if(!token){
+      throw new Error("Login response did not contain a session token.");
+    }
+
+    authToken = token;
+    currentAdmin = data.admin || data.user || {
+      email:email,
+      name:"Administrator",
+      role:"System Admin"
+    };
+
+    sessionStorage.setItem(AUTH_TOKEN_KEY,authToken);
+    sessionStorage.setItem(AUTH_ADMIN_KEY,JSON.stringify(currentAdmin));
+
+    isAuthenticated = true;
+    showApplication();
+    startIdleTimer();
+
+    const page = getPageFromHash();
+    loadPage(page,false);
+
+  }catch(error){
+    console.error("Login error:",error);
+    showLoginMessage(error.message || "Login failed. Please try again.","error");
+  }finally{
+    button.disabled = false;
+    button.textContent = "Login to Dashboard";
+  }
+});
+
+/* =====================================
+   VERIFY SESSION
+===================================== */
+
+async function verifyExistingSession(){
+  const savedToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
+
+  if(!savedToken){
+    showLogin();
+    return;
+  }
+
+  try{
+    authToken = savedToken;
+
+    const result = await authRequest({
+      action:"verify",
+      token:authToken
+    });
+
+    if(!apiSuccess(result)){
+      throw new Error("Session expired.");
+    }
+
+    const data = getApiData(result);
+
+    currentAdmin =
+      data.admin ||
+      data.user ||
+      JSON.parse(sessionStorage.getItem(AUTH_ADMIN_KEY) || "null") ||
+      {name:"Administrator",role:"System Admin"};
+
+    isAuthenticated = true;
+    showApplication();
+    startIdleTimer();
+
+    loadPage(getPageFromHash(),false);
+
+  }catch(error){
+    console.warn("Session verification failed:",error);
+    clearLocalSession();
+    showLogin();
+  }
+}
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+function clearLocalSession(){
+  isAuthenticated = false;
+  authToken = "";
+  currentAdmin = null;
+  clearTimeout(idleTimer);
+
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  sessionStorage.removeItem(AUTH_ADMIN_KEY);
+}
+
+async function logout(reason){
+  if(isLoggingOut) return;
+
+  isLoggingOut = true;
+  const token = authToken;
+
+  clearLocalSession();
+
+  try{
+    if(token){
+      await authRequest({
+        action:"logout",
+        token:token
+      });
+    }
+  }catch(error){
+    console.warn("Server logout request failed:",error);
+  }
+
+  /* Remove protected page from view */
+  document.getElementById("app").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+
+  document.getElementById("loginPassword").value = "";
+
+  if(reason === "idle"){
+    showLoginMessage("You were logged out after 10 minutes of inactivity.","error");
+  }else if(reason === "manual"){
+    showLoginMessage("You have successfully logged out.","success");
+  }
+
+  isLoggingOut = false;
+}
+
+document.getElementById("logoutButton").addEventListener("click",function(){
+  logout("manual");
+});
+
+/* =====================================
+   10 MINUTES AUTO LOGOUT
+===================================== */
+
+function resetIdleTimer(){
+  if(!isAuthenticated) return;
+
+  clearTimeout(idleTimer);
+
+  idleTimer = setTimeout(function(){
+    logout("idle");
+  },IDLE_TIMEOUT);
+}
+
+function startIdleTimer(){
+  clearTimeout(idleTimer);
+  resetIdleTimer();
+}
+
+/* User activity events */
+[
+  "mousemove",
+  "mousedown",
+  "keydown",
+  "scroll",
+  "touchstart",
+  "click"
+].forEach(function(eventName){
+  document.addEventListener(eventName,function(){
+    resetIdleTimer();
+  },{passive:true});
+});
+
+/* Tab becomes active again: verify server session */
+document.addEventListener("visibilitychange",function(){
+  if(document.visibilityState === "visible" && isAuthenticated){
+    resetIdleTimer();
+  }
+});
 
 /* =====================================
    PAGE CONFIGURATION
 ===================================== */
 
 const PAGE_CONFIG = {
-
-  "dashboard":{
-    file:"dashboard.html",
-    title:"Dashboard",
-    section:"Main Menu"
-  },
-
-  "add-user":{
-    file:"add-user.html",
-    title:"Add User",
-    section:"User Management"
-  },
-
-  "user-list":{
-    file:"user-list.html",
-    title:"User List",
-    section:"User Management"
-  },
-
-  "deleted-user":{
-    file:"deleted-user.html",
-    title:"Deleted Users",
-    section:"User Management"
-  },
-
-  "add-wage":{
-    file:"add-wage.html",
-    title:"Add Wage",
-    section:"Wage Management"
-  },
-
-  "wage-history":{
-    file:"wage-history.html",
-    title:"Wage History",
-    section:"Wage Management"
-  },
-
-  /* NEW PAGE CONFIGURATION */
-
-  "deleted-wage":{
-    file:"deleted-wage.html",
-    title:"Wage Delete History",
-    section:"Wage Management"
-  },
-
-  "payment":{
-    file:"payment.html",
-    title:"User Payment",
-    section:"Payment Management"
-  },
-
-  "payment-history":{
-    file:"payment-history.html",
-    title:"Payment History",
-    section:"Payment Management"
-  },
-
-    "delete-payment":{
-    file:"delete-payment.html",
-    title:"delete-payment",
-    section:"Payment Management"
-  },
-  
-  "currency":{
-    file:"currency.html",
-    title:"Add Currency",
-    section:"Settings"
-  },
-
-  "payment-method":{
-    file:"payment-method.html",
-    title:"Add Payment Method",
-    section:"Settings"
-  }
-
+  "dashboard":{file:"dashboard.html",title:"Dashboard",section:"Main Menu"},
+  "add-user":{file:"add-user.html",title:"Add User",section:"User Management"},
+  "user-list":{file:"user-list.html",title:"User List",section:"User Management"},
+  "deleted-user":{file:"deleted-user.html",title:"Deleted Users",section:"User Management"},
+  "add-wage":{file:"add-wage.html",title:"Add Wage",section:"Wage Management"},
+  "wage-history":{file:"wage-history.html",title:"Wage History",section:"Wage Management"},
+  "deleted-wage":{file:"deleted-wage.html",title:"Wage Delete History",section:"Wage Management"},
+  "payment":{file:"payment.html",title:"User Payment",section:"Payment Management"},
+  "payment-history":{file:"payment-history.html",title:"Payment History",section:"Payment Management"},
+  "delete-payment":{file:"delete-payment.html",title:"Delete Payment History",section:"Payment Management"},
+  "currency":{file:"currency.html",title:"Add Currency",section:"Settings"},
+  "payment-method":{file:"payment-method.html",title:"Add Payment Method",section:"Settings"}
 };
-
 
 /* =====================================
    ELEMENTS
@@ -739,40 +639,23 @@ const pageContainer = document.getElementById("pageContainer");
 const pageTitle = document.getElementById("pageTitle");
 const pageBreadcrumb = document.getElementById("pageBreadcrumb");
 
-
 /* =====================================
    THEME SYSTEM
 ===================================== */
 
 function applyTheme(theme){
-
-  document.body.classList.toggle(
-    "dark",
-    theme === "dark"
-  );
-
+  document.body.classList.toggle("dark",theme === "dark");
   document.getElementById("themeToggle").textContent =
     theme === "dark" ? "☀" : "☾";
-
   localStorage.setItem("wage_theme",theme);
-
 }
 
-const savedTheme =
-  localStorage.getItem("wage_theme") || "light";
+applyTheme(localStorage.getItem("wage_theme") || "light");
 
-applyTheme(savedTheme);
-
-document.getElementById("themeToggle")
-.addEventListener("click",function(){
-
-  const isDark =
-    document.body.classList.contains("dark");
-
+document.getElementById("themeToggle").addEventListener("click",function(){
+  const isDark = document.body.classList.contains("dark");
   applyTheme(isDark ? "light" : "dark");
-
 });
-
 
 /* =====================================
    MOBILE SIDEBAR
@@ -782,112 +665,65 @@ function openSidebar(){
   sidebar.classList.add("open");
   overlay.classList.add("show");
 }
-
 function closeSidebar(){
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
 }
-
-document.getElementById("menuToggle")
-.addEventListener("click",openSidebar);
-
+document.getElementById("menuToggle").addEventListener("click",openSidebar);
 overlay.addEventListener("click",closeSidebar);
-
 
 /* =====================================
    PAGE ROUTING
 ===================================== */
 
 function getPageFromHash(){
-
   let page = location.hash.replace("#","");
-
   if(!page) return "dashboard";
-
   page = decodeURIComponent(page);
-
-  if(!PAGE_CONFIG[page]){
-    return "dashboard";
-  }
-
-  return page;
+  return PAGE_CONFIG[page] ? page : "dashboard";
 }
-
-
-/* =====================================
-   ACTIVE MENU
-===================================== */
 
 function updateActiveMenu(page){
-
-  document.querySelectorAll(".nav-item[data-page]")
-  .forEach(item=>{
-
-    item.classList.toggle(
-      "active",
-      item.dataset.page === page
-    );
-
+  document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
+    item.classList.toggle("active",item.dataset.page === page);
   });
-
 }
-
-
-/* =====================================
-   HEADER TITLE
-===================================== */
 
 function updatePageHeader(page){
-
   const config = PAGE_CONFIG[page];
-
   pageTitle.textContent = config.title;
-
-  pageBreadcrumb.textContent =
-    "Home / " +
-    config.section +
-    " / " +
-    config.title;
-
+  pageBreadcrumb.textContent = "Home / "+config.section+" / "+config.title;
 }
-
 
 /* =====================================
    CHILD CSS SCOPING
 ===================================== */
 
-function scopeChildCSS(css, scope){
-
+function scopeChildCSS(css,scope){
   css = css.replace(/\/\*[\s\S]*?\*\//g,"");
 
   function processRules(source){
-
     let output = "";
     let position = 0;
 
     while(position < source.length){
-
       const open = source.indexOf("{",position);
-
       if(open === -1){
         output += source.slice(position);
         break;
       }
 
       const selector = source.slice(position,open).trim();
-
       let depth = 1;
-      let close = open + 1;
+      let close = open+1;
 
       while(close < source.length && depth > 0){
-
         if(source[close] === "{") depth++;
         if(source[close] === "}") depth--;
-
         close++;
       }
 
-      const body = source.slice(open + 1,close - 1);
+      const body = source.slice(open+1,close-1);
 
       if(
         selector.startsWith("@media") ||
@@ -895,157 +731,88 @@ function scopeChildCSS(css, scope){
         selector.startsWith("@container") ||
         selector.startsWith("@layer")
       ){
-
-        output += selector + "{" +
-          processRules(body) +
-          "}";
-
+        output += selector+"{"+processRules(body)+"}";
       }else if(
         selector.startsWith("@keyframes") ||
         selector.startsWith("@-webkit-keyframes")
       ){
-
-        output += selector + "{" + body + "}";
-
+        output += selector+"{"+body+"}";
       }else if(selector.startsWith("@")){
-
-        output += selector + "{" + body + "}";
-
+        output += selector+"{"+body+"}";
       }else{
+        const scopedSelectors = selector.split(",").map(part=>{
+          let s = part.trim();
+          if(!s) return "";
 
-        const scopedSelectors = selector
-          .split(",")
-          .map(part=>{
+          s = s.replace(
+            /^(html|body|:root)(?=$|[\s.#:[>+~])/,
+            scope
+          );
 
-            let s = part.trim();
+          if(s === "*") return scope+" *";
+          if(s.startsWith(scope)) return s;
+          return scope+" "+s;
+        }).join(",");
 
-            if(!s) return "";
-
-            s = s.replace(
-              /^(html|body|:root)(?=$|[\s.#:[>+~])/,
-              scope
-            );
-
-            if(s === "*"){
-              return scope + " *";
-            }
-
-            if(s.startsWith(scope)){
-              return s;
-            }
-
-            return scope + " " + s;
-
-          })
-          .join(",");
-
-        output += scopedSelectors + "{" + body + "}";
-
+        output += scopedSelectors+"{"+body+"}";
       }
 
       position = close;
     }
-
     return output;
   }
 
   return processRules(css);
 }
 
-
-/* =====================================
-   CLEAR OLD CHILD CSS
-===================================== */
-
 function clearPageStyles(){
-
-  document.querySelectorAll(
-    "[data-child-page-style]"
-  ).forEach(style=>{
+  document.querySelectorAll("[data-child-page-style]").forEach(style=>{
     style.remove();
   });
-
 }
 
-
-/* =====================================
-   LOAD CHILD CSS
-===================================== */
-
 async function loadPageStyles(doc,pageFile){
-
   clearPageStyles();
 
   const stylePromises = [];
 
   doc.head.querySelectorAll("style").forEach(oldStyle=>{
-
     const newStyle = document.createElement("style");
-
-    newStyle.setAttribute(
-      "data-child-page-style",
-      pageFile
-    );
-
-    newStyle.textContent = scopeChildCSS(
-      oldStyle.textContent,
-      "#pageContainer"
-    );
-
+    newStyle.setAttribute("data-child-page-style",pageFile);
+    newStyle.textContent = scopeChildCSS(oldStyle.textContent,"#pageContainer");
     document.head.appendChild(newStyle);
-
   });
 
-  doc.head.querySelectorAll(
-    'link[rel="stylesheet"]'
-  ).forEach(oldLink=>{
-
+  doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(oldLink=>{
     const newLink = document.createElement("link");
-
     newLink.rel = "stylesheet";
-
     newLink.href = new URL(
       oldLink.getAttribute("href"),
-      new URL("./" + pageFile,location.href)
+      new URL("./"+pageFile,location.href)
     ).href;
 
-    newLink.setAttribute(
-      "data-child-page-style",
-      pageFile
-    );
+    newLink.setAttribute("data-child-page-style",pageFile);
 
     const promise = new Promise((resolve,reject)=>{
-
       newLink.onload = resolve;
-
-      newLink.onerror = ()=>{
-        reject(new Error("CSS could not load: " + newLink.href));
-      };
-
+      newLink.onerror = ()=>reject(new Error("CSS could not load: "+newLink.href));
     });
 
     document.head.appendChild(newLink);
-
     stylePromises.push(promise);
-
   });
 
   await Promise.all(stylePromises);
 }
-
 
 /* =====================================
    EXECUTE CHILD PAGE SCRIPTS
 ===================================== */
 
 async function executePageScripts(container){
-
-  const scripts = Array.from(
-    container.querySelectorAll("script")
-  );
+  const scripts = Array.from(container.querySelectorAll("script"));
 
   for(const oldScript of scripts){
-
     const newScript = document.createElement("script");
 
     Array.from(oldScript.attributes).forEach(attr=>{
@@ -1053,76 +820,42 @@ async function executePageScripts(container){
     });
 
     if(oldScript.src){
-
       newScript.src = new URL(
         oldScript.getAttribute("src"),
         location.href
       ).href;
 
       await new Promise((resolve,reject)=>{
-
         newScript.onload = resolve;
-
-        newScript.onerror = ()=>{
-          reject(
-            new Error("Could not load script: " + newScript.src)
-          );
-        };
-
+        newScript.onerror = ()=>reject(new Error("Could not load script: "+newScript.src));
         oldScript.replaceWith(newScript);
-
       });
-
     }else{
-
       newScript.textContent = oldScript.textContent;
-
       oldScript.replaceWith(newScript);
-
     }
-
   }
-
 }
-
 
 /* =====================================
    CARD HIDE / SHOW SYSTEM
 ===================================== */
 
 const CARD_HIDE_STORAGE_KEY = "wage_hidden_dashboard_cards";
-
 let cardHideMode = false;
 
 function getHiddenDashboardCards(){
-
   try{
-    const saved = JSON.parse(
-      localStorage.getItem(CARD_HIDE_STORAGE_KEY) || "[]"
-    );
-
+    const saved = JSON.parse(localStorage.getItem(CARD_HIDE_STORAGE_KEY) || "[]");
     return Array.isArray(saved) ? saved : [];
-
   }catch(error){
     return [];
   }
-
 }
 
 function saveHiddenDashboardCards(cards){
-
-  localStorage.setItem(
-    CARD_HIDE_STORAGE_KEY,
-    JSON.stringify(cards)
-  );
-
+  localStorage.setItem(CARD_HIDE_STORAGE_KEY,JSON.stringify(cards));
 }
-
-/*
-  Dashboard card selectors.
-  If your dashboard uses other card classes,
-  add them to this selector.
-*/
 
 const DASHBOARD_CARD_SELECTOR = [
   "[data-dashboard-card]",
@@ -1136,66 +869,37 @@ const DASHBOARD_CARD_SELECTOR = [
   ".card"
 ].join(",");
 
-
 function getDashboardCardKey(card,index){
-
-  if(card.dataset.cardHideKey){
-    return card.dataset.cardHideKey;
-  }
+  if(card.dataset.cardHideKey) return card.dataset.cardHideKey;
 
   if(card.id){
-    card.dataset.cardHideKey = "id:" + card.id;
+    card.dataset.cardHideKey = "id:"+card.id;
     return card.dataset.cardHideKey;
   }
 
-  const heading = card.querySelector(
-    "h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title"
-  );
-
-  const title = heading
-    ? heading.textContent.trim()
-    : card.textContent.trim().slice(0,70);
-
+  const heading = card.querySelector("h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title");
+  const title = heading ? heading.textContent.trim() : card.textContent.trim().slice(0,70);
   const classes = Array.from(card.classList)
     .filter(c=>c !== "card-hide-target")
-    .sort()
-    .join(".");
+    .sort().join(".");
 
-  const key = [
-    "dashboard-card",
-    classes,
-    title,
-    index
-  ].join("|");
-
+  const key = ["dashboard-card",classes,title,index].join("|");
   card.dataset.cardHideKey = key;
-
   return key;
-
 }
 
-
 function updateCardHideButton(){
-
   const button = document.getElementById("cardHideMenuButton");
-
   if(!button) return;
 
   const label = button.querySelector(".card-hide-label");
-
   if(label){
-    label.textContent = cardHideMode
-      ? "Finish Card Editing"
-      : "Card Hide / Show";
+    label.textContent = cardHideMode ? "Finish Card Editing" : "Card Hide / Show";
   }
-
   button.classList.toggle("active",cardHideMode);
-
 }
 
-
 function createCardHideToolbar(){
-
   let toolbar = document.getElementById("cardHideToolbar");
 
   if(!cardHideMode){
@@ -1204,9 +908,7 @@ function createCardHideToolbar(){
   }
 
   if(!toolbar){
-
     toolbar = document.createElement("div");
-
     toolbar.id = "cardHideToolbar";
     toolbar.className = "card-hide-toolbar";
 
@@ -1217,168 +919,98 @@ function createCardHideToolbar(){
           Hide or show individual dashboard cards.
         </div>
       </div>
-      <button type="button" id="finishCardHideMode">
-        Done
-      </button>
+      <button type="button" id="finishCardHideMode">Done</button>
     `;
 
     pageContainer.prepend(toolbar);
 
-    toolbar.querySelector("#finishCardHideMode")
-      .addEventListener("click",function(){
-
-        cardHideMode = false;
-        document.body.classList.remove("card-hide-mode");
-
-        updateCardHideButton();
-        setupDashboardCardControls();
-
-      });
-
+    toolbar.querySelector("#finishCardHideMode").addEventListener("click",function(){
+      cardHideMode = false;
+      document.body.classList.remove("card-hide-mode");
+      updateCardHideButton();
+      setupDashboardCardControls();
+    });
   }
-
 }
 
-
 function toggleDashboardCard(card){
-
   const key = card.dataset.cardHideKey;
-
   if(!key) return;
 
   const hidden = getHiddenDashboardCards();
-
   const index = hidden.indexOf(key);
 
-  if(index >= 0){
-    hidden.splice(index,1);
-  }else{
-    hidden.push(key);
-  }
+  if(index >= 0) hidden.splice(index,1);
+  else hidden.push(key);
 
   saveHiddenDashboardCards(hidden);
-
   setupDashboardCardControls();
-
 }
 
-
 function setupDashboardCardControls(){
-
   if(currentPage !== "dashboard") return;
 
   createCardHideToolbar();
 
   const hidden = getHiddenDashboardCards();
-
-  const cards = Array.from(
-    pageContainer.querySelectorAll(DASHBOARD_CARD_SELECTOR)
-  );
-
-  /*
-    Avoid adding duplicate controls to nested cards.
-    Use only the outer matching card.
-  */
+  const cards = Array.from(pageContainer.querySelectorAll(DASHBOARD_CARD_SELECTOR));
 
   const outerCards = cards.filter(card=>{
-
     const parent = card.parentElement;
-
     if(!parent) return true;
-
     return !parent.closest(DASHBOARD_CARD_SELECTOR);
-
   });
 
   outerCards.forEach((card,index)=>{
-
     const key = getDashboardCardKey(card,index);
-
     const isHidden = hidden.includes(key);
 
     card.classList.add("card-hide-target");
     card.classList.toggle("is-card-hidden",isHidden);
 
-    let button = card.querySelector(
-      ":scope > .card-hide-control"
-    );
+    let button = card.querySelector(":scope > .card-hide-control");
 
     if(!button){
-
       button = document.createElement("button");
-
       button.type = "button";
       button.className = "card-hide-control";
-
       card.appendChild(button);
 
       button.addEventListener("click",function(event){
-
         event.preventDefault();
         event.stopPropagation();
-
         toggleDashboardCard(card);
-
       });
-
     }
 
     button.classList.toggle("is-hidden",isHidden);
-
-    button.textContent = isHidden
-      ? "Show Card"
-      : "Hide Card";
-
-    if(!cardHideMode){
-      button.style.display = "none";
-    }else{
-      button.style.display = "block";
-    }
-
-    /*
-      In normal mode, previously hidden cards stay hidden.
-      In edit mode, every card is visible for restoration.
-    */
+    button.textContent = isHidden ? "Show Card" : "Hide Card";
+    button.style.display = cardHideMode ? "block" : "none";
 
     card.style.removeProperty("display");
 
     if(isHidden && !cardHideMode){
       card.classList.add("is-card-hidden");
     }
-
   });
 
-  if(cardHideMode){
-    document.body.classList.add("card-hide-mode");
-  }else{
-    document.body.classList.remove("card-hide-mode");
-  }
+  if(cardHideMode) document.body.classList.add("card-hide-mode");
+  else document.body.classList.remove("card-hide-mode");
 
   updateCardHideButton();
-
 }
 
-
 function toggleCardHideMode(){
-
   cardHideMode = !cardHideMode;
-
   closeSidebar();
-
   updateCardHideButton();
 
   if(currentPage !== "dashboard"){
-
     loadPage("dashboard",true);
-
   }else{
-
     setupDashboardCardControls();
-
   }
-
 }
-
 
 /* =====================================
    MAIN PAGE LOADER
@@ -1388,34 +1020,26 @@ let currentPage = "";
 let loadCounter = 0;
 
 async function loadPage(page,addHistory=true){
-
-  if(!PAGE_CONFIG[page]){
-    page = "dashboard";
+  /* Never load protected pages before authentication */
+  if(!isAuthenticated){
+    showLogin();
+    return;
   }
 
-  const config = PAGE_CONFIG[page];
+  if(!PAGE_CONFIG[page]) page = "dashboard";
 
+  const config = PAGE_CONFIG[page];
   const thisLoad = ++loadCounter;
 
   closeSidebar();
-
   updateActiveMenu(page);
   updatePageHeader(page);
 
   if(addHistory){
-
-    const newHash = "#" + page;
-
+    const newHash = "#"+page;
     if(location.hash !== newHash){
-
-      history.pushState(
-        {page:page},
-        "",
-        newHash
-      );
-
+      history.pushState({page:page},"",newHash);
     }
-
   }
 
   pageContainer.innerHTML = `
@@ -1426,158 +1050,104 @@ async function loadPage(page,addHistory=true){
   `;
 
   try{
-
-    const response = await fetch(
-      "./" + config.file,
-      {
-        method:"GET",
-        cache:"no-store"
-      }
-    );
+    const response = await fetch("./"+config.file,{
+      method:"GET",
+      cache:"no-store"
+    });
 
     if(!response.ok){
-
-      throw new Error(
-        config.file + " not found. HTTP " + response.status
-      );
-
+      throw new Error(config.file+" not found. HTTP "+response.status);
     }
 
     const html = await response.text();
-
     if(thisLoad !== loadCounter) return;
 
     const parser = new DOMParser();
-
-    const doc = parser.parseFromString(
-      html,
-      "text/html"
-    );
+    const doc = parser.parseFromString(html,"text/html");
 
     await loadPageStyles(doc,config.file);
-
     if(thisLoad !== loadCounter) return;
 
     pageContainer.innerHTML = doc.body.innerHTML;
 
     await executePageScripts(pageContainer);
-
     if(thisLoad !== loadCounter) return;
 
     currentPage = page;
-
     window.currentPage = page;
-
-    /* NEW: Apply dashboard card visibility controls */
 
     if(page === "dashboard"){
       setupDashboardCardControls();
     }
 
   }catch(error){
-
     if(thisLoad !== loadCounter) return;
 
     console.error("Page loading error:",error);
 
     pageContainer.innerHTML = `
       <div class="error-box">
-
         <h3>Unable to Load Page</h3>
-
-        <p>
-          ${config.file} could not be loaded.
-          Check that the file exists in your GitHub root folder.
-        </p>
-
+        <p>${config.file} could not be loaded. Check that the file exists in your GitHub root folder.</p>
         <p>${String(error.message)}</p>
-
-        <button onclick="window.loadPage('${page}',false)">
-          Try Again
-        </button>
-
+        <button onclick="window.loadPage('${page}',false)">Try Again</button>
       </div>
     `;
-
   }
-
 }
-
 
 /* =====================================
    GLOBAL NAVIGATION
 ===================================== */
 
 window.loadPage = loadPage;
-
-
-/* =====================================
-   GLOBAL USER EDIT SUPPORT
-===================================== */
-
 window.__wageEditUserId = "";
 
-
 /* =====================================
-   SIDEBAR CLICK EVENTS
+   SIDEBAR EVENTS
 ===================================== */
 
-document.querySelectorAll(".nav-item[data-page]")
-.forEach(item=>{
-
+document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
   item.addEventListener("click",function(){
-
-    const page = this.dataset.page;
-
-    loadPage(page,true);
-
+    loadPage(this.dataset.page,true);
   });
-
 });
 
-
-/* =====================================
-   CARD HIDE MENU EVENT
-===================================== */
-
-document.getElementById("cardHideMenuButton")
-.addEventListener("click",function(){
-
+document.getElementById("cardHideMenuButton").addEventListener("click",function(){
   toggleCardHideMode();
-
 });
-
 
 /* =====================================
    BROWSER BACK / FORWARD
 ===================================== */
 
 window.addEventListener("popstate",function(){
-
+  if(!isAuthenticated){
+    showLogin();
+    return;
+  }
   loadPage(getPageFromHash(),false);
-
 });
 
 window.addEventListener("hashchange",function(){
+  if(!isAuthenticated){
+    showLogin();
+    return;
+  }
 
   const page = getPageFromHash();
-
   if(page !== currentPage){
     loadPage(page,false);
   }
-
 });
 
-
 /* =====================================
-   INITIAL PAGE
+   START APPLICATION
 ===================================== */
 
-const initialPage = getPageFromHash();
-
-loadPage(initialPage,false);
+showLogin();
+verifyExistingSession();
 
 </script>
-
 </body>
 </html>
