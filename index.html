@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +31,11 @@ body.dark{
   --shadow:0 3px 15px rgba(0,0,0,.15);
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   font-family:Inter,Arial,sans-serif;
@@ -42,16 +45,24 @@ body{
   transition:background .2s,color .2s;
 }
 
-button,input{font-family:inherit}
-.app{min-height:100vh}
+button,input{
+  font-family:inherit;
+}
 
-/* ORIGINAL SIDEBAR */
+.app{
+  min-height:100vh;
+}
+
+/* =================================
+   SIDEBAR
+================================= */
 
 .sidebar{
   width:255px;
   height:100vh;
   position:fixed;
-  top:0;left:0;
+  top:0;
+  left:0;
   background:var(--sidebar);
   border-right:1px solid var(--border);
   z-index:1000;
@@ -70,7 +81,8 @@ button,input{font-family:inherit}
 }
 
 .brand-logo{
-  width:39px;height:39px;
+  width:39px;
+  height:39px;
   border-radius:12px;
   background:var(--primary);
   color:white;
@@ -81,216 +93,547 @@ button,input{font-family:inherit}
   font-size:17px;
 }
 
-.brand-name{font-size:17px;font-weight:800;letter-spacing:-.4px}
-.brand-sub{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:1px}
+.brand-name{
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:-.4px;
+}
 
-.sidebar-content{flex:1;overflow-y:auto;padding:20px 13px}
+.brand-sub{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:3px;
+  letter-spacing:1px;
+}
+
+.sidebar-content{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 13px;
+}
 
 .nav-label{
-  font-size:10px;color:var(--muted);
-  font-weight:800;letter-spacing:1.2px;
+  font-size:10px;
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:1.2px;
   padding:12px 12px 9px;
 }
 
 .nav-item{
-  width:100%;display:flex;align-items:center;gap:12px;
-  padding:12px 13px;border:0;border-radius:9px;
-  background:transparent;color:var(--muted);
-  font-size:13px;font-weight:600;text-align:left;
-  cursor:pointer;margin-bottom:4px;transition:.2s;
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 13px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:4px;
+  transition:.2s;
 }
 
-.nav-item:hover{background:var(--hover);color:var(--primary)}
-.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:800}
-.nav-icon{width:20px;text-align:center;font-size:17px}
+.nav-item:hover{
+  background:var(--hover);
+  color:var(--primary);
+}
 
-.sidebar-bottom{border-top:1px solid var(--border);padding:15px}
+.nav-item.active{
+  background:var(--primary-light);
+  color:var(--primary);
+  font-weight:800;
+}
 
-.sidebar-user{display:flex;align-items:center;gap:11px}
+.nav-icon{
+  width:20px;
+  text-align:center;
+  font-size:17px;
+}
+
+.sidebar-bottom{
+  border-top:1px solid var(--border);
+  padding:15px;
+}
+
+.sidebar-user{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
 .sidebar-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--primary-light);color:var(--primary);
-  display:flex;align-items:center;justify-content:center;font-weight:800;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
   overflow:hidden;
+  flex-shrink:0;
 }
-.sidebar-avatar img{width:100%;height:100%;object-fit:cover}
-.sidebar-user-name{font-size:12px;font-weight:800}
-.sidebar-user-role{color:var(--muted);font-size:10px;margin-top:3px}
 
-.sidebar-actions{display:flex;gap:7px;margin-top:12px}
+.sidebar-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.sidebar-user-name{
+  font-size:12px;
+  font-weight:800;
+}
+
+.sidebar-user-role{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.sidebar-actions{
+  display:flex;
+  gap:7px;
+  margin-top:12px;
+}
+
 .sidebar-actions button{
-  flex:1;padding:8px 5px;border:1px solid var(--border);
-  background:var(--card);color:var(--text);border-radius:7px;
-  font-size:11px;font-weight:700;cursor:pointer;
+  flex:1;
+  padding:8px 5px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:7px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
 }
-.sidebar-actions button:hover{background:var(--hover);color:var(--primary)}
 
-/* ORIGINAL MAIN AREA */
+.sidebar-actions button:hover{
+  background:var(--hover);
+  color:var(--primary);
+}
+
+/* =================================
+   MAIN AREA
+================================= */
 
 .main{
-  margin-left:255px;min-height:100vh;
-  display:flex;flex-direction:column;
+  margin-left:255px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
 .topbar{
-  height:76px;background:var(--card);
+  height:76px;
+  background:var(--card);
   border-bottom:1px solid var(--border);
-  padding:0 28px;display:flex;align-items:center;
-  justify-content:space-between;position:sticky;top:0;z-index:500;
+  padding:0 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:500;
 }
 
-.topbar-left{display:flex;align-items:center;gap:14px}
-.page-heading{font-size:18px;font-weight:800}
-.page-breadcrumb{font-size:11px;color:var(--muted);margin-top:4px}
-.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.page-heading{
+  font-size:18px;
+  font-weight:800;
+}
+
+.page-breadcrumb{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
 .icon-btn{
-  width:39px;height:39px;border-radius:10px;
-  border:1px solid var(--border);background:var(--card);
-  color:var(--text);cursor:pointer;font-size:17px;
-  display:flex;align-items:center;justify-content:center;
+  width:39px;
+  height:39px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  cursor:pointer;
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.icon-btn:hover{background:var(--hover);color:var(--primary)}
-.menu-toggle{display:none}
 
-.content{padding:27px;flex:1;min-width:0}
-#pageContainer{width:100%;min-height:300px}
+.icon-btn:hover{
+  background:var(--hover);
+  color:var(--primary);
+}
+
+.menu-toggle{
+  display:none;
+}
+
+.content{
+  padding:27px;
+  flex:1;
+  min-width:0;
+}
+
+#pageContainer{
+  width:100%;
+  min-height:300px;
+}
 
 .loading-box{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:50px 20px;
-  text-align:center;color:var(--muted);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
 }
+
 .loading-spinner{
-  width:30px;height:30px;border:3px solid var(--border);
-  border-top-color:var(--primary);border-radius:50%;
-  animation:spin .7s linear infinite;margin:0 auto 15px;
+  width:30px;
+  height:30px;
+  border:3px solid var(--border);
+  border-top-color:var(--primary);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin:0 auto 15px;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
 
 .error-box{
-  background:var(--card);border:1px solid #f3b9b9;
-  border-radius:14px;padding:25px;text-align:center;color:var(--text);
-}
-.error-box h3{margin-bottom:9px;color:#d64545}
-.error-box p{font-size:13px;color:var(--muted);margin-bottom:16px}
-.error-box button{
-  padding:10px 18px;border:0;background:var(--primary);
-  color:white;border-radius:8px;cursor:pointer;font-weight:700;
+  background:var(--card);
+  border:1px solid #f3b9b9;
+  border-radius:14px;
+  padding:25px;
+  text-align:center;
+  color:var(--text);
 }
 
-/* CARD HIDE CONTROLS */
+.error-box h3{
+  margin-bottom:9px;
+  color:#d64545;
+}
+
+.error-box p{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:16px;
+}
+
+.error-box button{
+  padding:10px 18px;
+  border:0;
+  background:var(--primary);
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+/* =================================
+   CARD HIDE SYSTEM
+================================= */
 
 .card-hide-toolbar{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;padding:13px 16px;margin-bottom:18px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;color:var(--text);font-size:13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:13px 16px;
+  margin-bottom:18px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--text);
+  font-size:13px;
 }
+
 .card-hide-toolbar button{
-  padding:9px 15px;background:var(--primary);color:#fff;
-  border:0;border-radius:8px;cursor:pointer;font-weight:700;
+  padding:9px 15px;
+  background:var(--primary);
+  color:#fff;
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
 }
+
 .card-hide-control{
-  display:none;position:absolute;top:9px;right:9px;z-index:20;
-  padding:7px 11px;border:0;border-radius:7px;
-  background:#dc2626;color:#fff;font-size:11px;
-  font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);
+  display:none;
+  position:absolute;
+  top:9px;
+  right:9px;
+  z-index:20;
+  padding:7px 11px;
+  border:0;
+  border-radius:7px;
+  background:#dc2626;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
 }
-.card-hide-control.is-hidden{background:#087f5b}
-.card-hide-target{position:relative !important}
-body.card-hide-mode .card-hide-control{display:block}
-body.card-hide-mode .card-hide-target{outline:2px dashed var(--primary);outline-offset:3px}
-body.card-hide-mode .card-hide-target.is-card-hidden{opacity:.65;outline-color:#dc2626}
-body:not(.card-hide-mode) .is-card-hidden{display:none !important}
+
+.card-hide-control.is-hidden{
+  background:#087f5b;
+}
+
+.card-hide-target{
+  position:relative !important;
+}
+
+body.card-hide-mode .card-hide-control{
+  display:block;
+}
+
+body.card-hide-mode .card-hide-target{
+  outline:2px dashed var(--primary);
+  outline-offset:3px;
+}
+
+body.card-hide-mode .card-hide-target.is-card-hidden{
+  opacity:.65;
+  outline-color:#dc2626;
+}
+
+body:not(.card-hide-mode) .is-card-hidden{
+  display:none !important;
+}
+
+/* =================================
+   FOOTER
+================================= */
 
 .footer{
-  padding:15px 27px;border-top:1px solid var(--border);
-  font-size:11px;color:var(--muted);
-  display:flex;justify-content:space-between;gap:10px;
+  padding:15px 27px;
+  border-top:1px solid var(--border);
+  font-size:11px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
 }
 
 .mobile-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);
-  z-index:900;display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:900;
+  display:none;
 }
-.mobile-overlay.show{display:block}
 
-/* LOGIN SCREEN - MATCHES ORIGINAL THEME */
+.mobile-overlay.show{
+  display:block;
+}
+
+/* =================================
+   LOGIN SCREEN
+================================= */
 
 #authScreen{
-  position:fixed;inset:0;z-index:5000;
+  position:fixed;
+  inset:0;
+  z-index:5000;
   background:var(--bg);
-  display:none;align-items:center;justify-content:center;
+  display:none;
+  align-items:center;
+  justify-content:center;
   padding:20px;
 }
+
 .login-card{
-  width:100%;max-width:390px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:30px;
+  width:100%;
+  max-width:390px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:30px;
   box-shadow:var(--shadow);
 }
-.login-brand{text-align:center;margin-bottom:25px}
+
+.login-brand{
+  text-align:center;
+  margin-bottom:25px;
+}
+
 .login-logo{
-  width:48px;height:48px;border-radius:14px;
-  background:var(--primary);color:white;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:900;margin:0 auto 13px;
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:var(--primary);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:900;
+  margin:0 auto 13px;
 }
-.login-brand h2{font-size:20px;font-weight:800}
-.login-brand p{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:1px}
-.login-field{margin-bottom:16px}
+
+.login-brand h2{
+  font-size:20px;
+  font-weight:800;
+}
+
+.login-brand p{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:5px;
+  letter-spacing:1px;
+}
+
+.login-field{
+  margin-bottom:16px;
+}
+
 .login-field label{
-  display:block;font-size:12px;font-weight:700;
-  margin-bottom:7px;color:var(--text);
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:7px;
+  color:var(--text);
 }
+
 .login-field input{
-  width:100%;height:44px;padding:0 13px;
-  border:1px solid var(--border);border-radius:8px;
-  background:var(--bg);color:var(--text);outline:none;
+  width:100%;
+  height:44px;
+  padding:0 13px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--bg);
+  color:var(--text);
+  outline:none;
 }
-.login-field input:focus{border-color:var(--primary)}
+
+.login-field input:focus{
+  border-color:var(--primary);
+}
+
 .login-submit{
-  width:100%;height:45px;border:0;border-radius:8px;
-  background:var(--primary);color:white;
-  font-weight:800;cursor:pointer;margin-top:5px;
+  width:100%;
+  height:45px;
+  border:0;
+  border-radius:8px;
+  background:var(--primary);
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+  margin-top:5px;
 }
-.login-submit:disabled{opacity:.65;cursor:wait}
+
+.login-submit:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+
 .login-error{
-  color:#d64545;font-size:12px;margin-top:13px;
-  line-height:1.5;display:none;
+  color:#d64545;
+  font-size:12px;
+  margin-top:13px;
+  line-height:1.5;
+  display:none;
 }
+
 .login-status{
-  text-align:center;font-size:11px;color:var(--muted);
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
   margin-top:14px;
 }
 
-/* RESPONSIVE */
+/* =================================
+   RESPONSIVE
+================================= */
 
 @media(max-width:900px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .menu-toggle{display:flex}
-  .content{padding:20px}
+
+  .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+  }
+
+  .menu-toggle{
+    display:flex;
+  }
+
+  .content{
+    padding:20px;
+  }
 }
+
 @media(max-width:600px){
-  .topbar{height:65px;padding:0 14px}
-  .page-heading{font-size:16px}
-  .content{padding:14px}
-  .footer{padding:13px;font-size:10px}
-  .brand{height:68px}
-  .login-card{padding:24px 20px}
+
+  .topbar{
+    height:65px;
+    padding:0 14px;
+  }
+
+  .page-heading{
+    font-size:16px;
+  }
+
+  .content{
+    padding:14px;
+  }
+
+  .footer{
+    padding:13px;
+    font-size:10px;
+  }
+
+  .brand{
+    height:68px;
+  }
+
+  .login-card{
+    padding:24px 20px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- =================================
+     LOGIN SCREEN
+================================= -->
 
 <div id="authScreen">
+
   <div class="login-card">
+
     <div class="login-brand">
       <div class="login-logo">W</div>
       <h2>WAGE MANAGER</h2>
@@ -298,162 +641,342 @@ body:not(.card-hide-mode) .is-card-hidden{display:none !important}
     </div>
 
     <form id="loginForm">
+
       <div class="login-field">
         <label>Email Address</label>
-        <input id="loginEmail" type="email" placeholder="Enter your email" required autocomplete="username">
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="username">
       </div>
 
       <div class="login-field">
         <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="Enter your password" required autocomplete="current-password">
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password">
       </div>
 
-      <button class="login-submit" id="loginButton" type="submit">Login to Dashboard</button>
+      <button
+        class="login-submit"
+        id="loginButton"
+        type="submit">
+        Login to Dashboard
+      </button>
+
       <div class="login-error" id="loginError"></div>
-      <div class="login-status" id="loginStatus">Secure Admin Login</div>
+
+      <div class="login-status" id="loginStatus">
+        Secure Admin Login
+      </div>
+
     </form>
+
   </div>
+
 </div>
+
+
+<!-- =================================
+     MAIN APPLICATION
+================================= -->
 
 <div class="app" id="mainApp" style="display:none">
 
+  <!-- SIDEBAR -->
+
   <aside class="sidebar" id="sidebar">
+
     <div class="brand">
+
       <div class="brand-logo">W</div>
+
       <div>
         <div class="brand-name">WAGE MANAGER</div>
         <div class="brand-sub">MANAGEMENT SYSTEM</div>
       </div>
+
     </div>
+
 
     <div class="sidebar-content">
 
-      <div class="nav-label">MAIN MENU</div>
+      <div class="nav-label" data-nav-section="main">
+        MAIN MENU
+      </div>
 
-      <button class="nav-item active" data-page="dashboard" data-permission="dashboard">
-        <span class="nav-icon">▦</span> Dashboard
+      <button
+        class="nav-item active"
+        data-page="dashboard"
+        data-permission="dashboard">
+        <span class="nav-icon">▦</span>
+        Dashboard
       </button>
 
-      <div class="nav-label" data-nav-section="users">USER MANAGEMENT</div>
 
-      <button class="nav-item" data-page="add-user" data-permission="addUser">
-        <span class="nav-icon">＋</span> Add User
+      <div class="nav-label" data-nav-section="users">
+        USER MANAGEMENT
+      </div>
+
+      <button
+        class="nav-item"
+        data-page="add-user"
+        data-permission="addUser">
+        <span class="nav-icon">＋</span>
+        Add User
       </button>
 
-      <button class="nav-item" data-page="user-list" data-permission="userList">
-        <span class="nav-icon">♙</span> User List
+      <button
+        class="nav-item"
+        data-page="user-list"
+        data-permission="userList">
+        <span class="nav-icon">♙</span>
+        User List
       </button>
 
-      <button class="nav-item" data-page="deleted-user" data-permission="deletedUsers">
-        <span class="nav-icon">▤</span> Deleted Users
+      <button
+        class="nav-item"
+        data-page="deleted-user"
+        data-permission="deletedUsers">
+        <span class="nav-icon">▤</span>
+        Deleted Users
       </button>
 
-      <div class="nav-label" data-nav-section="wages">WAGE MANAGEMENT</div>
 
-      <button class="nav-item" data-page="add-wage" data-permission="addWage">
-        <span class="nav-icon">＋</span> Add Wage
+      <div class="nav-label" data-nav-section="wages">
+        WAGE MANAGEMENT
+      </div>
+
+      <button
+        class="nav-item"
+        data-page="add-wage"
+        data-permission="addWage">
+        <span class="nav-icon">＋</span>
+        Add Wage
       </button>
 
-      <button class="nav-item" data-page="wage-history" data-permission="wageHistory">
-        <span class="nav-icon">◷</span> Wage History
+      <button
+        class="nav-item"
+        data-page="wage-history"
+        data-permission="wageHistory">
+        <span class="nav-icon">◷</span>
+        Wage History
       </button>
 
-      <button class="nav-item" data-page="deleted-wage" data-permission="wageDeleteHistory">
-        <span class="nav-icon">🗑️</span> Wage Delete History
+      <button
+        class="nav-item"
+        data-page="deleted-wage"
+        data-permission="wageDeleteHistory">
+        <span class="nav-icon">🗑️</span>
+        Wage Delete History
       </button>
 
-      <div class="nav-label" data-nav-section="payments">PAYMENT MANAGEMENT</div>
 
-      <button class="nav-item" data-page="payment" data-permission="userPayment">
-        <span class="nav-icon">৳</span> User Payment
+      <div class="nav-label" data-nav-section="payments">
+        PAYMENT MANAGEMENT
+      </div>
+
+      <button
+        class="nav-item"
+        data-page="payment"
+        data-permission="userPayment">
+        <span class="nav-icon">৳</span>
+        User Payment
       </button>
 
-      <button class="nav-item" data-page="payment-history" data-permission="paymentHistory">
-        <span class="nav-icon">▤</span> Payment History
+      <button
+        class="nav-item"
+        data-page="payment-history"
+        data-permission="paymentHistory">
+        <span class="nav-icon">▤</span>
+        Payment History
       </button>
 
-      <button class="nav-item" data-page="delete-payment" data-permission="deletePaymentHistory">
-        <span class="nav-icon">▤</span> Delet Payment History
+      <button
+        class="nav-item"
+        data-page="delete-payment"
+        data-permission="deletePaymentHistory">
+        <span class="nav-icon">▤</span>
+        Delete Payment History
       </button>
 
-      <div class="nav-label" data-nav-section="settings">SETTINGS</div>
 
-      <button class="nav-item" data-page="currency" data-permission="addCurrency">
-        <span class="nav-icon">💱</span> Add Currency
+      <div class="nav-label" data-nav-section="settings">
+        SETTINGS
+      </div>
+
+      <button
+        class="nav-item"
+        data-page="currency"
+        data-permission="addCurrency">
+        <span class="nav-icon">💱</span>
+        Add Currency
       </button>
 
-      <button class="nav-item" data-page="payment-method" data-permission="addPaymentMethod">
-        <span class="nav-icon">💳</span> Add Payment Method
+      <button
+        class="nav-item"
+        data-page="payment-method"
+        data-permission="addPaymentMethod">
+        <span class="nav-icon">💳</span>
+        Add Payment Method
       </button>
 
-      <button class="nav-item" id="cardHideMenuButton" data-action="card-hide" data-permission="cardHideShow">
-        <span class="nav-icon">▣</span> Card Hide / Show
+      <button
+        class="nav-item"
+        id="cardHideMenuButton"
+        data-action="card-hide"
+        data-permission="cardHideShow">
+        <span class="nav-icon">▣</span>
+        Card Hide / Show
       </button>
 
-      <div class="nav-label" data-nav-section="admin">ADMINISTRATION</div>
 
-      <button class="nav-item" data-page="manage-admins" data-permission="manageAdmins">
-        <span class="nav-icon">♙</span> Manage Admins
+      <div class="nav-label" data-nav-section="admin">
+        ADMINISTRATION
+      </div>
+
+      <button
+        class="nav-item"
+        data-page="manage-admins"
+        data-permission="manageAdmins">
+        <span class="nav-icon">♙</span>
+        Manage Admins
       </button>
 
-      <button class="nav-item" data-page="my-account" data-permission="myAccount">
-        <span class="nav-icon">⚙</span> My Account
+      <button
+        class="nav-item"
+        data-page="my-account"
+        data-permission="myAccount">
+        <span class="nav-icon">⚙</span>
+        My Account
       </button>
+
     </div>
+
+
+    <!-- SIDEBAR PROFILE -->
 
     <div class="sidebar-bottom">
+
       <div class="sidebar-user">
-        <div class="sidebar-avatar" id="sidebarAvatar">W</div>
-        <div>
-          <div class="sidebar-user-name" id="sidebarUserName">Administrator</div>
-          <div class="sidebar-user-role" id="sidebarUserRole">System Admin</div>
+
+        <div class="sidebar-avatar" id="sidebarAvatar">
+          W
         </div>
+
+        <div>
+          <div
+            class="sidebar-user-name"
+            id="sidebarUserName">
+            Administrator
+          </div>
+
+          <div
+            class="sidebar-user-role"
+            id="sidebarUserRole">
+            System Admin
+          </div>
+        </div>
+
       </div>
 
+
       <div class="sidebar-actions">
-        <button type="button" id="accountButton">My Account</button>
-        <button type="button" id="logoutButton">Logout ↗</button>
+
+        <button type="button" id="accountButton">
+          My Account
+        </button>
+
+        <button type="button" id="logoutButton">
+          Logout ↗
+        </button>
+
       </div>
+
     </div>
+
   </aside>
+
 
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
+
+  <!-- MAIN CONTENT -->
+
   <main class="main">
+
     <header class="topbar">
+
       <div class="topbar-left">
-        <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+
+        <button
+          class="icon-btn menu-toggle"
+          id="menuToggle"
+          aria-label="Open menu">
+          ☰
+        </button>
+
         <div>
-          <div class="page-heading" id="pageTitle">Dashboard</div>
-          <div class="page-breadcrumb" id="pageBreadcrumb">Home / Dashboard</div>
+          <div class="page-heading" id="pageTitle">
+            Dashboard
+          </div>
+
+          <div class="page-breadcrumb" id="pageBreadcrumb">
+            Home / Dashboard
+          </div>
         </div>
+
       </div>
+
 
       <div class="topbar-right">
-        <button class="icon-btn" id="themeToggle" title="Change Theme">☾</button>
+
+        <button
+          class="icon-btn"
+          id="themeToggle"
+          title="Change Theme">
+          ☾
+        </button>
+
       </div>
+
     </header>
 
+
     <section class="content">
+
       <div id="pageContainer">
+
         <div class="loading-box">
           <div class="loading-spinner"></div>
           Loading Dashboard...
         </div>
+
       </div>
+
     </section>
+
 
     <footer class="footer">
       <span>Wage Management System</span>
       <span>© 2026 All Rights Reserved</span>
     </footer>
+
   </main>
+
 </div>
 
+
 <script>
-/* =====================================
-   CONFIGURATION
-===================================== */
+
+/* =========================================
+   1. CONFIGURATION
+========================================= */
 
 const AUTH_API_URL =
 "https://script.google.com/macros/s/AKfycbw5QMutQWocx1jg3qT6dmKKxh5GXYw6HeClidJ8_swh-z_iklKMVZ-UMGYuxLrGsFi6/exec";
@@ -462,531 +985,1148 @@ const AUTH_TOKEN_KEY = "wage_admin_token";
 const AUTH_USER_KEY = "wage_admin_user";
 const AUTH_PERMISSION_KEY = "wage_admin_permissions";
 
-/* =====================================
-   PAGE CONFIGURATION
-===================================== */
+
+/* =========================================
+   2. PAGE CONFIGURATION
+========================================= */
 
 const PAGE_CONFIG = {
-  "dashboard":{file:"dashboard.html",title:"Dashboard",section:"Main Menu",permission:"dashboard"},
-  "add-user":{file:"add-user.html",title:"Add User",section:"User Management",permission:"addUser"},
-  "user-list":{file:"user-list.html",title:"User List",section:"User Management",permission:"userList"},
-  "deleted-user":{file:"deleted-user.html",title:"Deleted Users",section:"User Management",permission:"deletedUsers"},
-  "add-wage":{file:"add-wage.html",title:"Add Wage",section:"Wage Management",permission:"addWage"},
-  "wage-history":{file:"wage-history.html",title:"Wage History",section:"Wage Management",permission:"wageHistory"},
-  "deleted-wage":{file:"deleted-wage.html",title:"Wage Delete History",section:"Wage Management",permission:"wageDeleteHistory"},
-  "payment":{file:"payment.html",title:"User Payment",section:"Payment Management",permission:"userPayment"},
-  "payment-history":{file:"payment-history.html",title:"Payment History",section:"Payment Management",permission:"paymentHistory"},
-  "delete-payment":{file:"delete-payment.html",title:"Delete Payment History",section:"Payment Management",permission:"deletePaymentHistory"},
-  "currency":{file:"currency.html",title:"Add Currency",section:"Settings",permission:"addCurrency"},
-  "payment-method":{file:"payment-method.html",title:"Add Payment Method",section:"Settings",permission:"addPaymentMethod"},
-  "manage-admins":{file:"manage-admins.html",title:"Manage Admins",section:"Administration",permission:"manageAdmins"},
-  "my-account":{file:"my-account.html",title:"My Account",section:"Account",permission:"myAccount"}
+
+  "dashboard":{
+    file:"dashboard.html",
+    title:"Dashboard",
+    section:"Main Menu",
+    permission:"dashboard"
+  },
+
+  "add-user":{
+    file:"add-user.html",
+    title:"Add User",
+    section:"User Management",
+    permission:"addUser"
+  },
+
+  "user-list":{
+    file:"user-list.html",
+    title:"User List",
+    section:"User Management",
+    permission:"userList"
+  },
+
+  "deleted-user":{
+    file:"deleted-user.html",
+    title:"Deleted Users",
+    section:"User Management",
+    permission:"deletedUsers"
+  },
+
+  "add-wage":{
+    file:"add-wage.html",
+    title:"Add Wage",
+    section:"Wage Management",
+    permission:"addWage"
+  },
+
+  "wage-history":{
+    file:"wage-history.html",
+    title:"Wage History",
+    section:"Wage Management",
+    permission:"wageHistory"
+  },
+
+  "deleted-wage":{
+    file:"deleted-wage.html",
+    title:"Wage Delete History",
+    section:"Wage Management",
+    permission:"wageDeleteHistory"
+  },
+
+  "payment":{
+    file:"payment.html",
+    title:"User Payment",
+    section:"Payment Management",
+    permission:"userPayment"
+  },
+
+  "payment-history":{
+    file:"payment-history.html",
+    title:"Payment History",
+    section:"Payment Management",
+    permission:"paymentHistory"
+  },
+
+  "delete-payment":{
+    file:"delete-payment.html",
+    title:"Delete Payment History",
+    section:"Payment Management",
+    permission:"deletePaymentHistory"
+  },
+
+  "currency":{
+    file:"currency.html",
+    title:"Add Currency",
+    section:"Settings",
+    permission:"addCurrency"
+  },
+
+  "payment-method":{
+    file:"payment-method.html",
+    title:"Add Payment Method",
+    section:"Settings",
+    permission:"addPaymentMethod"
+  },
+
+  "manage-admins":{
+    file:"manage-admins.html",
+    title:"Manage Admins",
+    section:"Administration",
+    permission:"manageAdmins"
+  },
+
+  "my-account":{
+    file:"my-account.html",
+    title:"My Account",
+    section:"Account",
+    permission:"myAccount"
+  }
+
 };
 
-/* =====================================
-   ELEMENTS AND AUTH STATE
-===================================== */
+
+/* =========================================
+   3. GLOBAL STATE
+========================================= */
 
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("mobileOverlay");
+
 const pageContainer = document.getElementById("pageContainer");
 const pageTitle = document.getElementById("pageTitle");
 const pageBreadcrumb = document.getElementById("pageBreadcrumb");
 
 let currentPage = "";
 let loadCounter = 0;
+
 let authToken = "";
 let currentAdmin = null;
 let currentPermissions = {};
+
 let cardHideMode = false;
 let authBusy = false;
 
-/* =====================================
-   AUTH API
-===================================== */
+
+/* =========================================
+   4. AUTH API REQUEST
+========================================= */
 
 async function authRequest(payload){
+
   const response = await fetch(AUTH_API_URL,{
+
     method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
+
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
+    },
+
     body:JSON.stringify(payload),
+
     cache:"no-store",
+
     redirect:"follow"
+
   });
 
   const raw = await response.text();
 
   let result;
+
   try{
+
     result = JSON.parse(raw);
-  }catch(e){
-    throw new Error("Server response is not valid JSON. Check Apps Script deployment.");
+
+  }catch(error){
+
+    throw new Error(
+      "Server response is not valid JSON. Check Apps Script deployment."
+    );
+
   }
 
   if(!response.ok || result.success === false){
-    throw new Error(result.message || result.error || "Request failed.");
+
+    throw new Error(
+      result.message || result.error || "Request failed."
+    );
+
   }
 
   return result;
+
 }
+
+
+/* =========================================
+   5. AUTH STORAGE
+========================================= */
 
 function getStoredToken(){
+
   return localStorage.getItem(AUTH_TOKEN_KEY) || "";
+
 }
+
 
 function saveAuth(token,admin,permissions){
-  authToken = token;
+
+  authToken = token || "";
+
   currentAdmin = admin || {};
+
   currentPermissions = permissions || {};
 
-  localStorage.setItem(AUTH_TOKEN_KEY,token);
-  localStorage.setItem(AUTH_USER_KEY,JSON.stringify(currentAdmin));
-  localStorage.setItem(AUTH_PERMISSION_KEY,JSON.stringify(currentPermissions));
-}
+  localStorage.setItem(
+    AUTH_TOKEN_KEY,
+    authToken
+  );
 
-function clearAuth(){
-  authToken = "";
-  currentAdmin = null;
-  currentPermissions = {};
-
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(AUTH_PERMISSION_KEY);
-}
-
-function showLogin(message){
-  document.getElementById("mainApp").style.display = "none";
-  document.getElementById("authScreen").style.display = "flex";
-
-  const error = document.getElementById("loginError");
-  error.textContent = message || "";
-  error.style.display = message ? "block" : "none";
-
-  document.getElementById("loginButton").disabled = false;
-  document.getElementById("loginButton").textContent = "Login to Dashboard";
-}
-
-function showApplication(){
-  document.getElementById("authScreen").style.display = "none";
-  document.getElementById("mainApp").style.display = "block";
-  updateAdminProfile();
-  applyPermissions();
-}
-
-function normalizePermissionData(data){
-  if(!data || !data.permissions) return {};
-  return data.permissions;
-}
-
-async function loadPermissions(){
-  const result = await authRequest({
-    action:"getMyPermissions",
-    token:authToken
-  });
-
-  currentPermissions = normalizePermissionData(result.data || result);
+  localStorage.setItem(
+    AUTH_USER_KEY,
+    JSON.stringify(currentAdmin)
+  );
 
   localStorage.setItem(
     AUTH_PERMISSION_KEY,
     JSON.stringify(currentPermissions)
   );
 
-  return currentPermissions;
 }
 
-/* =====================================
-   LOGIN
-===================================== */
 
-document.getElementById("loginForm").addEventListener("submit",async function(event){
+function clearAuth(){
+
+  authToken = "";
+
+  currentAdmin = null;
+
+  currentPermissions = {};
+
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+
+  localStorage.removeItem(AUTH_USER_KEY);
+
+  localStorage.removeItem(AUTH_PERMISSION_KEY);
+
+}
+
+
+/* =========================================
+   6. PERMISSION NORMALIZER
+========================================= */
+
+function normalizePermissionData(admin){
+
+  if(!admin) return {};
+
+  if(
+    admin.permissions &&
+    typeof admin.permissions === "object"
+  ){
+
+    return admin.permissions;
+
+  }
+
+  return {};
+
+}
+
+
+/* =========================================
+   7. SHOW LOGIN
+========================================= */
+
+function showLogin(message){
+
+  document.getElementById("mainApp").style.display = "none";
+
+  document.getElementById("authScreen").style.display = "flex";
+
+  const error = document.getElementById("loginError");
+
+  error.textContent = message || "";
+
+  error.style.display = message ? "block" : "none";
+
+  document.getElementById("loginButton").disabled = false;
+
+  document.getElementById("loginButton").textContent =
+    "Login to Dashboard";
+
+}
+
+
+/* =========================================
+   8. SHOW APPLICATION
+========================================= */
+
+function showApplication(){
+
+  document.getElementById("authScreen").style.display = "none";
+
+  document.getElementById("mainApp").style.display = "block";
+
+  updateAdminProfile();
+
+  applyPermissions();
+
+}
+
+
+/* =========================================
+   9. FAST LOGIN
+   ONE API REQUEST
+========================================= */
+
+document.getElementById("loginForm")
+.addEventListener("submit",async function(event){
+
   event.preventDefault();
 
   if(authBusy) return;
+
   authBusy = true;
 
   const button = document.getElementById("loginButton");
+
   const error = document.getElementById("loginError");
+
   const status = document.getElementById("loginStatus");
 
   button.disabled = true;
+
   button.textContent = "Signing in...";
+
   error.style.display = "none";
+
   status.textContent = "Connecting securely...";
 
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
 
   try{
+
+    // One API call only.
     const result = await authRequest({
+
       action:"login",
+
       email:email,
+
       password:password
+
     });
 
-    if(!result.success || !result.data || !result.data.token){
-      throw new Error(result.message || "Login failed.");
+
+    if(!result.data || !result.data.token){
+
+      throw new Error(
+        result.message || "Login failed."
+      );
+
     }
 
+
     const token = result.data.token;
+
     const admin = result.data.admin || {};
 
-    authToken = token;
-    currentAdmin = admin;
 
-    // One permission request after successful login.
-    const permissionResult = await authRequest({
-      action:"getMyPermissions",
-      token:token
-    });
+    // Permissions already included in login response.
+    const permissions = normalizePermissionData(admin);
 
-    const permissions = normalizePermissionData(
-      permissionResult.data || permissionResult
+
+    // Save login data.
+    saveAuth(
+      token,
+      admin,
+      permissions
     );
 
-    saveAuth(token,admin,permissions);
 
     document.getElementById("loginPassword").value = "";
 
+
     showApplication();
 
-    const page = getPageFromHash();
-    const allowedPage = canOpenPage(page) ? page : getFirstAllowedPage();
 
-    loadPage(allowedPage,false);
+    const requestedPage = getPageFromHash();
 
-  }catch(err){
-    error.textContent = err.message || "Unable to login.";
-    error.style.display = "block";
-    status.textContent = "Please check your email and password.";
+    const allowedPage = canOpenPage(requestedPage)
+      ? requestedPage
+      : getFirstAllowedPage();
+
+
+    if(allowedPage){
+
+      loadPage(allowedPage,false);
+
+    }
+
+
+    status.textContent = "Login successful.";
+
+
+  }catch(error){
+
+    document.getElementById("loginError").textContent =
+      error.message || "Unable to login.";
+
+    document.getElementById("loginError").style.display =
+      "block";
+
+    status.textContent =
+      "Please check your email and password.";
+
     button.disabled = false;
+
     button.textContent = "Login to Dashboard";
+
+
   }finally{
+
     authBusy = false;
+
   }
+
 });
 
-/* =====================================
-   RESTORE EXISTING SESSION
-===================================== */
+
+/* =========================================
+   10. FAST SESSION RESTORE
+   ONE VERIFY REQUEST
+========================================= */
 
 async function startApplication(){
+
   const token = getStoredToken();
 
   if(!token){
+
     showLogin();
+
     return;
+
   }
 
   authToken = token;
 
+
   try{
-    // Verify once on startup. No repeated verification on every page.
+
+    // One verify request only.
     const result = await authRequest({
+
       action:"verify",
+
       token:token
+
     });
 
-    if(!result.success || !result.data || !result.data.admin){
+
+    if(!result.data || !result.data.admin){
+
       throw new Error("Session expired.");
+
     }
+
 
     currentAdmin = result.data.admin;
 
-    // Get current permissions from server once.
-    await loadPermissions();
 
-    saveAuth(token,currentAdmin,currentPermissions);
+    // Permissions are already included in verify response.
+    currentPermissions =
+      normalizePermissionData(currentAdmin);
+
+
+    saveAuth(
+      token,
+      currentAdmin,
+      currentPermissions
+    );
+
+
     showApplication();
 
+
     const requestedPage = getPageFromHash();
-    loadPage(canOpenPage(requestedPage) ? requestedPage : getFirstAllowedPage(),false);
+
+    const allowedPage = canOpenPage(requestedPage)
+      ? requestedPage
+      : getFirstAllowedPage();
+
+
+    if(allowedPage){
+
+      loadPage(allowedPage,false);
+
+    }else{
+
+      pageContainer.innerHTML = `
+        <div class="error-box">
+          <h3>No Page Permission</h3>
+          <p>Your account does not have permission to open any page.</p>
+        </div>
+      `;
+
+    }
+
 
   }catch(error){
+
     console.warn("Session restore failed:",error);
+
     clearAuth();
-    showLogin("Your session expired. Please login again.");
+
+    showLogin(
+      "Your session expired or could not be verified. Please login again."
+    );
+
   }
+
 }
 
-/* =====================================
-   PERMISSION SYSTEM
-===================================== */
+
+/* =========================================
+   11. PERMISSION SYSTEM
+========================================= */
 
 function hasPermission(permission){
+
   if(!currentAdmin) return false;
 
-  const role = String(currentAdmin.role || "").toLowerCase();
+  const role = String(
+    currentAdmin.role || ""
+  ).toLowerCase();
 
-  if(role === "super admin") return true;
+
+  if(role === "super admin"){
+
+    return true;
+
+  }
+
 
   return currentPermissions[permission] === true;
+
 }
+
 
 function canOpenPage(page){
+
   const config = PAGE_CONFIG[page];
+
   if(!config) return false;
+
   return hasPermission(config.permission);
+
 }
+
 
 function getFirstAllowedPage(){
+
   const preferred = [
-    "dashboard","user-list","add-wage","wage-history",
-    "payment","payment-history","my-account"
+
+    "dashboard",
+
+    "user-list",
+
+    "add-wage",
+
+    "wage-history",
+
+    "payment",
+
+    "payment-history",
+
+    "my-account"
+
   ];
+
 
   for(const page of preferred){
-    if(canOpenPage(page)) return page;
+
+    if(canOpenPage(page)){
+
+      return page;
+
+    }
+
   }
+
 
   for(const page of Object.keys(PAGE_CONFIG)){
-    if(canOpenPage(page)) return page;
+
+    if(canOpenPage(page)){
+
+      return page;
+
+    }
+
   }
+
 
   return "";
+
 }
+
+
+/* =========================================
+   12. APPLY SIDEBAR PERMISSIONS
+========================================= */
 
 function applyPermissions(){
-  document.querySelectorAll(".nav-item[data-permission]").forEach(item=>{
+
+  document.querySelectorAll(
+    ".nav-item[data-permission]"
+  ).forEach(item=>{
+
     const permission = item.dataset.permission;
+
     const allowed = hasPermission(permission);
+
     item.style.display = allowed ? "flex" : "none";
+
   });
 
-  // Hide section headings if no visible menu belongs to that section.
+
   const sections = [
-    {heading:"users",pages:["add-user","user-list","deleted-user"]},
-    {heading:"wages",pages:["add-wage","wage-history","deleted-wage"]},
-    {heading:"payments",pages:["payment","payment-history","delete-payment"]},
-    {heading:"settings",pages:["currency","payment-method","card-hide"]},
-    {heading:"admin",pages:["manage-admins","my-account"]}
+
+    {
+      heading:"main",
+      pages:["dashboard"]
+    },
+
+    {
+      heading:"users",
+      pages:["add-user","user-list","deleted-user"]
+    },
+
+    {
+      heading:"wages",
+      pages:["add-wage","wage-history","deleted-wage"]
+    },
+
+    {
+      heading:"payments",
+      pages:["payment","payment-history","delete-payment"]
+    },
+
+    {
+      heading:"settings",
+      pages:["currency","payment-method","card-hide"]
+    },
+
+    {
+      heading:"admin",
+      pages:["manage-admins","my-account"]
+    }
+
   ];
 
+
   sections.forEach(section=>{
+
     const heading = document.querySelector(
-      '[data-nav-section="'+section.heading+'"]'
+      '[data-nav-section="' + section.heading + '"]'
     );
+
     if(!heading) return;
 
+
     const visible = section.pages.some(page=>{
+
       const item = document.querySelector(
-        '.nav-item[data-page="'+page+'"],.nav-item[data-action="'+page+'"]'
+        '.nav-item[data-page="' + page + '"],' +
+        '.nav-item[data-action="' + page + '"]'
       );
+
       return item && item.style.display !== "none";
+
     });
 
-    heading.style.display = visible ? "block" : "none";
+
+    heading.style.display =
+      visible ? "block" : "none";
+
   });
+
+
+  const accountButton =
+    document.getElementById("accountButton");
+
+
+  if(accountButton){
+
+    accountButton.style.display =
+      hasPermission("myAccount") ? "block" : "none";
+
+  }
+
 }
+
+
+/* =========================================
+   13. PROFILE
+========================================= */
 
 function updateAdminProfile(){
-  const name = currentAdmin.name || "Administrator";
-  const role = currentAdmin.role || "Admin";
-  const picture = currentAdmin.profilePicture || "";
 
-  document.getElementById("sidebarUserName").textContent = name;
-  document.getElementById("sidebarUserRole").textContent = role;
+  if(!currentAdmin) return;
 
-  const avatar = document.getElementById("sidebarAvatar");
+  const name =
+    currentAdmin.name || "Administrator";
+
+  const role =
+    currentAdmin.role || "Admin";
+
+  const picture =
+    currentAdmin.profilePicture || "";
+
+
+  document.getElementById(
+    "sidebarUserName"
+  ).textContent = name;
+
+
+  document.getElementById(
+    "sidebarUserRole"
+  ).textContent = role;
+
+
+  const avatar =
+    document.getElementById("sidebarAvatar");
+
 
   if(picture){
+
     avatar.innerHTML = "";
+
     const img = document.createElement("img");
+
     img.src = picture;
+
     img.alt = "Profile";
+
     avatar.appendChild(img);
+
   }else{
-    avatar.textContent = name.charAt(0).toUpperCase();
+
+    avatar.textContent =
+      name.charAt(0).toUpperCase();
+
   }
+
 }
 
-/* =====================================
-   LOGOUT
-===================================== */
+
+/* =========================================
+   14. LOGOUT
+========================================= */
 
 async function logout(){
+
   const token = authToken;
 
+
+  // Immediately clear local session.
   clearAuth();
 
+  closeSidebar();
+
+  location.hash = "";
+
+
   try{
+
     if(token){
+
       await authRequest({
+
         action:"logout",
+
         token:token
+
       });
+
     }
+
   }catch(error){
+
     console.warn("Logout request:",error);
+
   }
 
-  closeSidebar();
-  location.hash = "";
+
   showLogin("You have been logged out.");
+
 }
 
-document.getElementById("logoutButton").addEventListener("click",logout);
 
-document.getElementById("accountButton").addEventListener("click",function(){
+document.getElementById("logoutButton")
+.addEventListener("click",logout);
+
+
+document.getElementById("accountButton")
+.addEventListener("click",function(){
+
   if(canOpenPage("my-account")){
+
     loadPage("my-account",true);
+
   }
+
 });
 
-/* =====================================
-   THEME SYSTEM - ORIGINAL
-===================================== */
+
+/* =========================================
+   15. THEME SYSTEM
+========================================= */
 
 function applyTheme(theme){
-  document.body.classList.toggle("dark",theme === "dark");
 
-  document.getElementById("themeToggle").textContent =
+  document.body.classList.toggle(
+    "dark",
+    theme === "dark"
+  );
+
+
+  document.getElementById(
+    "themeToggle"
+  ).textContent =
     theme === "dark" ? "☀" : "☾";
 
-  localStorage.setItem("wage_theme",theme);
+
+  localStorage.setItem(
+    "wage_theme",
+    theme
+  );
+
 }
 
-const savedTheme = localStorage.getItem("wage_theme") || "light";
+
+const savedTheme =
+  localStorage.getItem("wage_theme") || "light";
+
 applyTheme(savedTheme);
 
-document.getElementById("themeToggle").addEventListener("click",function(){
-  const isDark = document.body.classList.contains("dark");
-  applyTheme(isDark ? "light" : "dark");
+
+document.getElementById("themeToggle")
+.addEventListener("click",function(){
+
+  const isDark =
+    document.body.classList.contains("dark");
+
+  applyTheme(
+    isDark ? "light" : "dark"
+  );
+
 });
 
-/* =====================================
-   MOBILE SIDEBAR
-===================================== */
+
+/* =========================================
+   16. MOBILE SIDEBAR
+========================================= */
 
 function openSidebar(){
+
   sidebar.classList.add("open");
+
   overlay.classList.add("show");
+
 }
+
 
 function closeSidebar(){
+
   sidebar.classList.remove("open");
+
   overlay.classList.remove("show");
+
 }
 
-document.getElementById("menuToggle").addEventListener("click",openSidebar);
+
+document.getElementById("menuToggle")
+.addEventListener("click",openSidebar);
+
+
 overlay.addEventListener("click",closeSidebar);
 
-/* =====================================
-   PAGE ROUTING
-===================================== */
+
+/* =========================================
+   17. ROUTING
+========================================= */
 
 function getPageFromHash(){
+
   let page = location.hash.replace("#","");
-  if(!page) return "dashboard";
 
-  page = decodeURIComponent(page);
-  return PAGE_CONFIG[page] ? page : "dashboard";
-}
 
-function updateActiveMenu(page){
-  document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
-    item.classList.toggle("active",item.dataset.page === page);
-  });
-}
+  if(!page){
 
-function updatePageHeader(page){
-  const config = PAGE_CONFIG[page];
-  pageTitle.textContent = config.title;
-  pageBreadcrumb.textContent =
-    "Home / " + config.section + " / " + config.title;
-}
+    return "dashboard";
 
-/* =====================================
-   CHILD CSS SCOPING
-===================================== */
-
-function scopeChildCSS(css,scope){
-  css = css.replace(/\/\*[\s\S]*?\*\//g,"");
-
-  function processRules(source){
-    let output = "";
-    let position = 0;
-
-    while(position < source.length){
-      const open = source.indexOf("{",position);
-      if(open === -1){
-        output += source.slice(position);
-        break;
-      }
-
-      const selector = source.slice(position,open).trim();
-      let depth = 1;
-      let close = open + 1;
-
-      while(close < source.length && depth > 0){
-        if(source[close] === "{") depth++;
-        if(source[close] === "}") depth--;
-        close++;
-      }
-
-      const body = source.slice(open + 1,close - 1);
-
-      if(
-        selector.startsWith("@media") ||
-        selector.startsWith("@supports") ||
-        selector.startsWith("@container") ||
-        selector.startsWith("@layer")
-      ){
-        output += selector + "{" + processRules(body) + "}";
-      }else if(
-        selector.startsWith("@keyframes") ||
-        selector.startsWith("@-webkit-keyframes")
-      ){
-        output += selector + "{" + body + "}";
-      }else if(selector.startsWith("@")){
-        output += selector + "{" + body + "}";
-      }else{
-        const scopedSelectors = selector.split(",").map(part=>{
-          let s = part.trim();
-          if(!s) return "";
-
-          s = s.replace(
-            /^(html|body|:root)(?=$|[\s.#:[>+~])/,
-            scope
-          );
-
-          if(s === "*") return scope + " *";
-          if(s.startsWith(scope)) return s;
-
-          return scope + " " + s;
-        }).join(",");
-
-        output += scopedSelectors + "{" + body + "}";
-      }
-
-      position = close;
-    }
-
-    return output;
   }
 
-  return processRules(css);
+
+  try{
+
+    page = decodeURIComponent(page);
+
+  }catch(error){
+
+    page = "dashboard";
+
+  }
+
+
+  return PAGE_CONFIG[page]
+    ? page
+    : "dashboard";
+
 }
+
+
+function updateActiveMenu(page){
+
+  document.querySelectorAll(
+    ".nav-item[data-page]"
+  ).forEach(item=>{
+
+    item.classList.toggle(
+      "active",
+      item.dataset.page === page
+    );
+
+  });
+
+}
+
+
+function updatePageHeader(page){
+
+  const config = PAGE_CONFIG[page];
+
+  pageTitle.textContent = config.title;
+
+  pageBreadcrumb.textContent =
+    "Home / " + config.section + " / " + config.title;
+
+}
+
+
+/* =========================================
+   18. CHILD CSS SCOPING
+========================================= */
+
+function scopeChildCSS(css,scope){
+
+  css = css.replace(
+    /\/\*[\s\S]*?\*\//g,
+    ""
+  );
+
+
+  function processRules(source){
+
+    let output = "";
+
+    let position = 0;
+
+
+    while(position < source.length){
+
+      const open = source.indexOf(
+        "{",
+        position
+      );
+
+
+      if(open === -1){
+
+        output += source.slice(position);
+
+        break;
+
+      }
+
+
+      const selector =
+        source.slice(position,open).trim();
+
+
+      let depth = 1;
+
+      let close = open + 1;
+
+
+      while(close < source.length && depth > 0){
+
+        if(source[close] === "{") depth++;
+
+        if(source[close] === "}") depth--;
+
+        close++;
+
+      }
+
+
+      const body =
+        source.slice(open + 1,close - 1);
+
+
+      if(
+
+        selector.startsWith("@media") ||
+
+        selector.startsWith("@supports") ||
+
+        selector.startsWith("@container") ||
+
+        selector.startsWith("@layer")
+
+      ){
+
+        output +=
+          selector + "{" +
+          processRules(body) +
+          "}";
+
+
+      }else if(
+
+        selector.startsWith("@keyframes") ||
+
+        selector.startsWith("@-webkit-keyframes")
+
+      ){
+
+        output +=
+          selector + "{" + body + "}";
+
+
+      }else if(selector.startsWith("@")){
+
+        output +=
+          selector + "{" + body + "}";
+
+
+      }else{
+
+        const scopedSelectors =
+          selector.split(",").map(part=>{
+
+            let s = part.trim();
+
+            if(!s) return "";
+
+            s = s.replace(
+              /^(html|body|:root)(?=$|[\s.#:[>+~])/,
+              scope
+            );
+
+            if(s === "*"){
+
+              return scope + " *";
+
+            }
+
+            if(s.startsWith(scope)){
+
+              return s;
+
+            }
+
+            return scope + " " + s;
+
+          }).join(",");
+
+
+        output +=
+          scopedSelectors + "{" + body + "}";
+
+      }
+
+
+      position = close;
+
+    }
+
+
+    return output;
+
+  }
+
+
+  return processRules(css);
+
+}
+
 
 function clearPageStyles(){
-  document.querySelectorAll("[data-child-page-style]").forEach(style=>{
+
+  document.querySelectorAll(
+    "[data-child-page-style]"
+  ).forEach(style=>{
+
     style.remove();
+
   });
+
 }
 
+
 async function loadPageStyles(doc,pageFile){
+
   clearPageStyles();
+
 
   const stylePromises = [];
 
-  doc.head.querySelectorAll("style").forEach(oldStyle=>{
-    const newStyle = document.createElement("style");
-    newStyle.setAttribute("data-child-page-style",pageFile);
-    newStyle.textContent = scopeChildCSS(oldStyle.textContent,"#pageContainer");
+
+  doc.head.querySelectorAll("style")
+  .forEach(oldStyle=>{
+
+    const newStyle =
+      document.createElement("style");
+
+    newStyle.setAttribute(
+      "data-child-page-style",
+      pageFile
+    );
+
+    newStyle.textContent = scopeChildCSS(
+      oldStyle.textContent,
+      "#pageContainer"
+    );
+
     document.head.appendChild(newStyle);
+
   });
 
-  doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(oldLink=>{
-    const newLink = document.createElement("link");
+
+  doc.head.querySelectorAll(
+    'link[rel="stylesheet"]'
+  ).forEach(oldLink=>{
+
+    const newLink =
+      document.createElement("link");
+
     newLink.rel = "stylesheet";
 
     newLink.href = new URL(
@@ -994,363 +2134,818 @@ async function loadPageStyles(doc,pageFile){
       new URL("./" + pageFile,location.href)
     ).href;
 
-    newLink.setAttribute("data-child-page-style",pageFile);
+    newLink.setAttribute(
+      "data-child-page-style",
+      pageFile
+    );
+
 
     const promise = new Promise((resolve,reject)=>{
+
       newLink.onload = resolve;
-      newLink.onerror = ()=>reject(new Error("CSS could not load: " + newLink.href));
+
+      newLink.onerror = ()=>reject(
+        new Error(
+          "CSS could not load: " + newLink.href
+        )
+      );
+
     });
+
 
     document.head.appendChild(newLink);
+
     stylePromises.push(promise);
+
   });
 
+
   await Promise.all(stylePromises);
+
 }
 
-/* =====================================
-   CHILD SCRIPTS
-===================================== */
+
+/* =========================================
+   19. CHILD JAVASCRIPT
+========================================= */
 
 async function executePageScripts(container){
-  const scripts = Array.from(container.querySelectorAll("script"));
+
+  const scripts = Array.from(
+    container.querySelectorAll("script")
+  );
+
 
   for(const oldScript of scripts){
-    const newScript = document.createElement("script");
 
-    Array.from(oldScript.attributes).forEach(attr=>{
-      newScript.setAttribute(attr.name,attr.value);
+    const newScript =
+      document.createElement("script");
+
+
+    Array.from(oldScript.attributes)
+    .forEach(attr=>{
+
+      newScript.setAttribute(
+        attr.name,
+        attr.value
+      );
+
     });
 
+
     if(oldScript.src){
+
       newScript.src = new URL(
         oldScript.getAttribute("src"),
         location.href
       ).href;
 
+
       await new Promise((resolve,reject)=>{
+
         newScript.onload = resolve;
+
         newScript.onerror = ()=>reject(
-          new Error("Could not load script: " + newScript.src)
+          new Error(
+            "Could not load script: " + newScript.src
+          )
         );
+
         oldScript.replaceWith(newScript);
+
       });
+
+
     }else{
-      newScript.textContent = oldScript.textContent;
+
+      newScript.textContent =
+        oldScript.textContent;
+
       oldScript.replaceWith(newScript);
+
     }
+
   }
+
 }
 
-/* =====================================
-   CARD HIDE / SHOW
-===================================== */
 
-const CARD_HIDE_STORAGE_KEY = "wage_hidden_dashboard_cards";
+/* =========================================
+   20. DASHBOARD CARD HIDE / SHOW
+========================================= */
+
+const CARD_HIDE_STORAGE_KEY =
+  "wage_hidden_dashboard_cards";
+
 
 function getHiddenDashboardCards(){
+
   try{
+
     const saved = JSON.parse(
       localStorage.getItem(CARD_HIDE_STORAGE_KEY) || "[]"
     );
-    return Array.isArray(saved) ? saved : [];
+
+    return Array.isArray(saved)
+      ? saved
+      : [];
+
   }catch(error){
+
     return [];
+
   }
+
 }
+
 
 function saveHiddenDashboardCards(cards){
-  localStorage.setItem(CARD_HIDE_STORAGE_KEY,JSON.stringify(cards));
+
+  localStorage.setItem(
+    CARD_HIDE_STORAGE_KEY,
+    JSON.stringify(cards)
+  );
+
 }
 
+
 const DASHBOARD_CARD_SELECTOR = [
-  "[data-dashboard-card]",".stat-card",".dashboard-card",
-  ".summary-card",".metric-card",".stat-box",
-  ".summary-box",".dashboard-stat",".card"
+
+  "[data-dashboard-card]",
+
+  ".stat-card",
+
+  ".dashboard-card",
+
+  ".summary-card",
+
+  ".metric-card",
+
+  ".stat-box",
+
+  ".summary-box",
+
+  ".dashboard-stat",
+
+  ".card"
+
 ].join(",");
 
+
 function getDashboardCardKey(card,index){
-  if(card.dataset.cardHideKey) return card.dataset.cardHideKey;
+
+  if(card.dataset.cardHideKey){
+
+    return card.dataset.cardHideKey;
+
+  }
+
 
   if(card.id){
-    card.dataset.cardHideKey = "id:" + card.id;
+
+    card.dataset.cardHideKey =
+      "id:" + card.id;
+
     return card.dataset.cardHideKey;
+
   }
+
 
   const heading = card.querySelector(
     "h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title"
   );
 
+
   const title = heading
     ? heading.textContent.trim()
     : card.textContent.trim().slice(0,70);
 
+
   const classes = Array.from(card.classList)
     .filter(c=>c !== "card-hide-target")
-    .sort().join(".");
+    .sort()
+    .join(".");
 
-  const key = ["dashboard-card",classes,title,index].join("|");
+
+  const key = [
+
+    "dashboard-card",
+
+    classes,
+
+    title,
+
+    index
+
+  ].join("|");
+
+
   card.dataset.cardHideKey = key;
+
   return key;
+
 }
+
 
 function updateCardHideButton(){
-  const button = document.getElementById("cardHideMenuButton");
+
+  const button = document.getElementById(
+    "cardHideMenuButton"
+  );
+
   if(!button) return;
 
-  button.classList.toggle("active",cardHideMode);
+  button.classList.toggle(
+    "active",
+    cardHideMode
+  );
+
 }
 
+
 function createCardHideToolbar(){
-  let toolbar = document.getElementById("cardHideToolbar");
+
+  let toolbar = document.getElementById(
+    "cardHideToolbar"
+  );
+
 
   if(!cardHideMode){
-    if(toolbar) toolbar.remove();
+
+    if(toolbar){
+
+      toolbar.remove();
+
+    }
+
     return;
+
   }
 
+
   if(!toolbar){
+
     toolbar = document.createElement("div");
+
     toolbar.id = "cardHideToolbar";
+
     toolbar.className = "card-hide-toolbar";
 
+
     toolbar.innerHTML = `
+
       <div>
+
         <strong>Dashboard Card Settings</strong>
+
         <div style="font-size:11px;color:var(--muted);margin-top:4px">
+
           Hide or show individual dashboard cards.
+
         </div>
+
       </div>
-      <button type="button" id="finishCardHideMode">Done</button>
+
+      <button type="button" id="finishCardHideMode">
+
+        Done
+
+      </button>
+
     `;
+
 
     pageContainer.prepend(toolbar);
 
-    toolbar.querySelector("#finishCardHideMode").addEventListener("click",function(){
+
+    toolbar.querySelector(
+      "#finishCardHideMode"
+    ).addEventListener("click",function(){
+
       cardHideMode = false;
-      document.body.classList.remove("card-hide-mode");
+
+      document.body.classList.remove(
+        "card-hide-mode"
+      );
+
       updateCardHideButton();
+
       setupDashboardCardControls();
+
     });
+
   }
+
 }
+
 
 function toggleDashboardCard(card){
+
   const key = card.dataset.cardHideKey;
+
   if(!key) return;
 
+
   const hidden = getHiddenDashboardCards();
+
   const index = hidden.indexOf(key);
 
-  if(index >= 0) hidden.splice(index,1);
-  else hidden.push(key);
+
+  if(index >= 0){
+
+    hidden.splice(index,1);
+
+  }else{
+
+    hidden.push(key);
+
+  }
+
 
   saveHiddenDashboardCards(hidden);
+
   setupDashboardCardControls();
+
 }
 
+
 function setupDashboardCardControls(){
+
   if(currentPage !== "dashboard") return;
+
+
+  if(!hasPermission("dashboardCards")){
+
+    const oldToolbar =
+      document.getElementById("cardHideToolbar");
+
+    if(oldToolbar) oldToolbar.remove();
+
+
+    pageContainer.querySelectorAll(
+      DASHBOARD_CARD_SELECTOR
+    ).forEach(card=>{
+
+      card.style.display = "none";
+
+    });
+
+
+    cardHideMode = false;
+
+    document.body.classList.remove(
+      "card-hide-mode"
+    );
+
+    updateCardHideButton();
+
+    return;
+
+  }
+
 
   createCardHideToolbar();
 
+
   const hidden = getHiddenDashboardCards();
+
+
   const cards = Array.from(
-    pageContainer.querySelectorAll(DASHBOARD_CARD_SELECTOR)
+    pageContainer.querySelectorAll(
+      DASHBOARD_CARD_SELECTOR
+    )
   );
 
+
   const outerCards = cards.filter(card=>{
+
     const parent = card.parentElement;
-    return !parent || !parent.closest(DASHBOARD_CARD_SELECTOR);
+
+    return !parent ||
+      !parent.closest(DASHBOARD_CARD_SELECTOR);
+
   });
+
 
   outerCards.forEach((card,index)=>{
-    const key = getDashboardCardKey(card,index);
+
+    const key = getDashboardCardKey(
+      card,
+      index
+    );
+
     const isHidden = hidden.includes(key);
 
-    card.classList.add("card-hide-target");
-    card.classList.toggle("is-card-hidden",isHidden);
 
-    let button = card.querySelector(":scope > .card-hide-control");
+    card.classList.add("card-hide-target");
+
+    card.classList.toggle(
+      "is-card-hidden",
+      isHidden
+    );
+
+
+    let button = card.querySelector(
+      ":scope > .card-hide-control"
+    );
+
 
     if(!button){
+
       button = document.createElement("button");
+
       button.type = "button";
+
       button.className = "card-hide-control";
+
       card.appendChild(button);
 
+
       button.addEventListener("click",function(event){
+
         event.preventDefault();
+
         event.stopPropagation();
+
         toggleDashboardCard(card);
+
       });
+
     }
 
-    button.classList.toggle("is-hidden",isHidden);
-    button.textContent = isHidden ? "Show Card" : "Hide Card";
-    button.style.display = cardHideMode ? "block" : "none";
+
+    button.classList.toggle(
+      "is-hidden",
+      isHidden
+    );
+
+
+    button.textContent = isHidden
+      ? "Show Card"
+      : "Hide Card";
+
+
+    button.style.display =
+      cardHideMode ? "block" : "none";
+
 
     card.style.removeProperty("display");
-    if(isHidden && !cardHideMode) card.classList.add("is-card-hidden");
+
+
+    if(isHidden && !cardHideMode){
+
+      card.classList.add("is-card-hidden");
+
+    }
+
   });
 
-  document.body.classList.toggle("card-hide-mode",cardHideMode);
+
+  document.body.classList.toggle(
+    "card-hide-mode",
+    cardHideMode
+  );
+
+
   updateCardHideButton();
+
 }
+
 
 function toggleCardHideMode(){
+
   if(!hasPermission("cardHideShow")) return;
 
+  if(!hasPermission("dashboardCards")) return;
+
+
   cardHideMode = !cardHideMode;
+
   closeSidebar();
+
 
   if(currentPage !== "dashboard"){
+
     loadPage("dashboard",true);
+
   }else{
+
     setupDashboardCardControls();
+
   }
+
 }
 
-/* =====================================
-   MAIN PAGE LOADER
-===================================== */
+
+/* =========================================
+   21. MAIN PAGE LOADER
+========================================= */
 
 async function loadPage(page,addHistory=true){
-  if(!PAGE_CONFIG[page]) page = getFirstAllowedPage();
 
-  if(!page || !PAGE_CONFIG[page]){
-    pageContainer.innerHTML = `
-      <div class="error-box">
-        <h3>No Page Permission</h3>
-        <p>Your account does not have permission to open any page.</p>
-      </div>`;
-    return;
-  }
+  if(!PAGE_CONFIG[page]){
 
-  if(!canOpenPage(page)){
     page = getFirstAllowedPage();
 
-    if(!page){
-      pageContainer.innerHTML = `
-        <div class="error-box">
-          <h3>Access Denied</h3>
-          <p>Your account has not been assigned any page permissions.</p>
-        </div>`;
-      return;
-    }
   }
+
+
+  if(!page || !PAGE_CONFIG[page]){
+
+    pageContainer.innerHTML = `
+
+      <div class="error-box">
+
+        <h3>No Page Permission</h3>
+
+        <p>Your account does not have permission to open any page.</p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  // Direct URL permission check.
+  if(!canOpenPage(page)){
+
+    page = getFirstAllowedPage();
+
+
+    if(!page){
+
+      pageContainer.innerHTML = `
+
+        <div class="error-box">
+
+          <h3>Access Denied</h3>
+
+          <p>Your account has not been assigned any page permissions.</p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+  }
+
 
   const config = PAGE_CONFIG[page];
+
   const thisLoad = ++loadCounter;
 
+
   closeSidebar();
+
   updateActiveMenu(page);
+
   updatePageHeader(page);
 
+
   if(addHistory){
+
     const newHash = "#" + page;
+
+
     if(location.hash !== newHash){
-      history.pushState({page:page},"",newHash);
+
+      history.pushState(
+        {page:page},
+        "",
+        newHash
+      );
+
     }
+
   }
 
+
   pageContainer.innerHTML = `
+
     <div class="loading-box">
+
       <div class="loading-spinner"></div>
+
       Loading ${config.title}...
-    </div>`;
+
+    </div>
+
+  `;
+
 
   try{
-    const response = await fetch("./" + config.file,{
-      method:"GET",
-      cache:"default"
-    });
+
+    const response = await fetch(
+      "./" + config.file,
+      {
+        method:"GET",
+        cache:"default"
+      }
+    );
+
 
     if(!response.ok){
-      throw new Error(config.file + " not found. HTTP " + response.status);
+
+      throw new Error(
+        config.file +
+        " not found. HTTP " +
+        response.status
+      );
+
     }
 
+
     const html = await response.text();
+
+
     if(thisLoad !== loadCounter) return;
+
 
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html,"text/html");
 
-    await loadPageStyles(doc,config.file);
+    const doc = parser.parseFromString(
+      html,
+      "text/html"
+    );
+
+
+    await loadPageStyles(
+      doc,
+      config.file
+    );
+
+
     if(thisLoad !== loadCounter) return;
+
 
     pageContainer.innerHTML = doc.body.innerHTML;
 
-    await executePageScripts(pageContainer);
+
+    await executePageScripts(
+      pageContainer
+    );
+
+
     if(thisLoad !== loadCounter) return;
+
 
     currentPage = page;
+
     window.currentPage = page;
 
+
     if(page === "dashboard"){
+
       setupDashboardCardControls();
+
     }
 
+
   }catch(error){
+
     if(thisLoad !== loadCounter) return;
 
-    console.error("Page loading error:",error);
+
+    console.error(
+      "Page loading error:",
+      error
+    );
+
 
     pageContainer.innerHTML = `
+
       <div class="error-box">
+
         <h3>Unable to Load Page</h3>
-        <p>${config.file} could not be loaded. Check that the file exists in your GitHub root folder.</p>
+
+        <p>
+          ${config.file} could not be loaded.
+          Check that the file exists in your GitHub root folder.
+        </p>
+
         <p>${String(error.message)}</p>
-        <button onclick="window.loadPage('${page}',false)">Try Again</button>
-      </div>`;
+
+        <button onclick="window.loadPage('${page}',false)">
+          Try Again
+        </button>
+
+      </div>
+
+    `;
+
   }
+
 }
 
+
+/* =========================================
+   22. GLOBAL FUNCTIONS FOR CHILD PAGES
+========================================= */
+
 window.loadPage = loadPage;
+
 window.__wageEditUserId = "";
-window.wageAuthToken = ()=>authToken;
-window.wageCurrentAdmin = ()=>currentAdmin;
+
+
+window.wageAuthToken = function(){
+
+  return authToken;
+
+};
+
+
+window.wageCurrentAdmin = function(){
+
+  return currentAdmin;
+
+};
+
+
 window.wageHasPermission = hasPermission;
-window.wagePermissions = ()=>({...currentPermissions});
 
-/* =====================================
-   SIDEBAR EVENTS
-===================================== */
 
-document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
+window.wagePermissions = function(){
+
+  return {...currentPermissions};
+
+};
+
+
+/* =========================================
+   23. SIDEBAR EVENTS
+========================================= */
+
+document.querySelectorAll(
+  ".nav-item[data-page]"
+).forEach(item=>{
+
   item.addEventListener("click",function(){
+
     const page = this.dataset.page;
-    if(canOpenPage(page)) loadPage(page,true);
+
+
+    if(canOpenPage(page)){
+
+      loadPage(page,true);
+
+    }
+
   });
+
 });
 
-document.getElementById("cardHideMenuButton").addEventListener("click",function(){
+
+document.getElementById("cardHideMenuButton")
+.addEventListener("click",function(){
+
   toggleCardHideMode();
+
 });
 
-/* =====================================
-   BROWSER BACK / FORWARD
-===================================== */
+
+/* =========================================
+   24. BROWSER BACK / FORWARD
+========================================= */
 
 window.addEventListener("popstate",function(){
-  const page = getPageFromHash();
-  loadPage(page,false);
-});
 
-window.addEventListener("hashchange",function(){
   if(!authToken) return;
 
   const page = getPageFromHash();
-  if(page !== currentPage){
-    loadPage(page,false);
-  }
+
+  loadPage(page,false);
+
 });
 
-/* =====================================
-   START
-===================================== */
+
+window.addEventListener("hashchange",function(){
+
+  if(!authToken) return;
+
+  const page = getPageFromHash();
+
+
+  if(page !== currentPage){
+
+    loadPage(page,false);
+
+  }
+
+});
+
+
+/* =========================================
+   25. START APPLICATION
+========================================= */
 
 startApplication();
+
 </script>
 
 </body>
