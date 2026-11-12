@@ -117,12 +117,14 @@ button,input{font:inherit}
   gap:10px;
   align-items:center;
   width:100%;
+  position:relative;
 }
 
+/* Dropdown is positioned relative to the FULL search row */
 .ph-search-wrap{
   flex:1;
   min-width:0;
-  position:relative;
+  position:static;
 }
 
 .ph-search{
@@ -159,6 +161,7 @@ button,input{font:inherit}
   justify-content:center;
   align-items:center;
   gap:8px;
+  flex-shrink:0;
 }
 
 .ph-select-btn:hover,
@@ -167,34 +170,55 @@ button,input{font:inherit}
   opacity:.9;
 }
 
+/* FULL WIDTH PROFILE DROPDOWN */
+
 .ph-dropdown{
   display:none;
   position:absolute;
-  top:52px;
+  top:calc(100% + 8px);
+  left:0;
   right:0;
   width:100%;
-  min-width:280px;
-  max-width:420px;
-  max-height:350px;
+  min-width:0;
+  max-width:none;
+  max-height:min(65vh,420px);
   overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
   background:var(--ph-card);
   border:1px solid var(--ph-border);
   border-radius:12px;
-  box-shadow:0 12px 35px rgba(0,0,0,.14);
-  z-index:100;
+  box-shadow:0 12px 35px rgba(0,0,0,.18);
+  z-index:999;
   padding:7px;
 }
 
-.ph-dropdown.show{display:block}
+.ph-dropdown.show{
+  display:block;
+}
+
+#phProfileOptions{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+/* Every profile stays in one vertical column */
 
 .ph-profile-option{
   display:flex;
+  flex-direction:row;
   align-items:center;
   gap:11px;
-  padding:10px;
+  width:100%;
+  min-width:0;
+  padding:11px;
   border-radius:9px;
   cursor:pointer;
-  transition:.15s;
+  transition:background .15s;
+  flex-shrink:0;
 }
 
 .ph-profile-option:hover{
@@ -229,6 +253,7 @@ button,input{font:inherit}
 .ph-profile-info{
   min-width:0;
   flex:1;
+  overflow:hidden;
 }
 
 .ph-profile-name{
@@ -243,6 +268,9 @@ button,input{font:inherit}
   font-size:11px;
   color:var(--ph-muted);
   margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .ph-profile-count{
@@ -250,6 +278,7 @@ button,input{font:inherit}
   color:var(--ph-primary);
   font-weight:700;
   white-space:nowrap;
+  flex-shrink:0;
 }
 
 .ph-dropdown-empty{
@@ -299,6 +328,7 @@ button,input{font:inherit}
   cursor:pointer;
   font-size:12px;
   font-weight:700;
+  flex-shrink:0;
 }
 
 /* HISTORY */
@@ -585,22 +615,154 @@ button,input{font:inherit}
   font-size:13px;
 }
 
+/* TABLET */
+
 @media(max-width:900px){
-  .ph-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .ph-history-list{grid-template-columns:1fr}
+  .ph-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .ph-history-list{
+    grid-template-columns:1fr;
+  }
 }
 
+/* MOBILE */
+
 @media(max-width:520px){
-  .ph-wrap{padding:13px}
-  .ph-title{font-size:21px}
-  .ph-panel{padding:13px}
-  .ph-stat{padding:14px}
-  .ph-stat-value{font-size:20px}
-  .ph-search-row{gap:7px}
-  .ph-select-btn{min-width:115px;padding:0 9px;font-size:12px}
-  .ph-dropdown{min-width:260px}
-  .ph-details{gap:11px}
-  .ph-modal-box{padding:17px}
+
+  .ph-wrap{
+    padding:13px;
+  }
+
+  .ph-title{
+    font-size:21px;
+  }
+
+  .ph-panel{
+    padding:13px;
+  }
+
+  .ph-stat{
+    padding:14px;
+  }
+
+  .ph-stat-value{
+    font-size:20px;
+  }
+
+  /* Search and button stack vertically */
+  .ph-search-row{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:9px;
+    width:100%;
+  }
+
+  .ph-search-wrap{
+    width:100%;
+    flex:none;
+  }
+
+  .ph-search{
+    width:100%;
+    height:46px;
+  }
+
+  .ph-select-btn{
+    width:100%;
+    min-width:0;
+    height:44px;
+    padding:0 12px;
+    font-size:13px;
+  }
+
+  /* Dropdown opens in front of all profile controls */
+  .ph-dropdown{
+    top:calc(100% + 7px);
+    left:0;
+    right:0;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    max-height:60vh;
+    padding:6px;
+    border-radius:11px;
+  }
+
+  .ph-profile-option{
+    width:100%;
+    padding:10px 8px;
+    gap:9px;
+  }
+
+  .ph-avatar{
+    width:40px;
+    height:40px;
+    flex:0 0 40px;
+  }
+
+  .ph-profile-name{
+    font-size:12px;
+  }
+
+  .ph-profile-id{
+    font-size:10px;
+  }
+
+  .ph-profile-count{
+    font-size:10px;
+  }
+
+  .ph-details{
+    gap:11px;
+  }
+
+  .ph-modal-box{
+    padding:17px;
+  }
+
+  .ph-selected{
+    gap:9px;
+    padding:10px;
+  }
+
+  .ph-clear{
+    padding:8px 9px;
+  }
+}
+
+/* EXTRA SMALL MOBILE */
+
+@media(max-width:360px){
+
+  .ph-wrap{
+    padding:9px;
+  }
+
+  .ph-panel{
+    padding:10px;
+  }
+
+  .ph-profile-option{
+    gap:7px;
+    padding:9px 6px;
+  }
+
+  .ph-profile-count{
+    font-size:9px;
+  }
+
+  .ph-avatar{
+    width:36px;
+    height:36px;
+    flex-basis:36px;
+  }
+
+  .ph-modal-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
