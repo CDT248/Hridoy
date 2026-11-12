@@ -164,10 +164,52 @@ button,input{font:inherit}
 .dp-item-head{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
+  align-items:center;
   flex-wrap:wrap;
   gap:10px;
   margin-bottom:13px;
+}
+
+/* USER PROFILE */
+
+.dp-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.dp-avatar{
+  width:52px;
+  height:52px;
+  min-width:52px;
+  border-radius:50%;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#087f5b,#12b886);
+  color:#fff;
+  font-size:20px;
+  font-weight:800;
+  border:2px solid var(--dp-border);
+}
+
+.dp-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.dp-avatar-fallback{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:100%;
+}
+
+.dp-user-info{
+  min-width:0;
 }
 
 .dp-user-name{
@@ -346,27 +388,22 @@ button,input{font:inherit}
 
 @media(max-width:560px){
   body{padding:12px}
-
   .dp-title h2{font-size:19px}
-
   .dp-stats{gap:8px}
-
   .dp-stat{padding:10px}
-
   .dp-stat-label{font-size:10px}
-
   .dp-stat-value{font-size:17px}
-
   .dp-search{min-width:100%}
-
   .dp-count{width:100%}
-
   .dp-item{padding:13px}
-
   .dp-actions{justify-content:stretch}
-
   .dp-actions button{width:100%}
-
+  .dp-avatar{
+    width:46px;
+    height:46px;
+    min-width:46px;
+    font-size:18px;
+  }
   .dp-toast{
     left:12px;
     right:12px;
@@ -397,7 +434,6 @@ button,input{font:inherit}
   </header>
 
   <section class="dp-stats">
-
     <div class="dp-stat">
       <div class="dp-stat-label">Deleted Payments</div>
       <div class="dp-stat-value" id="totalDeleted">0</div>
@@ -412,7 +448,6 @@ button,input{font:inherit}
       <div class="dp-stat-label">Showing Records</div>
       <div class="dp-stat-value" id="showingCount">0</div>
     </div>
-
   </section>
 
   <section class="dp-toolbar">
@@ -424,9 +459,7 @@ button,input{font:inherit}
       >
     </div>
 
-    <div class="dp-count" id="resultLabel">
-      Loading...
-    </div>
+    <div class="dp-count" id="resultLabel">Loading...</div>
   </section>
 
   <section class="dp-list" id="paymentList">
@@ -435,13 +468,9 @@ button,input{font:inherit}
 
 </div>
 
-<!-- CONFIRMATION MODAL -->
-
 <div class="dp-overlay" id="confirmOverlay">
   <div class="dp-modal">
-
     <div class="dp-modal-icon">!</div>
-
     <h3>Permanent Delete?</h3>
 
     <p>
@@ -451,34 +480,25 @@ button,input{font:inherit}
     </p>
 
     <div class="dp-modal-actions">
-      <button class="dp-btn dp-cancel" id="cancelBtn">
-        Cancel
-      </button>
-
+      <button class="dp-btn dp-cancel" id="cancelBtn">Cancel</button>
       <button class="dp-btn dp-confirm" id="confirmBtn">
         Permanently Delete
       </button>
     </div>
-
   </div>
 </div>
 
 <div class="dp-toast" id="toast"></div>
 
-
 <script>
 "use strict";
-
-/************************************************************
- * RS NETWORK — DELETED PAYMENT HISTORY
- * Compatible with the existing Code.gs.
- * No backend changes required.
- ************************************************************/
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
 let deletedPayments = [];
+let userProfiles = [];
+let userProfileMap = new Map();
 let pendingPayment = null;
 let isDeleting = false;
 
@@ -501,12 +521,127 @@ function escapeHTML(value){
 
 
 // ==========================================================
+// SAFE IMAGE URL
+// ==========================================================
+
+function safeImageURL(value){
+
+  const url = String(value || "").trim();
+
+  if(!url) return "";
+
+  try{
+    const parsed = new URL(url);
+
+    if(parsed.protocol !== "https:" && parsed.protocol !== "http:"){
+      return "";
+    }
+
+    return url;
+
+  }catch(error){
+    return "";
+  }
+}
+
+
+// ==========================================================
+// GET USER PROFILE PICTURE
+// ==========================================================
+
+function getUserProfile(userId){
+
+  const key = String(userId || "").trim();
+
+  return userProfileMap.get(key) || null;
+}
+
+
+function getProfilePicture(payment){
+
+  // প্রথমে payment record-এ ছবি থাকলে সেটি ব্যবহার করবে।
+  const directPicture =
+    payment.profilePicture ||
+    payment.photoUrl ||
+    payment.photo ||
+    payment.image ||
+    payment.avatar ||
+    "";
+
+  if(directPicture) return safeImageURL(directPicture);
+
+  // না থাকলে Users API থেকে userId দিয়ে ছবি খুঁজবে।
+  const profile = getUserProfile(payment.userId);
+
+  if(!profile) return "";
+
+  return safeImageURL(
+    profile.profilePicture ||
+    profile["Profile Picture"] ||
+    profile.photoUrl ||
+    profile.photo ||
+    profile.image ||
+    ""
+  );
+}
+
+
+// ==========================================================
+// DEFAULT AVATAR
+// ==========================================================
+
+function getInitial(name){
+
+  const text = String(name || "U").trim();
+
+  return escapeHTML(
+    text ? text.charAt(0).toUpperCase() : "U"
+  );
+}
+
+
+function renderAvatar(payment){
+
+  const picture = getProfilePicture(payment);
+  const name = payment.userName || "Unknown User";
+
+  if(picture){
+
+    return `
+      <div class="dp-avatar">
+        <img
+          src="${escapeHTML(picture)}"
+          alt="${escapeHTML(name)}"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"
+        >
+        <div class="dp-avatar-fallback" style="display:none">
+          ${getInitial(name)}
+        </div>
+      </div>
+    `;
+
+  }
+
+  return `
+    <div class="dp-avatar">
+      <div class="dp-avatar-fallback">
+        ${getInitial(name)}
+      </div>
+    </div>
+  `;
+}
+
+
+// ==========================================================
 // TOAST
 // ==========================================================
 
 let toastTimer;
 
 function showToast(message,type=""){
+
   const el = $("toast");
 
   el.textContent = message;
@@ -579,6 +714,53 @@ async function apiPost(data){
 
 
 // ==========================================================
+// LOAD USER PROFILES
+// ==========================================================
+
+async function loadUserProfiles(){
+
+  try{
+
+    const result = await apiGet("users");
+
+    // Users API response থেকে user list বের করবে।
+    const list =
+      Array.isArray(result.users) ? result.users :
+      Array.isArray(result.activeUsers) ? result.activeUsers :
+      Array.isArray(result.data) ? result.data :
+      [];
+
+    userProfiles = list;
+
+    userProfileMap = new Map();
+
+    userProfiles.forEach(user=>{
+
+      const id = String(
+        user.userId ||
+        user["User ID"] ||
+        ""
+      ).trim();
+
+      if(id){
+        userProfileMap.set(id,user);
+      }
+
+    });
+
+  }catch(error){
+
+    // User API কাজ না করলেও Deleted Payment list দেখাবে।
+    console.warn("User profile loading failed:",error);
+
+    userProfiles = [];
+    userProfileMap = new Map();
+
+  }
+}
+
+
+// ==========================================================
 // LOAD DELETED PAYMENTS
 // ==========================================================
 
@@ -594,10 +776,16 @@ async function loadDeletedPayments(){
 
   try{
 
-    const result = await apiGet("deletedPayments");
+    // Payment এবং User Profile একসঙ্গে লোড হবে।
+    const results = await Promise.all([
+      apiGet("deletedPayments"),
+      loadUserProfiles()
+    ]);
 
-    deletedPayments = Array.isArray(result.deletedPayments)
-      ? result.deletedPayments
+    const paymentResult = results[0];
+
+    deletedPayments = Array.isArray(paymentResult.deletedPayments)
+      ? paymentResult.deletedPayments
       : [];
 
     updateStats();
@@ -678,6 +866,7 @@ function getFilteredPayments(){
     return content.includes(query);
 
   });
+
 }
 
 
@@ -722,22 +911,32 @@ function renderPayments(){
 
     const rowNumber = Number(item._row);
 
+    const userName = item.userName || "Unknown User";
+
     return `
 
       <article class="dp-item">
 
         <div class="dp-item-head">
 
-          <div>
-            <div class="dp-user-name">
-              ${escapeHTML(item.userName || "Unknown User")}
+          <div class="dp-user">
+
+            ${renderAvatar(item)}
+
+            <div class="dp-user-info">
+
+              <div class="dp-user-name">
+                ${escapeHTML(userName)}
+              </div>
+
+              <div class="dp-id">
+                Payment ID: ${escapeHTML(item.paymentId || "—")}
+                &nbsp; | &nbsp;
+                User ID: ${escapeHTML(item.userId || "—")}
+              </div>
+
             </div>
 
-            <div class="dp-id">
-              Payment ID: ${escapeHTML(item.paymentId)}
-              &nbsp; | &nbsp;
-              User ID: ${escapeHTML(item.userId || "—")}
-            </div>
           </div>
 
           <span class="dp-tag">DELETED</span>
@@ -865,12 +1064,10 @@ async function permanentDelete(){
 
   $("confirmBtn").disabled = true;
   $("cancelBtn").disabled = true;
-
   $("confirmBtn").textContent = "Deleting...";
 
   try{
 
-    // Send both fields required by the existing Code.gs.
     const result = await apiPost({
 
       action:"permanentDeletePayment",
@@ -896,7 +1093,6 @@ async function permanentDelete(){
       "success"
     );
 
-    // Reload because Google Sheet row numbers change.
     await loadDeletedPayments();
 
   }catch(error){
@@ -914,7 +1110,6 @@ async function permanentDelete(){
 
     $("confirmBtn").disabled = false;
     $("cancelBtn").disabled = false;
-
     $("confirmBtn").textContent = "Permanently Delete";
 
   }
