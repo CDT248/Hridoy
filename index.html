@@ -1,1153 +1,720 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wage Management System</title>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --primary:#087f5b;
-  --primary-light:#e8f7ef;
-  --bg:#f5f7fb;
-  --card:#fff;
-  --sidebar:#fff;
-  --text:#172033;
-  --muted:#8490a3;
-  --border:#e8edf3;
-  --hover:#f1f8f5;
-  --shadow:0 3px 15px rgba(20,35,60,.045);
+  --bg:#f4f7fb;--surface:#fff;--text:#172033;--muted:#718096;
+  --line:#e7edf4;--primary:#087f5b;--primary2:#0ca678;
+  --sidebar:#102a25;--sidebarText:#d8e7e2;--danger:#dc3545;
+  --shadow:0 8px 30px rgba(20,40,60,.07);--radius:15px
 }
-body.dark{
-  --bg:#101722;
-  --card:#192432;
-  --sidebar:#151f2c;
-  --text:#edf2f7;
-  --muted:#9aa8b9;
-  --border:#293748;
-  --hover:#203329;
-  --primary-light:#17392e;
-  --shadow:0 3px 15px rgba(0,0,0,.15);
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Hind Siliguri",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+#loginScreen{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#e8f5ef,#f4f7fb)}
+.login-card{width:min(420px,100%);background:white;padding:35px;border-radius:22px;box-shadow:var(--shadow)}
+.brand-mark{width:52px;height:52px;border-radius:15px;background:var(--primary);color:white;display:grid;place-items:center;font-size:23px;font-weight:800;margin-bottom:20px}
+.login-card h1{font-size:25px;margin:0 0 7px}.muted{color:var(--muted)}
+.field{display:grid;gap:7px;margin:15px 0}.field label{font-size:13px;font-weight:650}
+.field input,.field select,.field textarea,.control{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:white;color:var(--text);outline:none}
+.field input:focus,.field select:focus,.field textarea:focus,.control:focus{border-color:var(--primary)}
+.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:650;background:var(--primary);color:white}
+.btn:hover{filter:brightness(.96)}.btn.secondary{background:#edf5f1;color:var(--primary)}
+.btn.danger{background:#fff0f0;color:var(--danger)}.btn.small{padding:7px 10px;font-size:12px}
+.btn.full{width:100%;margin-top:10px}.error{color:var(--danger);font-size:13px;min-height:18px}
+#app{min-height:100vh}
+.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:var(--sidebar);color:white;padding:22px 14px;z-index:20;overflow:auto;transition:.25s}
+.logo{display:flex;align-items:center;gap:11px;padding:0 10px 24px;border-bottom:1px solid #ffffff20}
+.logo-icon{width:38px;height:38px;border-radius:11px;background:#0ca678;display:grid;place-items:center;font-weight:800}
+.logo strong{display:block;font-size:15px}.logo small{color:#a9c5ba;font-size:11px}
+.nav-label{font-size:10px;letter-spacing:1.4px;color:#8eaaa0;padding:22px 12px 8px;font-weight:700}
+.nav-link{width:100%;border:0;background:transparent;color:var(--sidebarText);padding:11px 12px;border-radius:9px;text-align:left;display:flex;align-items:center;gap:12px;font-size:13px;margin:2px 0}
+.nav-link:hover,.nav-link.active{background:#ffffff18;color:white}
+.nav-link .nav-icon{width:19px;text-align:center}
+.sidebar-bottom{margin-top:25px;padding:12px;border-top:1px solid #ffffff20;color:#a9c5ba;font-size:11px}
+.main{margin-left:250px;min-height:100vh}
+.topbar{height:72px;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:10}
+.top-left{display:flex;align-items:center;gap:12px}.topbar h2{font-size:17px;margin:0}
+.icon-btn{border:0;background:#f1f5f3;border-radius:9px;padding:9px 11px}
+.profile-wrap{position:relative}.profile-btn{border:0;background:transparent;display:flex;align-items:center;gap:10px;text-align:left}
+.avatar{width:37px;height:37px;border-radius:50%;background:#d8eee5;color:var(--primary);display:grid;place-items:center;font-weight:800;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profile-name{font-size:12px;font-weight:700}.profile-role{font-size:10px;color:var(--muted);margin-top:3px}
+.profile-menu{position:absolute;right:0;top:50px;width:190px;background:white;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:12px;padding:7px;z-index:30}
+.profile-menu button{width:100%;border:0;background:white;padding:10px;text-align:left;border-radius:8px;font-size:13px}
+.profile-menu button:hover{background:#f3f7f5}
+.content{padding:25px 28px;max-width:1600px;margin:auto}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.page-heading h1{font-size:22px;margin:0 0 5px}.page-heading p{margin:0;color:var(--muted);font-size:12px}
+.cards-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}
+.stat-card{background:var(--surface);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line)}
+.stat-card .stat-label{font-size:12px;color:var(--muted)}.stat-card .stat-value{font-size:25px;font-weight:800;margin-top:10px}
+.stat-card .stat-foot{font-size:10px;color:var(--muted);margin-top:5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h3{font-size:15px;margin:0 0 15px}
+#pageView{min-height:300px}
+.loading{padding:45px;text-align:center;color:var(--muted)}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-weight:700;background:#f8fafb}
+.status{padding:5px 9px;border-radius:20px;background:#eaf7f0;color:var(--primary);font-size:10px;font-weight:700}
+.status.off{background:#fff0f0;color:var(--danger)}
+.permission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.permission-item{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:12px}
+.permission-item input{accent-color:var(--primary);margin-top:2px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}
+.modal-backdrop{position:fixed;inset:0;background:#0b1714a8;z-index:100;display:grid;place-items:center;padding:15px}
+.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:white;border-radius:17px;padding:23px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.modal-head h3{margin:0}.close-btn{border:0;background:#f1f4f3;border-radius:8px;padding:7px 10px}
+.mobile-menu{display:none}
+@media(max-width:1100px){.cards-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:800px){
+ .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0}.mobile-menu{display:inline-block}
+ .content{padding:18px 14px}.topbar{padding:0 15px}
+ .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  transition:background .2s,color .2s;
-}
-button{font-family:inherit}
-.app{min-height:100vh}
-
-/* SIDEBAR */
-.sidebar{
-  width:255px;height:100vh;position:fixed;top:0;left:0;
-  background:var(--sidebar);border-right:1px solid var(--border);
-  z-index:1000;display:flex;flex-direction:column;
-  transition:transform .25s,background .2s;
-}
-.brand{
-  height:76px;padding:0 22px;display:flex;align-items:center;
-  gap:12px;border-bottom:1px solid var(--border);
-}
-.brand-logo{
-  width:39px;height:39px;border-radius:12px;
-  background:var(--primary);color:white;display:flex;
-  align-items:center;justify-content:center;font-weight:900;font-size:17px;
-}
-.brand-name{font-size:17px;font-weight:800;letter-spacing:-.4px}
-.brand-sub{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:1px}
-.sidebar-content{flex:1;overflow-y:auto;padding:20px 13px}
-.nav-label{
-  font-size:10px;color:var(--muted);font-weight:800;
-  letter-spacing:1.2px;padding:12px 12px 9px;
-}
-.nav-item{
-  width:100%;display:flex;align-items:center;gap:12px;
-  padding:12px 13px;border:0;border-radius:9px;
-  background:transparent;color:var(--muted);font-size:13px;
-  font-weight:600;text-align:left;cursor:pointer;margin-bottom:4px;
-  transition:.2s;
-}
-.nav-item:hover{background:var(--hover);color:var(--primary)}
-.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:800}
-.nav-icon{width:20px;text-align:center;font-size:17px}
-.sidebar-bottom{border-top:1px solid var(--border);padding:15px}
-.sidebar-user{display:flex;align-items:center;gap:11px}
-.sidebar-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--primary-light);color:var(--primary);
-  display:flex;align-items:center;justify-content:center;font-weight:800;
-}
-.sidebar-user-name{font-size:12px;font-weight:800}
-.sidebar-user-role{color:var(--muted);font-size:10px;margin-top:3px}
-
-/* MAIN */
-.main{margin-left:255px;min-height:100vh;display:flex;flex-direction:column}
-.topbar{
-  height:76px;background:var(--card);border-bottom:1px solid var(--border);
-  padding:0 28px;display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:500;
-}
-.topbar-left{display:flex;align-items:center;gap:14px}
-.page-heading{font-size:18px;font-weight:800}
-.page-breadcrumb{font-size:11px;color:var(--muted);margin-top:4px}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.icon-btn{
-  width:39px;height:39px;border-radius:10px;border:1px solid var(--border);
-  background:var(--card);color:var(--text);cursor:pointer;font-size:17px;
-  display:flex;align-items:center;justify-content:center;
-}
-.icon-btn:hover{background:var(--hover);color:var(--primary)}
-.menu-toggle{display:none}
-.logout-top{
-  padding:10px 14px;border:1px solid var(--border);
-  background:var(--card);color:#dc2626;border-radius:9px;
-  cursor:pointer;font-weight:700;font-size:12px;
-}
-.content{padding:27px;flex:1;min-width:0}
-#pageContainer{width:100%;min-height:300px}
-.loading-box{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:50px 20px;text-align:center;color:var(--muted);
-}
-.loading-spinner{
-  width:30px;height:30px;border:3px solid var(--border);
-  border-top-color:var(--primary);border-radius:50%;
-  animation:spin .7s linear infinite;margin:0 auto 15px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.error-box{
-  background:var(--card);border:1px solid #f3b9b9;
-  border-radius:14px;padding:25px;text-align:center;color:var(--text);
-}
-.error-box h3{margin-bottom:9px;color:#d64545}
-.error-box p{font-size:13px;color:var(--muted);margin-bottom:16px}
-.error-box button{
-  padding:10px 18px;border:0;background:var(--primary);
-  color:white;border-radius:8px;cursor:pointer;font-weight:700;
-}
-
-/* CARD HIDE */
-.card-hide-toolbar{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;padding:13px 16px;margin-bottom:18px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;color:var(--text);font-size:13px;
-}
-.card-hide-toolbar button{
-  padding:9px 15px;background:var(--primary);color:#fff;
-  border:0;border-radius:8px;cursor:pointer;font-weight:700;
-}
-.card-hide-control{
-  display:none;position:absolute;top:9px;right:9px;z-index:20;
-  padding:7px 11px;border:0;border-radius:7px;
-  background:#dc2626;color:#fff;font-size:11px;font-weight:700;
-  cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-.card-hide-control.is-hidden{background:#087f5b}
-.card-hide-target{position:relative!important}
-body.card-hide-mode .card-hide-control{display:block}
-body.card-hide-mode .card-hide-target{outline:2px dashed var(--primary);outline-offset:3px}
-body.card-hide-mode .card-hide-target.is-card-hidden{opacity:.65;outline-color:#dc2626}
-body:not(.card-hide-mode) .is-card-hidden{display:none!important}
-
-.footer{
-  padding:15px 27px;border-top:1px solid var(--border);
-  font-size:11px;color:var(--muted);display:flex;
-  justify-content:space-between;gap:10px;
-}
-.mobile-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);
-  z-index:900;display:none;
-}
-.mobile-overlay.show{display:block}
-
-/* LOGIN SCREEN */
-#loginScreen{
-  position:fixed;inset:0;z-index:99999;
-  display:none;align-items:center;justify-content:center;
-  padding:20px;background:var(--bg);
-}
-.login-card{
-  width:100%;max-width:410px;background:var(--card);
-  border:1px solid var(--border);border-radius:20px;
-  padding:32px;box-shadow:var(--shadow);
-}
-.login-logo{
-  width:58px;height:58px;border-radius:17px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--primary);color:white;font-size:25px;
-  font-weight:900;margin:0 auto 17px;
-}
-.login-title{text-align:center;font-size:23px;font-weight:900}
-.login-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 27px}
-.login-label{display:block;font-size:12px;font-weight:800;margin:15px 0 7px}
-.login-input{
-  width:100%;height:46px;border:1px solid var(--border);
-  background:var(--bg);color:var(--text);border-radius:9px;
-  padding:0 13px;font-size:14px;outline:none;
-}
-.login-input:focus{border-color:var(--primary)}
-.login-button{
-  width:100%;height:47px;margin-top:22px;
-  background:var(--primary);color:#fff;border:0;
-  border-radius:9px;font-weight:800;font-size:14px;cursor:pointer;
-}
-.login-button:disabled{opacity:.6;cursor:not-allowed}
-.login-message{
-  display:none;padding:11px;border-radius:8px;
-  font-size:12px;margin-top:14px;text-align:center;
-}
-.login-message.error{display:block;background:#fee2e2;color:#b91c1c}
-.login-message.success{display:block;background:#dcfce7;color:#166534}
-.login-footer{text-align:center;font-size:10px;color:var(--muted);margin-top:20px}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .menu-toggle{display:flex}
-  .content{padding:20px}
-}
-@media(max-width:600px){
-  .topbar{height:65px;padding:0 14px}
-  .page-heading{font-size:16px}
-  .content{padding:14px}
-  .footer{padding:13px;font-size:10px}
-  .brand{height:68px}
-  .login-card{padding:25px 20px}
-  .logout-top{padding:9px 10px}
+@media(max-width:480px){
+ .cards-grid{grid-template-columns:1fr 1fr;gap:9px}
+ .stat-card{padding:13px}.stat-card .stat-value{font-size:20px}
+ .profile-name,.profile-role{display:none}.form-grid,.permission-grid{grid-template-columns:1fr}
+ .page-heading h1{font-size:19px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- LOGIN SCREEN -->
-<div id="loginScreen">
+<!-- LOGIN -->
+<section id="loginScreen">
   <div class="login-card">
-    <div class="login-logo">W</div>
-    <div class="login-title">Admin Login</div>
-    <div class="login-sub">WAGE MANAGEMENT SYSTEM</div>
-
+    <div class="brand-mark">W</div>
+    <h1>Wage Management</h1>
+    <p class="muted" style="font-size:13px;margin:0 0 25px">Sign in to continue to your dashboard</p>
     <form id="loginForm">
-      <label class="login-label" for="loginEmail">Admin Email</label>
-      <input class="login-input" id="loginEmail" type="email"
-        placeholder="Enter admin email" autocomplete="username" required>
-
-      <label class="login-label" for="loginPassword">Password</label>
-      <input class="login-input" id="loginPassword" type="password"
-        placeholder="Enter password" autocomplete="current-password" required>
-
-      <button class="login-button" id="loginButton" type="submit">
-        Login to Dashboard
-      </button>
-      <div class="login-message" id="loginMessage"></div>
+      <div class="field"><label>Email Address</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="admin@example.com"></div>
+      <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter password"></div>
+      <div id="loginError" class="error"></div>
+      <button class="btn full" id="loginBtn" type="submit">Sign In</button>
     </form>
-
-    <div class="login-footer">Secure Administrator Access</div>
   </div>
-</div>
+</section>
 
-<div class="app" id="app" style="display:none">
-
+<!-- APPLICATION -->
+<div id="app" class="hidden">
   <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-logo">W</div>
-      <div>
-        <div class="brand-name">WAGE MANAGER</div>
-        <div class="brand-sub">MANAGEMENT SYSTEM</div>
-      </div>
+    <div class="logo">
+      <div class="logo-icon">W</div>
+      <div><strong>Wage Manager</strong><small>Management System</small></div>
     </div>
-
-    <div class="sidebar-content">
-      <div class="nav-label">MAIN MENU</div>
-      <button class="nav-item active" data-page="dashboard">
-        <span class="nav-icon">▦</span>Dashboard
-      </button>
-
-      <div class="nav-label">USER MANAGEMENT</div>
-      <button class="nav-item" data-page="add-user"><span class="nav-icon">＋</span>Add User</button>
-      <button class="nav-item" data-page="user-list"><span class="nav-icon">♙</span>User List</button>
-      <button class="nav-item" data-page="deleted-user"><span class="nav-icon">▤</span>Deleted Users</button>
-
+    <div class="nav-label">MAIN MENU</div>
+    <nav id="mainNav">
+      <button class="nav-link" data-page="dashboard" data-permission="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+      <button class="nav-link" data-page="add-user" data-permission="addUser"><span class="nav-icon">＋</span>Add User</button>
+      <button class="nav-link" data-page="user-list" data-permission="userList"><span class="nav-icon">♙</span>User List</button>
+      <button class="nav-link" data-page="deleted-users" data-permission="deletedUsers"><span class="nav-icon">⌫</span>Deleted Users</button>
       <div class="nav-label">WAGE MANAGEMENT</div>
-      <button class="nav-item" data-page="add-wage"><span class="nav-icon">＋</span>Add Wage</button>
-      <button class="nav-item" data-page="wage-history"><span class="nav-icon">◷</span>Wage History</button>
-      <button class="nav-item" data-page="deleted-wage"><span class="nav-icon">🗑️</span>Wage Delete History</button>
-
+      <button class="nav-link" data-page="add-wage" data-permission="addWage"><span class="nav-icon">＋</span>Add Wage</button>
+      <button class="nav-link" data-page="wage-history" data-permission="wageHistory"><span class="nav-icon">◷</span>Wage History</button>
+      <button class="nav-link" data-page="wage-delete-history" data-permission="wageDeleteHistory"><span class="nav-icon">⌫</span>Wage Delete History</button>
       <div class="nav-label">PAYMENT MANAGEMENT</div>
-      <button class="nav-item" data-page="payment"><span class="nav-icon">৳</span>User Payment</button>
-      <button class="nav-item" data-page="payment-history"><span class="nav-icon">▤</span>Payment History</button>
-      <button class="nav-item" data-page="delete-payment"><span class="nav-icon">▤</span>Delet Payment History</button>
-
+      <button class="nav-link" data-page="user-payment" data-permission="userPayment"><span class="nav-icon">৳</span>User Payment</button>
+      <button class="nav-link" data-page="payment-history" data-permission="paymentHistory"><span class="nav-icon">◷</span>Payment History</button>
+      <button class="nav-link" data-page="delete-payment-history" data-permission="deletePaymentHistory"><span class="nav-icon">⌫</span>Delete Payment History</button>
       <div class="nav-label">SETTINGS</div>
-      <button class="nav-item" data-page="currency"><span class="nav-icon">💱</span>Add Currency</button>
-      <button class="nav-item" data-page="payment-method"><span class="nav-icon">💳</span>Add Payment Method</button>
-      <button class="nav-item" id="cardHideMenuButton" data-action="card-hide">
-        <span class="nav-icon">▣</span><span class="card-hide-label">Card Hide / Show</span>
-      </button>
-    </div>
-
-    <div class="sidebar-bottom">
-      <div class="sidebar-user">
-        <div class="sidebar-avatar">W</div>
-        <div>
-          <div class="sidebar-user-name" id="sidebarAdminName">Administrator</div>
-          <div class="sidebar-user-role" id="sidebarAdminRole">System Admin</div>
-        </div>
-      </div>
-    </div>
+      <button class="nav-link" data-page="add-currency" data-permission="addCurrency"><span class="nav-icon">৳</span>Add Currency</button>
+      <button class="nav-link" data-page="add-payment-method" data-permission="addPaymentMethod"><span class="nav-icon">⚙</span>Add Payment Method</button>
+      <button class="nav-link" data-page="card-hide-show" data-permission="cardHideShow"><span class="nav-icon">▤</span>Card Hide / Show</button>
+      <button class="nav-link" data-page="manage-admins" data-permission="manageAdmins"><span class="nav-icon">♧</span>Manage Admins</button>
+      <button class="nav-link" data-page="my-account" data-permission="myAccount"><span class="nav-icon">♙</span>My Account</button>
+    </nav>
+    <div class="sidebar-bottom">Wage Management System<br>Secure Admin Panel</div>
   </aside>
-
-  <div class="mobile-overlay" id="mobileOverlay"></div>
 
   <main class="main">
     <header class="topbar">
-      <div class="topbar-left">
-        <button class="icon-btn menu-toggle" id="menuToggle">☰</button>
-        <div>
-          <div class="page-heading" id="pageTitle">Dashboard</div>
-          <div class="page-breadcrumb" id="pageBreadcrumb">Home / Dashboard</div>
-        </div>
+      <div class="top-left">
+        <button class="icon-btn mobile-menu" id="mobileMenuBtn">☰</button>
+        <h2 id="topTitle">Dashboard</h2>
       </div>
-      <div class="topbar-right">
-        <button class="icon-btn" id="themeToggle" title="Change Theme">☾</button>
-        <button class="logout-top" id="logoutButton">Logout ↗</button>
+      <div class="profile-wrap">
+        <button class="profile-btn" id="profileBtn">
+          <div class="avatar" id="topAvatar">W</div>
+          <div><div class="profile-name" id="topName">Admin</div><div class="profile-role" id="topRole">Administrator</div></div>
+          <span>⌄</span>
+        </button>
+        <div class="profile-menu hidden" id="profileMenu">
+          <button data-open-account>My Account</button>
+          <button data-logout>Logout</button>
+        </div>
       </div>
     </header>
-
     <section class="content">
-      <div id="pageContainer">
-        <div class="loading-box">
-          <div class="loading-spinner"></div>
-          Loading Dashboard...
-        </div>
+      <div id="dashboardCards" class="cards-grid">
+        <div class="stat-card" data-card="total-users"><div class="stat-label">Total Users</div><div class="stat-value" id="totalUsers">—</div><div class="stat-foot">All registered users</div></div>
+        <div class="stat-card" data-card="active-users"><div class="stat-label">Active Users</div><div class="stat-value" id="activeUsers">—</div><div class="stat-foot">Currently active</div></div>
+        <div class="stat-card" data-card="inactive-users"><div class="stat-label">Inactive Users</div><div class="stat-value" id="inactiveUsers">—</div><div class="stat-foot">Currently inactive</div></div>
+        <div class="stat-card" data-card="total-wage"><div class="stat-label">Total Wage</div><div class="stat-value" id="totalWage">—</div><div class="stat-foot">Recorded wage amount</div></div>
+        <div class="stat-card" data-card="total-payment"><div class="stat-label">Total Payment</div><div class="stat-value" id="totalPayment">—</div><div class="stat-foot">Recorded payment amount</div></div>
+        <div class="stat-card" data-card="remaining-balance"><div class="stat-label">Remaining Balance</div><div class="stat-value" id="remainingBalance">—</div><div class="stat-foot">Wage minus payment</div></div>
+        <div class="stat-card" data-card="due-payment"><div class="stat-label">Due Payment</div><div class="stat-value" id="duePayment">—</div><div class="stat-foot">Outstanding amount</div></div>
+        <div class="stat-card" data-card="today-wage"><div class="stat-label">Today Wage</div><div class="stat-value" id="todayWage">—</div><div class="stat-foot">Today's wage</div></div>
+        <div class="stat-card" data-card="today-payment"><div class="stat-label">Today Payment</div><div class="stat-value" id="todayPayment">—</div><div class="stat-foot">Today's payment</div></div>
+        <div class="stat-card" data-card="month-wage"><div class="stat-label">This Month Wage</div><div class="stat-value" id="monthWage">—</div><div class="stat-foot">Current month</div></div>
+        <div class="stat-card" data-card="month-payment"><div class="stat-label">This Month Payment</div><div class="stat-value" id="monthPayment">—</div><div class="stat-foot">Current month</div></div>
+        <div class="stat-card" data-card="average-wage"><div class="stat-label">Average Wage / User</div><div class="stat-value" id="averageWage">—</div><div class="stat-foot">Average recorded wage</div></div>
+        <div class="stat-card" data-card="wage-entries"><div class="stat-label">Wage Entries</div><div class="stat-value" id="wageEntries">—</div><div class="stat-foot">Total wage records</div></div>
+        <div class="stat-card" data-card="payment-entries"><div class="stat-label">Payment Entries</div><div class="stat-value" id="paymentEntries">—</div><div class="stat-foot">Total payment records</div></div>
       </div>
+      <div id="pageView"><div class="loading">Loading...</div></div>
     </section>
-
-    <footer class="footer">
-      <span>Wage Management System</span>
-      <span>© 2026 All Rights Reserved</span>
-    </footer>
   </main>
 </div>
 
+<div id="modalRoot"></div>
+
 <script>
-/* =====================================
-   AUTH CONFIGURATION
-===================================== */
+/* =========================================================
+   CONFIGURATION — YOUR CURRENT API URLS
+========================================================= */
+const AUTH_API_URL = "https://script.google.com/macros/s/AKfycbw5QMutQWocx1jg3qT6dmKKxh5GXYw6HeClidJ8_swh-z_iklKMVZ-UMGYuxLrGsFi6/exec";
+const USERS_API_URL = "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+const WAGE_API_URL = "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
+const PAYMENT_API_URL = "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
-const AUTH_API_URL =
-"https://script.google.com/macros/s/AKfycbw5QMutQWocx1jg3qT6dmKKxh5GXYw6HeClidJ8_swh-z_iklKMVZ-UMGYuxLrGsFi6/exec";
-
-const AUTH_TOKEN_KEY = "wage_admin_auth_token";
-const AUTH_ADMIN_KEY = "wage_admin_profile";
-
-/* 10 minutes idle timeout */
-const IDLE_TIMEOUT = 10 * 60 * 1000;
-
-let idleTimer = null;
-let authToken = "";
-let currentAdmin = null;
-let isAuthenticated = false;
-let isLoggingOut = false;
-
-/* =====================================
-   AUTH API REQUEST
-===================================== */
-
-async function authRequest(payload){
-  const response = await fetch(AUTH_API_URL,{
-    method:"POST",
-    headers:{
-      "Content-Type":"text/plain;charset=utf-8"
-    },
-    body:JSON.stringify(payload),
-    cache:"no-store"
-  });
-
-  if(!response.ok){
-    throw new Error("Authentication server error: "+response.status);
-  }
-
-  return await response.json();
-}
-
-function getApiData(result){
-  return result && result.data ? result.data : result;
-}
-
-function apiSuccess(result){
-  return !!(
-    result &&
-    (result.success === true || result.ok === true)
-  );
-}
-
-function showLoginMessage(message,type){
-  const box = document.getElementById("loginMessage");
-  box.textContent = message;
-  box.className = "login-message "+type;
-}
-
-function showLogin(){
-  document.getElementById("app").style.display = "none";
-  document.getElementById("loginScreen").style.display = "flex";
-  document.getElementById("loginEmail").focus();
-}
-
-function showApplication(){
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("app").style.display = "block";
-
-  if(currentAdmin){
-    document.getElementById("sidebarAdminName").textContent =
-      currentAdmin.name || currentAdmin.email || "Administrator";
-
-    document.getElementById("sidebarAdminRole").textContent =
-      currentAdmin.role || "System Admin";
-  }
-}
-
-/* =====================================
-   LOGIN
-===================================== */
-
-document.getElementById("loginForm").addEventListener("submit",async function(event){
-  event.preventDefault();
-
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const button = document.getElementById("loginButton");
-
-  button.disabled = true;
-  button.textContent = "Checking...";
-  showLoginMessage("Verifying administrator account...","success");
-
-  try{
-    const result = await authRequest({
-      action:"login",
-      email:email,
-      password:password
-    });
-
-    if(!apiSuccess(result)){
-      throw new Error(result.message || result.error || "Invalid email or password.");
-    }
-
-    const data = getApiData(result);
-    const token = data.token || data.sessionToken || result.token;
-
-    if(!token){
-      throw new Error("Login response did not contain a session token.");
-    }
-
-    authToken = token;
-    currentAdmin = data.admin || data.user || {
-      email:email,
-      name:"Administrator",
-      role:"System Admin"
-    };
-
-    sessionStorage.setItem(AUTH_TOKEN_KEY,authToken);
-    sessionStorage.setItem(AUTH_ADMIN_KEY,JSON.stringify(currentAdmin));
-
-    isAuthenticated = true;
-    showApplication();
-    startIdleTimer();
-
-    const page = getPageFromHash();
-    loadPage(page,false);
-
-  }catch(error){
-    console.error("Login error:",error);
-    showLoginMessage(error.message || "Login failed. Please try again.","error");
-  }finally{
-    button.disabled = false;
-    button.textContent = "Login to Dashboard";
-  }
-});
-
-/* =====================================
-   VERIFY SESSION
-===================================== */
-
-async function verifyExistingSession(){
-  const savedToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
-
-  if(!savedToken){
-    showLogin();
-    return;
-  }
-
-  try{
-    authToken = savedToken;
-
-    const result = await authRequest({
-      action:"verify",
-      token:authToken
-    });
-
-    if(!apiSuccess(result)){
-      throw new Error("Session expired.");
-    }
-
-    const data = getApiData(result);
-
-    currentAdmin =
-      data.admin ||
-      data.user ||
-      JSON.parse(sessionStorage.getItem(AUTH_ADMIN_KEY) || "null") ||
-      {name:"Administrator",role:"System Admin"};
-
-    isAuthenticated = true;
-    showApplication();
-    startIdleTimer();
-
-    loadPage(getPageFromHash(),false);
-
-  }catch(error){
-    console.warn("Session verification failed:",error);
-    clearLocalSession();
-    showLogin();
-  }
-}
-
-/* =====================================
-   LOGOUT
-===================================== */
-
-function clearLocalSession(){
-  isAuthenticated = false;
-  authToken = "";
-  currentAdmin = null;
-  clearTimeout(idleTimer);
-
-  sessionStorage.removeItem(AUTH_TOKEN_KEY);
-  sessionStorage.removeItem(AUTH_ADMIN_KEY);
-}
-
-async function logout(reason){
-  if(isLoggingOut) return;
-
-  isLoggingOut = true;
-  const token = authToken;
-
-  clearLocalSession();
-
-  try{
-    if(token){
-      await authRequest({
-        action:"logout",
-        token:token
-      });
-    }
-  }catch(error){
-    console.warn("Server logout request failed:",error);
-  }
-
-  /* Remove protected page from view */
-  document.getElementById("app").style.display = "none";
-  document.getElementById("loginScreen").style.display = "flex";
-
-  document.getElementById("loginPassword").value = "";
-
-  if(reason === "idle"){
-    showLoginMessage("You were logged out after 10 minutes of inactivity.","error");
-  }else if(reason === "manual"){
-    showLoginMessage("You have successfully logged out.","success");
-  }
-
-  isLoggingOut = false;
-}
-
-document.getElementById("logoutButton").addEventListener("click",function(){
-  logout("manual");
-});
-
-/* =====================================
-   10 MINUTES AUTO LOGOUT
-===================================== */
-
-function resetIdleTimer(){
-  if(!isAuthenticated) return;
-
-  clearTimeout(idleTimer);
-
-  idleTimer = setTimeout(function(){
-    logout("idle");
-  },IDLE_TIMEOUT);
-}
-
-function startIdleTimer(){
-  clearTimeout(idleTimer);
-  resetIdleTimer();
-}
-
-/* User activity events */
-[
-  "mousemove",
-  "mousedown",
-  "keydown",
-  "scroll",
-  "touchstart",
-  "click"
-].forEach(function(eventName){
-  document.addEventListener(eventName,function(){
-    resetIdleTimer();
-  },{passive:true});
-});
-
-/* Tab becomes active again: verify server session */
-document.addEventListener("visibilitychange",function(){
-  if(document.visibilityState === "visible" && isAuthenticated){
-    resetIdleTimer();
-  }
-});
-
-/* =====================================
-   PAGE CONFIGURATION
-===================================== */
-
-const PAGE_CONFIG = {
-  "dashboard":{file:"dashboard.html",title:"Dashboard",section:"Main Menu"},
-  "add-user":{file:"add-user.html",title:"Add User",section:"User Management"},
-  "user-list":{file:"user-list.html",title:"User List",section:"User Management"},
-  "deleted-user":{file:"deleted-user.html",title:"Deleted Users",section:"User Management"},
-  "add-wage":{file:"add-wage.html",title:"Add Wage",section:"Wage Management"},
-  "wage-history":{file:"wage-history.html",title:"Wage History",section:"Wage Management"},
-  "deleted-wage":{file:"deleted-wage.html",title:"Wage Delete History",section:"Wage Management"},
-  "payment":{file:"payment.html",title:"User Payment",section:"Payment Management"},
-  "payment-history":{file:"payment-history.html",title:"Payment History",section:"Payment Management"},
-  "delete-payment":{file:"delete-payment.html",title:"Delete Payment History",section:"Payment Management"},
-  "currency":{file:"currency.html",title:"Add Currency",section:"Settings"},
-  "payment-method":{file:"payment-method.html",title:"Add Payment Method",section:"Settings"}
+const TOKEN_KEY = "wage_manager_auth_token";
+const ADMIN_KEY = "wage_manager_admin";
+const PAGE_FILES = {
+  dashboard:"dashboard.html",
+  "add-user":"add-user.html",
+  "user-list":"user-list.html",
+  "deleted-users":"deleted-users.html",
+  "add-wage":"add-wage.html",
+  "wage-history":"wage-history.html",
+  "wage-delete-history":"wage-delete-history.html",
+  "user-payment":"user-payment.html",
+  "payment-history":"payment-history.html",
+  "delete-payment-history":"delete-payment-history.html",
+  "add-currency":"add-currency.html",
+  "add-payment-method":"add-payment-method.html",
+  "card-hide-show":"card-hide-show.html"
 };
 
-/* =====================================
-   ELEMENTS
-===================================== */
+const PERMISSIONS = [
+ ["dashboard","Dashboard"],
+ ["dashboardCards","Dashboard Cards"],
+ ["cardHideShow","Card Hide / Show"],
+ ["addUser","Add User"],
+ ["userList","User List"],
+ ["deletedUsers","Deleted Users"],
+ ["addWage","Add Wage"],
+ ["wageHistory","Wage History"],
+ ["wageDeleteHistory","Wage Delete History"],
+ ["userPayment","User Payment"],
+ ["paymentHistory","Payment History"],
+ ["deletePaymentHistory","Delete Payment History"],
+ ["addCurrency","Add Currency"],
+ ["addPaymentMethod","Add Payment Method"],
+ ["myAccount","My Account"],
+ ["manageAdmins","Manage Admins"]
+];
 
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("mobileOverlay");
-const pageContainer = document.getElementById("pageContainer");
-const pageTitle = document.getElementById("pageTitle");
-const pageBreadcrumb = document.getElementById("pageBreadcrumb");
+let authToken = localStorage.getItem(TOKEN_KEY) || "";
+let currentAdmin = null;
+let currentPermissions = {};
+let currentPage = "dashboard";
 
-/* =====================================
-   THEME SYSTEM
-===================================== */
-
-function applyTheme(theme){
-  document.body.classList.toggle("dark",theme === "dark");
-  document.getElementById("themeToggle").textContent =
-    theme === "dark" ? "☀" : "☾";
-  localStorage.setItem("wage_theme",theme);
+function authRequest(payload){
+  return fetch(AUTH_API_URL,{
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload)
+  }).then(async response=>{
+    const raw=await response.text();
+    let data;
+    try{data=JSON.parse(raw)}catch(e){throw new Error("Server থেকে সঠিক response পাওয়া যায়নি।")}
+    if(!response.ok || data.success===false) throw new Error(data.message||data.error||"Request failed");
+    return data;
+  });
+}
+function getToken(){return authToken}
+function saveSession(data){
+  authToken=data.token;
+  currentAdmin=data.admin;
+  localStorage.setItem(TOKEN_KEY,authToken);
+  localStorage.setItem(ADMIN_KEY,JSON.stringify(currentAdmin||{}));
+}
+function clearSession(){
+  authToken="";currentAdmin=null;currentPermissions={};
+  localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(ADMIN_KEY);
+}
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function money(value){
+  const n=Number(value)||0;
+  return "৳ "+n.toLocaleString("en-BD",{maximumFractionDigits:2});
+}
+function initials(name){return (name||"W").trim().charAt(0).toUpperCase()}
+function can(permission){
+  return currentAdmin?.role==="Super Admin" || currentPermissions[permission]===true;
+}
+function showMessage(message){alert(message)}
+function setButtonLoading(button,loading,label){
+  if(!button)return;
+  button.disabled=loading;
+  if(loading){button.dataset.oldText=button.textContent;button.textContent="Please wait..."}
+  else button.textContent=label||button.dataset.oldText||"Submit";
 }
 
-applyTheme(localStorage.getItem("wage_theme") || "light");
-
-document.getElementById("themeToggle").addEventListener("click",function(){
-  const isDark = document.body.classList.contains("dark");
-  applyTheme(isDark ? "light" : "dark");
+/* =========================================================
+   LOGIN / SESSION
+========================================================= */
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("loginBtn");
+  const error=document.getElementById("loginError");
+  error.textContent="";
+  setButtonLoading(btn,true);
+  try{
+    const result=await authRequest({
+      action:"login",
+      email:document.getElementById("loginEmail").value.trim(),
+      password:document.getElementById("loginPassword").value
+    });
+    if(!result.data?.token || !result.data?.admin) throw new Error("Login response অসম্পূর্ণ।");
+    saveSession(result.data);
+    await startApp();
+  }catch(err){error.textContent=err.message||"Login failed"}
+  finally{setButtonLoading(btn,false,"Sign In")}
 });
 
-/* =====================================
-   MOBILE SIDEBAR
-===================================== */
-
-function openSidebar(){
-  sidebar.classList.add("open");
-  overlay.classList.add("show");
-}
-function closeSidebar(){
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
-}
-document.getElementById("menuToggle").addEventListener("click",openSidebar);
-overlay.addEventListener("click",closeSidebar);
-
-/* =====================================
-   PAGE ROUTING
-===================================== */
-
-function getPageFromHash(){
-  let page = location.hash.replace("#","");
-  if(!page) return "dashboard";
-  page = decodeURIComponent(page);
-  return PAGE_CONFIG[page] ? page : "dashboard";
-}
-
-function updateActiveMenu(page){
-  document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
-    item.classList.toggle("active",item.dataset.page === page);
-  });
-}
-
-function updatePageHeader(page){
-  const config = PAGE_CONFIG[page];
-  pageTitle.textContent = config.title;
-  pageBreadcrumb.textContent = "Home / "+config.section+" / "+config.title;
-}
-
-/* =====================================
-   CHILD CSS SCOPING
-===================================== */
-
-function scopeChildCSS(css,scope){
-  css = css.replace(/\/\*[\s\S]*?\*\//g,"");
-
-  function processRules(source){
-    let output = "";
-    let position = 0;
-
-    while(position < source.length){
-      const open = source.indexOf("{",position);
-      if(open === -1){
-        output += source.slice(position);
-        break;
-      }
-
-      const selector = source.slice(position,open).trim();
-      let depth = 1;
-      let close = open+1;
-
-      while(close < source.length && depth > 0){
-        if(source[close] === "{") depth++;
-        if(source[close] === "}") depth--;
-        close++;
-      }
-
-      const body = source.slice(open+1,close-1);
-
-      if(
-        selector.startsWith("@media") ||
-        selector.startsWith("@supports") ||
-        selector.startsWith("@container") ||
-        selector.startsWith("@layer")
-      ){
-        output += selector+"{"+processRules(body)+"}";
-      }else if(
-        selector.startsWith("@keyframes") ||
-        selector.startsWith("@-webkit-keyframes")
-      ){
-        output += selector+"{"+body+"}";
-      }else if(selector.startsWith("@")){
-        output += selector+"{"+body+"}";
-      }else{
-        const scopedSelectors = selector.split(",").map(part=>{
-          let s = part.trim();
-          if(!s) return "";
-
-          s = s.replace(
-            /^(html|body|:root)(?=$|[\s.#:[>+~])/,
-            scope
-          );
-
-          if(s === "*") return scope+" *";
-          if(s.startsWith(scope)) return s;
-          return scope+" "+s;
-        }).join(",");
-
-        output += scopedSelectors+"{"+body+"}";
-      }
-
-      position = close;
-    }
-    return output;
-  }
-
-  return processRules(css);
-}
-
-function clearPageStyles(){
-  document.querySelectorAll("[data-child-page-style]").forEach(style=>{
-    style.remove();
-  });
-}
-
-async function loadPageStyles(doc,pageFile){
-  clearPageStyles();
-
-  const stylePromises = [];
-
-  doc.head.querySelectorAll("style").forEach(oldStyle=>{
-    const newStyle = document.createElement("style");
-    newStyle.setAttribute("data-child-page-style",pageFile);
-    newStyle.textContent = scopeChildCSS(oldStyle.textContent,"#pageContainer");
-    document.head.appendChild(newStyle);
-  });
-
-  doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(oldLink=>{
-    const newLink = document.createElement("link");
-    newLink.rel = "stylesheet";
-    newLink.href = new URL(
-      oldLink.getAttribute("href"),
-      new URL("./"+pageFile,location.href)
-    ).href;
-
-    newLink.setAttribute("data-child-page-style",pageFile);
-
-    const promise = new Promise((resolve,reject)=>{
-      newLink.onload = resolve;
-      newLink.onerror = ()=>reject(new Error("CSS could not load: "+newLink.href));
-    });
-
-    document.head.appendChild(newLink);
-    stylePromises.push(promise);
-  });
-
-  await Promise.all(stylePromises);
-}
-
-/* =====================================
-   EXECUTE CHILD PAGE SCRIPTS
-===================================== */
-
-async function executePageScripts(container){
-  const scripts = Array.from(container.querySelectorAll("script"));
-
-  for(const oldScript of scripts){
-    const newScript = document.createElement("script");
-
-    Array.from(oldScript.attributes).forEach(attr=>{
-      newScript.setAttribute(attr.name,attr.value);
-    });
-
-    if(oldScript.src){
-      newScript.src = new URL(
-        oldScript.getAttribute("src"),
-        location.href
-      ).href;
-
-      await new Promise((resolve,reject)=>{
-        newScript.onload = resolve;
-        newScript.onerror = ()=>reject(new Error("Could not load script: "+newScript.src));
-        oldScript.replaceWith(newScript);
-      });
-    }else{
-      newScript.textContent = oldScript.textContent;
-      oldScript.replaceWith(newScript);
-    }
-  }
-}
-
-/* =====================================
-   CARD HIDE / SHOW SYSTEM
-===================================== */
-
-const CARD_HIDE_STORAGE_KEY = "wage_hidden_dashboard_cards";
-let cardHideMode = false;
-
-function getHiddenDashboardCards(){
+async function verifyLogin(){
+  if(!authToken)return false;
   try{
-    const saved = JSON.parse(localStorage.getItem(CARD_HIDE_STORAGE_KEY) || "[]");
-    return Array.isArray(saved) ? saved : [];
-  }catch(error){
-    return [];
+    const result=await authRequest({action:"verify",token:authToken});
+    currentAdmin=result.data.admin;
+    localStorage.setItem(ADMIN_KEY,JSON.stringify(currentAdmin));
+    return true;
+  }catch(e){clearSession();return false}
+}
+async function loadPermissions(){
+  const result=await authRequest({action:"getMyPermissions",token:authToken});
+  currentPermissions=result.data?.permissions||{};
+}
+async function startApp(){
+  try{
+    if(!currentAdmin && !(await verifyLogin())) throw new Error("Session expired");
+    await loadPermissions();
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    renderIdentity();
+    applyPermissions();
+    await navigate(can("dashboard")?"dashboard":firstAllowedPage());
+  }catch(e){
+    clearSession();
+    document.getElementById("app").classList.add("hidden");
+    document.getElementById("loginScreen").classList.remove("hidden");
+    document.getElementById("loginError").textContent="Session expired. আবার Login করুন।";
   }
 }
-
-function saveHiddenDashboardCards(cards){
-  localStorage.setItem(CARD_HIDE_STORAGE_KEY,JSON.stringify(cards));
+function firstAllowedPage(){
+  const link=[...document.querySelectorAll(".nav-link")].find(el=>can(el.dataset.permission));
+  return link?.dataset.page||"my-account";
 }
-
-const DASHBOARD_CARD_SELECTOR = [
-  "[data-dashboard-card]",
-  ".stat-card",
-  ".dashboard-card",
-  ".summary-card",
-  ".metric-card",
-  ".stat-box",
-  ".summary-box",
-  ".dashboard-stat",
-  ".card"
-].join(",");
-
-function getDashboardCardKey(card,index){
-  if(card.dataset.cardHideKey) return card.dataset.cardHideKey;
-
-  if(card.id){
-    card.dataset.cardHideKey = "id:"+card.id;
-    return card.dataset.cardHideKey;
-  }
-
-  const heading = card.querySelector("h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title");
-  const title = heading ? heading.textContent.trim() : card.textContent.trim().slice(0,70);
-  const classes = Array.from(card.classList)
-    .filter(c=>c !== "card-hide-target")
-    .sort().join(".");
-
-  const key = ["dashboard-card",classes,title,index].join("|");
-  card.dataset.cardHideKey = key;
-  return key;
+function renderIdentity(){
+  const name=currentAdmin?.name||"Admin";
+  const role=currentAdmin?.customRoleName||currentAdmin?.role||"User";
+  document.getElementById("topName").textContent=name;
+  document.getElementById("topRole").textContent=role;
+  const avatar=document.getElementById("topAvatar");
+  if(currentAdmin?.profilePicture){
+    avatar.innerHTML=`<img src="${escapeHtml(currentAdmin.profilePicture)}" alt="Profile">`;
+  }else avatar.textContent=initials(name);
 }
-
-function updateCardHideButton(){
-  const button = document.getElementById("cardHideMenuButton");
-  if(!button) return;
-
-  const label = button.querySelector(".card-hide-label");
-  if(label){
-    label.textContent = cardHideMode ? "Finish Card Editing" : "Card Hide / Show";
-  }
-  button.classList.toggle("active",cardHideMode);
-}
-
-function createCardHideToolbar(){
-  let toolbar = document.getElementById("cardHideToolbar");
-
-  if(!cardHideMode){
-    if(toolbar) toolbar.remove();
-    return;
-  }
-
-  if(!toolbar){
-    toolbar = document.createElement("div");
-    toolbar.id = "cardHideToolbar";
-    toolbar.className = "card-hide-toolbar";
-
-    toolbar.innerHTML = `
-      <div>
-        <strong>Dashboard Card Settings</strong>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">
-          Hide or show individual dashboard cards.
-        </div>
-      </div>
-      <button type="button" id="finishCardHideMode">Done</button>
-    `;
-
-    pageContainer.prepend(toolbar);
-
-    toolbar.querySelector("#finishCardHideMode").addEventListener("click",function(){
-      cardHideMode = false;
-      document.body.classList.remove("card-hide-mode");
-      updateCardHideButton();
-      setupDashboardCardControls();
-    });
-  }
-}
-
-function toggleDashboardCard(card){
-  const key = card.dataset.cardHideKey;
-  if(!key) return;
-
-  const hidden = getHiddenDashboardCards();
-  const index = hidden.indexOf(key);
-
-  if(index >= 0) hidden.splice(index,1);
-  else hidden.push(key);
-
-  saveHiddenDashboardCards(hidden);
-  setupDashboardCardControls();
-}
-
-function setupDashboardCardControls(){
-  if(currentPage !== "dashboard") return;
-
-  createCardHideToolbar();
-
-  const hidden = getHiddenDashboardCards();
-  const cards = Array.from(pageContainer.querySelectorAll(DASHBOARD_CARD_SELECTOR));
-
-  const outerCards = cards.filter(card=>{
-    const parent = card.parentElement;
-    if(!parent) return true;
-    return !parent.closest(DASHBOARD_CARD_SELECTOR);
+function applyPermissions(){
+  document.querySelectorAll(".nav-link[data-permission]").forEach(link=>{
+    link.classList.toggle("hidden",!can(link.dataset.permission));
   });
+  const cards=document.getElementById("dashboardCards");
+  cards.classList.toggle("hidden",!can("dashboardCards"));
+}
 
-  outerCards.forEach((card,index)=>{
-    const key = getDashboardCardKey(card,index);
-    const isHidden = hidden.includes(key);
+/* =========================================================
+   NAVIGATION / PAGE LOADER
+========================================================= */
+document.querySelectorAll(".nav-link").forEach(link=>{
+  link.addEventListener("click",()=>navigate(link.dataset.page));
+});
+document.getElementById("mobileMenuBtn").addEventListener("click",()=>{
+  document.getElementById("sidebar").classList.toggle("open");
+});
+document.getElementById("profileBtn").addEventListener("click",()=>{
+  document.getElementById("profileMenu").classList.toggle("hidden");
+});
+document.addEventListener("click",e=>{
+  if(!e.target.closest(".profile-wrap"))document.getElementById("profileMenu").classList.add("hidden");
+});
+document.querySelector("[data-open-account]").addEventListener("click",()=>{
+  document.getElementById("profileMenu").classList.add("hidden");
+  navigate("my-account");
+});
+document.querySelector("[data-logout]").addEventListener("click",logout);
 
-    card.classList.add("card-hide-target");
-    card.classList.toggle("is-card-hidden",isHidden);
+const PAGE_TITLES={
+ dashboard:"Dashboard","add-user":"Add User","user-list":"User List",
+ "deleted-users":"Deleted Users","add-wage":"Add Wage","wage-history":"Wage History",
+ "wage-delete-history":"Wage Delete History","user-payment":"User Payment",
+ "payment-history":"Payment History","delete-payment-history":"Delete Payment History",
+ "add-currency":"Add Currency","add-payment-method":"Add Payment Method",
+ "card-hide-show":"Card Hide / Show","manage-admins":"Manage Admins","my-account":"My Account"
+};
+async function navigate(page){
+  if(page!=="my-account" && page!=="manage-admins"){
+    const required=document.querySelector(`.nav-link[data-page="${page}"]`)?.dataset.permission;
+    if(required && !can(required)){showMessage("এই পেজটি দেখার অনুমতি আপনার নেই।");return}
+  }
+  if(page==="my-account"&&!can("myAccount")){showMessage("My Account permission নেই।");return}
+  if(page==="manage-admins"&&!can("manageAdmins")){showMessage("শুধু Super Admin এই অংশ ব্যবহার করতে পারবেন।");return}
 
-    let button = card.querySelector(":scope > .card-hide-control");
+  currentPage=page;
+  document.getElementById("topTitle").textContent=PAGE_TITLES[page]||page;
+  document.querySelectorAll(".nav-link").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("dashboardCards").classList.toggle("hidden",page!=="dashboard"||!can("dashboardCards"));
+  const view=document.getElementById("pageView");
+  view.innerHTML='<div class="loading">Loading page...</div>';
 
-    if(!button){
-      button = document.createElement("button");
-      button.type = "button";
-      button.className = "card-hide-control";
-      card.appendChild(button);
+  if(page==="manage-admins"){renderAdminManagement(view);return}
+  if(page==="my-account"){renderMyAccount(view);return}
 
-      button.addEventListener("click",function(event){
-        event.preventDefault();
-        event.stopPropagation();
-        toggleDashboardCard(card);
+  const file=PAGE_FILES[page];
+  if(!file){view.innerHTML='<div class="panel">Page not found.</div>';return}
+  try{
+    const response=await fetch(file,{cache:"no-store"});
+    if(!response.ok)throw new Error(file+" পাওয়া যায়নি।");
+    const html=await response.text();
+    if(currentPage!==page)return;
+    const parsed=new DOMParser().parseFromString(html,"text/html");
+    const styles=[...parsed.querySelectorAll("style")].map(s=>s.textContent).join("\n");
+    const body=parsed.body?.innerHTML||parsed.documentElement.innerHTML;
+    view.innerHTML=(styles?`<style>${styles}</style>`:"")+body;
+
+    // Load scripts after page markup has been inserted.
+    const scripts=[...parsed.querySelectorAll("script")];
+    for(const oldScript of scripts){
+      const script=document.createElement("script");
+      if(oldScript.src){
+        script.src=new URL(oldScript.getAttribute("src"),location.href).href;
+        script.async=false;
+      }else script.textContent=oldScript.textContent;
+      document.body.appendChild(script);
+      if(oldScript.src) await new Promise(resolve=>{
+        script.onload=resolve;script.onerror=resolve;
       });
     }
+    if(page==="dashboard")loadDashboardStats();
+  }catch(err){
+    view.innerHTML=`<div class="panel"><h3>Page Load Error</h3><p class="muted">${escapeHtml(err.message)}</p><p class="muted">HTML ফাইলটি GitHub repository-র index.html-এর একই folder-এ আছে কি না দেখুন।</p></div>`;
+  }
+}
 
-    button.classList.toggle("is-hidden",isHidden);
-    button.textContent = isHidden ? "Show Card" : "Hide Card";
-    button.style.display = cardHideMode ? "block" : "none";
+/* =========================================================
+   DASHBOARD STATISTICS
+   Existing APIs may return different key names. The helper
+   reads common response formats without changing your APIs.
+========================================================= */
+async function getJson(url){
+  const response=await fetch(url,{cache:"no-store"});
+  if(!response.ok)throw new Error("API request failed");
+  return response.json();
+}
+function unwrapArray(result,keys){
+  if(Array.isArray(result))return result;
+  for(const key of keys){
+    if(Array.isArray(result?.[key]))return result[key];
+    if(Array.isArray(result?.data?.[key]))return result.data[key];
+  }
+  if(Array.isArray(result?.data))return result.data;
+  return [];
+}
+function firstNumber(obj,keys){
+  for(const key of keys)if(obj&&obj[key]!==undefined&&obj[key]!==null&&obj[key]!=="")return Number(obj[key])||0;
+  return 0;
+}
+function dateOf(row){
+  const value=row?.date||row?.Date||row?.createdDate||row?.created_at||row?.timestamp||"";
+  const d=new Date(value);
+  return isNaN(d)?null:d;
+}
+function rowAmount(row){
+  return firstNumber(row,["amount","Amount","wage","Wage","payment","Payment","total","Total","value"]);
+}
+function setStat(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
+async function loadDashboardStats(){
+  if(currentPage!=="dashboard"||!can("dashboardCards"))return;
+  try{
+    const [u,w,p]=await Promise.all([
+      getJson(USERS_API_URL+"?api=active"),
+      getJson(WAGE_API_URL+"?api=wages"),
+      getJson(PAYMENT_API_URL+"?api=payments")
+    ]);
+    const users=unwrapArray(u,["users","activeUsers","records"]);
+    const wages=unwrapArray(w,["wages","records","history"]);
+    const payments=unwrapArray(p,["payments","records","history"]);
+    const totalUsers=users.length;
+    const activeUsers=users.filter(x=>String(x.status||x.Status||"Active").toLowerCase()==="active").length;
+    const totalWage=wages.reduce((s,x)=>s+rowAmount(x),0);
+    const totalPayment=payments.reduce((s,x)=>s+rowAmount(x),0);
+    const now=new Date();
+    const sameDay=d=>d&&d.toDateString()===now.toDateString();
+    const sameMonth=d=>d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+    const todayWage=wages.filter(x=>sameDay(dateOf(x))).reduce((s,x)=>s+rowAmount(x),0);
+    const todayPayment=payments.filter(x=>sameDay(dateOf(x))).reduce((s,x)=>s+rowAmount(x),0);
+    const monthWage=wages.filter(x=>sameMonth(dateOf(x))).reduce((s,x)=>s+rowAmount(x),0);
+    const monthPayment=payments.filter(x=>sameMonth(dateOf(x))).reduce((s,x)=>s+rowAmount(x),0);
+    setStat("totalUsers",totalUsers);
+    setStat("activeUsers",activeUsers);
+    setStat("inactiveUsers",Math.max(0,totalUsers-activeUsers));
+    setStat("totalWage",money(totalWage));
+    setStat("totalPayment",money(totalPayment));
+    setStat("remainingBalance",money(totalWage-totalPayment));
+    setStat("duePayment",money(Math.max(0,totalWage-totalPayment)));
+    setStat("todayWage",money(todayWage));
+    setStat("todayPayment",money(todayPayment));
+    setStat("monthWage",money(monthWage));
+    setStat("monthPayment",money(monthPayment));
+    setStat("averageWage",money(totalUsers?totalWage/totalUsers:0));
+    setStat("wageEntries",wages.length);
+    setStat("paymentEntries",payments.length);
+  }catch(e){
+    console.warn("Dashboard stats:",e);
+    ["totalUsers","activeUsers","inactiveUsers","totalWage","totalPayment","remainingBalance","duePayment","todayWage","todayPayment","monthWage","monthPayment","averageWage","wageEntries","paymentEntries"].forEach(id=>setStat(id,"—"));
+  }
+}
 
-    card.style.removeProperty("display");
-
-    if(isHidden && !cardHideMode){
-      card.classList.add("is-card-hidden");
-    }
+/* =========================================================
+   ADMIN MANAGEMENT
+========================================================= */
+function renderAdminManagement(view){
+  view.innerHTML=`
+    <div class="page-heading"><div><h1>Admin Management</h1><p>Create accounts, assign roles and control permissions.</p></div><button class="btn" id="addAdminBtn">＋ Add Admin</button></div>
+    <div class="panel"><h3>Admin Accounts</h3><div id="adminTable" class="loading">Loading admin accounts...</div></div>`;
+  document.getElementById("addAdminBtn").onclick=()=>openAdminModal();
+  loadAdminList();
+}
+async function loadAdminList(){
+  const target=document.getElementById("adminTable");
+  if(!target)return;
+  try{
+    const result=await authRequest({action:"getAdminList",token:authToken});
+    const admins=result.data?.admins||result.data||[];
+    if(!admins.length){target.innerHTML="<p class='muted'>No admin accounts found.</p>";return}
+    target.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+      ${admins.map(a=>`<tr>
+        <td><strong>${escapeHtml(a.name)}</strong></td><td>${escapeHtml(a.email)}</td>
+        <td>${escapeHtml(a.customRoleName||a.role)}</td>
+        <td><span class="status ${String(a.status).toLowerCase()==="active"?"":"off"}">${escapeHtml(a.status)}</span></td>
+        <td>
+          <button class="btn secondary small" onclick="editAdmin('${escapeHtml(a.adminId||a.id)}')">Permissions</button>
+          <button class="btn secondary small" onclick="toggleAdmin('${escapeHtml(a.adminId||a.id)}','${String(a.status).toLowerCase()==="active"?"Inactive":"Active"}')">${String(a.status).toLowerCase()==="active"?"Disable":"Activate"}</button>
+          <button class="btn danger small" onclick="removeAdmin('${escapeHtml(a.adminId||a.id)}')">Delete</button>
+        </td></tr>`).join("")}
+    </tbody></table></div>`;
+  }catch(e){target.innerHTML=`<p class="error">${escapeHtml(e.message)}</p>`}
+}
+function permissionInputs(selected={}){
+  return `<div class="permission-grid">${PERMISSIONS.map(([key,label])=>`
+    <label class="permission-item"><input type="checkbox" name="perm_${key}" ${selected[key]===true?"checked":""} ${key==="manageAdmins"?"data-super-only":""}><span>${label}</span></label>`).join("")}</div>`;
+}
+function collectPermissionInputs(){
+  const result={};
+  PERMISSIONS.forEach(([key])=>{
+    const el=document.querySelector(`[name="perm_${key}"]`);
+    result[key]=!!el?.checked;
   });
-
-  if(cardHideMode) document.body.classList.add("card-hide-mode");
-  else document.body.classList.remove("card-hide-mode");
-
-  updateCardHideButton();
+  return result;
 }
-
-function toggleCardHideMode(){
-  cardHideMode = !cardHideMode;
-  closeSidebar();
-  updateCardHideButton();
-
-  if(currentPage !== "dashboard"){
-    loadPage("dashboard",true);
-  }else{
-    setupDashboardCardControls();
-  }
+function setPermissionPreset(role){
+  const presets={
+    "Super Admin":Object.fromEntries(PERMISSIONS.map(([k])=>[k,true])),
+    "Admin":Object.fromEntries(PERMISSIONS.map(([k])=>[k,k!=="manageAdmins"])),
+    "Staff":{
+      dashboard:true,dashboardCards:true,cardHideShow:false,addUser:false,userList:true,
+      deletedUsers:false,addWage:true,wageHistory:true,wageDeleteHistory:false,
+      userPayment:true,paymentHistory:true,deletePaymentHistory:false,addCurrency:false,
+      addPaymentMethod:false,myAccount:true,manageAdmins:false
+    },
+    "Custom":Object.fromEntries(PERMISSIONS.map(([k])=>[k,false]))
+  };
+  const preset=presets[role]||presets.Custom;
+  PERMISSIONS.forEach(([key])=>{
+    const el=document.querySelector(`[name="perm_${key}"]`);
+    if(el)el.checked=!!preset[key];
+  });
 }
+function openAdminModal(admin=null){
+  const isEdit=!!admin;
+  const perms=admin?.permissions||{};
+  document.getElementById("modalRoot").innerHTML=`
+  <div class="modal-backdrop" id="adminBackdrop"><div class="modal">
+    <div class="modal-head"><h3>${isEdit?"Edit Admin Permissions":"Create Admin Account"}</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
+    <form id="adminForm">
+      <div class="form-grid">
+        <div class="field"><label>Full Name</label><input name="name" required value="${escapeHtml(admin?.name||"")}"></div>
+        <div class="field"><label>Email</label><input name="email" type="email" required value="${escapeHtml(admin?.email||"")}"></div>
+        <div class="field"><label>Role</label><select name="role" id="adminRole" required>
+          <option value="Admin" ${admin?.role==="Admin"?"selected":""}>Admin</option>
+          <option value="Staff" ${admin?.role==="Staff"?"selected":""}>Staff</option>
+          <option value="Custom" ${admin?.role==="Custom"?"selected":""}>Custom</option>
+        </select></div>
+        <div class="field"><label>Custom Role Name (Custom role only)</label><input name="customRoleName" value="${escapeHtml(admin?.customRoleName||"")}" placeholder="e.g. Accountant"></div>
+        ${!isEdit?`<div class="field"><label>Password</label><input name="password" type="password" minlength="8" required></div>`:""}
+      </div>
+      <div class="field"><label>Permissions</label>${permissionInputs(perms)}</div>
+      <div class="error" id="adminFormError"></div>
+      <div style="display:flex;gap:9px;justify-content:flex-end;margin-top:17px">
+        <button type="button" class="btn secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn" type="submit">${isEdit?"Save Permissions":"Create Account"}</button>
+      </div>
+    </form>
+  </div></div>`;
+  document.getElementById("adminRole").addEventListener("change",e=>setPermissionPreset(e.target.value));
+  if(!isEdit)setPermissionPreset("Staff");
+  document.getElementById("adminForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const form=e.currentTarget,fd=new FormData(form),err=document.getElementById("adminFormError");
+    const payload={
+      token:authToken,name:fd.get("name").trim(),email:fd.get("email").trim(),
+      role:fd.get("role"),customRoleName:fd.get("customRoleName").trim(),
+      permissions:collectPermissionInputs()
+    };
+    if(!isEdit)payload.password=fd.get("password");
+    try{
+      if(payload.role==="Custom"&&!payload.customRoleName)throw new Error("Custom role name লিখুন।");
+      await authRequest(isEdit?{action:"updateAdminPermissions",...payload,adminId:admin.adminId||admin.id}:{action:"createAdmin",...payload});
+      closeModal();showMessage(isEdit?"Permissions updated.":"Admin account created.");loadAdminList();
+    }catch(error){err.textContent=error.message}
+  });
+}
+async function editAdmin(id){
+  try{
+    const result=await authRequest({action:"getAdminList",token:authToken});
+    const admins=result.data?.admins||result.data||[];
+    const admin=admins.find(a=>String(a.adminId||a.id)===String(id));
+    if(!admin)throw new Error("Admin not found");
+    openAdminModal(admin);
+  }catch(e){showMessage(e.message)}
+}
+async function toggleAdmin(id,status){
+  if(!confirm(`এই account-এর status ${status} করতে চান?`))return;
+  try{await authRequest({action:"setAdminStatus",token:authToken,adminId:id,status});loadAdminList()}
+  catch(e){showMessage(e.message)}
+}
+async function removeAdmin(id){
+  if(!confirm("এই admin account delete করতে চান? Account soft-delete হবে।"))return;
+  try{await authRequest({action:"deleteAdmin",token:authToken,adminId:id});loadAdminList()}
+  catch(e){showMessage(e.message)}
+}
+function closeModal(){document.getElementById("modalRoot").innerHTML=""}
 
-/* =====================================
-   MAIN PAGE LOADER
-===================================== */
-
-let currentPage = "";
-let loadCounter = 0;
-
-async function loadPage(page,addHistory=true){
-  /* Never load protected pages before authentication */
-  if(!isAuthenticated){
-    showLogin();
-    return;
-  }
-
-  if(!PAGE_CONFIG[page]) page = "dashboard";
-
-  const config = PAGE_CONFIG[page];
-  const thisLoad = ++loadCounter;
-
-  closeSidebar();
-  updateActiveMenu(page);
-  updatePageHeader(page);
-
-  if(addHistory){
-    const newHash = "#"+page;
-    if(location.hash !== newHash){
-      history.pushState({page:page},"",newHash);
-    }
-  }
-
-  pageContainer.innerHTML = `
-    <div class="loading-box">
-      <div class="loading-spinner"></div>
-      Loading ${config.title}...
+/* =========================================================
+   MY ACCOUNT
+========================================================= */
+function renderMyAccount(view){
+  const a=currentAdmin||{};
+  view.innerHTML=`
+  <div class="page-heading"><div><h1>My Account</h1><p>Manage your personal information and security.</p></div></div>
+  <div class="panel">
+    <h3>Profile Information</h3>
+    <div style="display:flex;align-items:center;gap:15px;margin-bottom:20px">
+      <div class="avatar" id="accountAvatar" style="width:65px;height:65px;font-size:22px">${a.profilePicture?`<img src="${escapeHtml(a.profilePicture)}">`:escapeHtml(initials(a.name))}</div>
+      <div><strong>${escapeHtml(a.name||"")}</strong><p class="muted" style="font-size:12px">${escapeHtml(a.role||"")}</p>
+      <input type="file" id="profileFile" accept="image/png,image/jpeg,image/webp"></div>
     </div>
-  `;
-
-  try{
-    const response = await fetch("./"+config.file,{
-      method:"GET",
-      cache:"no-store"
-    });
-
-    if(!response.ok){
-      throw new Error(config.file+" not found. HTTP "+response.status);
-    }
-
-    const html = await response.text();
-    if(thisLoad !== loadCounter) return;
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html,"text/html");
-
-    await loadPageStyles(doc,config.file);
-    if(thisLoad !== loadCounter) return;
-
-    pageContainer.innerHTML = doc.body.innerHTML;
-
-    await executePageScripts(pageContainer);
-    if(thisLoad !== loadCounter) return;
-
-    currentPage = page;
-    window.currentPage = page;
-
-    if(page === "dashboard"){
-      setupDashboardCardControls();
-    }
-
-  }catch(error){
-    if(thisLoad !== loadCounter) return;
-
-    console.error("Page loading error:",error);
-
-    pageContainer.innerHTML = `
-      <div class="error-box">
-        <h3>Unable to Load Page</h3>
-        <p>${config.file} could not be loaded. Check that the file exists in your GitHub root folder.</p>
-        <p>${String(error.message)}</p>
-        <button onclick="window.loadPage('${page}',false)">Try Again</button>
+    <form id="accountForm">
+      <div class="form-grid">
+        <div class="field"><label>Name</label><input name="name" required value="${escapeHtml(a.name||"")}"></div>
+        <div class="field"><label>Email</label><input name="email" type="email" required value="${escapeHtml(a.email||"")}"></div>
       </div>
-    `;
-  }
+      <button class="btn" type="submit">Update Profile</button>
+      <span id="accountMessage" class="muted" style="font-size:12px;margin-left:10px"></span>
+    </form>
+  </div>
+  <div class="panel">
+    <h3>Change Password</h3>
+    <form id="passwordForm" style="max-width:480px">
+      <div class="field"><label>Current Password</label><input name="currentPassword" type="password" required></div>
+      <div class="field"><label>New Password</label><input name="newPassword" type="password" minlength="8" required></div>
+      <div class="field"><label>Confirm New Password</label><input name="confirmPassword" type="password" minlength="8" required></div>
+      <div id="passwordMessage" class="error"></div>
+      <button class="btn" type="submit">Change Password</button>
+    </form>
+  </div>`;
+  document.getElementById("accountForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const fd=new FormData(e.currentTarget),msg=document.getElementById("accountMessage");
+    try{
+      const result=await authRequest({action:"updateMyAccount",token:authToken,name:fd.get("name").trim(),email:fd.get("email").trim()});
+      if(result.data?.admin)currentAdmin=result.data.admin;
+      else{currentAdmin.name=fd.get("name").trim();currentAdmin.email=fd.get("email").trim()}
+      localStorage.setItem(ADMIN_KEY,JSON.stringify(currentAdmin));renderIdentity();
+      msg.textContent="Profile updated.";
+    }catch(err){msg.textContent=err.message}
+  });
+  document.getElementById("passwordForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const fd=new FormData(e.currentTarget),msg=document.getElementById("passwordMessage");
+    if(fd.get("newPassword")!==fd.get("confirmPassword")){msg.textContent="New password দুটো মিলছে না।";return}
+    try{
+      await authRequest({action:"changePassword",token:authToken,currentPassword:fd.get("currentPassword"),newPassword:fd.get("newPassword")});
+      showMessage("Password changed. নিরাপত্তার জন্য আবার Login করুন।");
+      await logout();
+    }catch(err){msg.textContent=err.message}
+  });
+  document.getElementById("profileFile").addEventListener("change",async e=>{
+    const file=e.target.files[0];if(!file)return;
+    if(file.size>2*1024*1024){showMessage("ছবির size 2MB-এর কম হতে হবে।");return}
+    const reader=new FileReader();
+    reader.onload=async()=>{
+      try{
+        const result=await authRequest({action:"updateProfilePicture",token:authToken,dataUrl:reader.result,fileName:file.name});
+        const url=result.data?.profilePicture||result.data?.url;
+        if(url){currentAdmin.profilePicture=url;localStorage.setItem(ADMIN_KEY,JSON.stringify(currentAdmin));renderIdentity();renderMyAccount(document.getElementById("pageView"))}
+        showMessage("Profile picture updated. Drive link sharing enabled থাকতে পারে।");
+      }catch(err){showMessage(err.message)}
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
-/* =====================================
-   GLOBAL NAVIGATION
-===================================== */
-
-window.loadPage = loadPage;
-window.__wageEditUserId = "";
-
-/* =====================================
-   SIDEBAR EVENTS
-===================================== */
-
-document.querySelectorAll(".nav-item[data-page]").forEach(item=>{
-  item.addEventListener("click",function(){
-    loadPage(this.dataset.page,true);
-  });
-});
-
-document.getElementById("cardHideMenuButton").addEventListener("click",function(){
-  toggleCardHideMode();
-});
-
-/* =====================================
-   BROWSER BACK / FORWARD
-===================================== */
-
-window.addEventListener("popstate",function(){
-  if(!isAuthenticated){
-    showLogin();
-    return;
+/* =========================================================
+   LOGOUT / INITIALIZE
+========================================================= */
+async function logout(){
+  try{if(authToken)await authRequest({action:"logout",token:authToken})}catch(e){}
+  clearSession();
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+  document.getElementById("loginPassword").value="";
+  document.getElementById("loginError").textContent="";
+}
+(async function init(){
+  if(authToken){
+    try{
+      const ok=await verifyLogin();
+      if(ok)await startApp();
+      else document.getElementById("loginScreen").classList.remove("hidden");
+    }catch(e){clearSession();document.getElementById("loginScreen").classList.remove("hidden")}
+  }else{
+    document.getElementById("loginScreen").classList.remove("hidden");
   }
-  loadPage(getPageFromHash(),false);
-});
-
-window.addEventListener("hashchange",function(){
-  if(!isAuthenticated){
-    showLogin();
-    return;
-  }
-
-  const page = getPageFromHash();
-  if(page !== currentPage){
-    loadPage(page,false);
-  }
-});
-
-/* =====================================
-   START APPLICATION
-===================================== */
-
-showLogin();
-verifyExistingSession();
-
+})();
 </script>
 </body>
 </html>
