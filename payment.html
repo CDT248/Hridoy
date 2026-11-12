@@ -38,8 +38,9 @@
   background:var(--up-primary);color:white;border-color:var(--up-primary)
 }
 #userPaymentPage .up-btn.danger{color:#dc3545}
-#userPaymentPage .up-btn:disabled{opacity:.55;cursor:not-allowed}
-
+#userPaymentPage .up-btn:disabled{
+  opacity:.6;cursor:not-allowed
+}
 #userPaymentPage .up-stats{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   gap:13px;margin-bottom:20px
@@ -123,7 +124,6 @@
 #userPaymentPage .up-user-option:hover{background:var(--up-bg)}
 #userPaymentPage .up-user-option .up-user-meta strong{font-size:13px}
 #userPaymentPage .up-user-option .up-user-meta small{font-size:11px}
-
 #userPaymentPage .up-toolbar{
   display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px
 }
@@ -147,7 +147,9 @@
 #userPaymentPage .up-user-cell{
   display:flex;align-items:center;gap:9px;min-width:145px
 }
-#userPaymentPage .up-user-cell .up-avatar{width:32px;height:32px;flex-basis:32px}
+#userPaymentPage .up-user-cell .up-avatar{
+  width:32px;height:32px;flex-basis:32px
+}
 #userPaymentPage .up-user-cell strong{font-size:12px}
 #userPaymentPage .up-user-cell small{
   display:block;color:var(--up-muted);font-size:10px;margin-top:3px
@@ -186,8 +188,8 @@
 }
 #userPaymentPage .up-modal-head h3{margin:0;font-size:17px}
 #userPaymentPage .up-close{
-  border:0;background:transparent;color:var(--up-muted);font-size:24px;
-  line-height:1;padding:3px 7px
+  border:0;background:transparent;color:var(--up-muted);
+  font-size:24px;line-height:1;padding:3px 7px
 }
 #userPaymentPage .up-toast{
   position:fixed;right:20px;bottom:20px;z-index:10001;
@@ -217,6 +219,15 @@
 #userPaymentPage .up-mobile-details strong{
   font-size:12px;overflow-wrap:anywhere
 }
+
+/* Processing spinner */
+#userPaymentPage .up-spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid #ffffff70;border-top-color:#fff;
+  border-radius:50%;vertical-align:middle;
+  animation:upSpin .7s linear infinite;margin-right:7px
+}
+@keyframes upSpin{to{transform:rotate(360deg)}}
 
 /* Success popup */
 #userPaymentPage .up-success-icon{
@@ -259,15 +270,11 @@
   #userPaymentPage .up-modal-box{
     width:100%;max-height:90dvh;padding:16px;border-radius:16px
   }
-  #userPaymentPage .up-actions .up-btn{
-    flex:1;min-height:42px
-  }
+  #userPaymentPage .up-actions .up-btn{flex:1;min-height:42px}
   #userPaymentPage .up-mobile-top{align-items:flex-start}
-  #userPaymentPage .up-pagination{align-items:center}
 }
 @media(max-width:360px){
   #userPaymentPage .up-stats{grid-template-columns:1fr 1fr}
-  #userPaymentPage .up-mobile-details{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -291,7 +298,7 @@
     <div class="up-stat"><small>Active Users</small><strong id="upUserCount">0</strong></div>
   </div>
 
-  <!-- ADD PAYMENT FORM -->
+  <!-- ADD PAYMENT -->
   <div class="up-panel">
     <div class="up-panel-head">
       <h3>Add New Payment</h3>
@@ -409,7 +416,7 @@
   </div>
 </div>
 
-<!-- EDIT PAYMENT POPUP -->
+<!-- EDIT POPUP -->
 <div class="up-modal" id="upEditModal">
   <div class="up-modal-box">
     <div class="up-modal-head">
@@ -456,12 +463,15 @@
           <label>Comment</label>
           <textarea id="upEditComment"></textarea>
         </div>
-
       </div>
 
       <div class="up-actions">
-        <button class="up-btn primary" type="submit" id="upEditSaveBtn">Save Changes</button>
-        <button class="up-btn" type="button" data-close="upEditModal">Cancel</button>
+        <button class="up-btn primary" type="submit" id="upEditSaveBtn">
+          Save Changes
+        </button>
+        <button class="up-btn" type="button" id="upEditCancelBtn">
+          Cancel
+        </button>
       </div>
     </form>
   </div>
@@ -592,6 +602,18 @@ function formatDate(value){
   const d=new Date(value);
   if(isNaN(d.getTime())) return String(value);
   return d.toLocaleDateString();
+}
+
+/* ================= PROCESSING BUTTON ================= */
+
+function setProcessing(button,processing,normalText){
+  if(processing){
+    button.disabled=true;
+    button.innerHTML='<span class="up-spinner"></span>Processing...';
+  }else{
+    button.disabled=false;
+    button.textContent=normalText;
+  }
 }
 
 /* ================= IMAGE HANDLING ================= */
@@ -962,7 +984,7 @@ function renderPayments(){
   }).join("");
 }
 
-/* ================= ADD PAYMENT FORM ================= */
+/* ================= ADD PAYMENT ================= */
 
 function resetAddForm(){
   $("upPaymentForm").reset();
@@ -1002,7 +1024,8 @@ $("upPaymentForm").addEventListener("submit",async e=>{
   const btn=$("upSubmitBtn");
   if(btn.disabled) return;
 
-  btn.disabled=true;
+  const normalText="+ Add Payment";
+  setProcessing(btn,true,normalText);
 
   try{
     const payload=getAddPayload();
@@ -1014,12 +1037,15 @@ $("upPaymentForm").addEventListener("submit",async e=>{
     await loadPayments();
     renderPayments();
 
-    showSuccess(result.message||"Payment has been added successfully.","Payment Added!");
+    showSuccess(
+      result.message||"Payment has been added successfully.",
+      "Payment Added!"
+    );
 
   }catch(err){
     toast(err.message||"Payment could not be saved.");
   }finally{
-    btn.disabled=false;
+    setProcessing(btn,false,normalText);
   }
 });
 
@@ -1030,6 +1056,8 @@ $("upResetBtn").addEventListener("click",()=>{
 /* ================= EDIT PAYMENT POPUP ================= */
 
 function editPayment(paymentId){
+  if($("upEditSaveBtn").disabled) return;
+
   const p=payments.find(x=>String(x.paymentId)===String(paymentId));
   if(!p) return;
 
@@ -1045,8 +1073,20 @@ function editPayment(paymentId){
   $("upEditDate").value=String(p.paymentDate||"").slice(0,10);
   $("upEditComment").value=p.comment||"";
 
+  $("upEditSaveBtn").textContent="Save Changes";
+  $("upEditSaveBtn").disabled=false;
+
   $("upEditModal").classList.add("show");
 }
+
+/*
+ * IMPORTANT:
+ * 1. Save click = Processing immediately.
+ * 2. Edit modal stays open while server is saving.
+ * 3. If saving fails, form stays open.
+ * 4. If saving succeeds, modal closes immediately.
+ * 5. Then success popup appears.
+ */
 
 $("upEditForm").addEventListener("submit",async e=>{
   e.preventDefault();
@@ -1056,7 +1096,10 @@ $("upEditForm").addEventListener("submit",async e=>{
   const btn=$("upEditSaveBtn");
   if(btn.disabled) return;
 
-  btn.disabled=true;
+  const normalText="Save Changes";
+
+  // Show processing immediately.
+  setProcessing(btn,true,normalText);
 
   try{
     const amount=Number($("upEditAmount").value);
@@ -1082,20 +1125,35 @@ $("upEditForm").addEventListener("submit",async e=>{
     if(!payload.methodId) throw new Error("Please select payment method.");
     if(!payload.paymentDate) throw new Error("Please select payment date.");
 
+    // Wait for the actual backend response.
+    // The edit popup remains open during this request.
     const result=await postJSON(payload);
 
+    // Backend confirmed success.
+    // Close edit form immediately.
     closeModal("upEditModal");
     editingPaymentId="";
 
+    // Update payment records.
     await loadPayments();
     renderPayments();
 
-    showSuccess(result.message||"Payment has been updated successfully.","Payment Updated!");
+    // Show success entry popup.
+    showSuccess(
+      result.message||"Payment entry has been updated successfully.",
+      "Payment Updated Successfully!"
+    );
 
   }catch(err){
+    // Do not close the edit popup on error.
+    // Keep the form values so the user can retry.
     toast(err.message||"Payment could not be updated.");
+
   }finally{
-    btn.disabled=false;
+    // Restore the button if the modal is still open.
+    if($("upEditModal").classList.contains("show")){
+      setProcessing(btn,false,normalText);
+    }
   }
 });
 
@@ -1151,7 +1209,8 @@ $("upConfirmDelete").addEventListener("click",async()=>{
   const btn=$("upConfirmDelete");
   if(btn.disabled) return;
 
-  btn.disabled=true;
+  const normalText="Delete Payment";
+  setProcessing(btn,true,normalText);
 
   try{
     const result=await postJSON({
@@ -1165,12 +1224,15 @@ $("upConfirmDelete").addEventListener("click",async()=>{
     await loadPayments();
     renderPayments();
 
-    showSuccess(result.message||"Payment has been deleted successfully.","Payment Deleted!");
+    showSuccess(
+      result.message||"Payment has been deleted successfully.",
+      "Payment Deleted!"
+    );
 
   }catch(err){
     toast(err.message||"Could not delete payment.");
   }finally{
-    btn.disabled=false;
+    setProcessing(btn,false,normalText);
   }
 });
 
@@ -1220,29 +1282,42 @@ $("upNextPage").addEventListener("click",()=>{
 
 /* ================= MODAL CONTROLS ================= */
 
+$("upEditCancelBtn").addEventListener("click",()=>{
+  if($("upEditSaveBtn").disabled) return;
+
+  closeModal("upEditModal");
+  editingPaymentId="";
+});
+
 ROOT.querySelectorAll("[data-close]").forEach(btn=>{
   btn.addEventListener("click",()=>{
-    closeModal(btn.dataset.close);
+    const modalId=btn.dataset.close;
 
-    if(btn.dataset.close==="upEditModal"){
-      editingPaymentId="";
+    // Do not allow closing the edit form during saving.
+    if(modalId==="upEditModal" && $("upEditSaveBtn").disabled){
+      return;
     }
+
+    closeModal(modalId);
+
+    if(modalId==="upEditModal") editingPaymentId="";
+    if(modalId==="upDeleteModal") deletingPaymentId="";
   });
 });
 
 ROOT.querySelectorAll(".up-modal").forEach(modal=>{
   modal.addEventListener("click",e=>{
-    if(e.target===modal){
-      modal.classList.remove("show");
+    if(e.target!==modal) return;
 
-      if(modal.id==="upEditModal"){
-        editingPaymentId="";
-      }
-
-      if(modal.id==="upDeleteModal"){
-        deletingPaymentId="";
-      }
+    // Keep edit popup open during processing.
+    if(modal.id==="upEditModal" && $("upEditSaveBtn").disabled){
+      return;
     }
+
+    modal.classList.remove("show");
+
+    if(modal.id==="upEditModal") editingPaymentId="";
+    if(modal.id==="upDeleteModal") deletingPaymentId="";
   });
 });
 
@@ -1251,14 +1326,18 @@ $("upSuccessOK").addEventListener("click",()=>{
 });
 
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    ROOT.querySelectorAll(".up-modal.show").forEach(modal=>{
-      modal.classList.remove("show");
+  if(e.key!=="Escape") return;
 
-      if(modal.id==="upEditModal") editingPaymentId="";
-      if(modal.id==="upDeleteModal") deletingPaymentId="";
-    });
-  }
+  ROOT.querySelectorAll(".up-modal.show").forEach(modal=>{
+    if(modal.id==="upEditModal" && $("upEditSaveBtn").disabled){
+      return;
+    }
+
+    modal.classList.remove("show");
+
+    if(modal.id==="upEditModal") editingPaymentId="";
+    if(modal.id==="upDeleteModal") deletingPaymentId="";
+  });
 });
 
 /* ================= INITIAL LOAD ================= */
