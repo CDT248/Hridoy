@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +10,88 @@
 #deletedWagePage{width:100%;color:var(--text,#172033);font-family:inherit}
 #deletedWagePage *{box-sizing:border-box}
 #deletedWagePage button{font-family:inherit;cursor:pointer}
+
 #deletedWagePage .dw-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 #deletedWagePage .dw-heading h2{font-size:22px;font-weight:800;margin:0 0 5px}
 #deletedWagePage .dw-heading p{font-size:12px;color:var(--muted,#8490a3);margin:0}
 #deletedWagePage .dw-btn{border:1px solid var(--border,#e8edf3);background:var(--card,#fff);color:var(--text,#172033);border-radius:9px;padding:10px 14px;font-size:12px;font-weight:700}
-#deletedWagePage .dw-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:20px}
+
+#deletedWagePage .dw-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:15px}
 #deletedWagePage .dw-stat{background:var(--card,#fff);border:1px solid var(--border,#e8edf3);border-radius:13px;padding:16px;min-width:0}
 #deletedWagePage .dw-stat-icon{font-size:21px;margin-bottom:9px}
 #deletedWagePage .dw-stat-label{color:var(--muted,#8490a3);font-size:11px;margin-bottom:7px}
 #deletedWagePage .dw-stat-value{font-size:22px;font-weight:800;overflow-wrap:anywhere}
+
+/* CURRENCY SUMMARY CARDS */
+#deletedWagePage .dw-currency-stats{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+ gap:13px;
+ margin-bottom:20px;
+}
+#deletedWagePage .dw-currency-stat{
+ position:relative;
+ overflow:hidden;
+ min-width:0;
+ background:var(--card,#fff);
+ border:1px solid var(--border,#e8edf3);
+ border-radius:13px;
+ padding:17px;
+ animation:dwPopupIn .2s ease;
+}
+#deletedWagePage .dw-currency-stat::after{
+ content:"";
+ position:absolute;
+ right:-24px;
+ bottom:-38px;
+ width:100px;
+ height:100px;
+ border-radius:50%;
+ background:linear-gradient(135deg,#10b98115,#6366f110);
+ pointer-events:none;
+}
+#deletedWagePage .dw-currency-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:8px;
+}
+#deletedWagePage .dw-currency-label{
+ color:var(--muted,#8490a3);
+ font-size:11px;
+ font-weight:800;
+ text-transform:uppercase;
+ letter-spacing:.4px;
+}
+#deletedWagePage .dw-currency-icon{
+ width:36px;
+ height:36px;
+ flex-shrink:0;
+ border-radius:11px;
+ display:grid;
+ place-items:center;
+ background:#ecfdf5;
+ color:#059669;
+ font-size:11px;
+ font-weight:800;
+}
+#deletedWagePage .dw-currency-total{
+ margin-top:12px;
+ font-size:23px;
+ font-weight:850;
+ color:#059669;
+ overflow-wrap:anywhere;
+ position:relative;
+ z-index:1;
+}
+#deletedWagePage .dw-currency-sub{
+ color:var(--muted,#8490a3);
+ font-size:11px;
+ margin-top:5px;
+ position:relative;
+ z-index:1;
+}
+
 #deletedWagePage .dw-content{background:var(--card,#fff);border:1px solid var(--border,#e8edf3);border-radius:13px;overflow:hidden}
 #deletedWagePage .dw-content-head{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--border,#e8edf3)}
 #deletedWagePage .dw-content-head h3{margin:0;font-size:15px;font-weight:800}
@@ -59,7 +133,7 @@
 #deletedWagePage .dw-message.success{display:block;background:#ecfdf5;color:#047857}
 #deletedWagePage .dw-message.error{display:block;background:#fff1f2;color:#be123c}
 
-/* Modal */
+/* MODAL */
 #deletedWagePage .dw-popup-overlay{display:none;position:fixed;inset:0;z-index:1000000;background:rgba(8,15,30,.62);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:18px}
 #deletedWagePage .dw-popup-overlay.show{display:flex}
 #deletedWagePage .dw-popup{width:100%;max-width:410px;background:var(--card,#fff);color:var(--text,#172033);border:1px solid var(--border,#e8edf3);border-radius:19px;padding:25px 22px 21px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.25);animation:dwPopupIn .25s ease}
@@ -92,8 +166,10 @@
 @media(max-width:700px){
  #deletedWagePage .dw-stats{grid-template-columns:1fr 1fr;gap:9px}
  #deletedWagePage .dw-stat{padding:13px}
- #deletedWagePage .dw-stat:last-child{grid-column:span 2}
  #deletedWagePage .dw-stat-value{font-size:19px}
+ #deletedWagePage .dw-currency-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #deletedWagePage .dw-currency-stat{padding:13px}
+ #deletedWagePage .dw-currency-total{font-size:19px}
  #deletedWagePage .dw-heading h2{font-size:19px}
  #deletedWagePage .dw-search{width:100%}
  #deletedWagePage .dw-content-head{align-items:stretch}
@@ -106,6 +182,8 @@
  #deletedWagePage .dw-card-actions{gap:4px}
  #deletedWagePage .dw-card-actions button{font-size:9px}
  #deletedWagePage .dw-popup{padding:21px 16px 17px}
+ #deletedWagePage .dw-currency-stats{grid-template-columns:1fr 1fr}
+ #deletedWagePage .dw-currency-total{font-size:16px}
 }
 </style>
 </head>
@@ -130,16 +208,14 @@
    <div class="dw-stat-value" id="dwTotal">0</div>
   </div>
   <div class="dw-stat">
-   <div class="dw-stat-icon">💰</div>
-   <div class="dw-stat-label">Total Deleted Amount</div>
-   <div class="dw-stat-value" id="dwAmount">0</div>
-  </div>
-  <div class="dw-stat">
    <div class="dw-stat-icon">⚙️</div>
    <div class="dw-stat-label">Available Actions</div>
    <div class="dw-stat-value" style="font-size:15px">Restore / Delete</div>
   </div>
  </div>
+
+ <!-- DYNAMIC CURRENCY TOTAL CARDS -->
+ <div class="dw-currency-stats" id="dwCurrencyStats" style="display:none"></div>
 
  <div class="dw-content">
   <div class="dw-content-head">
@@ -306,6 +382,84 @@
   return Number(w._row??w.deletedRow??w.rowNumber??w["Deleted Row"]??0);
  }
 
+ /* CURRENCY SUMMARY */
+ function getCurrencyKey(w){
+  const code=getCode(w).trim().toUpperCase();
+  const symbol=getSymbol(w).trim();
+  const name=getCurrencyName(w).trim();
+
+  if(code)return "code:"+code;
+  if(symbol)return "symbol:"+symbol;
+  if(name)return "name:"+name.toUpperCase();
+
+  return "unknown";
+ }
+
+ function formatCurrencyTotal(amount,symbol,code){
+  const formatted=Number(amount||0).toLocaleString("en-US",{
+   minimumFractionDigits:0,
+   maximumFractionDigits:2
+  });
+
+  if(symbol)return symbol+" "+formatted;
+  if(code)return code+" "+formatted;
+  return formatted;
+ }
+
+ function renderCurrencyStats(){
+  const container=$("dwCurrencyStats");
+
+  const groups=new Map();
+
+  deletedWages.forEach(w=>{
+   const key=getCurrencyKey(w);
+
+   if(!groups.has(key)){
+    groups.set(key,{
+     code:getCode(w).trim(),
+     symbol:getSymbol(w).trim(),
+     name:getCurrencyName(w).trim(),
+     total:0,
+     count:0
+    });
+   }
+
+   const group=groups.get(key);
+   group.total+=getWageAmount(w);
+   group.count++;
+  });
+
+  const currencyGroups=Array.from(groups.values());
+
+  if(!currencyGroups.length){
+   container.innerHTML="";
+   container.style.display="none";
+   return;
+  }
+
+  container.innerHTML=currencyGroups.map(group=>{
+   const label=group.name||group.code||group.symbol||"Unknown Currency";
+   const icon=group.code||group.symbol||"CUR";
+
+   return `
+    <div class="dw-currency-stat">
+     <div class="dw-currency-top">
+      <span class="dw-currency-label">${esc(label)} TOTAL DELETED</span>
+      <span class="dw-currency-icon">${esc(icon)}</span>
+     </div>
+     <div class="dw-currency-total">
+      ${esc(formatCurrencyTotal(group.total,group.symbol,group.code))}
+     </div>
+     <div class="dw-currency-sub">
+      ${group.count.toLocaleString()} deleted wage record(s) · ${esc(group.code||group.symbol||"Currency")}
+     </div>
+    </div>
+   `;
+  }).join("");
+
+  container.style.display="grid";
+ }
+
  function showMessage(message,type){
   const box=$("dwMessage");
   box.textContent=message;
@@ -358,6 +512,8 @@
    const empty=`<div class="dw-empty"><div class="dw-empty-icon">⚠️</div><h3>Unable to Load Data</h3><p>${esc(error.message)}</p></div>`;
    $("dwTableBody").innerHTML=`<tr><td colspan="8">${empty}</td></tr>`;
    $("dwMobileList").innerHTML=empty;
+   $("dwCurrencyStats").innerHTML="";
+   $("dwCurrencyStats").style.display="none";
    showMessage(error.message||"Failed to load data.","error");
   }finally{
    $("dwRefreshBtn").disabled=false;
@@ -367,8 +523,7 @@
 
  function updateStats(){
   $("dwTotal").textContent=deletedWages.length.toLocaleString();
-  const total=deletedWages.reduce((sum,w)=>sum+getWageAmount(w),0);
-  $("dwAmount").textContent=total.toLocaleString(undefined,{maximumFractionDigits:2});
+  renderCurrencyStats();
  }
 
  function render(){
