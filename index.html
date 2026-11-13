@@ -1,15 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wage Management System</title>
-<link
-  rel="icon"
-  type="image/png"
-  href="https://cdn-icons-png.flaticon.com/128/10384/10384161.png"
->
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/10384/10384161.png">
+
 <style>
 :root{
   --primary:#087f5b;
@@ -160,9 +156,13 @@ button,input{
   font-size:17px;
 }
 
+/* UPDATED SIDEBAR BOTTOM */
+
 .sidebar-bottom{
   border-top:1px solid var(--border);
-  padding:15px;
+  padding:12px 15px;
+  margin-bottom:15px;
+  flex-shrink:0;
 }
 
 .sidebar-user{
@@ -682,65 +682,58 @@ body:not(.card-hide-mode) .is-card-hidden{
   .login-brand h2{
     font-size:21px;
   }
+
+  /* MOBILE SIDEBAR BOTTOM POSITION */
+  .sidebar-bottom{
+    padding:10px 15px;
+    margin-bottom:15px;
+  }
+
+  .sidebar-actions{
+    margin-top:9px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =================================
-     LOGIN SCREEN
-================================= -->
+<!-- LOGIN SCREEN -->
 
 <div id="authScreen">
-
   <div class="login-card">
-
     <div class="login-brand">
-
       <div class="login-logo">W</div>
-
       <h2>WAGE MANAGER</h2>
-
       <p>MANAGEMENT SYSTEM</p>
-
     </div>
 
     <form id="loginForm">
-
       <div class="login-field">
-
         <label>Email Address</label>
-
         <input
           id="loginEmail"
           type="email"
           placeholder="Enter your email address"
           required
           autocomplete="username">
-
       </div>
 
       <div class="login-field">
-
         <label>Password</label>
-
         <input
           id="loginPassword"
           type="password"
           placeholder="Enter your password"
           required
           autocomplete="current-password">
-
       </div>
 
       <button
         class="login-submit"
         id="loginButton"
         type="submit">
-
         Login to Dashboard →
-
       </button>
 
       <div class="login-error" id="loginError"></div>
@@ -748,31 +741,22 @@ body:not(.card-hide-mode) .is-card-hidden{
       <div class="login-status" id="loginStatus">
         🔒 Secure Administrator Login
       </div>
-
     </form>
-
   </div>
-
 </div>
 
-
-<!-- =================================
-     MAIN APPLICATION
-================================= -->
+<!-- MAIN APPLICATION -->
 
 <div class="app" id="mainApp" style="display:none">
 
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
-
       <div class="brand-logo">W</div>
-
       <div>
         <div class="brand-name">WAGE MANAGER</div>
         <div class="brand-sub">MANAGEMENT SYSTEM</div>
       </div>
-
     </div>
 
     <div class="sidebar-content">
@@ -881,7 +865,6 @@ body:not(.card-hide-mode) .is-card-hidden{
     <div class="sidebar-bottom">
 
       <div class="sidebar-user">
-
         <div class="sidebar-avatar" id="sidebarAvatar">
           W
         </div>
@@ -895,11 +878,9 @@ body:not(.card-hide-mode) .is-card-hidden{
             System Admin
           </div>
         </div>
-
       </div>
 
       <div class="sidebar-actions">
-
         <button type="button" id="accountButton">
           My Account
         </button>
@@ -907,7 +888,6 @@ body:not(.card-hide-mode) .is-card-hidden{
         <button type="button" id="logoutButton">
           Logout ↗
         </button>
-
       </div>
 
     </div>
@@ -919,9 +899,7 @@ body:not(.card-hide-mode) .is-card-hidden{
   <main class="main">
 
     <header class="topbar">
-
       <div class="topbar-left">
-
         <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu">
           ☰
         </button>
@@ -935,30 +913,22 @@ body:not(.card-hide-mode) .is-card-hidden{
             Home / Dashboard
           </div>
         </div>
-
       </div>
 
       <div class="topbar-right">
-
         <button class="icon-btn" id="themeToggle" title="Change Theme">
           ☾
         </button>
-
       </div>
-
     </header>
 
     <section class="content">
-
       <div id="pageContainer">
-
         <div class="loading-box">
           <div class="loading-spinner"></div>
           Loading Dashboard...
         </div>
-
       </div>
-
     </section>
 
     <footer class="footer">
@@ -967,9 +937,7 @@ body:not(.card-hide-mode) .is-card-hidden{
     </footer>
 
   </main>
-
 </div>
-
 
 <script>
 
@@ -1121,7 +1089,6 @@ let authBusy = false;
 async function authRequest(payload){
 
   const response = await fetch(AUTH_API_URL,{
-
     method:"POST",
 
     headers:{
@@ -1131,9 +1098,7 @@ async function authRequest(payload){
     body:JSON.stringify(payload),
 
     cache:"no-store",
-
     redirect:"follow"
-
   });
 
   const raw = await response.text();
@@ -1141,27 +1106,20 @@ async function authRequest(payload){
   let result;
 
   try{
-
     result = JSON.parse(raw);
-
   }catch(error){
-
     throw new Error(
       "Server response is not valid JSON. Check Apps Script deployment."
     );
-
   }
 
   if(!response.ok || result.success === false){
-
     throw new Error(
       result.message || result.error || "Request failed."
     );
-
   }
 
   return result;
-
 }
 
 
@@ -1170,52 +1128,29 @@ async function authRequest(payload){
 ========================================= */
 
 function getStoredToken(){
-
   return localStorage.getItem(AUTH_TOKEN_KEY) || "";
-
 }
-
 
 function saveAuth(token,admin,permissions){
 
   authToken = token || "";
-
   currentAdmin = admin || {};
-
   currentPermissions = permissions || {};
 
-  localStorage.setItem(
-    AUTH_TOKEN_KEY,
-    authToken
-  );
-
-  localStorage.setItem(
-    AUTH_USER_KEY,
-    JSON.stringify(currentAdmin)
-  );
-
-  localStorage.setItem(
-    AUTH_PERMISSION_KEY,
-    JSON.stringify(currentPermissions)
-  );
-
+  localStorage.setItem(AUTH_TOKEN_KEY,authToken);
+  localStorage.setItem(AUTH_USER_KEY,JSON.stringify(currentAdmin));
+  localStorage.setItem(AUTH_PERMISSION_KEY,JSON.stringify(currentPermissions));
 }
-
 
 function clearAuth(){
 
   authToken = "";
-
   currentAdmin = null;
-
   currentPermissions = {};
 
   localStorage.removeItem(AUTH_TOKEN_KEY);
-
   localStorage.removeItem(AUTH_USER_KEY);
-
   localStorage.removeItem(AUTH_PERMISSION_KEY);
-
 }
 
 
@@ -1231,13 +1166,10 @@ function normalizePermissionData(admin){
     admin.permissions &&
     typeof admin.permissions === "object"
   ){
-
     return admin.permissions;
-
   }
 
   return {};
-
 }
 
 
@@ -1248,20 +1180,17 @@ function normalizePermissionData(admin){
 function showLogin(message){
 
   document.getElementById("mainApp").style.display = "none";
-
   document.getElementById("authScreen").style.display = "flex";
 
   const error = document.getElementById("loginError");
 
   error.textContent = message || "";
-
   error.style.display = message ? "block" : "none";
 
   document.getElementById("loginButton").disabled = false;
 
   document.getElementById("loginButton").textContent =
     "Login to Dashboard →";
-
 }
 
 
@@ -1272,19 +1201,15 @@ function showLogin(message){
 function showApplication(){
 
   document.getElementById("authScreen").style.display = "none";
-
   document.getElementById("mainApp").style.display = "block";
 
   updateAdminProfile();
-
   applyPermissions();
-
 }
 
 
 /* =========================================
    9. FAST LOGIN
-   ONE API REQUEST
 ========================================= */
 
 document.getElementById("loginForm")
@@ -1297,19 +1222,14 @@ document.getElementById("loginForm")
   authBusy = true;
 
   const button = document.getElementById("loginButton");
-
   const error = document.getElementById("loginError");
-
   const status = document.getElementById("loginStatus");
 
   button.disabled = true;
-
   button.textContent = "Signing in...";
 
   error.style.display = "none";
-
   status.textContent = "Connecting securely...";
-
 
   const email =
     document.getElementById("loginEmail").value.trim();
@@ -1317,45 +1237,27 @@ document.getElementById("loginForm")
   const password =
     document.getElementById("loginPassword").value;
 
-
   try{
 
     const result = await authRequest({
-
       action:"login",
-
       email:email,
-
       password:password
-
     });
 
-
     if(!result.data || !result.data.token){
-
-      throw new Error(
-        result.message || "Login failed."
-      );
-
+      throw new Error(result.message || "Login failed.");
     }
 
-
     const token = result.data.token;
-
     const admin = result.data.admin || {};
-
     const permissions = normalizePermissionData(admin);
 
-    saveAuth(
-      token,
-      admin,
-      permissions
-    );
+    saveAuth(token,admin,permissions);
 
     document.getElementById("loginPassword").value = "";
 
     showApplication();
-
 
     const requestedPage = getPageFromHash();
 
@@ -1363,36 +1265,27 @@ document.getElementById("loginForm")
       ? requestedPage
       : getFirstAllowedPage();
 
-
     if(allowedPage){
-
       loadPage(allowedPage,false);
-
     }
 
     status.textContent = "Login successful.";
-
 
   }catch(error){
 
     document.getElementById("loginError").textContent =
       error.message || "Unable to login.";
 
-    document.getElementById("loginError").style.display =
-      "block";
+    document.getElementById("loginError").style.display = "block";
 
     status.textContent =
       "Please check your email and password.";
 
     button.disabled = false;
-
     button.textContent = "Login to Dashboard →";
 
-
   }finally{
-
     authBusy = false;
-
   }
 
 });
@@ -1400,7 +1293,6 @@ document.getElementById("loginForm")
 
 /* =========================================
    10. FAST SESSION RESTORE
-   ONE VERIFY REQUEST
 ========================================= */
 
 async function startApplication(){
@@ -1408,39 +1300,27 @@ async function startApplication(){
   const token = getStoredToken();
 
   if(!token){
-
     showLogin();
-
     return;
-
   }
 
   authToken = token;
 
-
   try{
 
     const result = await authRequest({
-
       action:"verify",
-
       token:token
-
     });
 
-
     if(!result.data || !result.data.admin){
-
       throw new Error("Session expired.");
-
     }
-
 
     currentAdmin = result.data.admin;
 
     currentPermissions =
       normalizePermissionData(currentAdmin);
-
 
     saveAuth(
       token,
@@ -1448,9 +1328,7 @@ async function startApplication(){
       currentPermissions
     );
 
-
     showApplication();
-
 
     const requestedPage = getPageFromHash();
 
@@ -1458,11 +1336,8 @@ async function startApplication(){
       ? requestedPage
       : getFirstAllowedPage();
 
-
     if(allowedPage){
-
       loadPage(allowedPage,false);
-
     }else{
 
       pageContainer.innerHTML = `
@@ -1473,7 +1348,6 @@ async function startApplication(){
       `;
 
     }
-
 
   }catch(error){
 
@@ -1502,18 +1376,12 @@ function hasPermission(permission){
     currentAdmin.role || ""
   ).toLowerCase();
 
-
   if(role === "super admin"){
-
     return true;
-
   }
 
-
   return currentPermissions[permission] === true;
-
 }
-
 
 function canOpenPage(page){
 
@@ -1522,55 +1390,33 @@ function canOpenPage(page){
   if(!config) return false;
 
   return hasPermission(config.permission);
-
 }
-
 
 function getFirstAllowedPage(){
 
   const preferred = [
-
     "dashboard",
-
     "user-list",
-
     "add-wage",
-
     "wage-history",
-
     "payment",
-
     "payment-history",
-
     "my-account"
-
   ];
 
-
   for(const page of preferred){
-
     if(canOpenPage(page)){
-
       return page;
-
     }
-
   }
-
 
   for(const page of Object.keys(PAGE_CONFIG)){
-
     if(canOpenPage(page)){
-
       return page;
-
     }
-
   }
 
-
   return "";
-
 }
 
 
@@ -1585,48 +1431,38 @@ function applyPermissions(){
   ).forEach(item=>{
 
     const permission = item.dataset.permission;
-
     const allowed = hasPermission(permission);
 
     item.style.display = allowed ? "flex" : "none";
 
   });
 
-
   const sections = [
-
     {
       heading:"main",
       pages:["dashboard"]
     },
-
     {
       heading:"users",
       pages:["add-user","user-list","deleted-user"]
     },
-
     {
       heading:"wages",
       pages:["add-wage","wage-history","deleted-wage"]
     },
-
     {
       heading:"payments",
       pages:["payment","payment-history","delete-payment"]
     },
-
     {
       heading:"settings",
       pages:["currency","payment-method","card-hide"]
     },
-
     {
       heading:"admin",
       pages:["manage-admins","my-account"]
     }
-
   ];
-
 
   sections.forEach(section=>{
 
@@ -1635,7 +1471,6 @@ function applyPermissions(){
     );
 
     if(!heading) return;
-
 
     const visible = section.pages.some(page=>{
 
@@ -1648,22 +1483,17 @@ function applyPermissions(){
 
     });
 
-
     heading.style.display =
       visible ? "block" : "none";
 
   });
 
-
   const accountButton =
     document.getElementById("accountButton");
 
-
   if(accountButton){
-
     accountButton.style.display =
       hasPermission("myAccount") ? "block" : "none";
-
   }
 
 }
@@ -1686,20 +1516,16 @@ function updateAdminProfile(){
   const picture =
     currentAdmin.profilePicture || "";
 
-
   document.getElementById(
     "sidebarUserName"
   ).textContent = name;
-
 
   document.getElementById(
     "sidebarUserRole"
   ).textContent = role;
 
-
   const avatar =
     document.getElementById("sidebarAvatar");
-
 
   if(picture){
 
@@ -1708,7 +1534,6 @@ function updateAdminProfile(){
     const img = document.createElement("img");
 
     img.src = picture;
-
     img.alt = "Profile";
 
     avatar.appendChild(img);
@@ -1725,36 +1550,27 @@ function updateAdminProfile(){
 
 /* =========================================
    14. INSTANT LOGOUT
-   INSTANT UI + BACKGROUND SERVER LOGOUT
 ========================================= */
 
 function logout(){
 
-  // Prevent repeated logout clicks.
   if(!authToken) return;
 
-  // Keep token temporarily for server logout.
   const token = authToken;
 
-  // Cancel pending page rendering.
   loadCounter++;
 
-  // Reset application state.
   currentPage = "";
   cardHideMode = false;
 
   document.body.classList.remove("card-hide-mode");
 
-  // Clear local authentication immediately.
   clearAuth();
 
-  // Close sidebar.
   closeSidebar();
 
-  // Clear current page content.
   pageContainer.innerHTML = "";
 
-  // Remove hash without triggering a new page load.
   if(location.hash){
 
     history.replaceState(
@@ -1765,19 +1581,13 @@ function logout(){
 
   }
 
-  // Show login immediately.
   showLogin("You have been logged out.");
 
-  // Server logout runs in background.
-  // Login screen does not wait for the API.
   if(token){
 
     authRequest({
-
       action:"logout",
-
       token:token
-
     }).catch(error=>{
 
       console.warn(
@@ -1791,18 +1601,14 @@ function logout(){
 
 }
 
-
 document.getElementById("logoutButton")
 .addEventListener("click",logout);
-
 
 document.getElementById("accountButton")
 .addEventListener("click",function(){
 
   if(canOpenPage("my-account")){
-
     loadPage("my-account",true);
-
   }
 
 });
@@ -1819,12 +1625,10 @@ function applyTheme(theme){
     theme === "dark"
   );
 
-
   document.getElementById(
     "themeToggle"
   ).textContent =
     theme === "dark" ? "☀" : "☾";
-
 
   localStorage.setItem(
     "wage_theme",
@@ -1833,12 +1637,10 @@ function applyTheme(theme){
 
 }
 
-
 const savedTheme =
   localStorage.getItem("wage_theme") || "light";
 
 applyTheme(savedTheme);
-
 
 document.getElementById("themeToggle")
 .addEventListener("click",function(){
@@ -1860,24 +1662,19 @@ document.getElementById("themeToggle")
 function openSidebar(){
 
   sidebar.classList.add("open");
-
   overlay.classList.add("show");
 
 }
 
-
 function closeSidebar(){
 
   sidebar.classList.remove("open");
-
   overlay.classList.remove("show");
 
 }
 
-
 document.getElementById("menuToggle")
 .addEventListener("click",openSidebar);
-
 
 overlay.addEventListener("click",closeSidebar);
 
@@ -1890,31 +1687,21 @@ function getPageFromHash(){
 
   let page = location.hash.replace("#","");
 
-
   if(!page){
-
     return "dashboard";
-
   }
-
 
   try{
-
     page = decodeURIComponent(page);
-
   }catch(error){
-
     page = "dashboard";
-
   }
-
 
   return PAGE_CONFIG[page]
     ? page
     : "dashboard";
 
 }
-
 
 function updateActiveMenu(page){
 
@@ -1930,7 +1717,6 @@ function updateActiveMenu(page){
   });
 
 }
-
 
 function updatePageHeader(page){
 
@@ -1955,13 +1741,10 @@ function scopeChildCSS(css,scope){
     ""
   );
 
-
   function processRules(source){
 
     let output = "";
-
     let position = 0;
-
 
     while(position < source.length){
 
@@ -1970,50 +1753,34 @@ function scopeChildCSS(css,scope){
         position
       );
 
-
       if(open === -1){
-
         output += source.slice(position);
-
         break;
-
       }
-
 
       const selector =
         source.slice(position,open).trim();
 
-
       let depth = 1;
-
       let close = open + 1;
-
 
       while(close < source.length && depth > 0){
 
         if(source[close] === "{") depth++;
-
         if(source[close] === "}") depth--;
 
         close++;
 
       }
 
-
       const body =
         source.slice(open + 1,close - 1);
 
-
       if(
-
         selector.startsWith("@media") ||
-
         selector.startsWith("@supports") ||
-
         selector.startsWith("@container") ||
-
         selector.startsWith("@layer")
-
       ){
 
         output +=
@@ -2021,24 +1788,18 @@ function scopeChildCSS(css,scope){
           processRules(body) +
           "}";
 
-
       }else if(
-
         selector.startsWith("@keyframes") ||
-
         selector.startsWith("@-webkit-keyframes")
-
       ){
 
         output +=
           selector + "{" + body + "}";
 
-
       }else if(selector.startsWith("@")){
 
         output +=
           selector + "{" + body + "}";
-
 
       }else{
 
@@ -2055,63 +1816,49 @@ function scopeChildCSS(css,scope){
             );
 
             if(s === "*"){
-
               return scope + " *";
-
             }
 
             if(s.startsWith(scope)){
-
               return s;
-
             }
 
             return scope + " " + s;
 
           }).join(",");
 
-
         output +=
           scopedSelectors + "{" + body + "}";
 
       }
 
-
       position = close;
 
     }
-
 
     return output;
 
   }
 
-
   return processRules(css);
 
 }
-
 
 function clearPageStyles(){
 
   document.querySelectorAll(
     "[data-child-page-style]"
   ).forEach(style=>{
-
     style.remove();
-
   });
 
 }
-
 
 async function loadPageStyles(doc,pageFile){
 
   clearPageStyles();
 
-
   const stylePromises = [];
-
 
   doc.head.querySelectorAll("style")
   .forEach(oldStyle=>{
@@ -2133,7 +1880,6 @@ async function loadPageStyles(doc,pageFile){
 
   });
 
-
   doc.head.querySelectorAll(
     'link[rel="stylesheet"]'
   ).forEach(oldLink=>{
@@ -2153,7 +1899,6 @@ async function loadPageStyles(doc,pageFile){
       pageFile
     );
 
-
     const promise = new Promise((resolve,reject)=>{
 
       newLink.onload = resolve;
@@ -2166,13 +1911,11 @@ async function loadPageStyles(doc,pageFile){
 
     });
 
-
     document.head.appendChild(newLink);
 
     stylePromises.push(promise);
 
   });
-
 
   await Promise.all(stylePromises);
 
@@ -2189,12 +1932,10 @@ async function executePageScripts(container){
     container.querySelectorAll("script")
   );
 
-
   for(const oldScript of scripts){
 
     const newScript =
       document.createElement("script");
-
 
     Array.from(oldScript.attributes)
     .forEach(attr=>{
@@ -2206,14 +1947,12 @@ async function executePageScripts(container){
 
     });
 
-
     if(oldScript.src){
 
       newScript.src = new URL(
         oldScript.getAttribute("src"),
         location.href
       ).href;
-
 
       await new Promise((resolve,reject)=>{
 
@@ -2228,7 +1967,6 @@ async function executePageScripts(container){
         oldScript.replaceWith(newScript);
 
       });
-
 
     }else{
 
@@ -2251,7 +1989,6 @@ async function executePageScripts(container){
 const CARD_HIDE_STORAGE_KEY =
   "wage_hidden_dashboard_cards";
 
-
 function getHiddenDashboardCards(){
 
   try{
@@ -2272,7 +2009,6 @@ function getHiddenDashboardCards(){
 
 }
 
-
 function saveHiddenDashboardCards(cards){
 
   localStorage.setItem(
@@ -2282,38 +2018,25 @@ function saveHiddenDashboardCards(cards){
 
 }
 
-
 const DASHBOARD_CARD_SELECTOR = [
 
   "[data-dashboard-card]",
-
   ".stat-card",
-
   ".dashboard-card",
-
   ".summary-card",
-
   ".metric-card",
-
   ".stat-box",
-
   ".summary-box",
-
   ".dashboard-stat",
-
   ".card"
 
 ].join(",");
 
-
 function getDashboardCardKey(card,index){
 
   if(card.dataset.cardHideKey){
-
     return card.dataset.cardHideKey;
-
   }
-
 
   if(card.id){
 
@@ -2324,42 +2047,31 @@ function getDashboardCardKey(card,index){
 
   }
 
-
   const heading = card.querySelector(
     "h1,h2,h3,h4,.card-title,.stat-title,.stat-label,.title"
   );
 
-
   const title = heading
     ? heading.textContent.trim()
     : card.textContent.trim().slice(0,70);
-
 
   const classes = Array.from(card.classList)
     .filter(c=>c !== "card-hide-target")
     .sort()
     .join(".");
 
-
   const key = [
-
     "dashboard-card",
-
     classes,
-
     title,
-
     index
-
   ].join("|");
-
 
   card.dataset.cardHideKey = key;
 
   return key;
 
 }
-
 
 function updateCardHideButton(){
 
@@ -2376,61 +2088,43 @@ function updateCardHideButton(){
 
 }
 
-
 function createCardHideToolbar(){
 
   let toolbar = document.getElementById(
     "cardHideToolbar"
   );
 
-
   if(!cardHideMode){
 
     if(toolbar){
-
       toolbar.remove();
-
     }
 
     return;
 
   }
 
-
   if(!toolbar){
 
     toolbar = document.createElement("div");
 
     toolbar.id = "cardHideToolbar";
-
     toolbar.className = "card-hide-toolbar";
 
-
     toolbar.innerHTML = `
-
       <div>
-
         <strong>Dashboard Card Settings</strong>
-
         <div style="font-size:11px;color:var(--muted);margin-top:4px">
-
           Hide or show individual dashboard cards.
-
         </div>
-
       </div>
 
       <button type="button" id="finishCardHideMode">
-
         Done
-
       </button>
-
     `;
 
-
     pageContainer.prepend(toolbar);
-
 
     toolbar.querySelector(
       "#finishCardHideMode"
@@ -2443,7 +2137,6 @@ function createCardHideToolbar(){
       );
 
       updateCardHideButton();
-
       setupDashboardCardControls();
 
     });
@@ -2452,29 +2145,21 @@ function createCardHideToolbar(){
 
 }
 
-
 function toggleDashboardCard(card){
 
   const key = card.dataset.cardHideKey;
 
   if(!key) return;
 
-
   const hidden = getHiddenDashboardCards();
 
   const index = hidden.indexOf(key);
 
-
   if(index >= 0){
-
     hidden.splice(index,1);
-
   }else{
-
     hidden.push(key);
-
   }
-
 
   saveHiddenDashboardCards(hidden);
 
@@ -2482,11 +2167,9 @@ function toggleDashboardCard(card){
 
 }
 
-
 function setupDashboardCardControls(){
 
   if(currentPage !== "dashboard") return;
-
 
   if(!hasPermission("dashboardCards")){
 
@@ -2495,15 +2178,11 @@ function setupDashboardCardControls(){
 
     if(oldToolbar) oldToolbar.remove();
 
-
     pageContainer.querySelectorAll(
       DASHBOARD_CARD_SELECTOR
     ).forEach(card=>{
-
       card.style.display = "none";
-
     });
-
 
     cardHideMode = false;
 
@@ -2517,19 +2196,15 @@ function setupDashboardCardControls(){
 
   }
 
-
   createCardHideToolbar();
 
-
   const hidden = getHiddenDashboardCards();
-
 
   const cards = Array.from(
     pageContainer.querySelectorAll(
       DASHBOARD_CARD_SELECTOR
     )
   );
-
 
   const outerCards = cards.filter(card=>{
 
@@ -2540,7 +2215,6 @@ function setupDashboardCardControls(){
 
   });
 
-
   outerCards.forEach((card,index)=>{
 
     const key = getDashboardCardKey(
@@ -2550,7 +2224,6 @@ function setupDashboardCardControls(){
 
     const isHidden = hidden.includes(key);
 
-
     card.classList.add("card-hide-target");
 
     card.classList.toggle(
@@ -2558,27 +2231,22 @@ function setupDashboardCardControls(){
       isHidden
     );
 
-
     let button = card.querySelector(
       ":scope > .card-hide-control"
     );
-
 
     if(!button){
 
       button = document.createElement("button");
 
       button.type = "button";
-
       button.className = "card-hide-control";
 
       card.appendChild(button);
 
-
       button.addEventListener("click",function(event){
 
         event.preventDefault();
-
         event.stopPropagation();
 
         toggleDashboardCard(card);
@@ -2587,65 +2255,48 @@ function setupDashboardCardControls(){
 
     }
 
-
     button.classList.toggle(
       "is-hidden",
       isHidden
     );
 
-
     button.textContent = isHidden
       ? "Show Card"
       : "Hide Card";
 
-
     button.style.display =
       cardHideMode ? "block" : "none";
 
-
     card.style.removeProperty("display");
 
-
     if(isHidden && !cardHideMode){
-
       card.classList.add("is-card-hidden");
-
     }
 
   });
-
 
   document.body.classList.toggle(
     "card-hide-mode",
     cardHideMode
   );
 
-
   updateCardHideButton();
 
 }
 
-
 function toggleCardHideMode(){
 
   if(!hasPermission("cardHideShow")) return;
-
   if(!hasPermission("dashboardCards")) return;
-
 
   cardHideMode = !cardHideMode;
 
   closeSidebar();
 
-
   if(currentPage !== "dashboard"){
-
     loadPage("dashboard",true);
-
   }else{
-
     setupDashboardCardControls();
-
   }
 
 }
@@ -2658,48 +2309,33 @@ function toggleCardHideMode(){
 async function loadPage(page,addHistory=true){
 
   if(!PAGE_CONFIG[page]){
-
     page = getFirstAllowedPage();
-
   }
-
 
   if(!page || !PAGE_CONFIG[page]){
 
     pageContainer.innerHTML = `
-
       <div class="error-box">
-
         <h3>No Page Permission</h3>
-
         <p>Your account does not have permission to open any page.</p>
-
       </div>
-
     `;
 
     return;
 
   }
 
-
   if(!canOpenPage(page)){
 
     page = getFirstAllowedPage();
 
-
     if(!page){
 
       pageContainer.innerHTML = `
-
         <div class="error-box">
-
           <h3>Access Denied</h3>
-
           <p>Your account has not been assigned any page permissions.</p>
-
         </div>
-
       `;
 
       return;
@@ -2708,23 +2344,18 @@ async function loadPage(page,addHistory=true){
 
   }
 
-
   const config = PAGE_CONFIG[page];
 
   const thisLoad = ++loadCounter;
 
-
   closeSidebar();
 
   updateActiveMenu(page);
-
   updatePageHeader(page);
-
 
   if(addHistory){
 
     const newHash = "#" + page;
-
 
     if(location.hash !== newHash){
 
@@ -2738,19 +2369,12 @@ async function loadPage(page,addHistory=true){
 
   }
 
-
   pageContainer.innerHTML = `
-
     <div class="loading-box">
-
       <div class="loading-spinner"></div>
-
       Loading ${config.title}...
-
     </div>
-
   `;
-
 
   try{
 
@@ -2762,7 +2386,6 @@ async function loadPage(page,addHistory=true){
       }
     );
 
-
     if(!response.ok){
 
       throw new Error(
@@ -2773,12 +2396,9 @@ async function loadPage(page,addHistory=true){
 
     }
 
-
     const html = await response.text();
 
-
     if(thisLoad !== loadCounter) return;
-
 
     const parser = new DOMParser();
 
@@ -2787,54 +2407,39 @@ async function loadPage(page,addHistory=true){
       "text/html"
     );
 
-
     await loadPageStyles(
       doc,
       config.file
     );
 
-
     if(thisLoad !== loadCounter) return;
 
-
     pageContainer.innerHTML = doc.body.innerHTML;
-
 
     await executePageScripts(
       pageContainer
     );
 
-
     if(thisLoad !== loadCounter) return;
 
-
     currentPage = page;
-
     window.currentPage = page;
 
-
     if(page === "dashboard"){
-
       setupDashboardCardControls();
-
     }
-
 
   }catch(error){
 
     if(thisLoad !== loadCounter) return;
-
 
     console.error(
       "Page loading error:",
       error
     );
 
-
     pageContainer.innerHTML = `
-
       <div class="error-box">
-
         <h3>Unable to Load Page</h3>
 
         <p>
@@ -2847,9 +2452,7 @@ async function loadPage(page,addHistory=true){
         <button onclick="window.loadPage('${page}',false)">
           Try Again
         </button>
-
       </div>
-
     `;
 
   }
@@ -2865,28 +2468,18 @@ window.loadPage = loadPage;
 
 window.__wageEditUserId = "";
 
-
 window.wageAuthToken = function(){
-
   return authToken;
-
 };
-
 
 window.wageCurrentAdmin = function(){
-
   return currentAdmin;
-
 };
-
 
 window.wageHasPermission = hasPermission;
 
-
 window.wagePermissions = function(){
-
   return {...currentPermissions};
-
 };
 
 
@@ -2902,17 +2495,13 @@ document.querySelectorAll(
 
     const page = this.dataset.page;
 
-
     if(canOpenPage(page)){
-
       loadPage(page,true);
-
     }
 
   });
 
 });
-
 
 document.getElementById("cardHideMenuButton")
 .addEventListener("click",function(){
@@ -2936,18 +2525,14 @@ window.addEventListener("popstate",function(){
 
 });
 
-
 window.addEventListener("hashchange",function(){
 
   if(!authToken) return;
 
   const page = getPageFromHash();
 
-
   if(page !== currentPage){
-
     loadPage(page,false);
-
   }
 
 });
