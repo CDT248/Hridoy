@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -757,8 +758,6 @@ body:not(.card-hide-mode) .is-card-hidden{
 
 <div class="app" id="mainApp" style="display:none">
 
-  <!-- SIDEBAR -->
-
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
@@ -772,163 +771,108 @@ body:not(.card-hide-mode) .is-card-hidden{
 
     </div>
 
-
     <div class="sidebar-content">
 
       <div class="nav-label" data-nav-section="main">
         MAIN MENU
       </div>
 
-      <button
-        class="nav-item active"
-        data-page="dashboard"
-        data-permission="dashboard">
+      <button class="nav-item active" data-page="dashboard" data-permission="dashboard">
         <span class="nav-icon">▦</span>
         Dashboard
       </button>
-
 
       <div class="nav-label" data-nav-section="users">
         USER MANAGEMENT
       </div>
 
-      <button
-        class="nav-item"
-        data-page="add-user"
-        data-permission="addUser">
+      <button class="nav-item" data-page="add-user" data-permission="addUser">
         <span class="nav-icon">＋</span>
         Add User
       </button>
 
-      <button
-        class="nav-item"
-        data-page="user-list"
-        data-permission="userList">
+      <button class="nav-item" data-page="user-list" data-permission="userList">
         <span class="nav-icon">♙</span>
         User List
       </button>
 
-      <button
-        class="nav-item"
-        data-page="deleted-user"
-        data-permission="deletedUsers">
+      <button class="nav-item" data-page="deleted-user" data-permission="deletedUsers">
         <span class="nav-icon">▤</span>
         Deleted Users
       </button>
-
 
       <div class="nav-label" data-nav-section="wages">
         WAGE MANAGEMENT
       </div>
 
-      <button
-        class="nav-item"
-        data-page="add-wage"
-        data-permission="addWage">
+      <button class="nav-item" data-page="add-wage" data-permission="addWage">
         <span class="nav-icon">＋</span>
         Add Wage
       </button>
 
-      <button
-        class="nav-item"
-        data-page="wage-history"
-        data-permission="wageHistory">
+      <button class="nav-item" data-page="wage-history" data-permission="wageHistory">
         <span class="nav-icon">◷</span>
         Wage History
       </button>
 
-      <button
-        class="nav-item"
-        data-page="deleted-wage"
-        data-permission="wageDeleteHistory">
+      <button class="nav-item" data-page="deleted-wage" data-permission="wageDeleteHistory">
         <span class="nav-icon">🗑️</span>
         Wage Delete History
       </button>
-
 
       <div class="nav-label" data-nav-section="payments">
         PAYMENT MANAGEMENT
       </div>
 
-      <button
-        class="nav-item"
-        data-page="payment"
-        data-permission="userPayment">
+      <button class="nav-item" data-page="payment" data-permission="userPayment">
         <span class="nav-icon">৳</span>
         User Payment
       </button>
 
-      <button
-        class="nav-item"
-        data-page="payment-history"
-        data-permission="paymentHistory">
+      <button class="nav-item" data-page="payment-history" data-permission="paymentHistory">
         <span class="nav-icon">▤</span>
         Payment History
       </button>
 
-      <button
-        class="nav-item"
-        data-page="delete-payment"
-        data-permission="deletePaymentHistory">
+      <button class="nav-item" data-page="delete-payment" data-permission="deletePaymentHistory">
         <span class="nav-icon">▤</span>
         Delete Payment History
       </button>
-
 
       <div class="nav-label" data-nav-section="settings">
         SETTINGS
       </div>
 
-      <button
-        class="nav-item"
-        data-page="currency"
-        data-permission="addCurrency">
+      <button class="nav-item" data-page="currency" data-permission="addCurrency">
         <span class="nav-icon">💱</span>
         Add Currency
       </button>
 
-      <button
-        class="nav-item"
-        data-page="payment-method"
-        data-permission="addPaymentMethod">
+      <button class="nav-item" data-page="payment-method" data-permission="addPaymentMethod">
         <span class="nav-icon">💳</span>
         Add Payment Method
       </button>
 
-      <button
-        class="nav-item"
-        id="cardHideMenuButton"
-        data-action="card-hide"
-        data-permission="cardHideShow">
+      <button class="nav-item" id="cardHideMenuButton" data-action="card-hide" data-permission="cardHideShow">
         <span class="nav-icon">▣</span>
         Card Hide / Show
       </button>
-
 
       <div class="nav-label" data-nav-section="admin">
         ADMINISTRATION
       </div>
 
-      <button
-        class="nav-item"
-        data-page="manage-admins"
-        data-permission="manageAdmins">
+      <button class="nav-item" data-page="manage-admins" data-permission="manageAdmins">
         <span class="nav-icon">♙</span>
         Manage Admins
       </button>
 
-      <button
-        class="nav-item"
-        data-page="my-account"
-        data-permission="myAccount">
+      <button class="nav-item" data-page="my-account" data-permission="myAccount">
         <span class="nav-icon">⚙</span>
         My Account
       </button>
 
     </div>
-
-
-    <!-- SIDEBAR PROFILE -->
 
     <div class="sidebar-bottom">
 
@@ -939,21 +883,16 @@ body:not(.card-hide-mode) .is-card-hidden{
         </div>
 
         <div>
-          <div
-            class="sidebar-user-name"
-            id="sidebarUserName">
+          <div class="sidebar-user-name" id="sidebarUserName">
             Administrator
           </div>
 
-          <div
-            class="sidebar-user-role"
-            id="sidebarUserRole">
+          <div class="sidebar-user-role" id="sidebarUserRole">
             System Admin
           </div>
         </div>
 
       </div>
-
 
       <div class="sidebar-actions">
 
@@ -971,11 +910,7 @@ body:not(.card-hide-mode) .is-card-hidden{
 
   </aside>
 
-
   <div class="mobile-overlay" id="mobileOverlay"></div>
-
-
-  <!-- MAIN CONTENT -->
 
   <main class="main">
 
@@ -983,10 +918,7 @@ body:not(.card-hide-mode) .is-card-hidden{
 
       <div class="topbar-left">
 
-        <button
-          class="icon-btn menu-toggle"
-          id="menuToggle"
-          aria-label="Open menu">
+        <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu">
           ☰
         </button>
 
@@ -1002,20 +934,15 @@ body:not(.card-hide-mode) .is-card-hidden{
 
       </div>
 
-
       <div class="topbar-right">
 
-        <button
-          class="icon-btn"
-          id="themeToggle"
-          title="Change Theme">
+        <button class="icon-btn" id="themeToggle" title="Change Theme">
           ☾
         </button>
 
       </div>
 
     </header>
-
 
     <section class="content">
 
@@ -1029,7 +956,6 @@ body:not(.card-hide-mode) .is-card-hidden{
       </div>
 
     </section>
-
 
     <footer class="footer">
       <span>Wage Management System</span>
@@ -1390,7 +1316,6 @@ document.getElementById("loginForm")
 
   try{
 
-    // One API call only.
     const result = await authRequest({
 
       action:"login",
@@ -1415,21 +1340,15 @@ document.getElementById("loginForm")
 
     const admin = result.data.admin || {};
 
-
-    // Permissions already included in login response.
     const permissions = normalizePermissionData(admin);
 
-
-    // Save login data.
     saveAuth(
       token,
       admin,
       permissions
     );
 
-
     document.getElementById("loginPassword").value = "";
-
 
     showApplication();
 
@@ -1446,7 +1365,6 @@ document.getElementById("loginForm")
       loadPage(allowedPage,false);
 
     }
-
 
     status.textContent = "Login successful.";
 
@@ -1498,7 +1416,6 @@ async function startApplication(){
 
   try{
 
-    // One verify request only.
     const result = await authRequest({
 
       action:"verify",
@@ -1517,8 +1434,6 @@ async function startApplication(){
 
     currentAdmin = result.data.admin;
 
-
-    // Permissions are already included in verify response.
     currentPermissions =
       normalizePermissionData(currentAdmin);
 
@@ -1805,44 +1720,70 @@ function updateAdminProfile(){
 
 
 /* =========================================
-   14. LOGOUT
+   14. INSTANT LOGOUT
+   INSTANT UI + BACKGROUND SERVER LOGOUT
 ========================================= */
 
-async function logout(){
+function logout(){
 
+  // Prevent repeated logout clicks.
+  if(!authToken) return;
+
+  // Keep token temporarily for server logout.
   const token = authToken;
 
+  // Cancel pending page rendering.
+  loadCounter++;
 
-  // Immediately clear local session.
+  // Reset application state.
+  currentPage = "";
+  cardHideMode = false;
+
+  document.body.classList.remove("card-hide-mode");
+
+  // Clear local authentication immediately.
   clearAuth();
 
+  // Close sidebar.
   closeSidebar();
 
-  location.hash = "";
+  // Clear current page content.
+  pageContainer.innerHTML = "";
 
+  // Remove hash without triggering a new page load.
+  if(location.hash){
 
-  try{
-
-    if(token){
-
-      await authRequest({
-
-        action:"logout",
-
-        token:token
-
-      });
-
-    }
-
-  }catch(error){
-
-    console.warn("Logout request:",error);
+    history.replaceState(
+      null,
+      "",
+      location.pathname + location.search
+    );
 
   }
 
-
+  // Show login immediately.
   showLogin("You have been logged out.");
+
+  // Server logout runs in background.
+  // Login screen does not wait for the API.
+  if(token){
+
+    authRequest({
+
+      action:"logout",
+
+      token:token
+
+    }).catch(error=>{
+
+      console.warn(
+        "Background logout request:",
+        error
+      );
+
+    });
+
+  }
 
 }
 
@@ -2738,7 +2679,6 @@ async function loadPage(page,addHistory=true){
   }
 
 
-  // Direct URL permission check.
   if(!canOpenPage(page)){
 
     page = getFirstAllowedPage();
