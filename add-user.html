@@ -296,13 +296,16 @@
         $("auProgressBar").style.width="55%";
         button.textContent="Uploading Picture...";
 
+        // FIXED: Code.gs expects "image", not "imageData".
         const uploaded=await request({
           action:"uploadProfilePicture",
           userId:id,
-          imageData:imageData
+          image:imageData
         });
 
-        picture=uploaded.profilePicture;
+        // FIXED: Code.gs returns the uploaded image URL as "url".
+        picture=uploaded.url;
+
         $("auProgressBar").style.width="100%";
         $("auPhotoStatus").textContent="Picture uploaded successfully.";
       }
