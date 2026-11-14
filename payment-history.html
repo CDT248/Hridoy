@@ -478,7 +478,7 @@ button,input{font:inherit}
 .ph-form-field textarea{min-height:75px;resize:vertical}
 .ph-form-field input:focus,.ph-form-field select:focus,.ph-form-field textarea:focus{border-color:var(--ph-primary);box-shadow:0 0 0 3px rgba(8,127,91,.08)}
 .ph-form-actions{display:flex;gap:8px;margin-top:16px}
-.ph-form-actions button{flex:1;border:0;border-radius:8px;padding:11px;font-weight:800;cursor:pointer}
+  .ph-form-actions button{flex:1;border:0;border-radius:8px;padding:11px;font-weight:800;cursor:pointer}
 .ph-cancel-btn{background:var(--ph-bg);color:var(--ph-text)}
 .ph-save-btn{background:var(--ph-primary);color:#fff}
 .ph-save-btn:disabled{opacity:.6;cursor:wait}
@@ -957,8 +957,7 @@ button,input{font:inherit}
 
 /* API CONFIGURATION */
 
-const PAYMENT_API =
-"https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
+const PAYMENT_API ="https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
 const USER_API =
 "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
@@ -1129,15 +1128,21 @@ function getPaymentId(h){
 }
 
 function findCurrentPayment(paymentId){
-  const id = String(paymentId || "");
-  return allPayments.find(p=>String(p.paymentId || p["Payment ID"] || "")===id)
-    || deletedPayments.find(p=>String(p.paymentId || p["Payment ID"] || "")===id)
-    || null;
+  // Edit must update the existing row in USER PAYMENT only.
+  // Never use a DELETE HISTORY row as the source for an edit.
+  const id = String(paymentId || "").trim();
+  if(!id) return null;
+
+  return allPayments.find(p =>
+    String(p.paymentId || p["Payment ID"] || "").trim() === id
+  ) || null;
 }
 
 function activePaymentExists(paymentId){
-  const id = String(paymentId || "");
-  return allPayments.some(p=>String(p.paymentId || p["Payment ID"] || "")===id);
+  const id = String(paymentId || "").trim();
+  return !!id && allPayments.some(p =>
+    String(p.paymentId || p["Payment ID"] || "").trim() === id
+  );
 }
 
 function optionHTML(items, valueKey, labelFn, selected){
@@ -1432,8 +1437,7 @@ function selectProfile(userId){
 
     $("phSelectButton").innerHTML =
       "Select Profile <span>⌄</span>";
-
-  }
+      }
 
   updateSelectedCount();
 
@@ -1615,8 +1619,15 @@ function renderHistory(){
 /* EDIT PAYMENT */
 function openEditPayment(historyItem){
   const paymentId = getPaymentId(historyItem);
+  if(!paymentId){showToast("Payment ID is missing.");return;}
+
+  // Always load the current payment row by its original Payment ID.
+  // Saving uses editPayment (not addPayment), so it updates that same row.
   const payment = findCurrentPayment(paymentId);
-  if(!payment){showToast("Current payment record is no longer available.");return;}
+  if(!payment){
+    showToast("This payment is not active in USER PAYMENT. Restore it before editing.");
+    return;
+  }
 
   const users = allUsers.length ? allUsers : allProfiles;
   $("phEditPaymentId").value = paymentId;
@@ -1637,7 +1648,6 @@ function closeEditPayment(){
 
 async function submitEditPayment(event){
   event.preventDefault();
-  const form = $("phEditForm");
   const button = $("phEditSave");
   const payload = {
     action:"editPayment",
@@ -1667,6 +1677,7 @@ async function submitEditPayment(event){
   }
 }
 
+
 /* DELETE PAYMENT FROM HISTORY VIEW */
 async function deleteHistoryPayment(historyItem){
   const paymentId = getPaymentId(historyItem);
@@ -1676,7 +1687,7 @@ async function deleteHistoryPayment(historyItem){
     return;
   }
   const userName = getUserName(historyItem);
-  if(!confirm(`Delete payment of ${userName}?\n\nThe payment will move from USER PAYMENT to DELETED PAYMENT.`)) return;
+  if(!confirm(`Delete payment of ${userName}?\n\nThe payment will move from USER PAYMENT to DELETE HISTORY.`)) return;
   try{
     await apiPost({action:"deletePayment",paymentId:paymentId});
     showToast("Payment moved to Deleted Payment.");
@@ -1686,6 +1697,7 @@ async function deleteHistoryPayment(historyItem){
     showToast(error.message || "Payment delete failed.");
   }
 }
+
 
 /* PAYMENT DETAILS POPUP */
 
@@ -1860,6 +1872,7 @@ $("phEditForm").addEventListener("submit",submitEditPayment);
 $("phEditModal").addEventListener("click",event=>{
   if(event.target === $("phEditModal")) closeEditPayment();
 });
+
 
 /* INITIAL LOAD */
 
