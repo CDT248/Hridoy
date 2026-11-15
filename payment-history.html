@@ -1,867 +1,1871 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RS NETWORK | Payment History</title>
+<title>Payment History</title>
 
 <style>
 :root{
-  --primary:#087f5b;
-  --primaryDark:#066447;
-  --bg:#f4f7fb;
-  --card:#fff;
-  --text:#172033;
-  --muted:#64748b;
-  --border:#e5eaf1;
-  --danger:#dc3545;
-  --shadow:0 6px 22px rgba(15,23,42,.05);
+  --ph-primary:var(--primary,#087f5b);
+  --ph-accent:var(--accent,#12b886);
+  --ph-bg:var(--bg,#f5f7fb);
+  --ph-card:var(--card,#fff);
+  --ph-text:var(--text,#172033);
+  --ph-muted:var(--muted,#8490a3);
+  --ph-border:var(--border,#e8edf3);
+  --ph-danger:#e05252;
+  --ph-shadow:0 5px 18px rgba(20,40,60,.055);
 }
+
 *{box-sizing:border-box}
+
 body{
-  margin:0;padding:22px;background:var(--bg);
-  color:var(--text);font-family:Arial,Helvetica,sans-serif
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--ph-bg);
+  color:var(--ph-text);
 }
-.container{max-width:1450px;margin:auto}
-.header{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;flex-wrap:wrap;margin-bottom:20px
+
+button,input{font:inherit}
+
+.ph-wrap{
+  width:100%;
+  padding:20px;
+  max-width:1500px;
+  margin:auto;
 }
-.heading h2{margin:0;font-size:25px}
-.heading p{margin:7px 0 0;color:var(--muted);font-size:13px}
-.btn{
-  border:0;border-radius:8px;padding:10px 15px;
-  font-size:13px;font-weight:700;cursor:pointer
+
+.ph-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
 }
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:var(--primary);color:#fff}
-.primary:hover{background:var(--primaryDark)}
-.light{background:#eef2f7;color:#334155}
-.danger{background:#fff0f1;color:var(--danger)}
-.stats{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:14px;margin-bottom:20px
+
+.ph-title{
+  font-size:24px;
+  font-weight:800;
+  margin:0 0 5px;
 }
-.stat{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;padding:18px;box-shadow:var(--shadow);
-  min-width:0
+
+.ph-subtitle{
+  color:var(--ph-muted);
+  font-size:12px;
 }
-.stat small{color:var(--muted);font-size:12px}
-.stat h3{font-size:23px;margin:9px 0 0;overflow-wrap:anywhere}
-.stat .currency-code{
-  display:inline-block;margin-top:7px;font-size:11px;
-  color:var(--primary);font-weight:700
+
+.ph-refresh{
+  border:0;
+  background:var(--ph-primary);
+  color:white;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
 }
-.panel{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:13px;box-shadow:var(--shadow);overflow:hidden
+
+/* SUMMARY CARDS */
+
+.ph-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;
+  margin-bottom:17px;
 }
-.toolbar{
-  padding:17px;display:flex;justify-content:space-between;
-  align-items:center;gap:12px;flex-wrap:wrap;
-  border-bottom:1px solid var(--border)
+
+.ph-stat{
+  background:var(--ph-card);
+  border:1px solid var(--ph-border);
+  border-radius:11px;
+  padding:13px 15px;
+  min-height:88px;
+  box-shadow:var(--ph-shadow);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
 }
-.toolbar h3{font-size:16px;margin:0}
-.filters{display:flex;gap:9px;flex-wrap:wrap}
-input,select,textarea{
-  width:100%;padding:11px 12px;border:1px solid #dce3ec;
-  border-radius:8px;background:#fff;color:var(--text);
-  outline:none;font:inherit;font-size:13px
+
+.ph-stat-label{
+  font-size:11px;
+  color:var(--ph-muted);
+  margin-bottom:7px;
+  font-weight:600;
+  line-height:1.4;
 }
-input:focus,select:focus,textarea:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(8,127,91,.08)
+
+.ph-stat-value{
+  font-size:21px;
+  font-weight:800;
+  line-height:1.2;
+  word-break:break-word;
+  color:var(--ph-text);
 }
-.search{width:260px}
-.filter{width:160px}
-.table-wrap{width:100%;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:900px}
-th,td{
-  padding:14px 13px;text-align:left;
-  border-bottom:1px solid var(--border);font-size:13px
+
+.ph-panel{
+  background:var(--ph-card);
+  border:1px solid var(--ph-border);
+  border-radius:13px;
+  padding:17px;
+  box-shadow:var(--ph-shadow);
+  margin-bottom:17px;
 }
-th{
-  background:#f8fafc;color:#64748b;
-  font-size:11px;text-transform:uppercase;letter-spacing:.4px
+
+.ph-section-title{
+  font-size:15px;
+  font-weight:800;
+  margin:0 0 14px;
 }
-tbody tr:hover{background:#fbfdfc}
-.user-name{font-weight:700}
-.user-id{font-size:11px;color:var(--muted);margin-top:4px}
-.amount{font-weight:700;color:var(--primary)}
-.actions{display:flex;gap:6px;white-space:nowrap}
-.action-btn{
-  border:1px solid var(--border);background:#fff;
-  padding:7px 10px;border-radius:7px;
-  font-size:11px;font-weight:700;cursor:pointer
+
+/* PROFILE SEARCH */
+
+.ph-search-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  width:100%;
+  position:relative;
 }
-.action-btn:hover{background:#f1f5f9}
-.action-btn.delete{color:var(--danger)}
-.empty{padding:35px;text-align:center;color:var(--muted);font-size:13px}
-.footer{
-  padding:14px 17px;display:flex;justify-content:space-between;
-  align-items:center;gap:10px;flex-wrap:wrap;
-  color:var(--muted);font-size:12px
+
+.ph-search-wrap{
+  flex:1;
+  min-width:0;
+  position:relative;
 }
-.pagination{display:flex;gap:7px}
-.pagination button{
-  border:1px solid var(--border);background:#fff;
-  padding:8px 12px;border-radius:7px;cursor:pointer
+
+.ph-search{
+  width:100%;
+  height:44px;
+  border:1px solid var(--ph-border);
+  border-radius:8px;
+  outline:none;
+  padding:0 13px;
+  background:var(--ph-bg);
+  color:var(--ph-text);
+  font-size:13px;
 }
-.pagination button:disabled{opacity:.4;cursor:not-allowed}
-.modal{
-  position:fixed;inset:0;background:rgba(15,23,42,.55);
-  display:none;align-items:center;justify-content:center;
-  padding:15px;z-index:1000
+
+.ph-search::placeholder{color:var(--ph-muted)}
+
+.ph-search:focus{
+  border-color:var(--ph-primary);
+  box-shadow:0 0 0 3px rgba(8,127,91,.09);
 }
-.modal.show{display:flex}
-.modal-box{
-  background:#fff;width:100%;max-width:600px;
-  max-height:92vh;overflow:auto;border-radius:14px;
-  box-shadow:0 20px 70px rgba(0,0,0,.2)
+
+.ph-select-btn{
+  height:44px;
+  min-width:150px;
+  padding:0 14px;
+  border:0;
+  border-radius:8px;
+  background:var(--ph-primary);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
 }
-.modal-head{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:18px 20px;border-bottom:1px solid var(--border)
+
+.ph-select-btn:hover,
+.ph-refresh:hover,
+.ph-view-btn:hover{opacity:.9}
+
+/* PROFILE DROPDOWN */
+
+.ph-dropdown{
+  display:none;
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
+  right:0;
+  width:100%;
+  min-width:0;
+  max-width:none;
+  max-height:min(65vh,420px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  background:var(--ph-card);
+  border:1px solid var(--ph-border);
+  border-radius:11px;
+  box-shadow:0 12px 35px rgba(0,0,0,.18);
+  z-index:999;
+  padding:7px;
 }
-.modal-head h3{margin:0;font-size:17px}
-.close{
-  border:0;background:#f1f5f9;width:31px;height:31px;
-  border-radius:50%;font-size:19px;cursor:pointer
+
+.ph-dropdown.show{display:block}
+
+#phProfileOptions{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
 }
-.modal-body{padding:20px}
-.modal-footer{
-  display:flex;justify-content:flex-end;gap:9px;
-  padding:15px 20px;border-top:1px solid var(--border)
+
+.ph-profile-option{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:11px;
+  width:100%;
+  min-width:0;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .15s;
+  flex-shrink:0;
 }
-.form-grid,.detail-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:14px
+
+.ph-profile-option:hover{background:rgba(8,127,91,.08)}
+.ph-profile-option.active{background:rgba(8,127,91,.12)}
+
+.ph-avatar{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:50%;
+  overflow:hidden;
+  background:rgba(8,127,91,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ph-primary);
+  font-size:15px;
+  font-weight:800;
 }
-.field label{
-  display:block;font-size:12px;font-weight:700;
-  margin-bottom:7px;color:#475569
+
+.ph-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
-.field.full{grid-column:1/-1}
-textarea{min-height:85px;resize:vertical}
-.detail{
-  padding:12px;background:#f8fafc;border-radius:9px;
-  border:1px solid var(--border);min-width:0
+
+.ph-profile-info{
+  min-width:0;
+  flex:1;
+  overflow:hidden;
 }
-.detail small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
-.detail strong{font-size:13px;overflow-wrap:anywhere}
-#toast{
-  position:fixed;right:20px;bottom:20px;background:#172033;
-  color:#fff;padding:13px 18px;border-radius:9px;
-  font-size:13px;z-index:2000;display:none;max-width:90%
+
+.ph-profile-name{
+  font-size:13px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
-#loading{
-  position:fixed;inset:0;background:rgba(255,255,255,.82);
-  display:none;align-items:center;justify-content:center;
-  z-index:1500;font-size:14px;font-weight:700;color:var(--primary)
+
+.ph-profile-id{
+  font-size:11px;
+  color:var(--ph-muted);
+  margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
-.spinner{
-  width:17px;height:17px;border:2px solid #d1fae5;
-  border-top-color:var(--primary);border-radius:50%;
-  display:inline-block;vertical-align:middle;
-  animation:spin .7s linear infinite;margin-right:8px
+
+.ph-profile-count{
+  font-size:11px;
+  color:var(--ph-primary);
+  font-weight:700;
+  white-space:nowrap;
+  flex-shrink:0;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:700px){
-  body{padding:12px}
-  .heading h2{font-size:21px}
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-  .stat{padding:13px}
-  .stat h3{font-size:19px}
-  .filters{width:100%}
-  .filters>*{width:100%}
-  .search,.filter{width:100%}
-  .form-grid,.detail-grid{grid-template-columns:1fr}
-  .field.full{grid-column:auto}
+
+.ph-dropdown-empty{
+  text-align:center;
+  padding:20px 10px;
+  color:var(--ph-muted);
+  font-size:13px;
+}
+
+/* SELECTED PROFILE */
+
+.ph-selected{
+  display:none;
+  align-items:center;
+  gap:12px;
+  background:rgba(8,127,91,.07);
+  border:1px solid rgba(8,127,91,.18);
+  border-radius:10px;
+  padding:11px;
+  margin-top:13px;
+}
+
+.ph-selected.show{display:flex}
+
+.ph-selected-info{
+  flex:1;
+  min-width:0;
+}
+
+.ph-selected-name{font-weight:800;font-size:13px}
+
+.ph-selected-id{
+  color:var(--ph-muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+.ph-clear{
+  border:1px solid var(--ph-border);
+  background:var(--ph-card);
+  color:var(--ph-text);
+  border-radius:7px;
+  padding:7px 10px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:700;
+  flex-shrink:0;
+}
+
+/* HISTORY */
+
+.ph-history-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.ph-history-count{
+  color:var(--ph-muted);
+  font-size:11px;
+}
+
+.ph-history-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.ph-history-card{
+  border:1px solid var(--ph-border);
+  border-radius:11px;
+  padding:14px;
+  background:var(--ph-card);
+  min-width:0;
+}
+
+.ph-card-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--ph-border);
+}
+
+.ph-card-user-info{
+  flex:1;
+  min-width:0;
+}
+
+.ph-card-user-name{
+  font-weight:800;
+  font-size:13px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.ph-card-user-id{
+  color:var(--ph-muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.ph-amount{
+  color:var(--ph-primary);
+  font-weight:800;
+  font-size:18px;
+  white-space:nowrap;
+}
+
+.ph-details{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  padding:13px 0;
+}
+
+.ph-detail-label{
+  font-size:10px;
+  color:var(--ph-muted);
+  margin-bottom:5px;
+}
+
+.ph-detail-value{
+  font-size:12px;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+
+.ph-card-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding-top:10px;
+  border-top:1px solid var(--ph-border);
+}
+
+.ph-date{color:var(--ph-muted);font-size:10px}
+
+.ph-view-btn{
+  border:0;
+  border-radius:7px;
+  background:var(--ph-primary);
+  color:white;
+  padding:8px 12px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.ph-empty{
+  text-align:center;
+  padding:40px 15px;
+  color:var(--ph-muted);
+  background:var(--ph-card);
+  border:1px dashed var(--ph-border);
+  border-radius:11px;
+  grid-column:1/-1;
+}
+
+.ph-empty-icon{font-size:30px;margin-bottom:10px}
+
+/* VIEW PAYMENT MODAL */
+
+.ph-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(10,20,30,.55);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.ph-modal.show{display:flex}
+
+.ph-modal-box{
+  width:100%;
+  max-width:470px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:var(--ph-card);
+  border-radius:15px;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  padding:21px;
+  animation:phPop .2s ease;
+}
+
+@keyframes phPop{
+  from{transform:translateY(10px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.ph-modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px;
+}
+
+.ph-modal-title{font-size:17px;font-weight:800}
+
+.ph-close{
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:8px;
+  background:var(--ph-bg);
+  color:var(--ph-text);
+  cursor:pointer;
+  font-size:19px;
+}
+
+.ph-modal-user{
+  text-align:center;
+  padding:12px 0 18px;
+  border-bottom:1px solid var(--ph-border);
+}
+
+.ph-modal-avatar{
+  width:75px;
+  height:75px;
+  margin:0 auto 10px;
+  border-radius:50%;
+  overflow:hidden;
+  background:rgba(8,127,91,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ph-primary);
+  font-size:25px;
+  font-weight:800;
+}
+
+.ph-modal-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.ph-modal-user-name{font-weight:800;font-size:15px}
+
+.ph-modal-user-id{
+  font-size:11px;
+  color:var(--ph-muted);
+  margin-top:5px;
+}
+
+.ph-modal-amount{text-align:center;padding:18px 0}
+
+.ph-modal-amount-label{
+  font-size:11px;
+  color:var(--ph-muted);
+  margin-bottom:6px;
+}
+
+.ph-modal-amount-value{
+  color:var(--ph-primary);
+  font-size:28px;
+  font-weight:900;
+}
+
+.ph-modal-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+
+.ph-modal-item{
+  padding:11px 5px;
+  border-top:1px solid var(--ph-border);
+}
+
+.ph-modal-label{
+  color:var(--ph-muted);
+  font-size:10px;
+  margin-bottom:6px;
+}
+
+.ph-modal-value{
+  font-size:12px;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+
+.ph-modal-done{
+  width:100%;
+  margin-top:17px;
+  border:0;
+  border-radius:8px;
+  padding:11px;
+  background:var(--ph-primary);
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.ph-loading{
+  text-align:center;
+  padding:35px 10px;
+  color:var(--ph-muted);
+  font-size:13px;
+}
+
+.ph-error{
+  color:var(--ph-danger);
+  background:rgba(224,82,82,.08);
+  padding:13px;
+  border-radius:9px;
+  font-size:13px;
+}
+
+/* TABLET */
+
+@media(max-width:900px){
+  .ph-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .ph-history-list{grid-template-columns:1fr}
+}
+
+/* MOBILE */
+
+@media(max-width:520px){
+  .ph-wrap{padding:12px}
+  .ph-title{font-size:21px}
+  .ph-header{margin-bottom:14px}
+  .ph-panel{padding:12px}
+
+  .ph-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+    margin-bottom:13px;
+  }
+
+  .ph-stat{
+    min-height:76px;
+    padding:11px 12px;
+    border-radius:10px;
+  }
+
+  .ph-stat-label{font-size:10px;margin-bottom:6px}
+  .ph-stat-value{font-size:18px}
+
+  .ph-search-row{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:9px;
+    width:100%;
+  }
+
+  .ph-search-wrap{width:100%;flex:none}
+  .ph-search{width:100%;height:44px}
+
+  .ph-select-btn{
+    width:100%;
+    min-width:0;
+    height:42px;
+    padding:0 12px;
+    font-size:12px;
+  }
+
+  .ph-dropdown{
+    top:calc(100% + 7px);
+    left:0;
+    right:0;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    max-height:60vh;
+    padding:6px;
+    border-radius:10px;
+  }
+
+  .ph-profile-option{width:100%;padding:9px 8px;gap:9px}
+  .ph-avatar{width:38px;height:38px;flex:0 0 38px}
+  .ph-profile-name{font-size:12px}
+  .ph-profile-id{font-size:10px}
+  .ph-profile-count{font-size:10px}
+  .ph-details{gap:10px}
+  .ph-modal-box{padding:16px}
+  .ph-selected{gap:9px;padding:10px}
+  .ph-clear{padding:7px 9px}
+}
+
+/* EXTRA SMALL MOBILE */
+
+@media(max-width:360px){
+  .ph-wrap{padding:9px}
+  .ph-panel{padding:10px}
+  .ph-stats{gap:7px}
+  .ph-stat{min-height:70px;padding:9px 10px}
+  .ph-stat-label{font-size:9px}
+  .ph-stat-value{font-size:16px}
+  .ph-profile-option{gap:7px;padding:9px 6px}
+  .ph-profile-count{font-size:9px}
+  .ph-avatar{width:36px;height:36px;flex-basis:36px}
+  .ph-modal-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="heading">
-      <h2>Payment History</h2>
-      <p>View, edit and manage all active payment records.</p>
+<div class="ph-wrap">
+
+  <div class="ph-header">
+    <div>
+      <h1 class="ph-title">Payment History</h1>
+      <div class="ph-subtitle">View and manage payment records</div>
     </div>
-    <button class="btn primary" id="refreshBtn">↻ Refresh</button>
+    <button class="ph-refresh" id="phRefresh" type="button">↻ Refresh</button>
   </div>
 
-  <!-- DYNAMIC CURRENCY CARDS -->
-  <div class="stats" id="currencyCards">
-    <div class="stat">
-      <small>Total Payment Records</small>
-      <h3 id="totalCount">0</h3>
+  <!-- SUMMARY -->
+  <div class="ph-stats" id="phStats">
+
+    <div class="ph-stat">
+      <div class="ph-stat-label">Total History</div>
+      <div class="ph-stat-value" id="phTotalHistory">0</div>
     </div>
-    <div class="stat">
-      <small>Today's Payment Records</small>
-      <h3 id="todayCount">0</h3>
+
+    <div class="ph-stat">
+      <div class="ph-stat-label">Total Users</div>
+      <div class="ph-stat-value" id="phTotalUsers">0</div>
     </div>
+
+    <div class="ph-stat">
+      <div class="ph-stat-label">Selected User Records</div>
+      <div class="ph-stat-value" id="phSelectedRecords">All</div>
+    </div>
+
+    <div id="phCurrencyStats" style="display:contents"></div>
+
   </div>
 
-  <div class="panel">
-    <div class="toolbar">
-      <h3>All Payment Records</h3>
-      <div class="filters">
-        <input class="search" id="searchInput"
-          placeholder="Search user, ID, transaction...">
-        <select class="filter" id="currencyFilter">
-          <option value="">All Currencies</option>
-        </select>
-      </div>
-    </div>
+  <!-- PROFILE SEARCH -->
+  <div class="ph-panel">
+    <h3 class="ph-section-title">Search Profile</h3>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Amount</th>
-            <th>Method</th>
-            <th>Transaction ID</th>
-            <th>Payment Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <tr><td colspan="6" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="ph-search-row">
 
-    <div class="footer">
-      <span id="pageInfo">Showing 0 records</span>
-      <div class="pagination">
-        <button id="prevBtn">Previous</button>
-        <button id="nextBtn">Next</button>
-      </div>
-    </div>
-  </div>
-</div>
+      <div class="ph-search-wrap">
+        <input
+          type="text"
+          class="ph-search"
+          id="phProfileSearch"
+          placeholder="Search profile by name or User ID..."
+          autocomplete="off"
+        >
 
-<!-- VIEW -->
-<div class="modal" id="viewModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3>Payment Details</h3>
-      <button class="close" data-close="viewModal">×</button>
-    </div>
-    <div class="modal-body" id="viewContent"></div>
-    <div class="modal-footer">
-      <button class="btn light" data-close="viewModal">Close</button>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT -->
-<div class="modal" id="editModal">
-  <form id="editForm">
-    <div class="modal-head">
-      <h3>Edit Payment</h3>
-      <button type="button" class="close" data-close="editModal">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="field full">
-          <label>User</label>
-          <select id="editUser" required></select>
-        </div>
-        <div class="field">
-          <label>Payment Amount</label>
-          <input type="number" id="editAmount" min="0.01" step="any" required>
-        </div>
-        <div class="field">
-          <label>Currency</label>
-          <select id="editCurrency" required></select>
-        </div>
-        <div class="field">
-          <label>Payment Method</label>
-          <select id="editMethod" required></select>
-        </div>
-        <div class="field">
-          <label>Transaction ID</label>
-          <input id="editTransaction">
-        </div>
-        <div class="field full">
-          <label>Payment Date</label>
-          <input id="editDate" type="date" required>
-        </div>
-        <div class="field full">
-          <label>Comment</label>
-          <textarea id="editComment"></textarea>
+        <div class="ph-dropdown" id="phProfileDropdown">
+          <div id="phProfileOptions"></div>
         </div>
       </div>
+
+      <button class="ph-select-btn" id="phSelectButton" type="button">
+        Select Profile <span>⌄</span>
+      </button>
+
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn light" data-close="editModal">Cancel</button>
-      <button type="submit" class="btn primary" id="saveEditBtn">Save Changes</button>
+
+    <div class="ph-selected" id="phSelectedProfile">
+      <div class="ph-avatar" id="phSelectedAvatar"></div>
+
+      <div class="ph-selected-info">
+        <div class="ph-selected-name" id="phSelectedName"></div>
+        <div class="ph-selected-id" id="phSelectedId"></div>
+      </div>
+
+      <button class="ph-clear" id="phClearProfile" type="button">Clear</button>
     </div>
-  </form>
+  </div>
+
+  <!-- HISTORY LIST -->
+  <div class="ph-panel">
+
+    <div class="ph-history-head">
+      <h3 class="ph-section-title" style="margin:0">
+        Payment History Records
+      </h3>
+
+      <div class="ph-history-count" id="phHistoryCount">Loading...</div>
+    </div>
+
+    <div class="ph-history-list" id="phHistoryList">
+      <div class="ph-loading">Loading payment history...</div>
+    </div>
+
+  </div>
+
 </div>
 
-<div id="toast"></div>
-<div id="loading"><span class="spinner"></span><span id="loadingText">Please wait...</span></div>
+<!-- VIEW PAYMENT MODAL -->
+<div class="ph-modal" id="phViewModal">
+  <div class="ph-modal-box">
+
+    <div class="ph-modal-head">
+      <div class="ph-modal-title">Payment Details</div>
+      <button class="ph-close" id="phModalClose" type="button">×</button>
+    </div>
+
+    <div class="ph-modal-user">
+      <div class="ph-modal-avatar" id="phModalAvatar"></div>
+      <div class="ph-modal-user-name" id="phModalName"></div>
+      <div class="ph-modal-user-id" id="phModalUserId"></div>
+    </div>
+
+    <div class="ph-modal-amount">
+      <div class="ph-modal-amount-label">Payment Amount</div>
+      <div class="ph-modal-amount-value" id="phModalAmount">0</div>
+    </div>
+
+    <div class="ph-modal-grid" id="phModalDetails"></div>
+
+    <button class="ph-modal-done" id="phModalDone" type="button">Close</button>
+
+  </div>
+</div>
 
 <script>
-"use strict";
+'use strict';
 
-/* ================ API CONFIG ================ */
+/* API CONFIGURATION */
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
-/* ================ STATE ================ */
+const USER_API =
+"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
-let payments = [];
-let users = [];
-let currencies = [];
-let methods = [];
-let currentPage = 1;
-const PAGE_SIZE = 15;
-let editingPaymentId = "";
-let busy = false;
-let editOptionsLoaded = false;
+
+/* STATE */
+
+let paymentHistory = [];
+let allProfiles = [];
+let selectedUserId = "";
+let isDropdownOpen = false;
+let isLoading = false;
 
 const $ = id => document.getElementById(id);
 
-function escapeHTML(value){
-  return String(value == null ? "" : value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+
+/* HELPERS */
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[c]));
 }
 
-function money(value){
-  return Number(value||0).toLocaleString(undefined,{
+function getValue(obj, keys, fallback=""){
+  for(const key of keys){
+    if(obj && obj[key] !== undefined && obj[key] !== null && obj[key] !== ""){
+      return obj[key];
+    }
+  }
+  return fallback;
+}
+
+function getUserId(x){
+  return String(getValue(x,["userId","User ID","userid"],""));
+}
+
+function getUserName(x){
+  return String(getValue(x,["userName","User Name","name","Name"],"Unknown User"));
+}
+
+function getProfilePicture(x){
+  return String(getValue(x,[
+    "profilePicture",
+    "Profile Picture",
+    "profileImage",
+    "Profile Image",
+    "photoURL",
+    "photoUrl",
+    "image",
+    "avatar"
+  ],""));
+}
+
+function getAmount(x){
+  return Number(getValue(x,[
+    "amount",
+    "Amount",
+    "paymentAmount",
+    "Payment Amount"
+  ],0)) || 0;
+}
+
+function getCurrencyCode(x){
+  return String(getValue(x,[
+    "currencyCode",
+    "Currency Code",
+    "code",
+    "Code"
+  ],"BDT")).trim().toUpperCase();
+}
+
+function getCurrencyName(x){
+  return String(getValue(x,[
+    "currencyName",
+    "Currency Name",
+    "name",
+    "Name"
+  ],getCurrencyCode(x)));
+}
+
+function getCurrencySymbol(x){
+  const explicit = getValue(x,[
+    "currencySymbol",
+    "Currency Symbol",
+    "symbol",
+    "Symbol"
+  ],"");
+
+  if(explicit) return String(explicit);
+
+  const code = getCurrencyCode(x);
+
+  const symbols = {
+    BDT:"৳",
+    USD:"$",
+    EUR:"€",
+    GBP:"£",
+    INR:"₹",
+    PKR:"₨",
+    NPR:"रु",
+    SAR:"﷼",
+    AED:"د.إ",
+    MYR:"RM",
+    SGD:"S$",
+    CAD:"C$",
+    AUD:"A$",
+    JPY:"¥",
+    CNY:"¥"
+  };
+
+  return symbols[code] || code + " ";
+}
+
+function money(value, record){
+  const n = Number(value || 0);
+  const symbol = record ? getCurrencySymbol(record) : "৳";
+
+  return symbol + n.toLocaleString("en-BD",{
+    minimumFractionDigits:0,
     maximumFractionDigits:2
   });
 }
 
-function today(){
-  const d=new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-
-function dateText(value){
+function formatDate(value){
   if(!value) return "—";
-  const s=String(value).slice(0,10);
-  const p=s.split("-");
-  return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : escapeHTML(value);
+
+  // Apps Script date strings may arrive as ISO or as date-only strings.
+  const d = new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return String(value);
+  }
+
+  return d.toLocaleDateString("en-GB",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+  });
 }
 
-function toast(message){
-  const el=$("toast");
-  el.textContent=message;
-  el.style.display="block";
-  clearTimeout(toast.timer);
-  toast.timer=setTimeout(()=>el.style.display="none",3500);
+function getImageURL(value){
+  if(!value) return "";
+
+  let url = String(value).trim();
+
+  if(!url.startsWith("http") && !url.startsWith("data:")){
+    return "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(url) + "&sz=w300";
+  }
+
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+  if(match){
+    return "https://drive.google.com/thumbnail?id=" +
+      match[1] + "&sz=w300";
+  }
+
+  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+
+  if(idMatch && url.includes("drive.google.com")){
+    return "https://drive.google.com/thumbnail?id=" +
+      idMatch[1] + "&sz=w300";
+  }
+
+  return url;
 }
 
-function setLoading(show,message){
-  $("loading").style.display=show?"flex":"none";
-  $("loadingText").textContent=message||"Please wait...";
+function avatarHTML(name,picture,extraClass=""){
+  const initial = esc(String(name || "U").trim().charAt(0).toUpperCase());
+  const image = getImageURL(picture);
+
+  if(!image){
+    return `<div class="${extraClass}">${initial}</div>`;
+  }
+
+  return `
+    <div class="${extraClass}">
+      <img
+        src="${esc(image)}"
+        alt="${esc(name)}"
+        referrerpolicy="no-referrer"
+        onerror="this.parentElement.innerHTML='${initial}'"
+      >
+    </div>
+  `;
 }
 
-function closeModal(id){
-  $(id).classList.remove("show");
-}
-
-document.querySelectorAll("[data-close]").forEach(btn=>{
-  btn.addEventListener("click",()=>closeModal(btn.dataset.close));
-});
-
-/* ================ API REQUEST ================ */
 
 /*
-  GET uses one direct request for payments.
-  JSONP is used for write actions because the current
-  Code.gs supports action + callback in doGet().
-*/
+ * PAYMENT API JSONP
+ * Apps Script ContentService may redirect its response.
+ * JSONP avoids browser fetch/CORS problems for this API.
+ */
 
-async function getJSON(api){
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),20000);
+function apiGetJsonp(baseUrl, params={}, timeout=20000){
 
-  try{
-    const url=PAYMENT_API+"?api="+encodeURIComponent(api)+"&_="+Date.now();
-    const response=await fetch(url,{
-      method:"GET",
-      cache:"no-store",
-      signal:controller.signal
-    });
-
-    if(!response.ok) throw new Error("Server error: "+response.status);
-
-    const data=await response.json();
-
-    if(!data || data.success!==true){
-      throw new Error(data?.message||"Invalid API response.");
-    }
-    return data;
-  }catch(err){
-    if(err.name==="AbortError"){
-      throw new Error("Payment API response is taking too long. Check the Apps Script deployment.");
-    }
-    throw new Error(
-      err.message==="Failed to fetch"
-      ? "Payment API connection failed. Check the deployed Web App URL and access permission."
-      : err.message
-    );
-  }finally{
-    clearTimeout(timeout);
-  }
-}
-
-function jsonpAction(payload){
   return new Promise((resolve,reject)=>{
-    const callbackName="__rsPayHistory_"+Date.now()+"_"+Math.random().toString(36).slice(2);
-    const params=new URLSearchParams({
-      ...Object.fromEntries(Object.entries(payload).map(([k,v])=>[k,String(v??"")])),
+
+    const callbackName =
+      "phCallback_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
+
+    const script = document.createElement("script");
+
+    const query = new URLSearchParams({
+      ...params,
       callback:callbackName,
       _:String(Date.now())
     });
 
-    const script=document.createElement("script");
-    let done=false;
+    let finished = false;
+
+    const timer = setTimeout(()=>{
+      finish(new Error("API response timeout. Please refresh and try again."));
+    },timeout);
 
     function cleanup(){
-      if(done)return;
-      done=true;
       clearTimeout(timer);
-      delete window[callbackName];
       script.remove();
+
+      try{
+        delete window[callbackName];
+      }catch(e){
+        window[callbackName] = undefined;
+      }
     }
 
-    const timer=setTimeout(()=>{
+    function finish(error,data){
+      if(finished) return;
+      finished = true;
       cleanup();
-      reject(new Error("Server did not respond. Please check the latest Code.gs deployment."));
-    },30000);
 
-    window[callbackName]=data=>{
-      cleanup();
-      if(data && data.success===true) resolve(data);
-      else reject(new Error(data?.message||"Payment operation failed."));
+      if(error) reject(error);
+      else resolve(data);
+    }
+
+    window[callbackName] = function(data){
+      finish(null,data);
     };
 
-    script.onerror=()=>{
-      cleanup();
-      reject(new Error("Could not connect to Payment API."));
+    script.onerror = function(){
+      finish(new Error("Payment API connection failed."));
     };
 
-    script.src=PAYMENT_API+"?"+params.toString();
-    document.body.appendChild(script);
+    script.src = baseUrl + "?" + query.toString();
+
+    document.head.appendChild(script);
+
   });
 }
 
-/* ================ LOAD PAYMENTS ONLY ================ */
 
-async function loadPayments(){
-  const data=await getJSON("payments");
-  payments=Array.isArray(data.payments)?data.payments:[];
+/*
+ * USER API IS OPTIONAL.
+ * Payment records should still load if user/profile API is unavailable.
+ */
+
+async function loadUsersOptional(){
+
+  try{
+
+    const controller = new AbortController();
+
+    const timer = setTimeout(()=>controller.abort(),9000);
+
+    try{
+
+      const response = await fetch(
+        USER_API + "?api=active&t=" + Date.now(),
+        {
+          method:"GET",
+          cache:"no-store",
+          signal:controller.signal
+        }
+      );
+
+      if(!response.ok) return [];
+
+      const data = await response.json();
+
+      return Array.isArray(data.users)
+        ? data.users
+        : Array.isArray(data.data)
+          ? data.data
+          : [];
+
+    }finally{
+      clearTimeout(timer);
+    }
+
+  }catch(error){
+
+    console.warn("User API unavailable. Using payment records for profiles.",error);
+    return [];
+
+  }
 }
 
-/* Load extra data only when user opens Edit */
-async function loadEditOptions(){
-  if(editOptionsLoaded) return;
 
-  const results=await Promise.all([
-    getJSON("users"),
-    getJSON("currencies"),
-    getJSON("methods")
-  ]);
+/* LOAD DATA */
 
-  users=Array.isArray(results[0].users)?results[0].users:[];
-  currencies=Array.isArray(results[1].currencies)?results[1].currencies:[];
-  methods=Array.isArray(results[2].methods)?results[2].methods:[];
+async function loadPaymentHistory(){
 
-  editOptionsLoaded=true;
-  renderEditOptions();
-}
+  if(isLoading) return;
 
-/* ================ CURRENCY CARDS ================ */
+  isLoading = true;
 
-function currencyKey(p){
-  return String(p.currencyCode||p.currencyName||p.currencyId||"Unknown").trim()||"Unknown";
-}
+  $("phRefresh").disabled = true;
+  $("phRefresh").textContent = "Loading...";
 
-function renderCurrencyCards(){
-  const totals=new Map();
+  $("phHistoryList").innerHTML =
+    `<div class="ph-loading">Loading payment history...</div>`;
 
-  payments.forEach(p=>{
-    const key=currencyKey(p);
-    const current=totals.get(key)||{
-      code:key,
-      name:p.currencyName||key,
-      symbol:p.currencySymbol||"",
-      amount:0,
-      count:0
-    };
+  $("phHistoryCount").textContent = "Loading...";
 
-    current.amount+=Number(p.amount||0);
-    current.count++;
-    totals.set(key,current);
-  });
+  try{
 
-  const todayRecords=payments.filter(p=>
-    String(p.paymentDate||"").slice(0,10)===today()
-  ).length;
+    /*
+     * IMPORTANT:
+     * Code.gs api=history returns:
+     * { success:true, payments:[...] }
+     *
+     * It does not return history[].
+     */
 
-  let html=`
-    <div class="stat">
-      <small>Total Payment Records</small>
-      <h3>${payments.length}</h3>
-    </div>
-    <div class="stat">
-      <small>Today's Payment Records</small>
-      <h3>${todayRecords}</h3>
-    </div>
-  `;
+    const historyResponse = await apiGetJsonp(
+      PAYMENT_API,
+      {api:"history"},
+      25000
+    );
 
-  totals.forEach(item=>{
-    html+=`
-      <div class="stat">
-        <small>${escapeHTML(item.name)} Total</small>
-        <h3>${escapeHTML(item.symbol)} ${money(item.amount)}</h3>
-        <span class="currency-code">
-          ${escapeHTML(item.code)} · ${item.count} Payments
-        </span>
+    if(!historyResponse || historyResponse.success === false){
+      throw new Error(
+        historyResponse?.message ||
+        historyResponse?.error ||
+        "Payment history loading failed."
+      );
+    }
+
+    /*
+     * Read payments first because this is the exact
+     * response property returned by the current Code.gs.
+     */
+    const historyData =
+      historyResponse.payments ||
+      historyResponse.history ||
+      historyResponse.data ||
+      historyResponse.entries ||
+      [];
+
+    if(!Array.isArray(historyData)){
+      throw new Error("Invalid payment data received from Code.gs.");
+    }
+
+    paymentHistory = historyData;
+
+    /*
+     * Load user details separately.
+     * If User API fails, payment history remains available.
+     */
+    const usersData = await loadUsersOptional();
+
+    buildProfiles(usersData);
+
+    updateSummary();
+    renderProfileDropdown();
+    renderHistory();
+
+  }catch(error){
+
+    console.error("Payment History Error:",error);
+
+    $("phHistoryList").innerHTML = `
+      <div class="ph-empty">
+        <div class="ph-empty-icon">⚠️</div>
+        <b>Unable to load payment history</b>
+        <p>${esc(error.message || "Please check your API connection.")}</p>
       </div>
     `;
-  });
 
-  $("currencyCards").innerHTML=html;
+    $("phHistoryCount").textContent = "Loading failed";
 
-  const selected=$("currencyFilter").value;
-  const codes=[...totals.keys()];
+  }finally{
 
-  $("currencyFilter").innerHTML=
-    '<option value="">All Currencies</option>'+
-    codes.map(code=>
-      `<option value="${escapeHTML(code)}">${escapeHTML(code)}</option>`
-    ).join("");
+    isLoading = false;
+    $("phRefresh").disabled = false;
+    $("phRefresh").textContent = "↻ Refresh";
 
-  if(codes.includes(selected)) $("currencyFilter").value=selected;
+  }
 }
 
-/* ================ FILTER ================ */
 
-function filteredPayments(){
-  const q=$("searchInput").value.trim().toLowerCase();
-  const currency=$("currencyFilter").value;
+/* BUILD UNIQUE PROFILES */
 
-  return payments.filter(p=>{
-    const searchable=[
-      p.paymentId,p.userId,p.userName,p.transactionId,
-      p.paymentMethod,p.currencyCode,p.currencyName,p.comment
-    ].join(" ").toLowerCase();
+function buildProfiles(users){
 
-    return (!q||searchable.includes(q)) &&
-      (!currency||currencyKey(p)===currency);
-  }).sort((a,b)=>
-    String(b.paymentDate||"").localeCompare(String(a.paymentDate||""))
+  const profileMap = new Map();
+
+  /*
+   * First create profiles from payment records.
+   * This means profiles still appear even if User API is offline.
+   */
+  paymentHistory.forEach(h=>{
+
+    const userId = getUserId(h);
+
+    if(!userId) return;
+
+    if(!profileMap.has(userId)){
+      profileMap.set(userId,{
+        userId,
+        userName:getUserName(h),
+        profilePicture:getProfilePicture(h),
+        count:0
+      });
+    }
+
+  });
+
+  /*
+   * Update profile names and pictures from Users API,
+   * when that API is available.
+   */
+  (Array.isArray(users) ? users : []).forEach(user=>{
+
+    const userId = getUserId(user);
+
+    if(!userId) return;
+
+    const existing = profileMap.get(userId);
+
+    if(existing){
+
+      const apiName = getUserName(user);
+      const apiPicture = getProfilePicture(user);
+
+      if(apiName && apiName !== "Unknown User"){
+        existing.userName = apiName;
+      }
+
+      if(apiPicture){
+        existing.profilePicture = apiPicture;
+      }
+
+    }
+
+  });
+
+  paymentHistory.forEach(h=>{
+
+    const userId = getUserId(h);
+    const profile = profileMap.get(userId);
+
+    if(profile) profile.count++;
+
+  });
+
+  allProfiles = Array.from(profileMap.values());
+
+  allProfiles.sort((a,b)=>
+    a.userName.localeCompare(b.userName)
   );
 }
 
-/* ================ TABLE ================ */
 
-function renderPayments(){
-  renderCurrencyCards();
+/* SUMMARY */
 
-  const list=filteredPayments();
-  const totalPages=Math.max(1,Math.ceil(list.length/PAGE_SIZE));
-  currentPage=Math.min(currentPage,totalPages);
+function updateSummary(){
 
-  const start=(currentPage-1)*PAGE_SIZE;
-  const visible=list.slice(start,start+PAGE_SIZE);
+  $("phTotalHistory").textContent =
+    paymentHistory.length.toLocaleString("en-BD");
 
-  $("pageInfo").textContent=list.length
-    ? `Showing ${start+1}-${Math.min(start+PAGE_SIZE,list.length)} of ${list.length}`
-    : "Showing 0 records";
+  $("phTotalUsers").textContent =
+    allProfiles.length.toLocaleString("en-BD");
 
-  $("prevBtn").disabled=currentPage<=1;
-  $("nextBtn").disabled=currentPage>=totalPages;
+  updateSelectedCount();
+  renderCurrencySummary();
+}
 
-  if(!visible.length){
-    $("tableBody").innerHTML=
-      '<tr><td colspan="6" class="empty">No payment records found.</td></tr>';
+
+/*
+ * Each currency gets its own summary card.
+ * BDT, USD, EUR etc. are never added together.
+ */
+
+function renderCurrencySummary(){
+
+  const totals = new Map();
+
+  paymentHistory.forEach(payment=>{
+
+    const code = getCurrencyCode(payment);
+    const name = getCurrencyName(payment);
+    const symbol = getCurrencySymbol(payment);
+    const amount = getAmount(payment);
+
+    if(!totals.has(code)){
+      totals.set(code,{
+        code,
+        name,
+        symbol,
+        amount:0
+      });
+    }
+
+    totals.get(code).amount += amount;
+
+  });
+
+  const currencies = Array.from(totals.values())
+    .sort((a,b)=>a.code.localeCompare(b.code));
+
+  $("phCurrencyStats").innerHTML = currencies.map(currency=>`
+
+    <div class="ph-stat">
+      <div class="ph-stat-label">
+        Total ${esc(currency.name)} (${esc(currency.code)})
+      </div>
+
+      <div class="ph-stat-value">
+        ${esc(currency.symbol)}${currency.amount.toLocaleString("en-BD",{
+          minimumFractionDigits:0,
+          maximumFractionDigits:2
+        })}
+      </div>
+    </div>
+
+  `).join("");
+
+}
+
+
+/* SELECTED USER COUNT */
+
+function updateSelectedCount(){
+
+  if(!selectedUserId){
+    $("phSelectedRecords").textContent = "All";
     return;
   }
 
-  $("tableBody").innerHTML=visible.map(p=>`
-    <tr>
-      <td>
-        <div class="user-name">${escapeHTML(p.userName||"Unknown User")}</div>
-        <div class="user-id">${escapeHTML(p.userId||"")}</div>
-      </td>
-      <td class="amount">
-        ${escapeHTML(p.currencyCode||p.currencyName||"")} ${money(p.amount)}
-      </td>
-      <td>${escapeHTML(p.paymentMethod||"—")}</td>
-      <td>${escapeHTML(p.transactionId||"—")}</td>
-      <td>${dateText(p.paymentDate)}</td>
-      <td>
-        <div class="actions">
-          <button class="action-btn" data-action="view"
-            data-id="${escapeHTML(p.paymentId)}">View</button>
-          <button class="action-btn" data-action="edit"
-            data-id="${escapeHTML(p.paymentId)}">Edit</button>
-          <button class="action-btn delete" data-action="delete"
-            data-id="${escapeHTML(p.paymentId)}">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join("");
+  const count = paymentHistory.filter(h=>
+    getUserId(h) === selectedUserId
+  ).length;
+
+  $("phSelectedRecords").textContent =
+    count.toLocaleString("en-BD");
 }
 
-/* ================ VIEW ================ */
 
-function viewPayment(id){
-  const p=payments.find(x=>String(x.paymentId)===String(id));
-  if(!p)return toast("Payment record not found.");
+/* PROFILE DROPDOWN */
 
-  const fields=[
-    ["Payment ID",p.paymentId],
-    ["User Name",p.userName],
-    ["User ID",p.userId],
-    ["Amount",(p.currencyCode||"")+" "+money(p.amount)],
-    ["Currency",p.currencyName||p.currencyCode],
-    ["Payment Method",p.paymentMethod],
-    ["Transaction ID",p.transactionId],
-    ["Payment Date",dateText(p.paymentDate)],
-    ["Created At",p.createdAt],
-    ["Updated At",p.updatedAt]
-  ];
+function renderProfileDropdown(){
 
-  $("viewContent").innerHTML=`
-    <div class="detail-grid">
-      ${fields.map(([a,b])=>`
-        <div class="detail">
-          <small>${escapeHTML(a)}</small>
-          <strong>${escapeHTML(b||"—")}</strong>
-        </div>
-      `).join("")}
-      <div class="detail" style="grid-column:1/-1">
-        <small>Comment</small>
-        <strong>${escapeHTML(p.comment||"No comment")}</strong>
-      </div>
-    </div>
-  `;
-  $("viewModal").classList.add("show");
-}
+  const search = $("phProfileSearch").value
+    .trim()
+    .toLowerCase();
 
-/* ================ EDIT ================ */
-
-async function editPayment(id){
-  if(busy)return;
-
-  const p=payments.find(x=>String(x.paymentId)===String(id));
-  if(!p)return toast("Payment record not found.");
-
-  busy=true;
-  setLoading(true,"Loading edit information...");
-
-  try{
-    await loadEditOptions();
-
-    editingPaymentId=String(p.paymentId);
-
-    $("editUser").value=String(p.userId||"");
-    $("editAmount").value=p.amount??"";
-    $("editCurrency").value=String(p.currencyId||"");
-    $("editMethod").value=String(p.methodId||"");
-    $("editTransaction").value=p.transactionId||"";
-    $("editDate").value=String(p.paymentDate||"").slice(0,10);
-    $("editComment").value=p.comment||"";
-
-    $("editModal").classList.add("show");
-  }catch(err){
-    toast(err.message);
-  }finally{
-    setLoading(false);
-    busy=false;
-  }
-}
-
-function renderEditOptions(){
-  $("editUser").innerHTML=
-    '<option value="">Select User</option>'+
-    users.map(u=>`
-      <option value="${escapeHTML(u.userId)}">
-        ${escapeHTML(u.userName)} (${escapeHTML(u.userId)})
-      </option>
-    `).join("");
-
-  $("editCurrency").innerHTML=
-    '<option value="">Select Currency</option>'+
-    currencies.map(c=>`
-      <option value="${escapeHTML(c.id)}">
-        ${escapeHTML(c.code||c.name)} - ${escapeHTML(c.name||"")}
-      </option>
-    `).join("");
-
-  $("editMethod").innerHTML=
-    '<option value="">Select Method</option>'+
-    methods.map(m=>`
-      <option value="${escapeHTML(m.id)}">${escapeHTML(m.name)}</option>
-    `).join("");
-}
-
-$("editForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  if(busy||!editingPaymentId)return;
-
-  const payload={
-    action:"editPayment",
-    requestId:"EDIT-"+editingPaymentId+"-"+Date.now(),
-    paymentId:editingPaymentId,
-    userId:$("editUser").value,
-    amount:Number($("editAmount").value),
-    currencyId:$("editCurrency").value,
-    methodId:$("editMethod").value,
-    transactionId:$("editTransaction").value.trim(),
-    paymentDate:$("editDate").value,
-    comment:$("editComment").value.trim()
-  };
-
-  if(!payload.userId)return toast("Please select a user.");
-  if(!Number.isFinite(payload.amount)||payload.amount<=0)
-    return toast("Payment amount must be greater than zero.");
-  if(!payload.currencyId)return toast("Please select currency.");
-  if(!payload.methodId)return toast("Please select payment method.");
-  if(!payload.paymentDate)return toast("Please select payment date.");
-
-  busy=true;
-  $("saveEditBtn").disabled=true;
-  $("saveEditBtn").textContent="Updating...";
-  closeModal("editModal");
-  setLoading(true,"Updating payment...");
-
-  try{
-    const result=await jsonpAction(payload);
-    await loadPayments();
-    renderPayments();
-    editingPaymentId="";
-    toast(result.message||"Payment updated successfully.");
-  }catch(err){
-    toast(err.message);
-  }finally{
-    busy=false;
-    setLoading(false);
-    $("saveEditBtn").disabled=false;
-    $("saveEditBtn").textContent="Save Changes";
-  }
-});
-
-/* ================ DELETE ================ */
-
-async function deletePayment(id){
-  if(busy)return;
-
-  const p=payments.find(x=>String(x.paymentId)===String(id));
-  if(!p)return toast("Payment record not found.");
-
-  const yes=confirm(
-    "Delete this payment record?\n\n"+
-    "Payment ID: "+p.paymentId+"\n"+
-    "User: "+p.userName+"\n"+
-    "Amount: "+(p.currencyCode||"")+" "+money(p.amount)+
-    "\n\nThis will move the record to DELETE HISTORY. It will not be permanently deleted."
+  const profiles = allProfiles.filter(p=>
+    p.userName.toLowerCase().includes(search) ||
+    p.userId.toLowerCase().includes(search)
   );
 
-  if(!yes)return;
+  let html = `
+    <div class="ph-profile-option ${!selectedUserId ? "active" : ""}"
+         data-user-id="">
+      <div class="ph-avatar">ALL</div>
 
-  busy=true;
-  setLoading(true,"Moving payment to DELETE HISTORY...");
+      <div class="ph-profile-info">
+        <div class="ph-profile-name">All Profiles</div>
+        <div class="ph-profile-id">Show all payment history</div>
+      </div>
 
-  try{
-    const result=await jsonpAction({
-      action:"deletePayment",
-      requestId:"DELETE-"+id+"-"+Date.now(),
-      paymentId:id
+      <div class="ph-profile-count">${paymentHistory.length}</div>
+    </div>
+  `;
+
+  profiles.forEach(profile=>{
+
+    html += `
+      <div class="ph-profile-option ${
+        selectedUserId === profile.userId ? "active" : ""
+      }"
+      data-user-id="${esc(profile.userId)}">
+
+        ${avatarHTML(
+          profile.userName,
+          profile.profilePicture,
+          "ph-avatar"
+        )}
+
+        <div class="ph-profile-info">
+          <div class="ph-profile-name">
+            ${esc(profile.userName)}
+          </div>
+
+          <div class="ph-profile-id">
+            ${esc(profile.userId)}
+          </div>
+        </div>
+
+        <div class="ph-profile-count">
+          ${profile.count} Payments
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  if(!profiles.length && search){
+    html += `
+      <div class="ph-dropdown-empty">
+        No matching profile found.
+      </div>
+    `;
+  }
+
+  if(!allProfiles.length){
+    html += `
+      <div class="ph-dropdown-empty">
+        No profiles found in payment history.
+      </div>
+    `;
+  }
+
+  $("phProfileOptions").innerHTML = html;
+
+  $("phProfileOptions")
+    .querySelectorAll("[data-user-id]")
+    .forEach(item=>{
+
+      item.addEventListener("click",()=>{
+        selectProfile(item.dataset.userId);
+      });
+
     });
 
-    await loadPayments();
-    renderPayments();
-    toast(result.message||"Payment moved to DELETE HISTORY.");
-  }catch(err){
-    toast(err.message);
-  }finally{
-    busy=false;
-    setLoading(false);
-  }
 }
 
-/* ================ EVENTS ================ */
 
-$("tableBody").addEventListener("click",e=>{
-  const btn=e.target.closest("[data-action]");
-  if(!btn)return;
+function toggleDropdown(force){
 
-  const id=btn.dataset.id;
-  if(btn.dataset.action==="view")viewPayment(id);
-  if(btn.dataset.action==="edit")editPayment(id);
-  if(btn.dataset.action==="delete")deletePayment(id);
-});
+  isDropdownOpen =
+    typeof force === "boolean" ? force : !isDropdownOpen;
 
-$("searchInput").addEventListener("input",()=>{
-  currentPage=1;
-  renderPayments();
-});
+  $("phProfileDropdown").classList.toggle(
+    "show",
+    isDropdownOpen
+  );
 
-$("currencyFilter").addEventListener("change",()=>{
-  currentPage=1;
-  renderPayments();
-});
-
-$("prevBtn").addEventListener("click",()=>{
-  if(currentPage>1){
-    currentPage--;
-    renderPayments();
+  if(isDropdownOpen){
+    renderProfileDropdown();
+    $("phProfileSearch").focus();
   }
-});
 
-$("nextBtn").addEventListener("click",()=>{
-  const pages=Math.max(1,Math.ceil(filteredPayments().length/PAGE_SIZE));
-  if(currentPage<pages){
-    currentPage++;
-    renderPayments();
-  }
-});
-
-$("refreshBtn").addEventListener("click",refreshData);
-
-/* ================ REFRESH ================ */
-
-async function refreshData(){
-  if(busy)return;
-
-  busy=true;
-  $("refreshBtn").disabled=true;
-  setLoading(true,"Loading payment records...");
-
-  try{
-    await loadPayments();
-    currentPage=1;
-    renderPayments();
-  }catch(err){
-    $("tableBody").innerHTML=
-      `<tr><td colspan="6" class="empty">${escapeHTML(err.message)}</td></tr>`;
-    toast(err.message);
-  }finally{
-    busy=false;
-    $("refreshBtn").disabled=false;
-    setLoading(false);
-  }
 }
 
-/* ================ START ================ */
 
-refreshData();
+function selectProfile(userId){
+
+  selectedUserId = String(userId || "");
+
+  toggleDropdown(false);
+
+  if(selectedUserId){
+
+    const profile = allProfiles.find(p=>
+      p.userId === selectedUserId
+    );
+
+    if(profile){
+
+      $("phSelectedProfile").classList.add("show");
+
+      $("phSelectedAvatar").innerHTML =
+        avatarHTML(
+          profile.userName,
+          profile.profilePicture,
+          "ph-avatar"
+        );
+
+      $("phSelectedName").textContent =
+        profile.userName;
+
+      $("phSelectedId").textContent =
+        "User ID: " + profile.userId;
+
+      $("phProfileSearch").value = profile.userName;
+
+      $("phSelectButton").innerHTML =
+        "Change Profile <span>⌄</span>";
+
+    }
+
+  }else{
+
+    $("phSelectedProfile").classList.remove("show");
+
+    $("phProfileSearch").value = "";
+
+    $("phSelectButton").innerHTML =
+      "Select Profile <span>⌄</span>";
+
+  }
+
+  updateSelectedCount();
+  renderProfileDropdown();
+  renderHistory();
+
+}
+
+
+/* RENDER PAYMENT HISTORY */
+
+function renderHistory(){
+
+  let list = paymentHistory.slice();
+
+  if(selectedUserId){
+
+    list = list.filter(h=>
+      getUserId(h) === selectedUserId
+    );
+
+  }
+
+  list.sort((a,b)=>{
+
+    const da = new Date(getValue(a,[
+      "actionDate",
+      "createdAt",
+      "timestamp",
+      "date",
+      "paymentDate"
+    ],0)).getTime() || 0;
+
+    const db = new Date(getValue(b,[
+      "actionDate",
+      "createdAt",
+      "timestamp",
+      "date",
+      "paymentDate"
+    ],0)).getTime() || 0;
+
+    return db - da;
+
+  });
+
+  $("phHistoryCount").textContent =
+    list.length.toLocaleString("en-BD") + " record(s) found";
+
+  if(!list.length){
+
+    $("phHistoryList").innerHTML = `
+      <div class="ph-empty">
+        <div class="ph-empty-icon">📭</div>
+        <b>No Payment History Found</b>
+        <p>There are no payment records for this selection.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  $("phHistoryList").innerHTML = list.map((h,index)=>{
+
+    const userId = getUserId(h);
+
+    const profile = allProfiles.find(p=>
+      p.userId === userId
+    );
+
+    const userName = profile?.userName || getUserName(h);
+
+    const picture =
+      profile?.profilePicture ||
+      getProfilePicture(h);
+
+    const amount = getAmount(h);
+
+    const method = getValue(
+      h,["paymentMethod","method","Method"],"—"
+    );
+
+    const transactionId = getValue(
+      h,["transactionId","Transaction ID","trxId"],"—"
+    );
+
+    const paymentDate = getValue(
+      h,["paymentDate","date","Date"],""
+    );
+
+    const historyDate = getValue(
+      h,["actionDate","createdAt","timestamp","Created At"],""
+    );
+
+    const paymentId = getValue(
+      h,["paymentId","Payment ID","historyId","entryId"],"—"
+    );
+
+    return `
+
+      <div class="ph-history-card">
+
+        <div class="ph-card-user">
+
+          ${avatarHTML(
+            userName,
+            picture,
+            "ph-avatar"
+          )}
+
+          <div class="ph-card-user-info">
+            <div class="ph-card-user-name">
+              ${esc(userName)}
+            </div>
+
+            <div class="ph-card-user-id">
+              User ID: ${esc(userId)}
+            </div>
+          </div>
+
+          <div class="ph-amount">
+            ${esc(money(amount,h))}
+          </div>
+
+        </div>
+
+        <div class="ph-details">
+
+          <div>
+            <div class="ph-detail-label">Payment Method</div>
+            <div class="ph-detail-value">${esc(method)}</div>
+          </div>
+
+          <div>
+            <div class="ph-detail-label">Transaction ID</div>
+            <div class="ph-detail-value">${esc(transactionId)}</div>
+          </div>
+
+          <div>
+            <div class="ph-detail-label">Payment Date</div>
+            <div class="ph-detail-value">${esc(formatDate(paymentDate))}</div>
+          </div>
+
+          <div>
+            <div class="ph-detail-label">Payment ID</div>
+            <div class="ph-detail-value">${esc(paymentId)}</div>
+          </div>
+
+        </div>
+
+        <div class="ph-card-footer">
+
+          <div class="ph-date">
+            History: ${esc(formatDate(historyDate || paymentDate))}
+          </div>
+
+          <button
+            class="ph-view-btn"
+            type="button"
+            data-view-index="${index}"
+          >
+            View Payment
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+  /*
+   * Use the sorted list index directly.
+   * This avoids incorrect matching if IDs are repeated or missing.
+   */
+  $("phHistoryList")
+    .querySelectorAll("[data-view-index]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        const index = Number(button.dataset.viewIndex);
+        const item = list[index];
+
+        if(item) openPaymentDetails(item);
+
+      });
+
+    });
+
+}
+
+
+/* PAYMENT DETAILS POPUP */
+
+function openPaymentDetails(h){
+
+  const userId = getUserId(h);
+
+  const profile = allProfiles.find(p=>
+    p.userId === userId
+  );
+
+  const userName = profile?.userName || getUserName(h);
+
+  const picture =
+    profile?.profilePicture ||
+    getProfilePicture(h);
+
+  const amount = getAmount(h);
+
+  $("phModalAvatar").innerHTML =
+    avatarHTML(
+      userName,
+      picture,
+      "ph-modal-avatar"
+    );
+
+  $("phModalName").textContent = userName;
+
+  $("phModalUserId").textContent =
+    "User ID: " + userId;
+
+  $("phModalAmount").textContent = money(amount,h);
+
+  const details = [
+
+    ["Payment ID",getValue(
+      h,["paymentId","Payment ID","historyId","entryId"],"—"
+    )],
+
+    ["Payment Method",getValue(
+      h,["paymentMethod","method","Method"],"—"
+    )],
+
+    ["Transaction ID",getValue(
+      h,["transactionId","Transaction ID","trxId"],"—"
+    )],
+
+    ["Payment Date",formatDate(getValue(
+      h,["paymentDate","date","Date"],""
+    ))],
+
+    ["Created At",formatDate(getValue(
+      h,["createdAt","Created At","actionDate","timestamp"],""
+    ))],
+
+    ["Currency",getCurrencyName(h) + " (" + getCurrencyCode(h) + ")"],
+
+    ["Description",getValue(
+      h,["comment","description","note","Description"],"—"
+    )]
+
+  ];
+
+  $("phModalDetails").innerHTML = details.map(item=>`
+
+    <div class="ph-modal-item">
+      <div class="ph-modal-label">${esc(item[0])}</div>
+      <div class="ph-modal-value">${esc(item[1])}</div>
+    </div>
+
+  `).join("");
+
+  $("phViewModal").classList.add("show");
+
+}
+
+
+function closePaymentModal(){
+  $("phViewModal").classList.remove("show");
+}
+
+
+/* EVENTS */
+
+$("phSelectButton").addEventListener("click",()=>{
+  toggleDropdown();
+});
+
+$("phProfileSearch").addEventListener("focus",()=>{
+  if(!isDropdownOpen){
+    toggleDropdown(true);
+  }
+});
+
+$("phProfileSearch").addEventListener("input",()=>{
+
+  if(!isDropdownOpen){
+    toggleDropdown(true);
+  }
+
+  renderProfileDropdown();
+
+});
+
+$("phClearProfile").addEventListener("click",()=>{
+  selectProfile("");
+});
+
+$("phRefresh").addEventListener("click",()=>{
+  loadPaymentHistory();
+});
+
+$("phModalClose").addEventListener("click",closePaymentModal);
+$("phModalDone").addEventListener("click",closePaymentModal);
+
+$("phViewModal").addEventListener("click",event=>{
+
+  if(event.target === $("phViewModal")){
+    closePaymentModal();
+  }
+
+});
+
+document.addEventListener("click",event=>{
+
+  const dropdown = $("phProfileDropdown");
+  const searchWrap = document.querySelector(".ph-search-wrap");
+  const selectButton = $("phSelectButton");
+
+  if(
+    isDropdownOpen &&
+    !dropdown.contains(event.target) &&
+    !searchWrap.contains(event.target) &&
+    !selectButton.contains(event.target)
+  ){
+    toggleDropdown(false);
+  }
+
+});
+
+document.addEventListener("keydown",event=>{
+
+  if(event.key === "Escape"){
+    toggleDropdown(false);
+    closePaymentModal();
+  }
+
+});
+
+
+/* INITIAL LOAD */
+
+loadPaymentHistory();
 
 </script>
+
 </body>
 </html>
