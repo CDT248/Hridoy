@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,62 +8,61 @@
 <style>
 :root{
   --primary:#087f5b;
-  --primary-dark:#066447;
-  --light:#e8f7ef;
+  --primaryDark:#066447;
   --bg:#f4f7fb;
-  --card:#ffffff;
+  --card:#fff;
   --text:#172033;
   --muted:#64748b;
   --border:#e5eaf1;
   --danger:#dc3545;
-  --shadow:0 8px 28px rgba(15,23,42,.06);
+  --shadow:0 6px 22px rgba(15,23,42,.05);
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  padding:22px;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+  margin:0;padding:22px;background:var(--bg);
+  color:var(--text);font-family:Arial,Helvetica,sans-serif
 }
 .container{max-width:1450px;margin:auto}
 .header{
   display:flex;justify-content:space-between;align-items:center;
-  gap:15px;flex-wrap:wrap;margin-bottom:22px
+  gap:12px;flex-wrap:wrap;margin-bottom:20px
 }
 .heading h2{margin:0;font-size:25px}
 .heading p{margin:7px 0 0;color:var(--muted);font-size:13px}
 .btn{
   border:0;border-radius:8px;padding:10px 15px;
-  font-weight:700;font-size:13px;cursor:pointer;
-  transition:.2s
+  font-size:13px;font-weight:700;cursor:pointer
 }
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-dark)}
-.btn-light{background:#eef2f7;color:#334155}
-.btn-danger{background:#fff0f1;color:var(--danger)}
-.btn-danger:hover{background:#ffe0e3}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--primary);color:#fff}
+.primary:hover{background:var(--primaryDark)}
+.light{background:#eef2f7;color:#334155}
+.danger{background:#fff0f1;color:var(--danger)}
 .stats{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;margin-bottom:20px
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:14px;margin-bottom:20px
 }
 .stat{
   background:var(--card);border:1px solid var(--border);
-  border-radius:13px;padding:18px;box-shadow:var(--shadow)
+  border-radius:12px;padding:18px;box-shadow:var(--shadow);
+  min-width:0
 }
 .stat small{color:var(--muted);font-size:12px}
-.stat h3{font-size:24px;margin:9px 0 0}
+.stat h3{font-size:23px;margin:9px 0 0;overflow-wrap:anywhere}
+.stat .currency-code{
+  display:inline-block;margin-top:7px;font-size:11px;
+  color:var(--primary);font-weight:700
+}
 .panel{
   background:var(--card);border:1px solid var(--border);
   border-radius:13px;box-shadow:var(--shadow);overflow:hidden
 }
 .toolbar{
-  padding:17px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:17px;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;
   border-bottom:1px solid var(--border)
 }
-.toolbar h3{margin:0;font-size:16px}
+.toolbar h3{font-size:16px;margin:0}
 .filters{display:flex;gap:9px;flex-wrap:wrap}
 input,select,textarea{
   width:100%;padding:11px 12px;border:1px solid #dce3ec;
@@ -73,14 +71,14 @@ input,select,textarea{
 }
 input:focus,select:focus,textarea:focus{
   border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(8,127,91,.09)
+  box-shadow:0 0 0 3px rgba(8,127,91,.08)
 }
 .search{width:260px}
-.filter-select{width:160px}
+.filter{width:160px}
 .table-wrap{width:100%;overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:900px}
 th,td{
-  text-align:left;padding:14px 13px;
+  padding:14px 13px;text-align:left;
   border-bottom:1px solid var(--border);font-size:13px
 }
 th{
@@ -99,22 +97,18 @@ tbody tr:hover{background:#fbfdfc}
 }
 .action-btn:hover{background:#f1f5f9}
 .action-btn.delete{color:var(--danger)}
-.empty{
-  padding:35px;text-align:center;color:var(--muted);font-size:13px
-}
+.empty{padding:35px;text-align:center;color:var(--muted);font-size:13px}
 .footer{
-  padding:14px 17px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:14px 17px;display:flex;justify-content:space-between;
+  align-items:center;gap:10px;flex-wrap:wrap;
   color:var(--muted);font-size:12px
 }
 .pagination{display:flex;gap:7px}
 .pagination button{
   border:1px solid var(--border);background:#fff;
-  padding:7px 12px;border-radius:7px;cursor:pointer
+  padding:8px 12px;border-radius:7px;cursor:pointer
 }
 .pagination button:disabled{opacity:.4;cursor:not-allowed}
-
-/* Modal */
 .modal{
   position:fixed;inset:0;background:rgba(15,23,42,.55);
   display:none;align-items:center;justify-content:center;
@@ -140,7 +134,7 @@ tbody tr:hover{background:#fbfdfc}
   display:flex;justify-content:flex-end;gap:9px;
   padding:15px 20px;border-top:1px solid var(--border)
 }
-.form-grid{
+.form-grid,.detail-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:14px
 }
 .field label{
@@ -149,9 +143,6 @@ tbody tr:hover{background:#fbfdfc}
 }
 .field.full{grid-column:1/-1}
 textarea{min-height:85px;resize:vertical}
-.detail-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px
-}
 .detail{
   padding:12px;background:#f8fafc;border-radius:9px;
   border:1px solid var(--border);min-width:0
@@ -159,10 +150,9 @@ textarea{min-height:85px;resize:vertical}
 .detail small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
 .detail strong{font-size:13px;overflow-wrap:anywhere}
 #toast{
-  position:fixed;right:20px;bottom:20px;
-  background:#172033;color:#fff;padding:13px 18px;
-  border-radius:9px;font-size:13px;z-index:2000;
-  display:none;max-width:90%
+  position:fixed;right:20px;bottom:20px;background:#172033;
+  color:#fff;padding:13px 18px;border-radius:9px;
+  font-size:13px;z-index:2000;display:none;max-width:90%
 }
 #loading{
   position:fixed;inset:0;background:rgba(255,255,255,.82);
@@ -176,20 +166,17 @@ textarea{min-height:85px;resize:vertical}
   animation:spin .7s linear infinite;margin-right:8px
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
 @media(max-width:700px){
   body{padding:12px}
-  .stats{grid-template-columns:1fr}
-  .stat{padding:14px}
-  .stat h3{font-size:21px}
-  .search{width:100%}
-  .filter-select{width:100%}
+  .heading h2{font-size:21px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat{padding:13px}
+  .stat h3{font-size:19px}
   .filters{width:100%}
-  .filters>*{flex:1}
+  .filters>*{width:100%}
+  .search,.filter{width:100%}
   .form-grid,.detail-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
-  .heading h2{font-size:21px}
-  .toolbar{align-items:flex-start}
 }
 </style>
 </head>
@@ -200,25 +187,20 @@ textarea{min-height:85px;resize:vertical}
   <div class="header">
     <div class="heading">
       <h2>Payment History</h2>
-      <p>Manage, view and update all active payment records.</p>
+      <p>View, edit and manage all active payment records.</p>
     </div>
-    <button class="btn btn-primary" id="refreshBtn" onclick="refreshData()">
-      ↻ Refresh Records
-    </button>
+    <button class="btn primary" id="refreshBtn">↻ Refresh</button>
   </div>
 
-  <div class="stats">
+  <!-- DYNAMIC CURRENCY CARDS -->
+  <div class="stats" id="currencyCards">
     <div class="stat">
       <small>Total Payment Records</small>
       <h3 id="totalCount">0</h3>
     </div>
     <div class="stat">
-      <small>Total Payment Amount</small>
-      <h3 id="totalAmount">0</h3>
-    </div>
-    <div class="stat">
-      <small>Today's Payment</small>
-      <h3 id="todayAmount">0</h3>
+      <small>Today's Payment Records</small>
+      <h3 id="todayCount">0</h3>
     </div>
   </div>
 
@@ -227,8 +209,8 @@ textarea{min-height:85px;resize:vertical}
       <h3>All Payment Records</h3>
       <div class="filters">
         <input class="search" id="searchInput"
-          placeholder="Search user, payment ID, transaction...">
-        <select class="filter-select" id="currencyFilter">
+          placeholder="Search user, ID, transaction...">
+        <select class="filter" id="currencyFilter">
           <option value="">All Currencies</option>
         </select>
       </div>
@@ -247,7 +229,7 @@ textarea{min-height:85px;resize:vertical}
           </tr>
         </thead>
         <tbody id="tableBody">
-          <tr><td colspan="6" class="empty">Loading payment records...</td></tr>
+          <tr><td colspan="6" class="empty">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -255,81 +237,69 @@ textarea{min-height:85px;resize:vertical}
     <div class="footer">
       <span id="pageInfo">Showing 0 records</span>
       <div class="pagination">
-        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-        <button id="nextBtn" onclick="changePage(1)">Next</button>
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- VIEW MODAL -->
+<!-- VIEW -->
 <div class="modal" id="viewModal">
   <div class="modal-box">
     <div class="modal-head">
       <h3>Payment Details</h3>
-      <button class="close" onclick="closeModal('viewModal')">×</button>
+      <button class="close" data-close="viewModal">×</button>
     </div>
     <div class="modal-body" id="viewContent"></div>
     <div class="modal-footer">
-      <button class="btn btn-light" onclick="closeModal('viewModal')">Close</button>
+      <button class="btn light" data-close="viewModal">Close</button>
     </div>
   </div>
 </div>
 
-<!-- EDIT MODAL -->
+<!-- EDIT -->
 <div class="modal" id="editModal">
   <form id="editForm">
     <div class="modal-head">
       <h3>Edit Payment</h3>
-      <button type="button" class="close" onclick="closeModal('editModal')">×</button>
+      <button type="button" class="close" data-close="editModal">×</button>
     </div>
-
     <div class="modal-body">
       <div class="form-grid">
-
         <div class="field full">
           <label>User</label>
           <select id="editUser" required></select>
         </div>
-
         <div class="field">
           <label>Payment Amount</label>
           <input type="number" id="editAmount" min="0.01" step="any" required>
         </div>
-
         <div class="field">
           <label>Currency</label>
           <select id="editCurrency" required></select>
         </div>
-
         <div class="field">
           <label>Payment Method</label>
           <select id="editMethod" required></select>
         </div>
-
         <div class="field">
           <label>Transaction ID</label>
-          <input id="editTransaction" type="text">
+          <input id="editTransaction">
         </div>
-
         <div class="field full">
           <label>Payment Date</label>
           <input id="editDate" type="date" required>
         </div>
-
         <div class="field full">
           <label>Comment</label>
           <textarea id="editComment"></textarea>
         </div>
       </div>
     </div>
-
     <div class="modal-footer">
-      <button type="button" class="btn btn-light"
-        onclick="closeModal('editModal')">Cancel</button>
-      <button type="submit" class="btn btn-primary" id="saveEditBtn">
-        Save Changes
-      </button>
+      <button type="button" class="btn light" data-close="editModal">Cancel</button>
+      <button type="submit" class="btn primary" id="saveEditBtn">Save Changes</button>
     </div>
   </form>
 </div>
@@ -340,342 +310,338 @@ textarea{min-height:85px;resize:vertical}
 <script>
 "use strict";
 
-/* ================= API CONFIG ================= */
+/* ================ API CONFIG ================ */
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
-/* ================= STATE ================= */
+/* ================ STATE ================ */
 
 let payments = [];
 let users = [];
 let currencies = [];
 let methods = [];
 let currentPage = 1;
-let pageSize = 10;
+const PAGE_SIZE = 15;
 let editingPaymentId = "";
 let busy = false;
+let editOptionsLoaded = false;
 
 const $ = id => document.getElementById(id);
 
-const money = value =>
-  Number(value || 0).toLocaleString(undefined,{
-    maximumFractionDigits:2
-  });
-
 function escapeHTML(value){
   return String(value == null ? "" : value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
 
-function today(){
-  const d = new Date();
-  return [
-    d.getFullYear(),
-    String(d.getMonth()+1).padStart(2,"0"),
-    String(d.getDate()).padStart(2,"0")
-  ].join("-");
+function money(value){
+  return Number(value||0).toLocaleString(undefined,{
+    maximumFractionDigits:2
+  });
 }
 
-function formatDate(value){
+function today(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function dateText(value){
   if(!value) return "—";
-  const s = String(value).slice(0,10);
-  const p = s.split("-");
-  if(p.length !== 3) return escapeHTML(value);
-  return `${p[2]}/${p[1]}/${p[0]}`;
+  const s=String(value).slice(0,10);
+  const p=s.split("-");
+  return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : escapeHTML(value);
 }
 
 function toast(message){
-  const el = $("toast");
-  el.textContent = message;
-  el.style.display = "block";
+  const el=$("toast");
+  el.textContent=message;
+  el.style.display="block";
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(()=>el.style.display="none",3500);
+  toast.timer=setTimeout(()=>el.style.display="none",3500);
 }
 
 function setLoading(show,message){
-  $("loading").style.display = show ? "flex" : "none";
-  $("loadingText").textContent = message || "Please wait...";
+  $("loading").style.display=show?"flex":"none";
+  $("loadingText").textContent=message||"Please wait...";
 }
 
 function closeModal(id){
   $(id).classList.remove("show");
 }
 
-/* ================= JSONP API =================
-   GET requests and write actions use JSONP so that
-   Apps Script can respond without browser POST CORS issues.
-================================================ */
+document.querySelectorAll("[data-close]").forEach(btn=>{
+  btn.addEventListener("click",()=>closeModal(btn.dataset.close));
+});
 
-function apiRequest(params){
+/* ================ API REQUEST ================ */
+
+/*
+  GET uses one direct request for payments.
+  JSONP is used for write actions because the current
+  Code.gs supports action + callback in doGet().
+*/
+
+async function getJSON(api){
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),20000);
+
+  try{
+    const url=PAYMENT_API+"?api="+encodeURIComponent(api)+"&_="+Date.now();
+    const response=await fetch(url,{
+      method:"GET",
+      cache:"no-store",
+      signal:controller.signal
+    });
+
+    if(!response.ok) throw new Error("Server error: "+response.status);
+
+    const data=await response.json();
+
+    if(!data || data.success!==true){
+      throw new Error(data?.message||"Invalid API response.");
+    }
+    return data;
+  }catch(err){
+    if(err.name==="AbortError"){
+      throw new Error("Payment API response is taking too long. Check the Apps Script deployment.");
+    }
+    throw new Error(
+      err.message==="Failed to fetch"
+      ? "Payment API connection failed. Check the deployed Web App URL and access permission."
+      : err.message
+    );
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+
+function jsonpAction(payload){
   return new Promise((resolve,reject)=>{
-    const callbackName =
-      "__rsPaymentHistory_" + Date.now() + "_" +
-      Math.random().toString(36).slice(2);
-
-    const query = new URLSearchParams({
-      ...params,
+    const callbackName="__rsPayHistory_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    const params=new URLSearchParams({
+      ...Object.fromEntries(Object.entries(payload).map(([k,v])=>[k,String(v??"")])),
       callback:callbackName,
       _:String(Date.now())
     });
 
-    const script = document.createElement("script");
-    let finished = false;
+    const script=document.createElement("script");
+    let done=false;
 
-    const cleanup = ()=>{
-      if(finished) return;
-      finished = true;
+    function cleanup(){
+      if(done)return;
+      done=true;
       clearTimeout(timer);
       delete window[callbackName];
       script.remove();
+    }
+
+    const timer=setTimeout(()=>{
+      cleanup();
+      reject(new Error("Server did not respond. Please check the latest Code.gs deployment."));
+    },30000);
+
+    window[callbackName]=data=>{
+      cleanup();
+      if(data && data.success===true) resolve(data);
+      else reject(new Error(data?.message||"Payment operation failed."));
     };
 
-    const timer = setTimeout(()=>{
-      cleanup();
-      reject(new Error(
-        "Server response timeout. Check the Apps Script deployment and try refreshing."
-      ));
-    },45000);
-
-    window[callbackName] = data=>{
-      cleanup();
-      if(data && data.success === true){
-        resolve(data);
-      }else{
-        reject(new Error(
-          data && data.message ? data.message : "Request failed."
-        ));
-      }
-    };
-
-    script.onerror = ()=>{
+    script.onerror=()=>{
       cleanup();
       reject(new Error("Could not connect to Payment API."));
     };
 
-    script.src = PAYMENT_API + "?" + query.toString();
+    script.src=PAYMENT_API+"?"+params.toString();
     document.body.appendChild(script);
   });
 }
 
-/* ================= LOAD DATA ================= */
+/* ================ LOAD PAYMENTS ONLY ================ */
 
 async function loadPayments(){
-  const data = await apiRequest({api:"payments"});
-  payments = Array.isArray(data.payments) ? data.payments : [];
+  const data=await getJSON("payments");
+  payments=Array.isArray(data.payments)?data.payments:[];
 }
 
-async function loadUsers(){
-  const data = await apiRequest({api:"users"});
-  users = Array.isArray(data.users) ? data.users : [];
+/* Load extra data only when user opens Edit */
+async function loadEditOptions(){
+  if(editOptionsLoaded) return;
+
+  const results=await Promise.all([
+    getJSON("users"),
+    getJSON("currencies"),
+    getJSON("methods")
+  ]);
+
+  users=Array.isArray(results[0].users)?results[0].users:[];
+  currencies=Array.isArray(results[1].currencies)?results[1].currencies:[];
+  methods=Array.isArray(results[2].methods)?results[2].methods:[];
+
+  editOptionsLoaded=true;
+  renderEditOptions();
 }
 
-async function loadCurrencies(){
-  const data = await apiRequest({api:"currencies"});
-  currencies = Array.isArray(data.currencies) ? data.currencies : [];
+/* ================ CURRENCY CARDS ================ */
+
+function currencyKey(p){
+  return String(p.currencyCode||p.currencyName||p.currencyId||"Unknown").trim()||"Unknown";
 }
 
-async function loadMethods(){
-  const data = await apiRequest({api:"methods"});
-  methods = Array.isArray(data.methods) ? data.methods : [];
-}
+function renderCurrencyCards(){
+  const totals=new Map();
 
-async function refreshData(){
-  if(busy) return;
-  busy = true;
-  setLoading(true,"Loading payment history...");
+  payments.forEach(p=>{
+    const key=currencyKey(p);
+    const current=totals.get(key)||{
+      code:key,
+      name:p.currencyName||key,
+      symbol:p.currencySymbol||"",
+      amount:0,
+      count:0
+    };
 
-  try{
-    await Promise.all([
-      loadPayments(),
-      loadUsers(),
-      loadCurrencies(),
-      loadMethods()
-    ]);
+    current.amount+=Number(p.amount||0);
+    current.count++;
+    totals.set(key,current);
+  });
 
-    renderCurrencyFilters();
-    renderEditOptions();
-    currentPage = 1;
-    renderPayments();
-  }catch(err){
-    toast(err.message || "Could not load payment history.");
-    $("tableBody").innerHTML =
-      `<tr><td colspan="6" class="empty">${escapeHTML(err.message)}</td></tr>`;
-  }finally{
-    setLoading(false);
-    busy = false;
-  }
-}
+  const todayRecords=payments.filter(p=>
+    String(p.paymentDate||"").slice(0,10)===today()
+  ).length;
 
-/* ================= DATA HELPERS ================= */
+  let html=`
+    <div class="stat">
+      <small>Total Payment Records</small>
+      <h3>${payments.length}</h3>
+    </div>
+    <div class="stat">
+      <small>Today's Payment Records</small>
+      <h3>${todayRecords}</h3>
+    </div>
+  `;
 
-function getUser(payment){
-  return users.find(u=>String(u.userId)===String(payment.userId)) || {
-    userId:payment.userId || "",
-    userName:payment.userName || "Unknown User"
-  };
-}
+  totals.forEach(item=>{
+    html+=`
+      <div class="stat">
+        <small>${escapeHTML(item.name)} Total</small>
+        <h3>${escapeHTML(item.symbol)} ${money(item.amount)}</h3>
+        <span class="currency-code">
+          ${escapeHTML(item.code)} · ${item.count} Payments
+        </span>
+      </div>
+    `;
+  });
 
-function currencyLabel(p){
-  return p.currencyCode || p.currencyName || "";
-}
+  $("currencyCards").innerHTML=html;
 
-function renderCurrencyFilters(){
-  const select = $("currencyFilter");
-  const old = select.value;
+  const selected=$("currencyFilter").value;
+  const codes=[...totals.keys()];
 
-  select.innerHTML =
-    '<option value="">All Currencies</option>' +
-    currencies.map(c=>
-      `<option value="${escapeHTML(c.code)}">${escapeHTML(c.code)} - ${escapeHTML(c.name)}</option>`
+  $("currencyFilter").innerHTML=
+    '<option value="">All Currencies</option>'+
+    codes.map(code=>
+      `<option value="${escapeHTML(code)}">${escapeHTML(code)}</option>`
     ).join("");
 
-  if([...select.options].some(o=>o.value===old)) select.value=old;
+  if(codes.includes(selected)) $("currencyFilter").value=selected;
 }
 
-function renderEditOptions(){
-  $("editUser").innerHTML =
-    '<option value="">Select User</option>' +
-    users.map(u=>
-      `<option value="${escapeHTML(u.userId)}">${escapeHTML(u.userName)} (${escapeHTML(u.userId)})</option>`
-    ).join("");
-
-  $("editCurrency").innerHTML =
-    '<option value="">Select Currency</option>' +
-    currencies.map(c=>
-      `<option value="${escapeHTML(c.id)}">${escapeHTML(c.code)} - ${escapeHTML(c.name)}</option>`
-    ).join("");
-
-  $("editMethod").innerHTML =
-    '<option value="">Select Method</option>' +
-    methods.map(m=>
-      `<option value="${escapeHTML(m.id)}">${escapeHTML(m.name)}</option>`
-    ).join("");
-}
-
-/* ================= STATS ================= */
-
-function renderStats(){
-  const total = payments.reduce((s,p)=>s+Number(p.amount||0),0);
-  const todayTotal = payments
-    .filter(p=>String(p.paymentDate||"").slice(0,10)===today())
-    .reduce((s,p)=>s+Number(p.amount||0),0);
-
-  $("totalCount").textContent = payments.length;
-  $("totalAmount").textContent = money(total);
-  $("todayAmount").textContent = money(todayTotal);
-}
-
-/* ================= FILTER + TABLE ================= */
+/* ================ FILTER ================ */
 
 function filteredPayments(){
-  const q = $("searchInput").value.trim().toLowerCase();
-  const currency = $("currencyFilter").value;
+  const q=$("searchInput").value.trim().toLowerCase();
+  const currency=$("currencyFilter").value;
 
   return payments.filter(p=>{
-    const text = [
+    const searchable=[
       p.paymentId,p.userId,p.userName,p.transactionId,
       p.paymentMethod,p.currencyCode,p.currencyName,p.comment
     ].join(" ").toLowerCase();
 
-    const currencyMatch =
-      !currency || String(p.currencyCode||"")===currency;
-
-    return (!q || text.includes(q)) && currencyMatch;
+    return (!q||searchable.includes(q)) &&
+      (!currency||currencyKey(p)===currency);
   }).sort((a,b)=>
     String(b.paymentDate||"").localeCompare(String(a.paymentDate||""))
   );
 }
 
+/* ================ TABLE ================ */
+
 function renderPayments(){
-  renderStats();
+  renderCurrencyCards();
 
-  const list = filteredPayments();
-  const pages = Math.max(1,Math.ceil(list.length/pageSize));
-  currentPage = Math.min(currentPage,pages);
+  const list=filteredPayments();
+  const totalPages=Math.max(1,Math.ceil(list.length/PAGE_SIZE));
+  currentPage=Math.min(currentPage,totalPages);
 
-  const start = (currentPage-1)*pageSize;
-  const visible = list.slice(start,start+pageSize);
+  const start=(currentPage-1)*PAGE_SIZE;
+  const visible=list.slice(start,start+PAGE_SIZE);
 
-  $("pageInfo").textContent = list.length
-    ? `Showing ${start+1}-${Math.min(start+pageSize,list.length)} of ${list.length}`
+  $("pageInfo").textContent=list.length
+    ? `Showing ${start+1}-${Math.min(start+PAGE_SIZE,list.length)} of ${list.length}`
     : "Showing 0 records";
 
-  $("prevBtn").disabled = currentPage<=1;
-  $("nextBtn").disabled = currentPage>=pages;
+  $("prevBtn").disabled=currentPage<=1;
+  $("nextBtn").disabled=currentPage>=totalPages;
 
   if(!visible.length){
-    $("tableBody").innerHTML =
+    $("tableBody").innerHTML=
       '<tr><td colspan="6" class="empty">No payment records found.</td></tr>';
     return;
   }
 
-  $("tableBody").innerHTML = visible.map(p=>{
-    const u = getUser(p);
-
-    return `
-      <tr>
-        <td>
-          <div class="user-name">${escapeHTML(u.userName)}</div>
-          <div class="user-id">${escapeHTML(u.userId)}</div>
-        </td>
-        <td class="amount">${escapeHTML(currencyLabel(p))} ${money(p.amount)}</td>
-        <td>${escapeHTML(p.paymentMethod||"—")}</td>
-        <td>${escapeHTML(p.transactionId||"—")}</td>
-        <td>${formatDate(p.paymentDate)}</td>
-        <td>
-          <div class="actions">
-            <button class="action-btn" data-action="view"
-              data-id="${escapeHTML(p.paymentId)}">View</button>
-            <button class="action-btn" data-action="edit"
-              data-id="${escapeHTML(p.paymentId)}">Edit</button>
-            <button class="action-btn delete" data-action="delete"
-              data-id="${escapeHTML(p.paymentId)}">Delete</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join("");
+  $("tableBody").innerHTML=visible.map(p=>`
+    <tr>
+      <td>
+        <div class="user-name">${escapeHTML(p.userName||"Unknown User")}</div>
+        <div class="user-id">${escapeHTML(p.userId||"")}</div>
+      </td>
+      <td class="amount">
+        ${escapeHTML(p.currencyCode||p.currencyName||"")} ${money(p.amount)}
+      </td>
+      <td>${escapeHTML(p.paymentMethod||"—")}</td>
+      <td>${escapeHTML(p.transactionId||"—")}</td>
+      <td>${dateText(p.paymentDate)}</td>
+      <td>
+        <div class="actions">
+          <button class="action-btn" data-action="view"
+            data-id="${escapeHTML(p.paymentId)}">View</button>
+          <button class="action-btn" data-action="edit"
+            data-id="${escapeHTML(p.paymentId)}">Edit</button>
+          <button class="action-btn delete" data-action="delete"
+            data-id="${escapeHTML(p.paymentId)}">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
 }
 
-function changePage(step){
-  const pages = Math.max(1,Math.ceil(filteredPayments().length/pageSize));
-  currentPage = Math.max(1,Math.min(pages,currentPage+step));
-  renderPayments();
-}
-
-/* ================= VIEW ================= */
+/* ================ VIEW ================ */
 
 function viewPayment(id){
-  const p = payments.find(x=>String(x.paymentId)===String(id));
-  if(!p) return toast("Payment record not found.");
+  const p=payments.find(x=>String(x.paymentId)===String(id));
+  if(!p)return toast("Payment record not found.");
 
-  const u = getUser(p);
-
-  const fields = [
+  const fields=[
     ["Payment ID",p.paymentId],
-    ["User Name",u.userName],
-    ["User ID",u.userId],
-    ["Payment Amount",currencyLabel(p)+" "+money(p.amount)],
+    ["User Name",p.userName],
+    ["User ID",p.userId],
+    ["Amount",(p.currencyCode||"")+" "+money(p.amount)],
     ["Currency",p.currencyName||p.currencyCode],
     ["Payment Method",p.paymentMethod],
     ["Transaction ID",p.transactionId],
-    ["Payment Date",formatDate(p.paymentDate)],
+    ["Payment Date",dateText(p.paymentDate)],
     ["Created At",p.createdAt],
     ["Updated At",p.updatedAt]
   ];
 
-  $("viewContent").innerHTML = `
+  $("viewContent").innerHTML=`
     <div class="detail-grid">
-      ${fields.map(([label,value])=>`
+      ${fields.map(([a,b])=>`
         <div class="detail">
-          <small>${escapeHTML(label)}</small>
-          <strong>${escapeHTML(value||"—")}</strong>
+          <small>${escapeHTML(a)}</small>
+          <strong>${escapeHTML(b||"—")}</strong>
         </div>
       `).join("")}
       <div class="detail" style="grid-column:1/-1">
@@ -684,106 +650,135 @@ function viewPayment(id){
       </div>
     </div>
   `;
-
   $("viewModal").classList.add("show");
 }
 
-/* ================= EDIT ================= */
+/* ================ EDIT ================ */
 
-function editPayment(id){
-  const p = payments.find(x=>String(x.paymentId)===String(id));
-  if(!p) return toast("Payment record not found.");
+async function editPayment(id){
+  if(busy)return;
 
-  editingPaymentId = String(p.paymentId);
+  const p=payments.find(x=>String(x.paymentId)===String(id));
+  if(!p)return toast("Payment record not found.");
 
-  $("editUser").value = String(p.userId||"");
-  $("editAmount").value = p.amount ?? "";
-  $("editCurrency").value = String(p.currencyId||"");
-  $("editMethod").value = String(p.methodId||"");
-  $("editTransaction").value = p.transactionId||"";
-  $("editDate").value = String(p.paymentDate||"").slice(0,10);
-  $("editComment").value = p.comment||"";
+  busy=true;
+  setLoading(true,"Loading edit information...");
 
-  $("editModal").classList.add("show");
+  try{
+    await loadEditOptions();
+
+    editingPaymentId=String(p.paymentId);
+
+    $("editUser").value=String(p.userId||"");
+    $("editAmount").value=p.amount??"";
+    $("editCurrency").value=String(p.currencyId||"");
+    $("editMethod").value=String(p.methodId||"");
+    $("editTransaction").value=p.transactionId||"";
+    $("editDate").value=String(p.paymentDate||"").slice(0,10);
+    $("editComment").value=p.comment||"";
+
+    $("editModal").classList.add("show");
+  }catch(err){
+    toast(err.message);
+  }finally{
+    setLoading(false);
+    busy=false;
+  }
+}
+
+function renderEditOptions(){
+  $("editUser").innerHTML=
+    '<option value="">Select User</option>'+
+    users.map(u=>`
+      <option value="${escapeHTML(u.userId)}">
+        ${escapeHTML(u.userName)} (${escapeHTML(u.userId)})
+      </option>
+    `).join("");
+
+  $("editCurrency").innerHTML=
+    '<option value="">Select Currency</option>'+
+    currencies.map(c=>`
+      <option value="${escapeHTML(c.id)}">
+        ${escapeHTML(c.code||c.name)} - ${escapeHTML(c.name||"")}
+      </option>
+    `).join("");
+
+  $("editMethod").innerHTML=
+    '<option value="">Select Method</option>'+
+    methods.map(m=>`
+      <option value="${escapeHTML(m.id)}">${escapeHTML(m.name)}</option>
+    `).join("");
 }
 
 $("editForm").addEventListener("submit",async e=>{
   e.preventDefault();
+  if(busy||!editingPaymentId)return;
 
-  if(busy || !editingPaymentId) return;
-
-  const amount = Number($("editAmount").value);
-  const userId = $("editUser").value;
-  const currencyId = $("editCurrency").value;
-  const methodId = $("editMethod").value;
-  const paymentDate = $("editDate").value;
-
-  if(!userId) return toast("Please select a user.");
-  if(!Number.isFinite(amount)||amount<=0)
-    return toast("Payment amount must be greater than zero.");
-  if(!currencyId) return toast("Please select a currency.");
-  if(!methodId) return toast("Please select a payment method.");
-  if(!paymentDate) return toast("Please select payment date.");
-
-  const btn = $("saveEditBtn");
-  const payload = {
+  const payload={
     action:"editPayment",
     requestId:"EDIT-"+editingPaymentId+"-"+Date.now(),
     paymentId:editingPaymentId,
-    userId,
-    amount,
-    currencyId,
-    methodId,
+    userId:$("editUser").value,
+    amount:Number($("editAmount").value),
+    currencyId:$("editCurrency").value,
+    methodId:$("editMethod").value,
     transactionId:$("editTransaction").value.trim(),
-    paymentDate,
+    paymentDate:$("editDate").value,
     comment:$("editComment").value.trim()
   };
 
-  busy = true;
-  btn.disabled = true;
-  btn.textContent = "Updating...";
+  if(!payload.userId)return toast("Please select a user.");
+  if(!Number.isFinite(payload.amount)||payload.amount<=0)
+    return toast("Payment amount must be greater than zero.");
+  if(!payload.currencyId)return toast("Please select currency.");
+  if(!payload.methodId)return toast("Please select payment method.");
+  if(!payload.paymentDate)return toast("Please select payment date.");
+
+  busy=true;
+  $("saveEditBtn").disabled=true;
+  $("saveEditBtn").textContent="Updating...";
   closeModal("editModal");
-  setLoading(true,"Updating payment record...");
+  setLoading(true,"Updating payment...");
 
   try{
-    const result = await apiRequest(payload);
-
+    const result=await jsonpAction(payload);
     await loadPayments();
     renderPayments();
-
-    editingPaymentId = "";
-    toast(result.message || "Payment updated successfully.");
+    editingPaymentId="";
+    toast(result.message||"Payment updated successfully.");
   }catch(err){
-    toast(err.message || "Payment update failed.");
+    toast(err.message);
   }finally{
+    busy=false;
     setLoading(false);
-    busy = false;
-    btn.disabled = false;
-    btn.textContent = "Save Changes";
+    $("saveEditBtn").disabled=false;
+    $("saveEditBtn").textContent="Save Changes";
   }
 });
 
-/* ================= DELETE ================= */
+/* ================ DELETE ================ */
 
 async function deletePayment(id){
-  const p = payments.find(x=>String(x.paymentId)===String(id));
-  if(!p) return toast("Payment record not found.");
+  if(busy)return;
 
-  const confirmed = confirm(
-    "Are you sure you want to delete this payment?\n\n" +
-    "Payment ID: "+p.paymentId+"\n" +
-    "User: "+p.userName+"\n" +
-    "Amount: "+currencyLabel(p)+" "+money(p.amount)+"\n\n" +
-    "This record will be moved to DELETE HISTORY. It will not be permanently deleted."
+  const p=payments.find(x=>String(x.paymentId)===String(id));
+  if(!p)return toast("Payment record not found.");
+
+  const yes=confirm(
+    "Delete this payment record?\n\n"+
+    "Payment ID: "+p.paymentId+"\n"+
+    "User: "+p.userName+"\n"+
+    "Amount: "+(p.currencyCode||"")+" "+money(p.amount)+
+    "\n\nThis will move the record to DELETE HISTORY. It will not be permanently deleted."
   );
 
-  if(!confirmed || busy) return;
+  if(!yes)return;
 
-  busy = true;
+  busy=true;
   setLoading(true,"Moving payment to DELETE HISTORY...");
 
   try{
-    const result = await apiRequest({
+    const result=await jsonpAction({
       action:"deletePayment",
       requestId:"DELETE-"+id+"-"+Date.now(),
       paymentId:id
@@ -791,28 +786,25 @@ async function deletePayment(id){
 
     await loadPayments();
     renderPayments();
-
-    toast(result.message || "Payment moved to DELETE HISTORY.");
+    toast(result.message||"Payment moved to DELETE HISTORY.");
   }catch(err){
-    toast(err.message || "Delete failed.");
+    toast(err.message);
   }finally{
+    busy=false;
     setLoading(false);
-    busy = false;
   }
 }
 
-/* ================= TABLE EVENTS ================= */
+/* ================ EVENTS ================ */
 
 $("tableBody").addEventListener("click",e=>{
-  const btn = e.target.closest("[data-action]");
-  if(!btn) return;
+  const btn=e.target.closest("[data-action]");
+  if(!btn)return;
 
-  const action = btn.dataset.action;
-  const id = btn.dataset.id;
-
-  if(action==="view") viewPayment(id);
-  if(action==="edit") editPayment(id);
-  if(action==="delete") deletePayment(id);
+  const id=btn.dataset.id;
+  if(btn.dataset.action==="view")viewPayment(id);
+  if(btn.dataset.action==="edit")editPayment(id);
+  if(btn.dataset.action==="delete")deletePayment(id);
 });
 
 $("searchInput").addEventListener("input",()=>{
@@ -825,7 +817,48 @@ $("currencyFilter").addEventListener("change",()=>{
   renderPayments();
 });
 
-/* ================= START ================= */
+$("prevBtn").addEventListener("click",()=>{
+  if(currentPage>1){
+    currentPage--;
+    renderPayments();
+  }
+});
+
+$("nextBtn").addEventListener("click",()=>{
+  const pages=Math.max(1,Math.ceil(filteredPayments().length/PAGE_SIZE));
+  if(currentPage<pages){
+    currentPage++;
+    renderPayments();
+  }
+});
+
+$("refreshBtn").addEventListener("click",refreshData);
+
+/* ================ REFRESH ================ */
+
+async function refreshData(){
+  if(busy)return;
+
+  busy=true;
+  $("refreshBtn").disabled=true;
+  setLoading(true,"Loading payment records...");
+
+  try{
+    await loadPayments();
+    currentPage=1;
+    renderPayments();
+  }catch(err){
+    $("tableBody").innerHTML=
+      `<tr><td colspan="6" class="empty">${escapeHTML(err.message)}</td></tr>`;
+    toast(err.message);
+  }finally{
+    busy=false;
+    $("refreshBtn").disabled=false;
+    setLoading(false);
+  }
+}
+
+/* ================ START ================ */
 
 refreshData();
 
