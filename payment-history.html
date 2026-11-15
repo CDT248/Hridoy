@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,25 +7,69 @@
 <title>Payment History</title>
 
 <style>
+/* =========================================
+   PAYMENT HISTORY THEME
+   INDEX DARK MODE COMPATIBILITY
+========================================= */
+
 :root{
   --ph-primary:var(--primary,#087f5b);
   --ph-accent:var(--accent,#12b886);
   --ph-bg:var(--bg,#f5f7fb);
-  --ph-card:var(--card,#fff);
+  --ph-card:var(--card,#ffffff);
   --ph-text:var(--text,#172033);
   --ph-muted:var(--muted,#8490a3);
   --ph-border:var(--border,#e8edf3);
   --ph-danger:#e05252;
   --ph-shadow:0 5px 18px rgba(20,40,60,.055);
+
+  --ph-input-bg:var(--input-bg,var(--ph-bg));
+  --ph-hover:rgba(8,127,91,.08);
+  --ph-selected:rgba(8,127,91,.12);
+  --ph-edit-bg:#eaf2ff;
+  --ph-edit-text:#2457a6;
+  --ph-delete-bg:#fff0f0;
+  --ph-delete-text:#c03939;
+}
+
+/* Common dark theme selectors used by parent Index */
+
+:root[data-theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+html.dark,
+body.dark,
+html.dark-mode,
+body.dark-mode,
+.dark-mode{
+  --ph-bg:var(--bg,#111827);
+  --ph-card:var(--card,#1f2937);
+  --ph-text:var(--text,#f3f4f6);
+  --ph-muted:var(--muted,#9ca3af);
+  --ph-border:var(--border,#374151);
+  --ph-input-bg:var(--input-bg,#111827);
+  --ph-shadow:0 5px 18px rgba(0,0,0,.18);
+
+  --ph-hover:rgba(18,184,134,.13);
+  --ph-selected:rgba(18,184,134,.18);
+  --ph-edit-bg:#263b59;
+  --ph-edit-text:#a9caff;
+  --ph-delete-bg:#492b32;
+  --ph-delete-text:#ffaaaa;
 }
 
 *{box-sizing:border-box}
+
+html,body{
+  min-height:100%;
+}
 
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:var(--ph-bg);
   color:var(--ph-text);
+  transition:background .2s,color .2s;
 }
 
 button,input,select,textarea{font:inherit}
@@ -127,7 +172,7 @@ button,input,select,textarea{font:inherit}
   border-radius:8px;
   outline:none;
   padding:0 13px;
-  background:var(--ph-bg);
+  background:var(--ph-input-bg);
   color:var(--ph-text);
   font-size:13px;
 }
@@ -202,10 +247,11 @@ button,input,select,textarea{font:inherit}
   cursor:pointer;
   transition:background .15s;
   flex-shrink:0;
+  color:var(--ph-text);
 }
 
-.ph-profile-option:hover{background:rgba(8,127,91,.08)}
-.ph-profile-option.active{background:rgba(8,127,91,.12)}
+.ph-profile-option:hover{background:var(--ph-hover)}
+.ph-profile-option.active{background:var(--ph-selected)}
 
 .ph-avatar{
   width:42px;
@@ -213,7 +259,7 @@ button,input,select,textarea{font:inherit}
   flex:0 0 42px;
   border-radius:50%;
   overflow:hidden;
-  background:rgba(8,127,91,.12);
+  background:var(--ph-selected);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -261,8 +307,8 @@ button,input,select,textarea{font:inherit}
   display:none;
   align-items:center;
   gap:12px;
-  background:rgba(8,127,91,.07);
-  border:1px solid rgba(8,127,91,.18);
+  background:var(--ph-selected);
+  border:1px solid var(--ph-border);
   border-radius:10px;
   padding:11px;
   margin-top:13px;
@@ -376,8 +422,8 @@ button,input,select,textarea{font:inherit}
 }
 
 .ph-view-btn{background:var(--ph-primary);color:white}
-.ph-edit-btn{background:#eaf2ff;color:#2457a6}
-.ph-delete-btn{background:#fff0f0;color:#c03939}
+.ph-edit-btn{background:var(--ph-edit-bg);color:var(--ph-edit-text)}
+.ph-delete-btn{background:var(--ph-delete-bg);color:var(--ph-delete-text)}
 .ph-action-btn:disabled{opacity:.5;cursor:not-allowed}
 
 .ph-empty{
@@ -419,7 +465,7 @@ button,input,select,textarea{font:inherit}
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(10,20,30,.55);
+  background:rgba(10,20,30,.65);
   z-index:9999;
   align-items:center;
   justify-content:center;
@@ -434,8 +480,9 @@ button,input,select,textarea{font:inherit}
   max-height:90vh;
   overflow-y:auto;
   background:var(--ph-card);
+  color:var(--ph-text);
   border-radius:15px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
   padding:21px;
   animation:phPop .2s ease;
 }
@@ -477,7 +524,7 @@ button,input,select,textarea{font:inherit}
   margin:0 auto 10px;
   border-radius:50%;
   overflow:hidden;
-  background:rgba(8,127,91,.12);
+  background:var(--ph-selected);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -523,14 +570,13 @@ button,input,select,textarea{font:inherit}
   min-width:0;
   border:1px solid var(--ph-border);
   border-radius:8px;
-  background:var(--ph-bg);
+  background:var(--ph-input-bg);
   color:var(--ph-text);
   padding:10px 11px;
   font-size:13px;
   outline:none;
+  color-scheme:normal;
 }
-
-.ph-form-field textarea{min-height:75px;resize:vertical}
 
 .ph-form-field input:focus,
 .ph-form-field select:focus,
@@ -538,6 +584,8 @@ button,input,select,textarea{font:inherit}
   border-color:var(--ph-primary);
   box-shadow:0 0 0 3px rgba(8,127,91,.08);
 }
+
+.ph-form-field textarea{min-height:75px;resize:vertical}
 
 .ph-form-actions{display:flex;gap:8px;margin-top:16px}
 .ph-form-actions button{
@@ -572,6 +620,15 @@ button,input,select,textarea{font:inherit}
 }
 
 .ph-toast.show{display:block}
+
+/* Dark theme native dropdown options */
+:root[data-theme="dark"] select,
+html.dark select,
+body.dark select,
+body.dark-mode select,
+.dark-mode select{
+  color-scheme:dark;
+}
 
 @media(max-width:900px){
   .ph-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -666,17 +723,14 @@ button,input,select,textarea{font:inherit}
       <div class="ph-stat-label">Total History</div>
       <div class="ph-stat-value" id="phTotalHistory">0</div>
     </div>
-
     <div class="ph-stat">
       <div class="ph-stat-label">Total Users</div>
       <div class="ph-stat-value" id="phTotalUsers">0</div>
     </div>
-
     <div class="ph-stat">
       <div class="ph-stat-label">Total Payment Amount</div>
       <div class="ph-stat-value" id="phTotalAmount">৳0</div>
     </div>
-
     <div class="ph-stat">
       <div class="ph-stat-label">Selected User Records</div>
       <div class="ph-stat-value" id="phSelectedRecords">All</div>
@@ -688,14 +742,9 @@ button,input,select,textarea{font:inherit}
 
     <div class="ph-search-row">
       <div class="ph-search-wrap">
-        <input
-          type="text"
-          class="ph-search"
-          id="phProfileSearch"
+        <input type="text" class="ph-search" id="phProfileSearch"
           placeholder="Search profile by name or User ID..."
-          autocomplete="off"
-        >
-
+          autocomplete="off">
         <div class="ph-dropdown" id="phProfileDropdown">
           <div id="phProfileOptions"></div>
         </div>
@@ -708,12 +757,10 @@ button,input,select,textarea{font:inherit}
 
     <div class="ph-selected" id="phSelectedProfile">
       <div class="ph-avatar" id="phSelectedAvatar"></div>
-
       <div class="ph-selected-info">
         <div class="ph-selected-name" id="phSelectedName"></div>
         <div class="ph-selected-id" id="phSelectedId"></div>
       </div>
-
       <button class="ph-clear" id="phClearProfile" type="button">Clear</button>
     </div>
   </div>
@@ -734,7 +781,6 @@ button,input,select,textarea{font:inherit}
 <!-- VIEW MODAL -->
 <div class="ph-modal" id="phViewModal">
   <div class="ph-modal-box">
-
     <div class="ph-modal-head">
       <div class="ph-modal-title">Payment Details</div>
       <button class="ph-close" id="phModalClose" type="button">×</button>
@@ -752,7 +798,6 @@ button,input,select,textarea{font:inherit}
     </div>
 
     <div class="ph-modal-grid" id="phModalDetails"></div>
-
     <button class="ph-modal-done" id="phModalDone" type="button">Close</button>
   </div>
 </div>
@@ -760,7 +805,6 @@ button,input,select,textarea{font:inherit}
 <!-- EDIT MODAL -->
 <div class="ph-modal" id="phEditModal">
   <div class="ph-modal-box">
-
     <div class="ph-modal-head">
       <div class="ph-modal-title">Edit Payment</div>
       <button class="ph-close" id="phEditClose" type="button">×</button>
@@ -770,7 +814,6 @@ button,input,select,textarea{font:inherit}
       <input type="hidden" id="phEditPaymentId">
 
       <div class="ph-form-grid">
-
         <div class="ph-form-field full">
           <label>User</label>
           <select id="phEditUser" required></select>
@@ -805,7 +848,6 @@ button,input,select,textarea{font:inherit}
           <label>Comment</label>
           <textarea id="phEditComment"></textarea>
         </div>
-
       </div>
 
       <div class="ph-form-actions">
@@ -813,7 +855,6 @@ button,input,select,textarea{font:inherit}
         <button class="ph-save-btn" id="phEditSave" type="submit">Save Changes</button>
       </div>
     </form>
-
   </div>
 </div>
 
@@ -822,14 +863,13 @@ button,input,select,textarea{font:inherit}
 <script>
 "use strict";
 
-/* API CONFIGURATION - YOUR LATEST URLS */
+/* API CONFIGURATION */
 
 const PAYMENT_API =
 "https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
 const USER_API =
 "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
-
 
 /* STATE */
 
@@ -847,16 +887,11 @@ let historyPage = 1;
 const PAGE_SIZE = 25;
 const $ = id => document.getElementById(id);
 
-
 /* HELPERS */
 
 function esc(value){
   return String(value ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
 
@@ -949,8 +984,7 @@ function avatarHTML(name,picture,extraClass=""){
   </div>`;
 }
 
-
-/* JSONP API - AVOIDS GITHUB PAGES CORS ISSUE */
+/* JSONP API */
 
 function apiGet(url,timeout=20000){
   return new Promise((resolve,reject)=>{
@@ -1022,7 +1056,6 @@ async function apiPost(payload){
   return result;
 }
 
-
 /* TOAST */
 
 let toastTimer;
@@ -1034,7 +1067,6 @@ function showToast(message){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>toast.classList.remove("show"),3200);
 }
-
 
 /* LOAD PAYMENT HISTORY */
 
@@ -1082,13 +1114,11 @@ async function loadPaymentHistory(){
     paymentHistory = records;
     allPayments = records.slice();
 
-    // Show payment records immediately before loading extra lists.
     buildProfiles([]);
     updateSummary();
     renderProfileDropdown();
     renderHistory();
 
-    // Load supporting data concurrently.
     const results = await Promise.allSettled([
       apiGet(USER_API + "?api=active"),
       apiGet(PAYMENT_API + "?api=currencies"),
@@ -1138,7 +1168,6 @@ async function loadPaymentHistory(){
   }
 }
 
-
 /* PROFILE DATA */
 
 function buildProfiles(users){
@@ -1179,7 +1208,6 @@ function buildProfiles(users){
   );
 }
 
-
 /* SUMMARY */
 
 function updateSummary(){
@@ -1214,7 +1242,6 @@ function updateSelectedCount(){
 
   $("phSelectedRecords").textContent = count;
 }
-
 
 /* PROFILE DROPDOWN */
 
@@ -1327,7 +1354,6 @@ function selectProfile(userId){
   renderHistory();
 }
 
-
 /* PAYMENT RECORD LOOKUP */
 
 function findActivePayment(paymentId){
@@ -1337,7 +1363,6 @@ function findActivePayment(paymentId){
     getPaymentId(record) === id
   ) || null;
 }
-
 
 /* RENDER HISTORY */
 
@@ -1515,7 +1540,6 @@ function renderHistory(){
   });
 }
 
-
 /* VIEW PAYMENT */
 
 function openPaymentDetails(record){
@@ -1562,7 +1586,6 @@ function closePaymentModal(){
   $("phViewModal").classList.remove("show");
 }
 
-
 /* EDIT SELECT OPTIONS */
 
 function fillSelect(selectId,items,valueKeys,labelKeys,selectedValue){
@@ -1580,7 +1603,6 @@ function fillSelect(selectId,items,valueKeys,labelKeys,selectedValue){
 
   select.innerHTML = `<option value="">Select...</option>` + options;
 }
-
 
 /* OPEN EDIT MODAL */
 
@@ -1642,7 +1664,6 @@ function closeEditModal(){
   $("phEditModal").classList.remove("show");
 }
 
-
 /* SAVE EDIT */
 
 async function submitEditPayment(event){
@@ -1699,7 +1720,6 @@ async function submitEditPayment(event){
   }
 }
 
-
 /* DELETE PAYMENT */
 
 async function deletePayment(record){
@@ -1752,7 +1772,6 @@ async function deletePayment(record){
 
   }
 }
-
 
 /* EVENTS */
 
@@ -1814,7 +1833,6 @@ document.addEventListener("keydown",event=>{
     closeEditModal();
   }
 });
-
 
 /* INITIAL LOAD */
 
