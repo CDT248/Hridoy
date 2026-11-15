@@ -26,9 +26,7 @@
 #userPaymentPage .up-heading h2{
   font-size:23px;margin:0 0 5px;font-weight:800
 }
-#userPaymentPage .up-sub{
-  font-size:13px;color:var(--up-muted)
-}
+#userPaymentPage .up-sub{font-size:13px;color:var(--up-muted)}
 #userPaymentPage button,
 #userPaymentPage input,
 #userPaymentPage select,
@@ -78,9 +76,7 @@
   justify-content:space-between;
   gap:10px;flex-wrap:wrap;margin-bottom:15px
 }
-#userPaymentPage .up-panel-head h3{
-  margin:0;font-size:16px
-}
+#userPaymentPage .up-panel-head h3{margin:0;font-size:16px}
 #userPaymentPage .up-form-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -104,15 +100,11 @@
   color:var(--up-text);
   outline:none;min-height:42px
 }
-#userPaymentPage .up-field textarea{
-  min-height:75px;resize:vertical
-}
+#userPaymentPage .up-field textarea{min-height:75px;resize:vertical}
 #userPaymentPage .up-field input:focus,
 #userPaymentPage .up-field select:focus,
 #userPaymentPage .up-field textarea:focus,
-#userPaymentPage .up-search:focus{
-  border-color:var(--up-primary)
-}
+#userPaymentPage .up-search:focus{border-color:var(--up-primary)}
 #userPaymentPage .up-actions{
   display:flex;gap:9px;flex-wrap:wrap;margin-top:16px
 }
@@ -135,23 +127,14 @@
   color:#fff;font-weight:800;
   overflow:hidden;font-size:14px
 }
-#userPaymentPage .up-avatar img{
-  width:100%;height:100%;object-fit:cover
-}
-#userPaymentPage .up-user-meta{
-  min-width:0;flex:1
-}
+#userPaymentPage .up-avatar img{width:100%;height:100%;object-fit:cover}
+#userPaymentPage .up-user-meta{min-width:0;flex:1}
 #userPaymentPage .up-user-meta strong{
   display:block;font-size:13px;
-  overflow:hidden;text-overflow:ellipsis;
-  white-space:nowrap
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap
 }
-#userPaymentPage .up-user-meta small{
-  font-size:11px;color:var(--up-muted)
-}
-#userPaymentPage .up-picker-arrow{
-  color:var(--up-muted)
-}
+#userPaymentPage .up-user-meta small{font-size:11px;color:var(--up-muted)}
+#userPaymentPage .up-picker-arrow{color:var(--up-muted)}
 #userPaymentPage .up-user-menu{
   display:none;position:absolute;
   z-index:20;top:calc(100% + 5px);
@@ -163,27 +146,17 @@
   max-height:300px;overflow:auto
 }
 #userPaymentPage .up-user-menu.open{display:block}
-#userPaymentPage .up-user-menu .up-search{
-  margin-bottom:8px
-}
+#userPaymentPage .up-user-menu .up-search{margin-bottom:8px}
 #userPaymentPage .up-user-option{
   display:flex;align-items:center;
-  gap:10px;padding:9px;border-radius:9px;
-  cursor:pointer
+  gap:10px;padding:9px;border-radius:9px;cursor:pointer
 }
-#userPaymentPage .up-user-option:hover{
-  background:var(--up-bg)
-}
-#userPaymentPage .up-user-option .up-user-meta strong{
-  font-size:13px
-}
-#userPaymentPage .up-user-option .up-user-meta small{
-  font-size:11px
-}
+#userPaymentPage .up-user-option:hover{background:var(--up-bg)}
+#userPaymentPage .up-user-option .up-user-meta strong{font-size:13px}
+#userPaymentPage .up-user-option .up-user-meta small{font-size:11px}
 #userPaymentPage .up-pill{
   display:inline-block;padding:5px 9px;
-  border-radius:20px;
-  background:var(--up-bg);
+  border-radius:20px;background:var(--up-bg);
   font-size:10px;font-weight:800
 }
 #userPaymentPage .up-empty{
@@ -193,15 +166,13 @@
 #userPaymentPage .up-modal{
   display:none;position:fixed;inset:0;
   background:#0008;z-index:9999;
-  align-items:center;justify-content:center;
-  padding:15px
+  align-items:center;justify-content:center;padding:15px
 }
 #userPaymentPage .up-modal.show{display:flex}
 #userPaymentPage .up-modal-box{
   width:min(520px,100%);
   max-height:90vh;overflow:auto;
-  background:var(--up-card);
-  color:var(--up-text);
+  background:var(--up-card);color:var(--up-text);
   border-radius:16px;padding:20px;
   border:1px solid var(--up-border);
   box-shadow:0 20px 60px #0003
@@ -210,13 +181,10 @@
   display:flex;justify-content:space-between;
   align-items:center;gap:10px;margin-bottom:15px
 }
-#userPaymentPage .up-modal-head h3{
-  margin:0;font-size:17px
-}
+#userPaymentPage .up-modal-head h3{margin:0;font-size:17px}
 #userPaymentPage .up-close{
   border:0;background:transparent;
-  color:var(--up-muted);
-  font-size:24px;line-height:1;padding:3px 7px
+  color:var(--up-muted);font-size:24px;line-height:1;padding:3px 7px
 }
 #userPaymentPage .up-toast{
   position:fixed;right:20px;bottom:20px;
@@ -228,62 +196,103 @@
 #userPaymentPage .up-toast.show{display:block}
 #userPaymentPage .up-spinner{
   display:inline-block;width:14px;height:14px;
-  border:2px solid #ffffff70;
-  border-top-color:#fff;border-radius:50%;
-  vertical-align:middle;
-  animation:upSpin .7s linear infinite;
-  margin-right:7px
+  border:2px solid #ffffff70;border-top-color:#fff;
+  border-radius:50%;vertical-align:middle;
+  animation:upSpin .7s linear infinite;margin-right:7px
 }
 @keyframes upSpin{to{transform:rotate(360deg)}}
 #userPaymentPage .up-success-icon{
   width:62px;height:62px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   background:#e6f8ef;color:#11965b;
-  font-size:34px;font-weight:800;
-  margin:5px auto 15px
+  font-size:34px;font-weight:800;margin:5px auto 15px
 }
 #userPaymentPage .up-success-title{
-  text-align:center;font-size:20px;
-  font-weight:800;margin-bottom:8px
+  text-align:center;font-size:20px;font-weight:800;margin-bottom:8px
 }
 #userPaymentPage .up-success-message{
   text-align:center;color:var(--up-muted);
-  font-size:13px;line-height:1.6;
-  overflow-wrap:anywhere
+  font-size:13px;line-height:1.6;overflow-wrap:anywhere
 }
 #userPaymentPage .up-success-footer{
   display:flex;justify-content:center;margin-top:20px
 }
 #userPaymentPage .up-success-footer button{min-width:120px}
 #userPaymentPage .up-process-spinner{
-  width:48px;height:48px;
-  border:4px solid var(--up-border);
-  border-top-color:var(--up-primary);
-  border-radius:50%;margin:0 auto 16px;
-  animation:upPopupSpin .8s linear infinite
+  width:48px;height:48px;border:4px solid var(--up-border);
+  border-top-color:var(--up-primary);border-radius:50%;
+  margin:0 auto 16px;animation:upPopupSpin .8s linear infinite
 }
 @keyframes upPopupSpin{to{transform:rotate(360deg)}}
 #userPaymentPage .up-popup-title{
-  text-align:center;font-size:19px;
-  font-weight:800;margin-bottom:8px
+  text-align:center;font-size:19px;font-weight:800;margin-bottom:8px
 }
 #userPaymentPage .up-popup-message{
   text-align:center;color:var(--up-muted);
-  font-size:13px;line-height:1.6;
-  overflow-wrap:anywhere
+  font-size:13px;line-height:1.6;overflow-wrap:anywhere
 }
 #userPaymentPage .up-popup-icon{
   width:58px;height:58px;border-radius:50%;
-  display:flex;align-items:center;
-  justify-content:center;margin:0 auto 15px;
-  font-size:30px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 15px;font-size:30px;font-weight:800;
   background:#fee2e2;color:#dc2626
 }
 
+/* PAYMENT RECORDS */
+#userPaymentPage .up-record-tools{
+  display:flex;gap:9px;align-items:center;flex-wrap:wrap
+}
+#userPaymentPage .up-record-tools input{
+  min-width:220px;max-width:100%;
+  border:1px solid var(--up-border);
+  border-radius:10px;padding:10px 12px;
+  background:var(--up-bg);color:var(--up-text);
+  outline:none;min-height:40px
+}
+#userPaymentPage .up-table-wrap{
+  width:100%;overflow-x:auto;border:1px solid var(--up-border);
+  border-radius:11px
+}
+#userPaymentPage .up-table{
+  width:100%;border-collapse:collapse;min-width:850px;
+  font-size:12px
+}
+#userPaymentPage .up-table th,
+#userPaymentPage .up-table td{
+  padding:12px 11px;text-align:left;
+  border-bottom:1px solid var(--up-border);
+  white-space:nowrap
+}
+#userPaymentPage .up-table th{
+  background:var(--up-bg);font-size:11px;
+  font-weight:800;color:var(--up-muted)
+}
+#userPaymentPage .up-table tr:last-child td{border-bottom:0}
+#userPaymentPage .up-table td{font-size:12px}
+#userPaymentPage .up-table .up-user-cell{
+  display:flex;align-items:center;gap:8px;min-width:145px
+}
+#userPaymentPage .up-table .up-user-cell .up-avatar{
+  width:31px;height:31px;flex-basis:31px;font-size:11px
+}
+#userPaymentPage .up-table .up-user-cell strong{display:block;font-size:12px}
+#userPaymentPage .up-table .up-user-cell small{
+  display:block;color:var(--up-muted);font-size:10px;margin-top:2px
+}
+#userPaymentPage .up-edit-btn{
+  background:var(--up-primary);color:#fff;border:0;
+  padding:7px 12px;border-radius:7px;
+  font-size:11px;font-weight:800
+}
+#userPaymentPage .up-record-count{
+  font-size:11px;color:var(--up-muted);margin-top:10px
+}
+#userPaymentPage .up-no-records{
+  padding:30px;text-align:center;color:var(--up-muted);font-size:13px
+}
+
 @media(max-width:900px){
-  #userPaymentPage .up-stats{
-    grid-template-columns:repeat(2,minmax(0,1fr))
-  }
+  #userPaymentPage .up-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:600px){
   #userPaymentPage .up-wrap{padding:0}
@@ -295,16 +304,13 @@
   #userPaymentPage .up-stat{padding:12px}
   #userPaymentPage .up-stat strong{font-size:18px}
   #userPaymentPage .up-stat small{font-size:10px}
-  #userPaymentPage .up-modal{
-    padding:10px;align-items:center
-  }
+  #userPaymentPage .up-modal{padding:10px;align-items:center}
   #userPaymentPage .up-modal-box{
-    width:100%;max-height:90dvh;
-    padding:16px;border-radius:16px
+    width:100%;max-height:90dvh;padding:16px;border-radius:16px
   }
-  #userPaymentPage .up-actions .up-btn{
-    flex:1;min-height:42px
-  }
+  #userPaymentPage .up-actions .up-btn{flex:1;min-height:42px}
+  #userPaymentPage .up-record-tools{width:100%}
+  #userPaymentPage .up-record-tools input{width:100%;min-width:0}
 }
 @media(max-width:360px){
   #userPaymentPage .up-stats{grid-template-columns:1fr 1fr}
@@ -321,9 +327,7 @@
       <h2>User Payment</h2>
       <div class="up-sub">Manage user payments</div>
     </div>
-    <button class="up-btn" id="upRefreshBtn" type="button">
-      ↻ Refresh
-    </button>
+    <button class="up-btn" id="upRefreshBtn" type="button">↻ Refresh</button>
   </div>
 
   <!-- DASHBOARD CARDS -->
@@ -358,28 +362,19 @@
 
         <div class="up-field full">
           <label>Select User *</label>
-
           <div class="up-user-picker">
-            <button type="button"
-              class="up-user-selected"
-              id="upUserSelected">
-
+            <button type="button" class="up-user-selected" id="upUserSelected">
               <span class="up-avatar" id="upSelectedAvatar">?</span>
-
               <span class="up-user-meta">
                 <strong id="upSelectedName">Select a user</strong>
                 <small id="upSelectedId">Choose user account</small>
               </span>
-
               <span class="up-picker-arrow">⌄</span>
             </button>
 
             <div class="up-user-menu" id="upUserMenu">
-              <input class="up-search"
-                id="upUserSearch"
-                type="search"
+              <input class="up-search" id="upUserSearch" type="search"
                 placeholder="Search user name or ID...">
-
               <div id="upUserOptions"></div>
             </div>
           </div>
@@ -387,12 +382,8 @@
 
         <div class="up-field">
           <label>Amount *</label>
-          <input type="number"
-            id="upAmount"
-            min="0.01"
-            step="0.01"
-            placeholder="Enter amount"
-            required>
+          <input type="number" id="upAmount" min="0.01" step="0.01"
+            placeholder="Enter amount" required>
         </div>
 
         <div class="up-field">
@@ -411,8 +402,7 @@
 
         <div class="up-field">
           <label>Transaction ID</label>
-          <input type="text"
-            id="upTransaction"
+          <input type="text" id="upTransaction"
             placeholder="Transaction ID (optional)">
         </div>
 
@@ -430,32 +420,120 @@
       </div>
 
       <div class="up-actions">
-        <button class="up-btn primary"
-          type="submit"
-          id="upSubmitBtn">
+        <button class="up-btn primary" type="submit" id="upSubmitBtn">
           + Add Payment
         </button>
-
-        <button class="up-btn"
-          type="reset"
-          id="upResetBtn">
-          Reset
-        </button>
+        <button class="up-btn" type="reset" id="upResetBtn">Reset</button>
       </div>
     </form>
   </div>
 
+  <!-- PAYMENT RECORDS -->
+  <div class="up-panel">
+    <div class="up-panel-head">
+      <div>
+        <h3>Payment Records</h3>
+        <div class="up-sub">Payments loaded from PAYMENT HISTORY</div>
+      </div>
+      <div class="up-record-tools">
+        <input type="search" id="upRecordSearch"
+          placeholder="Search payment, user, transaction...">
+        <button class="up-btn" type="button" id="upRecordsRefresh">↻ Refresh</button>
+      </div>
+    </div>
+
+    <div class="up-table-wrap">
+      <table class="up-table">
+        <thead>
+          <tr>
+            <th>Payment ID</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Method</th>
+            <th>Transaction ID</th>
+            <th>Payment Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="upRecordsBody">
+          <tr><td colspan="8" class="up-no-records">Loading payment records...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="up-record-count" id="upRecordCount">0 records</div>
+  </div>
+
+</div>
+
+<!-- EDIT PAYMENT MODAL -->
+<div class="up-modal" id="upEditModal">
+  <div class="up-modal-box">
+    <div class="up-modal-head">
+      <div>
+        <h3>Edit Payment</h3>
+        <div class="up-sub" id="upEditPaymentId">Update existing payment</div>
+      </div>
+      <button class="up-close" type="button" id="upEditClose">&times;</button>
+    </div>
+
+    <form id="upEditForm">
+      <div class="up-form-grid">
+
+        <div class="up-field full">
+          <label>Select User *</label>
+          <select id="upEditUser" required>
+            <option value="">Select user</option>
+          </select>
+        </div>
+
+        <div class="up-field">
+          <label>Amount *</label>
+          <input type="number" id="upEditAmount" min="0.01"
+            step="0.01" required>
+        </div>
+
+        <div class="up-field">
+          <label>Currency *</label>
+          <select id="upEditCurrency" required></select>
+        </div>
+
+        <div class="up-field">
+          <label>Payment Method *</label>
+          <select id="upEditMethod" required></select>
+        </div>
+
+        <div class="up-field">
+          <label>Transaction ID</label>
+          <input type="text" id="upEditTransaction">
+        </div>
+
+        <div class="up-field full">
+          <label>Payment Date *</label>
+          <input type="date" id="upEditDate" required>
+        </div>
+
+        <div class="up-field full">
+          <label>Comment</label>
+          <textarea id="upEditComment"></textarea>
+        </div>
+      </div>
+
+      <div class="up-actions">
+        <button class="up-btn primary" type="submit" id="upEditSaveBtn">
+          Update Payment
+        </button>
+        <button class="up-btn" type="button" id="upEditCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- PROCESSING POPUP -->
 <div class="up-modal" id="upProcessingModal">
-  <div class="up-modal-box"
-    style="max-width:380px;text-align:center">
-
+  <div class="up-modal-box" style="max-width:380px;text-align:center">
     <div class="up-process-spinner"></div>
-
     <div class="up-popup-title">Processing...</div>
-
     <div class="up-popup-message" id="upProcessingMessage">
       Please wait. Your request is being processed.
     </div>
@@ -464,48 +542,28 @@
 
 <!-- SUCCESS POPUP -->
 <div class="up-modal" id="upSuccessModal">
-  <div class="up-modal-box"
-    style="max-width:380px;text-align:center">
-
+  <div class="up-modal-box" style="max-width:380px;text-align:center">
     <div class="up-success-icon">✓</div>
-
-    <div class="up-success-title" id="upSuccessTitle">
-      Save Entry
-    </div>
-
+    <div class="up-success-title" id="upSuccessTitle">Save Entry</div>
     <div class="up-success-message" id="upSuccessMessage">
       Your operation has been completed successfully.
     </div>
-
     <div class="up-success-footer">
-      <button class="up-btn primary"
-        type="button"
-        id="upSuccessOK">
-        OK
-      </button>
+      <button class="up-btn primary" type="button" id="upSuccessOK">OK</button>
     </div>
   </div>
 </div>
 
 <!-- ERROR POPUP -->
 <div class="up-modal" id="upErrorModal">
-  <div class="up-modal-box"
-    style="max-width:380px;text-align:center">
-
+  <div class="up-modal-box" style="max-width:380px;text-align:center">
     <div class="up-popup-icon error">!</div>
-
     <div class="up-popup-title">Error!</div>
-
     <div class="up-popup-message" id="upErrorMessage">
       Your request could not be completed.
     </div>
-
     <div class="up-success-footer">
-      <button class="up-btn primary"
-        type="button"
-        id="upErrorOK">
-        OK
-      </button>
+      <button class="up-btn primary" type="button" id="upErrorOK">OK</button>
     </div>
   </div>
 </div>
@@ -518,9 +576,7 @@
 "use strict";
 
 const ROOT=document.getElementById("userPaymentPage");
-
 if(!ROOT || ROOT.dataset.initialized==="yes") return;
-
 ROOT.dataset.initialized="yes";
 
 /* ================= API CONFIG ================= */
@@ -539,19 +595,19 @@ let methods=[];
 let payments=[];
 let selectedUser=null;
 let addSaving=false;
+let editSaving=false;
+let editingPaymentId=null;
 
 const $=id=>document.getElementById(id);
 
 const money=value=>{
-  const n=Number(value||0);
-  return n.toLocaleString(undefined,{
+  return Number(value||0).toLocaleString(undefined,{
     maximumFractionDigits:2
   });
 };
 
 const today=()=>{
   const d=new Date();
-
   return [
     d.getFullYear(),
     String(d.getMonth()+1).padStart(2,"0"),
@@ -573,15 +629,10 @@ function escapeHTML(value){
 
 function toast(message){
   const el=$("upToast");
-
   el.textContent=message;
   el.classList.add("show");
-
   clearTimeout(toast.timer);
-
-  toast.timer=setTimeout(()=>{
-    el.classList.remove("show");
-  },3200);
+  toast.timer=setTimeout(()=>el.classList.remove("show"),3200);
 }
 
 function showSuccess(message,title="Save Entry"){
@@ -593,7 +644,6 @@ function showSuccess(message,title="Save Entry"){
 function showError(message){
   $("upErrorMessage").textContent=
     message||"Your request could not be completed.";
-
   $("upErrorModal").classList.add("show");
 }
 
@@ -604,7 +654,6 @@ function closeModal(id){
 function showProcessing(message){
   $("upProcessingMessage").textContent=
     message||"Please wait. Your request is being processed.";
-
   $("upProcessingModal").classList.add("show");
 }
 
@@ -615,20 +664,47 @@ function hideProcessing(){
 function setProcessing(button,processing,normalText){
   if(processing){
     button.disabled=true;
-
-    button.innerHTML=
-      '<span class="up-spinner"></span>Processing...';
+    button.innerHTML='<span class="up-spinner"></span>Processing...';
   }else{
     button.disabled=false;
     button.textContent=normalText;
   }
 }
 
+function firstValue(obj,keys,defaultValue=""){
+  for(const key of keys){
+    if(obj && obj[key]!==undefined && obj[key]!==null && obj[key]!==""){
+      return obj[key];
+    }
+  }
+  return defaultValue;
+}
+
+function paymentIdOf(p){
+  return String(firstValue(p,[
+    "paymentId","Payment ID","paymentID","id"
+  ]));
+}
+
+function dateForInput(value){
+  if(!value) return "";
+  const s=String(value);
+  const match=s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if(match) return match[1];
+
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime())) return "";
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+}
+
 /* ================= IMAGE HANDLING ================= */
 
 function getImageURL(value){
   let url=String(value||"").trim();
-
   if(!url) return "";
 
   if(/^[a-zA-Z0-9_-]{20,}$/.test(url)){
@@ -637,34 +713,22 @@ function getImageURL(value){
   }
 
   let match=url.match(/\/file\/d\/([^/]+)/);
-
-  if(!match){
-    match=url.match(/[?&]id=([^&]+)/);
-  }
+  if(!match) match=url.match(/[?&]id=([^&]+)/);
 
   if(match && match[1]){
     return "https://drive.google.com/thumbnail?id="+
       encodeURIComponent(match[1])+"&sz=w300";
   }
-
   return url;
 }
 
 function initials(name){
-  const parts=String(name||"?")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-
-  return parts.slice(0,2)
-    .map(x=>x.charAt(0).toUpperCase())
-    .join("")||"?";
+  const parts=String(name||"?").trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0,2).map(x=>x.charAt(0).toUpperCase()).join("")||"?";
 }
 
 function avatarHTML(user){
-  if(!user){
-    return '<span class="up-avatar">?</span>';
-  }
+  if(!user) return '<span class="up-avatar">?</span>';
 
   const name=escapeHTML(user.userName||"User");
   const image=getImageURL(user.profilePicture);
@@ -672,20 +736,13 @@ function avatarHTML(user){
   if(image){
     return `
       <span class="up-avatar">
-        <img
-          src="${escapeHTML(image)}"
-          alt="${name}"
+        <img src="${escapeHTML(image)}" alt="${name}"
           referrerpolicy="no-referrer"
           onerror="this.parentElement.textContent='${escapeHTML(initials(user.userName))}'">
-      </span>
-    `;
+      </span>`;
   }
 
-  return `
-    <span class="up-avatar">
-      ${escapeHTML(initials(user.userName))}
-    </span>
-  `;
+  return `<span class="up-avatar">${escapeHTML(initials(user.userName))}</span>`;
 }
 
 /* ================= API REQUESTS ================= */
@@ -712,9 +769,7 @@ async function getJSON(url){
 async function postJSON(payload){
   const response=await fetch(PAYMENT_API,{
     method:"POST",
-    headers:{
-      "Content-Type":"text/plain;charset=utf-8"
-    },
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
     body:JSON.stringify(payload)
   });
 
@@ -737,53 +792,42 @@ async function loadUsers(){
   const data=await getJSON(USER_API+"?api=active");
 
   if(!Array.isArray(data.users)){
-    throw new Error(
-      "User API response does not contain users array."
-    );
+    throw new Error("User API response does not contain users array.");
   }
 
   users=data.users.map(u=>({
-    userId:String(u.userId||""),
-    userName:String(u.userName||""),
-    phone:u.phone||"",
-    gmail:u.gmail||"",
+    userId:String(u.userId||u["User ID"]||""),
+    userName:String(u.userName||u.name||u["User Name"]||""),
+    phone:u.phone||u["Phone"]||"",
+    gmail:u.gmail||u.email||"",
     area:u.area||"",
     status:u.status||"",
-    profilePicture:u.profilePicture||""
+    profilePicture:u.profilePicture||u.photo||u.image||""
   })).filter(u=>u.userId);
 
-  users.sort((a,b)=>
-    a.userName.localeCompare(b.userName)
-  );
+  users.sort((a,b)=>a.userName.localeCompare(b.userName));
 }
 
 /* ================= LOAD PAYMENT DATA ================= */
 
 async function loadCurrencies(){
-  const data=await getJSON(
-    PAYMENT_API+"?api=currencies"
-  );
-
-  currencies=Array.isArray(data.currencies)
-    ?data.currencies:[];
+  const data=await getJSON(PAYMENT_API+"?api=currencies");
+  currencies=Array.isArray(data.currencies)?data.currencies:[];
 }
 
 async function loadMethods(){
-  const data=await getJSON(
-    PAYMENT_API+"?api=methods"
-  );
-
-  methods=Array.isArray(data.methods)
-    ?data.methods:[];
+  const data=await getJSON(PAYMENT_API+"?api=methods");
+  methods=Array.isArray(data.methods)?data.methods:[];
 }
 
 async function loadPayments(){
-  const data=await getJSON(
-    PAYMENT_API+"?api=payments"
-  );
+  const data=await getJSON(PAYMENT_API+"?api=payments");
 
-  payments=Array.isArray(data.payments)
-    ?data.payments:[];
+  if(!Array.isArray(data.payments)){
+    throw new Error("Payment API response does not contain payments array.");
+  }
+
+  payments=data.payments;
 }
 
 /* ================= USER PICKER ================= */
@@ -799,59 +843,40 @@ function renderUserOptions(search=""){
 
   $("upUserOptions").innerHTML=filtered.length
     ?filtered.map(u=>`
-      <div class="up-user-option"
-        data-user-id="${escapeHTML(u.userId)}">
-
+      <div class="up-user-option" data-user-id="${escapeHTML(u.userId)}">
         ${avatarHTML(u)}
-
         <span class="up-user-meta">
           <strong>${escapeHTML(u.userName)}</strong>
-
-          <small>
-            ${escapeHTML(u.userId)}
-            ${u.phone?" · "+escapeHTML(u.phone):""}
-          </small>
+          <small>${escapeHTML(u.userId)}${u.phone?" · "+escapeHTML(u.phone):""}</small>
         </span>
-      </div>
-    `).join("")
+      </div>`).join("")
     :'<div class="up-empty">No users found</div>';
 }
 
 function selectUser(userId){
-  selectedUser=users.find(u=>
-    u.userId===String(userId)
-  )||null;
+  selectedUser=users.find(u=>u.userId===String(userId))||null;
 
   if(!selectedUser){
     $("upSelectedAvatar").textContent="?";
     $("upSelectedName").textContent="Select a user";
     $("upSelectedId").textContent="Choose user account";
   }else{
-    const img=getImageURL(
-      selectedUser.profilePicture
-    );
+    const img=getImageURL(selectedUser.profilePicture);
 
     $("upSelectedAvatar").innerHTML=img
-      ?`<img src="${escapeHTML(img)}"
-          alt=""
-          referrerpolicy="no-referrer">`
+      ?`<img src="${escapeHTML(img)}" alt="" referrerpolicy="no-referrer">`
       :escapeHTML(initials(selectedUser.userName));
 
-    const avatarImg=
-      $("upSelectedAvatar").querySelector("img");
+    const avatarImg=$("upSelectedAvatar").querySelector("img");
 
     if(avatarImg){
       avatarImg.onerror=function(){
-        $("upSelectedAvatar").textContent=
-          initials(selectedUser?.userName);
+        $("upSelectedAvatar").textContent=initials(selectedUser?.userName);
       };
     }
 
-    $("upSelectedName").textContent=
-      selectedUser.userName;
-
-    $("upSelectedId").textContent=
-      selectedUser.userId;
+    $("upSelectedName").textContent=selectedUser.userName;
+    $("upSelectedId").textContent=selectedUser.userId;
   }
 
   $("upUserMenu").classList.remove("open");
@@ -859,9 +884,7 @@ function selectUser(userId){
 
 $("upUserSelected").addEventListener("click",()=>{
   $("upUserMenu").classList.toggle("open");
-
   $("upUserSearch").value="";
-
   renderUserOptions("");
 
   if($("upUserMenu").classList.contains("open")){
@@ -875,15 +898,11 @@ $("upUserSearch").addEventListener("input",e=>{
 
 $("upUserOptions").addEventListener("click",e=>{
   const option=e.target.closest("[data-user-id]");
-
-  if(option){
-    selectUser(option.dataset.userId);
-  }
+  if(option) selectUser(option.dataset.userId);
 });
 
 document.addEventListener("click",e=>{
   if(!ROOT.contains(e.target)) return;
-
   if(!e.target.closest(".up-user-picker")){
     $("upUserMenu").classList.remove("open");
   }
@@ -891,82 +910,164 @@ document.addEventListener("click",e=>{
 
 /* ================= DROPDOWNS ================= */
 
-function renderCurrencies(){
-  const options=currencies.filter(c=>
+function activeCurrencies(){
+  return currencies.filter(c=>
     String(c.status||"Active").toLowerCase()!=="inactive"
   );
+}
 
-  const currencyHTML=
+function activeMethods(){
+  return methods.filter(m=>
+    String(m.status||"Active").toLowerCase()!=="inactive"
+  );
+}
+
+function renderCurrencies(){
+  const options=activeCurrencies();
+
+  $("upCurrency").innerHTML=
     '<option value="">Select currency</option>'+
     options.map(c=>`
       <option value="${escapeHTML(c.id)}">
         ${escapeHTML(c.code||c.name||c.id)}
         ${c.symbol?" ("+escapeHTML(c.symbol)+")":""}
-      </option>
-    `).join("");
-
-  $("upCurrency").innerHTML=currencyHTML;
+      </option>`).join("");
 }
 
 function renderMethods(){
-  const options=methods.filter(m=>
-    String(m.status||"Active").toLowerCase()!=="inactive"
-  );
+  const options=activeMethods();
 
-  const html=
+  $("upMethod").innerHTML=
     '<option value="">Select payment method</option>'+
     options.map(m=>`
+      <option value="${escapeHTML(m.id)}">${escapeHTML(m.name||m.id)}</option>
+    `).join("");
+}
+
+function renderEditDropdowns(){
+  $("upEditUser").innerHTML=
+    '<option value="">Select user</option>'+
+    users.map(u=>`
+      <option value="${escapeHTML(u.userId)}">
+        ${escapeHTML(u.userName)} (${escapeHTML(u.userId)})
+      </option>`).join("");
+
+  $("upEditCurrency").innerHTML=
+    '<option value="">Select currency</option>'+
+    currencies.map(c=>`
+      <option value="${escapeHTML(c.id)}">
+        ${escapeHTML(c.code||c.name||c.id)}
+      </option>`).join("");
+
+  $("upEditMethod").innerHTML=
+    '<option value="">Select payment method</option>'+
+    methods.map(m=>`
       <option value="${escapeHTML(m.id)}">
         ${escapeHTML(m.name||m.id)}
-      </option>
-    `).join("");
-
-  $("upMethod").innerHTML=html;
+      </option>`).join("");
 }
 
 /* ================= DASHBOARD STATS ================= */
 
 function updateStats(){
-  const total=payments.reduce(
-    (sum,p)=>sum+Number(p.amount||0),0
+  const total=payments.reduce((sum,p)=>
+    sum+Number(firstValue(p,["amount","paymentAmount","Payment Amount"],0)),0
   );
 
-  const todayTotal=payments
-    .filter(p=>
-      String(p.paymentDate||"").slice(0,10)===today()
-    )
-    .reduce(
-      (sum,p)=>sum+Number(p.amount||0),0
-    );
+  const todayTotal=payments.filter(p=>
+    dateForInput(firstValue(p,["paymentDate","Payment Date"]))===today()
+  ).reduce((sum,p)=>
+    sum+Number(firstValue(p,["amount","paymentAmount","Payment Amount"],0)),0
+  );
 
   $("upTotalCount").textContent=payments.length;
-
   $("upTotalAmount").textContent=money(total);
-
   $("upTodayAmount").textContent=money(todayTotal);
-
   $("upUserCount").textContent=users.length;
 }
 
-/* ================= RESET FORM ================= */
+/* ================= PAYMENT RECORDS ================= */
+
+function getPaymentDisplay(p){
+  const id=paymentIdOf(p);
+  const userId=String(firstValue(p,["userId","User ID"]));
+  const user=users.find(u=>u.userId===userId);
+
+  const userName=firstValue(p,["userName","User Name"],user?.userName||"Unknown User");
+  const amount=firstValue(p,["amount","paymentAmount","Payment Amount"],0);
+  const currency=firstValue(p,["currencyCode","Currency Code","currencyName","Currency Name"],"");
+  const method=firstValue(p,["methodName","paymentMethod","Payment Method","Method"],"");
+  const transaction=firstValue(p,["transactionId","Transaction ID"],"");
+  const date=firstValue(p,["paymentDate","Payment Date"],"");
+
+  return {id,userId,user,userName,amount,currency,method,transaction,date};
+}
+
+function renderPaymentRecords(){
+  const q=$("upRecordSearch").value.trim().toLowerCase();
+
+  const filtered=payments.filter(p=>{
+    const d=getPaymentDisplay(p);
+    const text=[
+      d.id,d.userId,d.userName,d.amount,d.currency,
+      d.method,d.transaction,d.date
+    ].join(" ").toLowerCase();
+
+    return text.includes(q);
+  });
+
+  if(!filtered.length){
+    $("upRecordsBody").innerHTML=`
+      <tr><td colspan="8" class="up-no-records">
+        ${payments.length?"No matching payment records found.":"No payment records found."}
+      </td></tr>`;
+  }else{
+    $("upRecordsBody").innerHTML=filtered.map(p=>{
+      const d=getPaymentDisplay(p);
+
+      return `
+        <tr>
+          <td><strong>${escapeHTML(d.id||"—")}</strong></td>
+          <td>
+            <div class="up-user-cell">
+              ${avatarHTML(d.user)}
+              <span>
+                <strong>${escapeHTML(d.userName)}</strong>
+                <small>${escapeHTML(d.userId)}</small>
+              </span>
+            </div>
+          </td>
+          <td><strong>${money(d.amount)}</strong></td>
+          <td>${escapeHTML(d.currency||"—")}</td>
+          <td>${escapeHTML(d.method||"—")}</td>
+          <td>${escapeHTML(d.transaction||"—")}</td>
+          <td>${escapeHTML(dateForInput(d.date)||d.date||"—")}</td>
+          <td>
+            <button type="button" class="up-edit-btn"
+              data-edit-payment="${escapeHTML(d.id)}">Edit</button>
+          </td>
+        </tr>`;
+    }).join("");
+  }
+
+  $("upRecordCount").textContent=
+    `Showing ${filtered.length} of ${payments.length} payment records`;
+}
+
+/* ================= RESET ADD FORM ================= */
 
 function resetAddForm(){
   $("upPaymentForm").reset();
-
   $("upDate").value=today();
-
   selectUser("");
 }
 
-/* ================= GET PAYMENT DATA ================= */
+/* ================= ADD PAYMENT PAYLOAD ================= */
 
 function getAddPayload(){
-  if(!selectedUser){
-    throw new Error("Please select a user.");
-  }
+  if(!selectedUser) throw new Error("Please select a user.");
 
   const amount=Number($("upAmount").value);
-
   if(!Number.isFinite(amount)||amount<=0){
     throw new Error("Enter a valid payment amount.");
   }
@@ -974,17 +1075,9 @@ function getAddPayload(){
   const currencyId=$("upCurrency").value;
   const methodId=$("upMethod").value;
 
-  if(!currencyId){
-    throw new Error("Please select currency.");
-  }
-
-  if(!methodId){
-    throw new Error("Please select payment method.");
-  }
-
-  if(!$("upDate").value){
-    throw new Error("Please select payment date.");
-  }
+  if(!currencyId) throw new Error("Please select currency.");
+  if(!methodId) throw new Error("Please select payment method.");
+  if(!$("upDate").value) throw new Error("Please select payment date.");
 
   return {
     userId:selectedUser.userId,
@@ -1001,12 +1094,10 @@ function getAddPayload(){
 
 $("upPaymentForm").addEventListener("submit",async e=>{
   e.preventDefault();
-
   if(addSaving) return;
 
   const btn=$("upSubmitBtn");
   const normalText="+ Add Payment";
-
   let payload;
 
   try{
@@ -1017,23 +1108,18 @@ $("upPaymentForm").addEventListener("submit",async e=>{
   }
 
   addSaving=true;
-
   setProcessing(btn,true,normalText);
-
-  showProcessing(
-    "Please wait. Your payment is being added."
-  );
+  showProcessing("Please wait. Your payment is being added.");
 
   try{
     payload.action="addPayment";
-
     const result=await postJSON(payload);
 
     resetAddForm();
 
     await loadPayments();
-
     updateStats();
+    renderPaymentRecords();
 
     hideProcessing();
 
@@ -1044,17 +1130,151 @@ $("upPaymentForm").addEventListener("submit",async e=>{
 
   }catch(err){
     hideProcessing();
-
-    showError(
-      err.message||"Payment could not be saved."
-    );
-
+    showError(err.message||"Payment could not be saved.");
   }finally{
     addSaving=false;
-
     setProcessing(btn,false,normalText);
   }
 });
+
+/* ================= OPEN EDIT PAYMENT ================= */
+
+function openEditPayment(paymentId){
+  const payment=payments.find(p=>paymentIdOf(p)===String(paymentId));
+
+  if(!payment){
+    showError("Payment record not found. Please refresh and try again.");
+    return;
+  }
+
+  const id=paymentIdOf(payment);
+  editingPaymentId=id;
+
+  const userId=String(firstValue(payment,["userId","User ID"]));
+  const currencyId=String(firstValue(payment,["currencyId","Currency ID"]));
+  const methodId=String(firstValue(payment,["methodId","Payment Method ID","Method ID"]));
+
+  renderEditDropdowns();
+
+  $("upEditPaymentId").textContent="Payment ID: "+id;
+  $("upEditUser").value=userId;
+  $("upEditAmount").value=firstValue(payment,["amount","paymentAmount","Payment Amount"],"");
+  $("upEditCurrency").value=currencyId;
+  $("upEditMethod").value=methodId;
+  $("upEditTransaction").value=firstValue(payment,["transactionId","Transaction ID"],"");
+  $("upEditDate").value=dateForInput(firstValue(payment,["paymentDate","Payment Date"],""));
+  $("upEditComment").value=firstValue(payment,["comment","Comment"],"");
+
+  $("upEditModal").classList.add("show");
+}
+
+$("upRecordsBody").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-edit-payment]");
+  if(!btn) return;
+  openEditPayment(btn.dataset.editPayment);
+});
+
+/* ================= UPDATE EXISTING PAYMENT ================= */
+
+function getEditPayload(){
+  if(!editingPaymentId){
+    throw new Error("Payment ID is missing. Please reopen the Edit window.");
+  }
+
+  const amount=Number($("upEditAmount").value);
+
+  if(!Number.isFinite(amount)||amount<=0){
+    throw new Error("Enter a valid payment amount.");
+  }
+
+  const userId=$("upEditUser").value;
+  const currencyId=$("upEditCurrency").value;
+  const methodId=$("upEditMethod").value;
+  const paymentDate=$("upEditDate").value;
+
+  if(!userId) throw new Error("Please select a user.");
+  if(!currencyId) throw new Error("Please select currency.");
+  if(!methodId) throw new Error("Please select payment method.");
+  if(!paymentDate) throw new Error("Please select payment date.");
+
+  return {
+    action:"editPayment",
+
+    // IMPORTANT:
+    // Existing Payment ID is sent to backend.
+    // Backend must update this ID's existing row.
+    // Do not call addPayment during editing.
+    paymentId:editingPaymentId,
+
+    userId:userId,
+    amount:amount,
+    currencyId:currencyId,
+    methodId:methodId,
+    transactionId:$("upEditTransaction").value.trim(),
+    paymentDate:paymentDate,
+    comment:$("upEditComment").value.trim()
+  };
+}
+
+$("upEditForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(editSaving) return;
+
+  const btn=$("upEditSaveBtn");
+  const normalText="Update Payment";
+
+  let payload;
+
+  try{
+    payload=getEditPayload();
+  }catch(err){
+    showError(err.message);
+    return;
+  }
+
+  editSaving=true;
+  setProcessing(btn,true,normalText);
+  showProcessing("Updating the existing payment record. Please wait...");
+
+  try{
+    // This is an UPDATE request using the existing Payment ID.
+    // It never calls addPayment and must not create a new row.
+    const result=await postJSON(payload);
+
+    closeModal("upEditModal");
+    editingPaymentId=null;
+
+    // Reload from PAYMENT HISTORY after update.
+    await loadPayments();
+    updateStats();
+    renderPaymentRecords();
+
+    hideProcessing();
+
+    showSuccess(
+      result.message||"Payment has been updated successfully.",
+      "Payment Updated"
+    );
+
+  }catch(err){
+    hideProcessing();
+    showError(err.message||"Payment could not be updated.");
+  }finally{
+    editSaving=false;
+    setProcessing(btn,false,normalText);
+  }
+});
+
+/* ================= EDIT MODAL CONTROLS ================= */
+
+function closeEditModal(){
+  if(editSaving) return;
+  closeModal("upEditModal");
+  editingPaymentId=null;
+}
+
+$("upEditClose").addEventListener("click",closeEditModal);
+$("upEditCancel").addEventListener("click",closeEditModal);
 
 /* ================= RESET BUTTON ================= */
 
@@ -1075,10 +1295,13 @@ $("upErrorOK").addEventListener("click",()=>{
 ROOT.querySelectorAll(".up-modal").forEach(modal=>{
   modal.addEventListener("click",e=>{
     if(e.target!==modal) return;
-
     if(modal.id==="upProcessingModal") return;
-
+    if(modal.id==="upEditModal" && editSaving) return;
     modal.classList.remove("show");
+
+    if(modal.id==="upEditModal"){
+      editingPaymentId=null;
+    }
   });
 });
 
@@ -1087,15 +1310,22 @@ document.addEventListener("keydown",e=>{
 
   ROOT.querySelectorAll(".up-modal.show").forEach(modal=>{
     if(modal.id==="upProcessingModal") return;
-
+    if(modal.id==="upEditModal" && editSaving) return;
     modal.classList.remove("show");
+
+    if(modal.id==="upEditModal"){
+      editingPaymentId=null;
+    }
   });
 });
 
-/* ================= INITIAL LOAD ================= */
+/* ================= SEARCH & REFRESH ================= */
+
+$("upRecordSearch").addEventListener("input",renderPaymentRecords);
 
 async function refreshAll(){
   $("upRefreshBtn").disabled=true;
+  $("upRecordsRefresh").disabled=true;
 
   try{
     await loadUsers();
@@ -1107,40 +1337,31 @@ async function refreshAll(){
     ]);
 
     renderUserOptions();
-
     renderCurrencies();
-
     renderMethods();
+    renderEditDropdowns();
 
     updateStats();
+    renderPaymentRecords();
 
     if(selectedUser){
       const stillExists=users.find(u=>
         u.userId===selectedUser.userId
       );
-
-      selectUser(
-        stillExists?stillExists.userId:""
-      );
+      selectUser(stillExists?stillExists.userId:"");
     }
 
   }catch(err){
     console.error("User Payment load error:",err);
-
-    toast(
-      err.message||
-      "Could not load data. Check API connection."
-    );
-
+    toast(err.message||"Could not load data. Check API connection.");
   }finally{
     $("upRefreshBtn").disabled=false;
+    $("upRecordsRefresh").disabled=false;
   }
 }
 
-$("upRefreshBtn").addEventListener(
-  "click",
-  refreshAll
-);
+$("upRefreshBtn").addEventListener("click",refreshAll);
+$("upRecordsRefresh").addEventListener("click",refreshAll);
 
 $("upDate").value=today();
 
