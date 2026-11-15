@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,11 +68,11 @@ button,input{font:inherit}
   font-weight:700;
 }
 
-/* COMPACT SUMMARY CARDS */
+/* SUMMARY CARDS */
 
 .ph-stats{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
   gap:12px;
   margin-bottom:17px;
 }
@@ -133,7 +134,7 @@ button,input{font:inherit}
 .ph-search-wrap{
   flex:1;
   min-width:0;
-  position:static;
+  position:relative;
 }
 
 .ph-search{
@@ -148,9 +149,7 @@ button,input{font:inherit}
   font-size:13px;
 }
 
-.ph-search::placeholder{
-  color:var(--ph-muted);
-}
+.ph-search::placeholder{color:var(--ph-muted)}
 
 .ph-search:focus{
   border-color:var(--ph-primary);
@@ -177,9 +176,7 @@ button,input{font:inherit}
 
 .ph-select-btn:hover,
 .ph-refresh:hover,
-.ph-view-btn:hover{
-  opacity:.9;
-}
+.ph-view-btn:hover{opacity:.9}
 
 /* PROFILE DROPDOWN */
 
@@ -228,13 +225,8 @@ button,input{font:inherit}
   flex-shrink:0;
 }
 
-.ph-profile-option:hover{
-  background:rgba(8,127,91,.08);
-}
-
-.ph-profile-option.active{
-  background:rgba(8,127,91,.12);
-}
+.ph-profile-option:hover{background:rgba(8,127,91,.08)}
+.ph-profile-option.active{background:rgba(8,127,91,.12)}
 
 .ph-avatar{
   width:42px;
@@ -315,10 +307,7 @@ button,input{font:inherit}
   min-width:0;
 }
 
-.ph-selected-name{
-  font-weight:800;
-  font-size:13px;
-}
+.ph-selected-name{font-weight:800;font-size:13px}
 
 .ph-selected-id{
   color:var(--ph-muted);
@@ -430,10 +419,7 @@ button,input{font:inherit}
   border-top:1px solid var(--ph-border);
 }
 
-.ph-date{
-  color:var(--ph-muted);
-  font-size:10px;
-}
+.ph-date{color:var(--ph-muted);font-size:10px}
 
 .ph-view-btn{
   border:0;
@@ -457,10 +443,7 @@ button,input{font:inherit}
   grid-column:1/-1;
 }
 
-.ph-empty-icon{
-  font-size:30px;
-  margin-bottom:10px;
-}
+.ph-empty-icon{font-size:30px;margin-bottom:10px}
 
 /* VIEW PAYMENT MODAL */
 
@@ -501,10 +484,7 @@ button,input{font:inherit}
   margin-bottom:17px;
 }
 
-.ph-modal-title{
-  font-size:17px;
-  font-weight:800;
-}
+.ph-modal-title{font-size:17px;font-weight:800}
 
 .ph-close{
   width:32px;
@@ -544,10 +524,7 @@ button,input{font:inherit}
   object-fit:cover;
 }
 
-.ph-modal-user-name{
-  font-weight:800;
-  font-size:15px;
-}
+.ph-modal-user-name{font-weight:800;font-size:15px}
 
 .ph-modal-user-id{
   font-size:11px;
@@ -555,10 +532,7 @@ button,input{font:inherit}
   margin-top:5px;
 }
 
-.ph-modal-amount{
-  text-align:center;
-  padding:18px 0;
-}
+.ph-modal-amount{text-align:center;padding:18px 0}
 
 .ph-modal-amount-label{
   font-size:11px;
@@ -625,29 +599,18 @@ button,input{font:inherit}
 /* TABLET */
 
 @media(max-width:900px){
-  .ph-stats{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .ph-history-list{
-    grid-template-columns:1fr;
-  }
+  .ph-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .ph-history-list{grid-template-columns:1fr}
 }
 
 /* MOBILE */
 
 @media(max-width:520px){
-
   .ph-wrap{padding:12px}
-
   .ph-title{font-size:21px}
-
   .ph-header{margin-bottom:14px}
-
   .ph-panel{padding:12px}
 
-  /* Compact mobile cards */
   .ph-stats{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:9px;
@@ -660,14 +623,8 @@ button,input{font:inherit}
     border-radius:10px;
   }
 
-  .ph-stat-label{
-    font-size:10px;
-    margin-bottom:6px;
-  }
-
-  .ph-stat-value{
-    font-size:18px;
-  }
+  .ph-stat-label{font-size:10px;margin-bottom:6px}
+  .ph-stat-value{font-size:18px}
 
   .ph-search-row{
     display:flex;
@@ -677,15 +634,8 @@ button,input{font:inherit}
     width:100%;
   }
 
-  .ph-search-wrap{
-    width:100%;
-    flex:none;
-  }
-
-  .ph-search{
-    width:100%;
-    height:44px;
-  }
+  .ph-search-wrap{width:100%;flex:none}
+  .ph-search{width:100%;height:44px}
 
   .ph-select-btn{
     width:100%;
@@ -707,70 +657,29 @@ button,input{font:inherit}
     border-radius:10px;
   }
 
-  .ph-profile-option{
-    width:100%;
-    padding:9px 8px;
-    gap:9px;
-  }
-
-  .ph-avatar{
-    width:38px;
-    height:38px;
-    flex:0 0 38px;
-  }
-
+  .ph-profile-option{width:100%;padding:9px 8px;gap:9px}
+  .ph-avatar{width:38px;height:38px;flex:0 0 38px}
   .ph-profile-name{font-size:12px}
-
   .ph-profile-id{font-size:10px}
-
   .ph-profile-count{font-size:10px}
-
   .ph-details{gap:10px}
-
   .ph-modal-box{padding:16px}
-
-  .ph-selected{
-    gap:9px;
-    padding:10px;
-  }
-
-  .ph-clear{
-    padding:7px 9px;
-  }
+  .ph-selected{gap:9px;padding:10px}
+  .ph-clear{padding:7px 9px}
 }
 
 /* EXTRA SMALL MOBILE */
 
 @media(max-width:360px){
-
   .ph-wrap{padding:9px}
-
   .ph-panel{padding:10px}
-
   .ph-stats{gap:7px}
-
-  .ph-stat{
-    min-height:70px;
-    padding:9px 10px;
-  }
-
+  .ph-stat{min-height:70px;padding:9px 10px}
   .ph-stat-label{font-size:9px}
-
   .ph-stat-value{font-size:16px}
-
-  .ph-profile-option{
-    gap:7px;
-    padding:9px 6px;
-  }
-
+  .ph-profile-option{gap:7px;padding:9px 6px}
   .ph-profile-count{font-size:9px}
-
-  .ph-avatar{
-    width:36px;
-    height:36px;
-    flex-basis:36px;
-  }
-
+  .ph-avatar{width:36px;height:36px;flex-basis:36px}
   .ph-modal-grid{grid-template-columns:1fr}
 }
 </style>
@@ -785,11 +694,12 @@ button,input{font:inherit}
       <h1 class="ph-title">Payment History</h1>
       <div class="ph-subtitle">View and manage payment records</div>
     </div>
-    <button class="ph-refresh" id="phRefresh">↻ Refresh</button>
+    <button class="ph-refresh" id="phRefresh" type="button">↻ Refresh</button>
   </div>
 
   <!-- SUMMARY -->
-  <div class="ph-stats">
+  <div class="ph-stats" id="phStats">
+
     <div class="ph-stat">
       <div class="ph-stat-label">Total History</div>
       <div class="ph-stat-value" id="phTotalHistory">0</div>
@@ -801,14 +711,12 @@ button,input{font:inherit}
     </div>
 
     <div class="ph-stat">
-      <div class="ph-stat-label">Total Payment Amount</div>
-      <div class="ph-stat-value" id="phTotalAmount">৳0</div>
-    </div>
-
-    <div class="ph-stat">
       <div class="ph-stat-label">Selected User Records</div>
       <div class="ph-stat-value" id="phSelectedRecords">All</div>
     </div>
+
+    <div id="phCurrencyStats" style="display:contents"></div>
+
   </div>
 
   <!-- PROFILE SEARCH -->
@@ -845,9 +753,7 @@ button,input{font:inherit}
         <div class="ph-selected-id" id="phSelectedId"></div>
       </div>
 
-      <button class="ph-clear" id="phClearProfile" type="button">
-        Clear
-      </button>
+      <button class="ph-clear" id="phClearProfile" type="button">Clear</button>
     </div>
   </div>
 
@@ -859,9 +765,7 @@ button,input{font:inherit}
         Payment History Records
       </h3>
 
-      <div class="ph-history-count" id="phHistoryCount">
-        Loading...
-      </div>
+      <div class="ph-history-count" id="phHistoryCount">Loading...</div>
     </div>
 
     <div class="ph-history-list" id="phHistoryList">
@@ -878,7 +782,7 @@ button,input{font:inherit}
 
     <div class="ph-modal-head">
       <div class="ph-modal-title">Payment Details</div>
-      <button class="ph-close" id="phModalClose">×</button>
+      <button class="ph-close" id="phModalClose" type="button">×</button>
     </div>
 
     <div class="ph-modal-user">
@@ -889,14 +793,12 @@ button,input{font:inherit}
 
     <div class="ph-modal-amount">
       <div class="ph-modal-amount-label">Payment Amount</div>
-      <div class="ph-modal-amount-value" id="phModalAmount">৳0</div>
+      <div class="ph-modal-amount-value" id="phModalAmount">0</div>
     </div>
 
     <div class="ph-modal-grid" id="phModalDetails"></div>
 
-    <button class="ph-modal-done" id="phModalDone">
-      Close
-    </button>
+    <button class="ph-modal-done" id="phModalDone" type="button">Close</button>
 
   </div>
 </div>
@@ -919,6 +821,7 @@ let paymentHistory = [];
 let allProfiles = [];
 let selectedUserId = "";
 let isDropdownOpen = false;
+let isLoading = false;
 
 const $ = id => document.getElementById(id);
 
@@ -944,29 +847,6 @@ function getValue(obj, keys, fallback=""){
   return fallback;
 }
 
-function money(value){
-  const n = Number(value || 0);
-  return "৳" + n.toLocaleString("en-BD",{
-    maximumFractionDigits:2
-  });
-}
-
-function formatDate(value){
-  if(!value) return "—";
-
-  const d = new Date(value);
-
-  if(Number.isNaN(d.getTime())){
-    return String(value);
-  }
-
-  return d.toLocaleDateString("en-GB",{
-    day:"2-digit",
-    month:"short",
-    year:"numeric"
-  });
-}
-
 function getUserId(x){
   return String(getValue(x,["userId","User ID","userid"],""));
 }
@@ -979,11 +859,100 @@ function getProfilePicture(x){
   return String(getValue(x,[
     "profilePicture",
     "Profile Picture",
+    "profileImage",
+    "Profile Image",
     "photoURL",
     "photoUrl",
     "image",
     "avatar"
   ],""));
+}
+
+function getAmount(x){
+  return Number(getValue(x,[
+    "amount",
+    "Amount",
+    "paymentAmount",
+    "Payment Amount"
+  ],0)) || 0;
+}
+
+function getCurrencyCode(x){
+  return String(getValue(x,[
+    "currencyCode",
+    "Currency Code",
+    "code",
+    "Code"
+  ],"BDT")).trim().toUpperCase();
+}
+
+function getCurrencyName(x){
+  return String(getValue(x,[
+    "currencyName",
+    "Currency Name",
+    "name",
+    "Name"
+  ],getCurrencyCode(x)));
+}
+
+function getCurrencySymbol(x){
+  const explicit = getValue(x,[
+    "currencySymbol",
+    "Currency Symbol",
+    "symbol",
+    "Symbol"
+  ],"");
+
+  if(explicit) return String(explicit);
+
+  const code = getCurrencyCode(x);
+
+  const symbols = {
+    BDT:"৳",
+    USD:"$",
+    EUR:"€",
+    GBP:"£",
+    INR:"₹",
+    PKR:"₨",
+    NPR:"रु",
+    SAR:"﷼",
+    AED:"د.إ",
+    MYR:"RM",
+    SGD:"S$",
+    CAD:"C$",
+    AUD:"A$",
+    JPY:"¥",
+    CNY:"¥"
+  };
+
+  return symbols[code] || code + " ";
+}
+
+function money(value, record){
+  const n = Number(value || 0);
+  const symbol = record ? getCurrencySymbol(record) : "৳";
+
+  return symbol + n.toLocaleString("en-BD",{
+    minimumFractionDigits:0,
+    maximumFractionDigits:2
+  });
+}
+
+function formatDate(value){
+  if(!value) return "—";
+
+  // Apps Script date strings may arrive as ISO or as date-only strings.
+  const d = new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return String(value);
+  }
+
+  return d.toLocaleDateString("en-GB",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+  });
 }
 
 function getImageURL(value){
@@ -1033,23 +1002,128 @@ function avatarHTML(name,picture,extraClass=""){
   `;
 }
 
-async function apiGet(url){
-  const response = await fetch(url,{
-    method:"GET",
-    cache:"no-store"
+
+/*
+ * PAYMENT API JSONP
+ * Apps Script ContentService may redirect its response.
+ * JSONP avoids browser fetch/CORS problems for this API.
+ */
+
+function apiGetJsonp(baseUrl, params={}, timeout=20000){
+
+  return new Promise((resolve,reject)=>{
+
+    const callbackName =
+      "phCallback_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
+
+    const script = document.createElement("script");
+
+    const query = new URLSearchParams({
+      ...params,
+      callback:callbackName,
+      _:String(Date.now())
+    });
+
+    let finished = false;
+
+    const timer = setTimeout(()=>{
+      finish(new Error("API response timeout. Please refresh and try again."));
+    },timeout);
+
+    function cleanup(){
+      clearTimeout(timer);
+      script.remove();
+
+      try{
+        delete window[callbackName];
+      }catch(e){
+        window[callbackName] = undefined;
+      }
+    }
+
+    function finish(error,data){
+      if(finished) return;
+      finished = true;
+      cleanup();
+
+      if(error) reject(error);
+      else resolve(data);
+    }
+
+    window[callbackName] = function(data){
+      finish(null,data);
+    };
+
+    script.onerror = function(){
+      finish(new Error("Payment API connection failed."));
+    };
+
+    script.src = baseUrl + "?" + query.toString();
+
+    document.head.appendChild(script);
+
   });
+}
 
-  if(!response.ok){
-    throw new Error("API request failed: " + response.status);
+
+/*
+ * USER API IS OPTIONAL.
+ * Payment records should still load if user/profile API is unavailable.
+ */
+
+async function loadUsersOptional(){
+
+  try{
+
+    const controller = new AbortController();
+
+    const timer = setTimeout(()=>controller.abort(),9000);
+
+    try{
+
+      const response = await fetch(
+        USER_API + "?api=active&t=" + Date.now(),
+        {
+          method:"GET",
+          cache:"no-store",
+          signal:controller.signal
+        }
+      );
+
+      if(!response.ok) return [];
+
+      const data = await response.json();
+
+      return Array.isArray(data.users)
+        ? data.users
+        : Array.isArray(data.data)
+          ? data.data
+          : [];
+
+    }finally{
+      clearTimeout(timer);
+    }
+
+  }catch(error){
+
+    console.warn("User API unavailable. Using payment records for profiles.",error);
+    return [];
+
   }
-
-  return await response.json();
 }
 
 
 /* LOAD DATA */
 
 async function loadPaymentHistory(){
+
+  if(isLoading) return;
+
+  isLoading = true;
+
+  $("phRefresh").disabled = true;
+  $("phRefresh").textContent = "Loading...";
 
   $("phHistoryList").innerHTML =
     `<div class="ph-loading">Loading payment history...</div>`;
@@ -1058,27 +1132,50 @@ async function loadPaymentHistory(){
 
   try{
 
-    const [historyResponse,userResponse] = await Promise.all([
-      apiGet(PAYMENT_API + "?api=history&t=" + Date.now()),
-      apiGet(USER_API + "?api=active&t=" + Date.now())
-    ]);
+    /*
+     * IMPORTANT:
+     * Code.gs api=history returns:
+     * { success:true, payments:[...] }
+     *
+     * It does not return history[].
+     */
 
-    if(historyResponse.success === false){
-      throw new Error(historyResponse.message || "Payment history loading failed.");
+    const historyResponse = await apiGetJsonp(
+      PAYMENT_API,
+      {api:"history"},
+      25000
+    );
+
+    if(!historyResponse || historyResponse.success === false){
+      throw new Error(
+        historyResponse?.message ||
+        historyResponse?.error ||
+        "Payment history loading failed."
+      );
     }
 
+    /*
+     * Read payments first because this is the exact
+     * response property returned by the current Code.gs.
+     */
     const historyData =
+      historyResponse.payments ||
       historyResponse.history ||
       historyResponse.data ||
       historyResponse.entries ||
       [];
 
-    const usersData =
-      userResponse.users ||
-      userResponse.data ||
-      [];
+    if(!Array.isArray(historyData)){
+      throw new Error("Invalid payment data received from Code.gs.");
+    }
 
-    paymentHistory = Array.isArray(historyData) ? historyData : [];
+    paymentHistory = historyData;
+
+    /*
+     * Load user details separately.
+     * If User API fails, payment history remains available.
+     */
+    const usersData = await loadUsersOptional();
 
     buildProfiles(usersData);
 
@@ -1088,17 +1185,24 @@ async function loadPaymentHistory(){
 
   }catch(error){
 
-    console.error(error);
+    console.error("Payment History Error:",error);
 
     $("phHistoryList").innerHTML = `
       <div class="ph-empty">
         <div class="ph-empty-icon">⚠️</div>
         <b>Unable to load payment history</b>
-        <p>${esc(error.message)}</p>
+        <p>${esc(error.message || "Please check your API connection.")}</p>
       </div>
     `;
 
     $("phHistoryCount").textContent = "Loading failed";
+
+  }finally{
+
+    isLoading = false;
+    $("phRefresh").disabled = false;
+    $("phRefresh").textContent = "↻ Refresh";
+
   }
 }
 
@@ -1109,21 +1213,31 @@ function buildProfiles(users){
 
   const profileMap = new Map();
 
+  /*
+   * First create profiles from payment records.
+   * This means profiles still appear even if User API is offline.
+   */
   paymentHistory.forEach(h=>{
 
     const userId = getUserId(h);
 
     if(!userId) return;
 
-    profileMap.set(userId,{
-      userId,
-      userName:getUserName(h),
-      profilePicture:getProfilePicture(h),
-      count:0
-    });
+    if(!profileMap.has(userId)){
+      profileMap.set(userId,{
+        userId,
+        userName:getUserName(h),
+        profilePicture:getProfilePicture(h),
+        count:0
+      });
+    }
 
   });
 
+  /*
+   * Update profile names and pictures from Users API,
+   * when that API is available.
+   */
   (Array.isArray(users) ? users : []).forEach(user=>{
 
     const userId = getUserId(user);
@@ -1134,11 +1248,16 @@ function buildProfiles(users){
 
     if(existing){
 
-      existing.userName = getUserName(user) || existing.userName;
+      const apiName = getUserName(user);
+      const apiPicture = getProfilePicture(user);
 
-      existing.profilePicture =
-        getProfilePicture(user) ||
-        existing.profilePicture;
+      if(apiName && apiName !== "Unknown User"){
+        existing.userName = apiName;
+      }
+
+      if(apiPicture){
+        existing.profilePicture = apiPicture;
+      }
 
     }
 
@@ -1147,12 +1266,9 @@ function buildProfiles(users){
   paymentHistory.forEach(h=>{
 
     const userId = getUserId(h);
-
     const profile = profileMap.get(userId);
 
-    if(profile){
-      profile.count++;
-    }
+    if(profile) profile.count++;
 
   });
 
@@ -1168,26 +1284,70 @@ function buildProfiles(users){
 
 function updateSummary(){
 
-  const total = paymentHistory.length;
-
-  const totalUsers = allProfiles.length;
-
-  const totalAmount = paymentHistory.reduce((sum,h)=>{
-    return sum + Number(
-      getValue(h,["amount","Amount","paymentAmount"],0)
-    );
-  },0);
-
   $("phTotalHistory").textContent =
-    total.toLocaleString("en-BD");
+    paymentHistory.length.toLocaleString("en-BD");
 
   $("phTotalUsers").textContent =
-    totalUsers.toLocaleString("en-BD");
-
-  $("phTotalAmount").textContent = money(totalAmount);
+    allProfiles.length.toLocaleString("en-BD");
 
   updateSelectedCount();
+  renderCurrencySummary();
 }
+
+
+/*
+ * Each currency gets its own summary card.
+ * BDT, USD, EUR etc. are never added together.
+ */
+
+function renderCurrencySummary(){
+
+  const totals = new Map();
+
+  paymentHistory.forEach(payment=>{
+
+    const code = getCurrencyCode(payment);
+    const name = getCurrencyName(payment);
+    const symbol = getCurrencySymbol(payment);
+    const amount = getAmount(payment);
+
+    if(!totals.has(code)){
+      totals.set(code,{
+        code,
+        name,
+        symbol,
+        amount:0
+      });
+    }
+
+    totals.get(code).amount += amount;
+
+  });
+
+  const currencies = Array.from(totals.values())
+    .sort((a,b)=>a.code.localeCompare(b.code));
+
+  $("phCurrencyStats").innerHTML = currencies.map(currency=>`
+
+    <div class="ph-stat">
+      <div class="ph-stat-label">
+        Total ${esc(currency.name)} (${esc(currency.code)})
+      </div>
+
+      <div class="ph-stat-value">
+        ${esc(currency.symbol)}${currency.amount.toLocaleString("en-BD",{
+          minimumFractionDigits:0,
+          maximumFractionDigits:2
+        })}
+      </div>
+    </div>
+
+  `).join("");
+
+}
+
+
+/* SELECTED USER COUNT */
 
 function updateSelectedCount(){
 
@@ -1200,7 +1360,8 @@ function updateSelectedCount(){
     getUserId(h) === selectedUserId
   ).length;
 
-  $("phSelectedRecords").textContent = count;
+  $("phSelectedRecords").textContent =
+    count.toLocaleString("en-BD");
 }
 
 
@@ -1221,10 +1382,12 @@ function renderProfileDropdown(){
     <div class="ph-profile-option ${!selectedUserId ? "active" : ""}"
          data-user-id="">
       <div class="ph-avatar">ALL</div>
+
       <div class="ph-profile-info">
         <div class="ph-profile-name">All Profiles</div>
         <div class="ph-profile-id">Show all payment history</div>
       </div>
+
       <div class="ph-profile-count">${paymentHistory.length}</div>
     </div>
   `;
@@ -1285,13 +1448,13 @@ function renderProfileDropdown(){
     .forEach(item=>{
 
       item.addEventListener("click",()=>{
-
         selectProfile(item.dataset.userId);
-
       });
 
     });
+
 }
+
 
 function toggleDropdown(force){
 
@@ -1307,7 +1470,9 @@ function toggleDropdown(force){
     renderProfileDropdown();
     $("phProfileSearch").focus();
   }
+
 }
+
 
 function selectProfile(userId){
 
@@ -1357,10 +1522,9 @@ function selectProfile(userId){
   }
 
   updateSelectedCount();
-
   renderProfileDropdown();
-
   renderHistory();
+
 }
 
 
@@ -1380,20 +1544,28 @@ function renderHistory(){
 
   list.sort((a,b)=>{
 
-    const da = new Date(
-      getValue(a,["actionDate","createdAt","timestamp","date","paymentDate"],0)
-    ).getTime() || 0;
+    const da = new Date(getValue(a,[
+      "actionDate",
+      "createdAt",
+      "timestamp",
+      "date",
+      "paymentDate"
+    ],0)).getTime() || 0;
 
-    const db = new Date(
-      getValue(b,["actionDate","createdAt","timestamp","date","paymentDate"],0)
-    ).getTime() || 0;
+    const db = new Date(getValue(b,[
+      "actionDate",
+      "createdAt",
+      "timestamp",
+      "date",
+      "paymentDate"
+    ],0)).getTime() || 0;
 
     return db - da;
 
   });
 
   $("phHistoryCount").textContent =
-    list.length + " record(s) found";
+    list.length.toLocaleString("en-BD") + " record(s) found";
 
   if(!list.length){
 
@@ -1422,9 +1594,7 @@ function renderHistory(){
       profile?.profilePicture ||
       getProfilePicture(h);
 
-    const amount = getValue(
-      h,["amount","Amount","paymentAmount"],0
-    );
+    const amount = getAmount(h);
 
     const method = getValue(
       h,["paymentMethod","method","Method"],"—"
@@ -1469,7 +1639,7 @@ function renderHistory(){
           </div>
 
           <div class="ph-amount">
-            ${money(amount)}
+            ${esc(money(amount,h))}
           </div>
 
         </div>
@@ -1501,14 +1671,13 @@ function renderHistory(){
         <div class="ph-card-footer">
 
           <div class="ph-date">
-            History: ${esc(formatDate(historyDate))}
+            History: ${esc(formatDate(historyDate || paymentDate))}
           </div>
 
           <button
             class="ph-view-btn"
             type="button"
             data-view-index="${index}"
-            data-view-payment-id="${esc(paymentId)}"
           >
             View Payment
           </button>
@@ -1521,27 +1690,25 @@ function renderHistory(){
 
   }).join("");
 
+  /*
+   * Use the sorted list index directly.
+   * This avoids incorrect matching if IDs are repeated or missing.
+   */
   $("phHistoryList")
     .querySelectorAll("[data-view-index]")
     .forEach(button=>{
 
       button.addEventListener("click",()=>{
 
-        const paymentId = button.dataset.viewPaymentId;
-
-        const item = list.find(h=>
-          String(getValue(
-            h,
-            ["paymentId","Payment ID","historyId","entryId"],
-            ""
-          )) === String(paymentId)
-        );
+        const index = Number(button.dataset.viewIndex);
+        const item = list[index];
 
         if(item) openPaymentDetails(item);
 
       });
 
     });
+
 }
 
 
@@ -1561,9 +1728,7 @@ function openPaymentDetails(h){
     profile?.profilePicture ||
     getProfilePicture(h);
 
-  const amount = getValue(
-    h,["amount","Amount","paymentAmount"],0
-  );
+  const amount = getAmount(h);
 
   $("phModalAvatar").innerHTML =
     avatarHTML(
@@ -1577,7 +1742,7 @@ function openPaymentDetails(h){
   $("phModalUserId").textContent =
     "User ID: " + userId;
 
-  $("phModalAmount").textContent = money(amount);
+  $("phModalAmount").textContent = money(amount,h);
 
   const details = [
 
@@ -1597,13 +1762,11 @@ function openPaymentDetails(h){
       h,["paymentDate","date","Date"],""
     ))],
 
-    ["History Date",formatDate(getValue(
-      h,["actionDate","createdAt","timestamp","Created At"],""
+    ["Created At",formatDate(getValue(
+      h,["createdAt","Created At","actionDate","timestamp"],""
     ))],
 
-    ["Currency",getValue(
-      h,["currencyName","currencyCode"],"BDT"
-    )],
+    ["Currency",getCurrencyName(h) + " (" + getCurrencyCode(h) + ")"],
 
     ["Description",getValue(
       h,["comment","description","note","Description"],"—"
@@ -1621,7 +1784,9 @@ function openPaymentDetails(h){
   `).join("");
 
   $("phViewModal").classList.add("show");
+
 }
+
 
 function closePaymentModal(){
   $("phViewModal").classList.remove("show");
@@ -1631,17 +1796,13 @@ function closePaymentModal(){
 /* EVENTS */
 
 $("phSelectButton").addEventListener("click",()=>{
-
   toggleDropdown();
-
 });
 
 $("phProfileSearch").addEventListener("focus",()=>{
-
   if(!isDropdownOpen){
     toggleDropdown(true);
   }
-
 });
 
 $("phProfileSearch").addEventListener("input",()=>{
@@ -1655,19 +1816,14 @@ $("phProfileSearch").addEventListener("input",()=>{
 });
 
 $("phClearProfile").addEventListener("click",()=>{
-
   selectProfile("");
-
 });
 
 $("phRefresh").addEventListener("click",()=>{
-
   loadPaymentHistory();
-
 });
 
 $("phModalClose").addEventListener("click",closePaymentModal);
-
 $("phModalDone").addEventListener("click",closePaymentModal);
 
 $("phViewModal").addEventListener("click",event=>{
@@ -1698,10 +1854,8 @@ document.addEventListener("click",event=>{
 document.addEventListener("keydown",event=>{
 
   if(event.key === "Escape"){
-
     toggleDropdown(false);
     closePaymentModal();
-
   }
 
 });
