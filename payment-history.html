@@ -1,988 +1,370 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment History</title>
+<title>RS NETWORK | Payment History</title>
 
 <style>
 :root{
-  --ph-primary:var(--primary,#087f5b);
-  --ph-accent:var(--accent,#12b886);
-  --ph-bg:var(--bg,#f5f7fb);
-  --ph-card:var(--card,#fff);
-  --ph-text:var(--text,#172033);
-  --ph-muted:var(--muted,#8490a3);
-  --ph-border:var(--border,#e8edf3);
-  --ph-danger:#e05252;
-  --ph-shadow:0 5px 18px rgba(20,40,60,.055);
+  --primary:#087f5b;
+  --primary-dark:#066447;
+  --light:#e8f7ef;
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#64748b;
+  --border:#e5eaf1;
+  --danger:#dc3545;
+  --shadow:0 8px 28px rgba(15,23,42,.06);
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
+  padding:22px;
+  background:var(--bg);
+  color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
-  background:var(--ph-bg);
-  color:var(--ph-text);
 }
-
-button,input{font:inherit}
-
-.ph-wrap{
-  width:100%;
-  padding:20px;
-  max-width:1500px;
-  margin:auto;
-}
-
-.ph-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-
-.ph-title{
-  font-size:24px;
-  font-weight:800;
-  margin:0 0 5px;
-}
-
-.ph-subtitle{
-  color:var(--ph-muted);
-  font-size:12px;
-}
-
-.ph-refresh{
-  border:0;
-  background:var(--ph-primary);
-  color:white;
-  padding:10px 15px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:700;
-}
-
-/* COMPACT SUMMARY CARDS */
-
-.ph-stats{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:17px;
-}
-
-.ph-stat{
-  background:var(--ph-card);
-  border:1px solid var(--ph-border);
-  border-radius:11px;
-  padding:13px 15px;
-  min-height:88px;
-  box-shadow:var(--ph-shadow);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  min-width:0;
-}
-
-.ph-stat-label{
-  font-size:11px;
-  color:var(--ph-muted);
-  margin-bottom:7px;
-  font-weight:600;
-  line-height:1.4;
-}
-
-.ph-stat-value{
-  font-size:21px;
-  font-weight:800;
-  line-height:1.2;
-  word-break:break-word;
-  color:var(--ph-text);
-}
-
-.ph-panel{
-  background:var(--ph-card);
-  border:1px solid var(--ph-border);
-  border-radius:13px;
-  padding:17px;
-  box-shadow:var(--ph-shadow);
-  margin-bottom:17px;
-}
-
-.ph-section-title{
-  font-size:15px;
-  font-weight:800;
-  margin:0 0 14px;
-}
-
-/* PROFILE SEARCH */
-
-.ph-search-row{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  width:100%;
-  position:relative;
-}
-
-.ph-search-wrap{
-  flex:1;
-  min-width:0;
-  position:static;
-}
-
-.ph-search{
-  width:100%;
-  height:44px;
-  border:1px solid var(--ph-border);
-  border-radius:8px;
-  outline:none;
-  padding:0 13px;
-  background:var(--ph-bg);
-  color:var(--ph-text);
-  font-size:13px;
-}
-
-.ph-search::placeholder{
-  color:var(--ph-muted);
-}
-
-.ph-search:focus{
-  border-color:var(--ph-primary);
-  box-shadow:0 0 0 3px rgba(8,127,91,.09);
-}
-
-.ph-select-btn{
-  height:44px;
-  min-width:150px;
-  padding:0 14px;
-  border:0;
-  border-radius:8px;
-  background:var(--ph-primary);
-  color:white;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-  flex-shrink:0;
-}
-
-.ph-select-btn:hover,
-.ph-refresh:hover,
-.ph-view-btn:hover{
-  opacity:.9;
-}
-
-/* PROFILE DROPDOWN */
-
-.ph-dropdown{
-  display:none;
-  position:absolute;
-  top:calc(100% + 8px);
-  left:0;
-  right:0;
-  width:100%;
-  min-width:0;
-  max-width:none;
-  max-height:min(65vh,420px);
-  overflow-y:auto;
-  overflow-x:hidden;
-  overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;
-  background:var(--ph-card);
-  border:1px solid var(--ph-border);
-  border-radius:11px;
-  box-shadow:0 12px 35px rgba(0,0,0,.18);
-  z-index:999;
-  padding:7px;
-}
-
-.ph-dropdown.show{display:block}
-
-#phProfileOptions{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-}
-
-.ph-profile-option{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  gap:11px;
-  width:100%;
-  min-width:0;
-  padding:10px;
-  border-radius:8px;
-  cursor:pointer;
-  transition:background .15s;
-  flex-shrink:0;
-}
-
-.ph-profile-option:hover{
-  background:rgba(8,127,91,.08);
-}
-
-.ph-profile-option.active{
-  background:rgba(8,127,91,.12);
-}
-
-.ph-avatar{
-  width:42px;
-  height:42px;
-  flex:0 0 42px;
-  border-radius:50%;
-  overflow:hidden;
-  background:rgba(8,127,91,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--ph-primary);
-  font-size:15px;
-  font-weight:800;
-}
-
-.ph-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.ph-profile-info{
-  min-width:0;
-  flex:1;
-  overflow:hidden;
-}
-
-.ph-profile-name{
-  font-size:13px;
-  font-weight:800;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.ph-profile-id{
-  font-size:11px;
-  color:var(--ph-muted);
-  margin-top:4px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.ph-profile-count{
-  font-size:11px;
-  color:var(--ph-primary);
-  font-weight:700;
-  white-space:nowrap;
-  flex-shrink:0;
-}
-
-.ph-dropdown-empty{
-  text-align:center;
-  padding:20px 10px;
-  color:var(--ph-muted);
-  font-size:13px;
-}
-
-/* SELECTED PROFILE */
-
-.ph-selected{
-  display:none;
-  align-items:center;
-  gap:12px;
-  background:rgba(8,127,91,.07);
-  border:1px solid rgba(8,127,91,.18);
-  border-radius:10px;
-  padding:11px;
-  margin-top:13px;
-}
-
-.ph-selected.show{display:flex}
-
-.ph-selected-info{
-  flex:1;
-  min-width:0;
-}
-
-.ph-selected-name{
-  font-weight:800;
-  font-size:13px;
-}
-
-.ph-selected-id{
-  color:var(--ph-muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.ph-clear{
-  border:1px solid var(--ph-border);
-  background:var(--ph-card);
-  color:var(--ph-text);
-  border-radius:7px;
-  padding:7px 10px;
-  cursor:pointer;
-  font-size:11px;
-  font-weight:700;
-  flex-shrink:0;
-}
-
-/* HISTORY */
-
-.ph-history-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-
-.ph-history-count{
-  color:var(--ph-muted);
-  font-size:11px;
-}
-
-.ph-history-list{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:13px;
-}
-
-.ph-history-card{
-  border:1px solid var(--ph-border);
-  border-radius:11px;
-  padding:14px;
-  background:var(--ph-card);
-  min-width:0;
-}
-
-.ph-card-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding-bottom:12px;
-  border-bottom:1px solid var(--ph-border);
-}
-
-.ph-card-user-info{
-  flex:1;
-  min-width:0;
-}
-
-.ph-card-user-name{
-  font-weight:800;
-  font-size:13px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.ph-card-user-id{
-  color:var(--ph-muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.ph-amount{
-  color:var(--ph-primary);
-  font-weight:800;
-  font-size:18px;
-  white-space:nowrap;
-}
-
-.ph-details{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-  padding:13px 0;
-}
-
-.ph-detail-label{
-  font-size:10px;
-  color:var(--ph-muted);
-  margin-bottom:5px;
-}
-
-.ph-detail-value{
-  font-size:12px;
-  font-weight:700;
-  overflow-wrap:anywhere;
-}
-
-.ph-card-footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding-top:10px;
-  border-top:1px solid var(--ph-border);
-}
-
-.ph-date{
-  color:var(--ph-muted);
-  font-size:10px;
-}
-
-.ph-view-btn{
-  border:0;
-  border-radius:7px;
-  background:var(--ph-primary);
-  color:white;
-  padding:8px 12px;
-  cursor:pointer;
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-.ph-empty{
-  text-align:center;
-  padding:40px 15px;
-  color:var(--ph-muted);
-  background:var(--ph-card);
-  border:1px dashed var(--ph-border);
-  border-radius:11px;
-  grid-column:1/-1;
-}
-
-.ph-empty-icon{
-  font-size:30px;
-  margin-bottom:10px;
-}
-
-/* HISTORY ACTIONS */
-.ph-action-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-.ph-action-btn{border:0;border-radius:7px;padding:8px 11px;cursor:pointer;font-size:11px;font-weight:800;white-space:nowrap}
-.ph-view-btn{background:var(--ph-primary);color:#fff}
-.ph-edit-btn{background:#eaf2ff;color:#2457a6}
-.ph-delete-btn{background:#fff0f0;color:#c03939}
-.ph-action-btn:disabled{opacity:.42;cursor:not-allowed}
-.ph-action-label{display:inline-flex;align-items:center;padding:4px 8px;border-radius:20px;background:rgba(8,127,91,.1);color:var(--ph-primary);font-size:10px;font-weight:800;margin-top:5px}
-.ph-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ph-form-field{display:flex;flex-direction:column;gap:6px;min-width:0}
-.ph-form-field.full{grid-column:1/-1}
-.ph-form-field label{font-size:11px;color:var(--ph-muted);font-weight:700}
-.ph-form-field input,.ph-form-field select,.ph-form-field textarea{width:100%;min-width:0;border:1px solid var(--ph-border);border-radius:8px;background:var(--ph-bg);color:var(--ph-text);padding:10px 11px;font-size:13px;outline:none}
-.ph-form-field textarea{min-height:75px;resize:vertical}
-.ph-form-field input:focus,.ph-form-field select:focus,.ph-form-field textarea:focus{border-color:var(--ph-primary);box-shadow:0 0 0 3px rgba(8,127,91,.08)}
-.ph-form-actions{display:flex;gap:8px;margin-top:16px}
-  .ph-form-actions button{flex:1;border:0;border-radius:8px;padding:11px;font-weight:800;cursor:pointer}
-.ph-cancel-btn{background:var(--ph-bg);color:var(--ph-text)}
-.ph-save-btn{background:var(--ph-primary);color:#fff}
-.ph-save-btn:disabled{opacity:.6;cursor:wait}
-.ph-toast{position:fixed;right:18px;bottom:18px;z-index:10001;padding:12px 16px;border-radius:9px;background:#172033;color:white;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.2);display:none;max-width:min(420px,calc(100vw - 36px))}
-.ph-toast.show{display:block}
-@media(max-width:520px){.ph-action-row{width:100%;justify-content:stretch}.ph-action-btn{flex:1}.ph-form-grid{grid-template-columns:1fr}.ph-form-field.full{grid-column:auto}}
-
-/* VIEW PAYMENT MODAL */
-
-.ph-modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(10,20,30,.55);
-  z-index:9999;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.ph-modal.show{display:flex}
-
-.ph-modal-box{
-  width:100%;
-  max-width:470px;
-  max-height:90vh;
-  overflow-y:auto;
-  background:var(--ph-card);
-  border-radius:15px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
-  padding:21px;
-  animation:phPop .2s ease;
-}
-
-@keyframes phPop{
-  from{transform:translateY(10px);opacity:0}
-  to{transform:translateY(0);opacity:1}
-}
-
-.ph-modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:17px;
-}
-
-.ph-modal-title{
-  font-size:17px;
-  font-weight:800;
-}
-
-.ph-close{
-  width:32px;
-  height:32px;
-  border:0;
-  border-radius:8px;
-  background:var(--ph-bg);
-  color:var(--ph-text);
-  cursor:pointer;
-  font-size:19px;
-}
-
-.ph-modal-user{
-  text-align:center;
-  padding:12px 0 18px;
-  border-bottom:1px solid var(--ph-border);
-}
-
-.ph-modal-avatar{
-  width:75px;
-  height:75px;
-  margin:0 auto 10px;
-  border-radius:50%;
-  overflow:hidden;
-  background:rgba(8,127,91,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--ph-primary);
-  font-size:25px;
-  font-weight:800;
-}
-
-.ph-modal-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.ph-modal-user-name{
-  font-weight:800;
-  font-size:15px;
-}
-
-.ph-modal-user-id{
-  font-size:11px;
-  color:var(--ph-muted);
-  margin-top:5px;
-}
-
-.ph-modal-amount{
-  text-align:center;
-  padding:18px 0;
-}
-
-.ph-modal-amount-label{
-  font-size:11px;
-  color:var(--ph-muted);
-  margin-bottom:6px;
-}
-
-.ph-modal-amount-value{
-  color:var(--ph-primary);
-  font-size:28px;
-  font-weight:900;
-}
-
-.ph-modal-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:0;
-}
-
-.ph-modal-item{
-  padding:11px 5px;
-  border-top:1px solid var(--ph-border);
-}
-
-.ph-modal-label{
-  color:var(--ph-muted);
-  font-size:10px;
-  margin-bottom:6px;
-}
-
-.ph-modal-value{
-  font-size:12px;
-  font-weight:700;
-  overflow-wrap:anywhere;
-}
-
-.ph-modal-done{
-  width:100%;
-  margin-top:17px;
-  border:0;
-  border-radius:8px;
-  padding:11px;
-  background:var(--ph-primary);
-  color:white;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.ph-loading{
-  text-align:center;
-  padding:35px 10px;
-  color:var(--ph-muted);
-  font-size:13px;
-}
-
-.ph-error{
-  color:var(--ph-danger);
-  background:rgba(224,82,82,.08);
-  padding:13px;
-  border-radius:9px;
-  font-size:13px;
-}
-
-/* TABLET */
-
-@media(max-width:900px){
-  .ph-stats{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .ph-history-list{
-    grid-template-columns:1fr;
-  }
-}
-
-/* MOBILE */
-
-@media(max-width:520px){
-
-  .ph-wrap{padding:12px}
-
-  .ph-title{font-size:21px}
-
-  .ph-header{margin-bottom:14px}
-
-  .ph-panel{padding:12px}
-
-  /* Compact mobile cards */
-  .ph-stats{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
-    margin-bottom:13px;
-  }
-
-  .ph-stat{
-    min-height:76px;
-    padding:11px 12px;
-    border-radius:10px;
-  }
-
-  .ph-stat-label{
-    font-size:10px;
-    margin-bottom:6px;
-  }
-
-  .ph-stat-value{
-    font-size:18px;
-  }
-
-  .ph-search-row{
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
-    gap:9px;
-    width:100%;
-  }
-
-  .ph-search-wrap{
-    width:100%;
-    flex:none;
-  }
-
-  .ph-search{
-    width:100%;
-    height:44px;
-  }
-
-  .ph-select-btn{
-    width:100%;
-    min-width:0;
-    height:42px;
-    padding:0 12px;
-    font-size:12px;
-  }
-
-  .ph-dropdown{
-    top:calc(100% + 7px);
-    left:0;
-    right:0;
-    width:100%;
-    min-width:0;
-    max-width:none;
-    max-height:60vh;
-    padding:6px;
-    border-radius:10px;
-  }
-
-  .ph-profile-option{
-    width:100%;
-    padding:9px 8px;
-    gap:9px;
-  }
-
-  .ph-avatar{
-    width:38px;
-    height:38px;
-    flex:0 0 38px;
-  }
-
-  .ph-profile-name{font-size:12px}
-
-  .ph-profile-id{font-size:10px}
-
-  .ph-profile-count{font-size:10px}
-
-  .ph-details{gap:10px}
-
-  .ph-modal-box{padding:16px}
-
-  .ph-selected{
-    gap:9px;
-    padding:10px;
-  }
-
-  .ph-clear{
-    padding:7px 9px;
-  }
-}
-
-/* EXTRA SMALL MOBILE */
-
-@media(max-width:360px){
-
-  .ph-wrap{padding:9px}
-
-  .ph-panel{padding:10px}
-
-  .ph-stats{gap:7px}
-
-  .ph-stat{
-    min-height:70px;
-    padding:9px 10px;
-  }
-
-  .ph-stat-label{font-size:9px}
-
-  .ph-stat-value{font-size:16px}
-
-  .ph-profile-option{
-    gap:7px;
-    padding:9px 6px;
-  }
-
-  .ph-profile-count{font-size:9px}
-
-  .ph-avatar{
-    width:36px;
-    height:36px;
-    flex-basis:36px;
-  }
-
-  .ph-modal-grid{grid-template-columns:1fr}
+.container{max-width:1450px;margin:auto}
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;flex-wrap:wrap;margin-bottom:22px
+}
+.heading h2{margin:0;font-size:25px}
+.heading p{margin:7px 0 0;color:var(--muted);font-size:13px}
+.btn{
+  border:0;border-radius:8px;padding:10px 15px;
+  font-weight:700;font-size:13px;cursor:pointer;
+  transition:.2s
+}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-light{background:#eef2f7;color:#334155}
+.btn-danger{background:#fff0f1;color:var(--danger)}
+.btn-danger:hover{background:#ffe0e3}
+.stats{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;margin-bottom:20px
+}
+.stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:13px;padding:18px;box-shadow:var(--shadow)
+}
+.stat small{color:var(--muted);font-size:12px}
+.stat h3{font-size:24px;margin:9px 0 0}
+.panel{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:13px;box-shadow:var(--shadow);overflow:hidden
+}
+.toolbar{
+  padding:17px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  border-bottom:1px solid var(--border)
+}
+.toolbar h3{margin:0;font-size:16px}
+.filters{display:flex;gap:9px;flex-wrap:wrap}
+input,select,textarea{
+  width:100%;padding:11px 12px;border:1px solid #dce3ec;
+  border-radius:8px;background:#fff;color:var(--text);
+  outline:none;font:inherit;font-size:13px
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(8,127,91,.09)
+}
+.search{width:260px}
+.filter-select{width:160px}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{
+  text-align:left;padding:14px 13px;
+  border-bottom:1px solid var(--border);font-size:13px
+}
+th{
+  background:#f8fafc;color:#64748b;
+  font-size:11px;text-transform:uppercase;letter-spacing:.4px
+}
+tbody tr:hover{background:#fbfdfc}
+.user-name{font-weight:700}
+.user-id{font-size:11px;color:var(--muted);margin-top:4px}
+.amount{font-weight:700;color:var(--primary)}
+.actions{display:flex;gap:6px;white-space:nowrap}
+.action-btn{
+  border:1px solid var(--border);background:#fff;
+  padding:7px 10px;border-radius:7px;
+  font-size:11px;font-weight:700;cursor:pointer
+}
+.action-btn:hover{background:#f1f5f9}
+.action-btn.delete{color:var(--danger)}
+.empty{
+  padding:35px;text-align:center;color:var(--muted);font-size:13px
+}
+.footer{
+  padding:14px 17px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  color:var(--muted);font-size:12px
+}
+.pagination{display:flex;gap:7px}
+.pagination button{
+  border:1px solid var(--border);background:#fff;
+  padding:7px 12px;border-radius:7px;cursor:pointer
+}
+.pagination button:disabled{opacity:.4;cursor:not-allowed}
+
+/* Modal */
+.modal{
+  position:fixed;inset:0;background:rgba(15,23,42,.55);
+  display:none;align-items:center;justify-content:center;
+  padding:15px;z-index:1000
+}
+.modal.show{display:flex}
+.modal-box{
+  background:#fff;width:100%;max-width:600px;
+  max-height:92vh;overflow:auto;border-radius:14px;
+  box-shadow:0 20px 70px rgba(0,0,0,.2)
+}
+.modal-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 20px;border-bottom:1px solid var(--border)
+}
+.modal-head h3{margin:0;font-size:17px}
+.close{
+  border:0;background:#f1f5f9;width:31px;height:31px;
+  border-radius:50%;font-size:19px;cursor:pointer
+}
+.modal-body{padding:20px}
+.modal-footer{
+  display:flex;justify-content:flex-end;gap:9px;
+  padding:15px 20px;border-top:1px solid var(--border)
+}
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px
+}
+.field label{
+  display:block;font-size:12px;font-weight:700;
+  margin-bottom:7px;color:#475569
+}
+.field.full{grid-column:1/-1}
+textarea{min-height:85px;resize:vertical}
+.detail-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px
+}
+.detail{
+  padding:12px;background:#f8fafc;border-radius:9px;
+  border:1px solid var(--border);min-width:0
+}
+.detail small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+.detail strong{font-size:13px;overflow-wrap:anywhere}
+#toast{
+  position:fixed;right:20px;bottom:20px;
+  background:#172033;color:#fff;padding:13px 18px;
+  border-radius:9px;font-size:13px;z-index:2000;
+  display:none;max-width:90%
+}
+#loading{
+  position:fixed;inset:0;background:rgba(255,255,255,.82);
+  display:none;align-items:center;justify-content:center;
+  z-index:1500;font-size:14px;font-weight:700;color:var(--primary)
+}
+.spinner{
+  width:17px;height:17px;border:2px solid #d1fae5;
+  border-top-color:var(--primary);border-radius:50%;
+  display:inline-block;vertical-align:middle;
+  animation:spin .7s linear infinite;margin-right:8px
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:700px){
+  body{padding:12px}
+  .stats{grid-template-columns:1fr}
+  .stat{padding:14px}
+  .stat h3{font-size:21px}
+  .search{width:100%}
+  .filter-select{width:100%}
+  .filters{width:100%}
+  .filters>*{flex:1}
+  .form-grid,.detail-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .heading h2{font-size:21px}
+  .toolbar{align-items:flex-start}
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<div class="ph-wrap">
-
-  <div class="ph-header">
-    <div>
-      <h1 class="ph-title">Payment History</h1>
-      <div class="ph-subtitle">View and manage payment records</div>
+  <div class="header">
+    <div class="heading">
+      <h2>Payment History</h2>
+      <p>Manage, view and update all active payment records.</p>
     </div>
-    <button class="ph-refresh" id="phRefresh">↻ Refresh</button>
+    <button class="btn btn-primary" id="refreshBtn" onclick="refreshData()">
+      ↻ Refresh Records
+    </button>
   </div>
 
-  <!-- SUMMARY -->
-  <div class="ph-stats">
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total History</div>
-      <div class="ph-stat-value" id="phTotalHistory">0</div>
+  <div class="stats">
+    <div class="stat">
+      <small>Total Payment Records</small>
+      <h3 id="totalCount">0</h3>
     </div>
-
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total Users</div>
-      <div class="ph-stat-value" id="phTotalUsers">0</div>
+    <div class="stat">
+      <small>Total Payment Amount</small>
+      <h3 id="totalAmount">0</h3>
     </div>
-
-    <div class="ph-stat">
-      <div class="ph-stat-label">Total Payment Amount</div>
-      <div class="ph-stat-value" id="phTotalAmount">৳0</div>
-    </div>
-
-    <div class="ph-stat">
-      <div class="ph-stat-label">Selected User Records</div>
-      <div class="ph-stat-value" id="phSelectedRecords">All</div>
+    <div class="stat">
+      <small>Today's Payment</small>
+      <h3 id="todayAmount">0</h3>
     </div>
   </div>
 
-  <!-- PROFILE SEARCH -->
-  <div class="ph-panel">
-    <h3 class="ph-section-title">Search Profile</h3>
+  <div class="panel">
+    <div class="toolbar">
+      <h3>All Payment Records</h3>
+      <div class="filters">
+        <input class="search" id="searchInput"
+          placeholder="Search user, payment ID, transaction...">
+        <select class="filter-select" id="currencyFilter">
+          <option value="">All Currencies</option>
+        </select>
+      </div>
+    </div>
 
-    <div class="ph-search-row">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Transaction ID</th>
+            <th>Payment Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="6" class="empty">Loading payment records...</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-      <div class="ph-search-wrap">
-        <input
-          type="text"
-          class="ph-search"
-          id="phProfileSearch"
-          placeholder="Search profile by name or User ID..."
-          autocomplete="off"
-        >
+    <div class="footer">
+      <span id="pageInfo">Showing 0 records</span>
+      <div class="pagination">
+        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button id="nextBtn" onclick="changePage(1)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <div class="ph-dropdown" id="phProfileDropdown">
-          <div id="phProfileOptions"></div>
+<!-- VIEW MODAL -->
+<div class="modal" id="viewModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Payment Details</h3>
+      <button class="close" onclick="closeModal('viewModal')">×</button>
+    </div>
+    <div class="modal-body" id="viewContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="closeModal('viewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
+  <form id="editForm">
+    <div class="modal-head">
+      <h3>Edit Payment</h3>
+      <button type="button" class="close" onclick="closeModal('editModal')">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+
+        <div class="field full">
+          <label>User</label>
+          <select id="editUser" required></select>
+        </div>
+
+        <div class="field">
+          <label>Payment Amount</label>
+          <input type="number" id="editAmount" min="0.01" step="any" required>
+        </div>
+
+        <div class="field">
+          <label>Currency</label>
+          <select id="editCurrency" required></select>
+        </div>
+
+        <div class="field">
+          <label>Payment Method</label>
+          <select id="editMethod" required></select>
+        </div>
+
+        <div class="field">
+          <label>Transaction ID</label>
+          <input id="editTransaction" type="text">
+        </div>
+
+        <div class="field full">
+          <label>Payment Date</label>
+          <input id="editDate" type="date" required>
+        </div>
+
+        <div class="field full">
+          <label>Comment</label>
+          <textarea id="editComment"></textarea>
         </div>
       </div>
-
-      <button class="ph-select-btn" id="phSelectButton" type="button">
-        Select Profile <span>⌄</span>
-      </button>
-
     </div>
 
-    <div class="ph-selected" id="phSelectedProfile">
-      <div class="ph-avatar" id="phSelectedAvatar"></div>
-
-      <div class="ph-selected-info">
-        <div class="ph-selected-name" id="phSelectedName"></div>
-        <div class="ph-selected-id" id="phSelectedId"></div>
-      </div>
-
-      <button class="ph-clear" id="phClearProfile" type="button">
-        Clear
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light"
+        onclick="closeModal('editModal')">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="saveEditBtn">
+        Save Changes
       </button>
     </div>
-  </div>
-
-  <!-- HISTORY LIST -->
-  <div class="ph-panel">
-
-    <div class="ph-history-head">
-      <h3 class="ph-section-title" style="margin:0">
-        Payment History Records
-      </h3>
-
-      <div class="ph-history-count" id="phHistoryCount">
-        Loading...
-      </div>
-    </div>
-
-    <div class="ph-history-list" id="phHistoryList">
-      <div class="ph-loading">Loading payment history...</div>
-    </div>
-
-  </div>
-
+  </form>
 </div>
 
-<!-- VIEW PAYMENT MODAL -->
-<div class="ph-modal" id="phViewModal">
-  <div class="ph-modal-box">
-
-    <div class="ph-modal-head">
-      <div class="ph-modal-title">Payment Details</div>
-      <button class="ph-close" id="phModalClose">×</button>
-    </div>
-
-    <div class="ph-modal-user">
-      <div class="ph-modal-avatar" id="phModalAvatar"></div>
-      <div class="ph-modal-user-name" id="phModalName"></div>
-      <div class="ph-modal-user-id" id="phModalUserId"></div>
-    </div>
-
-    <div class="ph-modal-amount">
-      <div class="ph-modal-amount-label">Payment Amount</div>
-      <div class="ph-modal-amount-value" id="phModalAmount">৳0</div>
-    </div>
-
-    <div class="ph-modal-grid" id="phModalDetails"></div>
-
-    <button class="ph-modal-done" id="phModalDone">
-      Close
-    </button>
-
-  </div>
-</div>
-
-<!-- EDIT PAYMENT MODAL -->
-<div class="ph-modal" id="phEditModal">
-  <div class="ph-modal-box">
-    <div class="ph-modal-head">
-      <div class="ph-modal-title">Edit Payment</div>
-      <button class="ph-close" id="phEditClose" type="button">×</button>
-    </div>
-    <form id="phEditForm">
-      <input type="hidden" name="paymentId" id="phEditPaymentId">
-      <div class="ph-form-grid">
-        <div class="ph-form-field full"><label>User</label><select name="userId" id="phEditUser" required></select></div>
-        <div class="ph-form-field"><label>Amount</label><input name="amount" id="phEditAmount" type="number" min="0.01" step="0.01" required></div>
-        <div class="ph-form-field"><label>Payment Date</label><input name="paymentDate" id="phEditDate" type="date" required></div>
-        <div class="ph-form-field"><label>Currency</label><select name="currencyId" id="phEditCurrency" required></select></div>
-        <div class="ph-form-field"><label>Payment Method</label><select name="methodId" id="phEditMethod" required></select></div>
-        <div class="ph-form-field full"><label>Transaction ID</label><input name="transactionId" id="phEditTransaction" type="text"></div>
-        <div class="ph-form-field full"><label>Comment</label><textarea name="comment" id="phEditComment"></textarea></div>
-      </div>
-      <div class="ph-form-actions">
-        <button class="ph-cancel-btn" type="button" id="phEditCancel">Cancel</button>
-        <button class="ph-save-btn" type="submit" id="phEditSave">Save Changes</button>
-      </div>
-    </form>
-  </div>
-</div>
-<div class="ph-toast" id="phToast"></div>
+<div id="toast"></div>
+<div id="loading"><span class="spinner"></span><span id="loadingText">Please wait...</span></div>
 
 <script>
-'use strict';
+"use strict";
 
-/* API CONFIGURATION */
+/* ================= API CONFIG ================= */
 
-const PAYMENT_API ="https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
+const PAYMENT_API =
+"https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
 
-const USER_API =
-"https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
+/* ================= STATE ================= */
 
-
-/* STATE */
-
-let paymentHistory = [];
-let allProfiles = [];
-let allUsers = [];
-let allPayments = [];
-let deletedPayments = [];
-let allCurrencies = [];
-let allMethods = [];
-let selectedUserId = "";
-let isDropdownOpen = false;
-let toastTimer = null;
+let payments = [];
+let users = [];
+let currencies = [];
+let methods = [];
+let currentPage = 1;
+let pageSize = 10;
+let editingPaymentId = "";
+let busy = false;
 
 const $ = id => document.getElementById(id);
 
+const money = value =>
+  Number(value || 0).toLocaleString(undefined,{
+    maximumFractionDigits:2
+  });
 
-/* HELPERS */
-
-function esc(value){
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
+function escapeHTML(value){
+  return String(value == null ? "" : value).replace(/[&<>"']/g,c=>({
     "&":"&amp;",
     "<":"&lt;",
     ">":"&gt;",
@@ -991,894 +373,462 @@ function esc(value){
   }[c]));
 }
 
-function getValue(obj, keys, fallback=""){
-  for(const key of keys){
-    if(obj && obj[key] !== undefined && obj[key] !== null && obj[key] !== ""){
-      return obj[key];
-    }
-  }
-  return fallback;
-}
-
-function money(value){
-  const n = Number(value || 0);
-  return "৳" + n.toLocaleString("en-BD",{
-    maximumFractionDigits:2
-  });
+function today(){
+  const d = new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
 }
 
 function formatDate(value){
   if(!value) return "—";
-
-  const d = new Date(value);
-
-  if(Number.isNaN(d.getTime())){
-    return String(value);
-  }
-
-  return d.toLocaleDateString("en-GB",{
-    day:"2-digit",
-    month:"short",
-    year:"numeric"
-  });
+  const s = String(value).slice(0,10);
+  const p = s.split("-");
+  if(p.length !== 3) return escapeHTML(value);
+  return `${p[2]}/${p[1]}/${p[0]}`;
 }
 
-function getUserId(x){
-  return String(getValue(x,["userId","User ID","userid"],""));
+function toast(message){
+  const el = $("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(()=>el.style.display="none",3500);
 }
 
-function getUserName(x){
-  return String(getValue(x,["userName","User Name","name","Name"],"Unknown User"));
+function setLoading(show,message){
+  $("loading").style.display = show ? "flex" : "none";
+  $("loadingText").textContent = message || "Please wait...";
 }
 
-function getProfilePicture(x){
-  return String(getValue(x,[
-    "profilePicture",
-    "Profile Picture",
-    "photoURL",
-    "photoUrl",
-    "image",
-    "avatar"
-  ],""));
+function closeModal(id){
+  $(id).classList.remove("show");
 }
 
-function getImageURL(value){
-  if(!value) return "";
+/* ================= JSONP API =================
+   GET requests and write actions use JSONP so that
+   Apps Script can respond without browser POST CORS issues.
+================================================ */
 
-  let url = String(value).trim();
+function apiRequest(params){
+  return new Promise((resolve,reject)=>{
+    const callbackName =
+      "__rsPaymentHistory_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
 
-  if(!url.startsWith("http") && !url.startsWith("data:")){
-    return "https://drive.google.com/thumbnail?id=" +
-      encodeURIComponent(url) + "&sz=w300";
-  }
-
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-  if(match){
-    return "https://drive.google.com/thumbnail?id=" +
-      match[1] + "&sz=w300";
-  }
-
-  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-
-  if(idMatch && url.includes("drive.google.com")){
-    return "https://drive.google.com/thumbnail?id=" +
-      idMatch[1] + "&sz=w300";
-  }
-
-  return url;
-}
-
-function avatarHTML(name,picture,extraClass=""){
-  const initial = esc(String(name || "U").trim().charAt(0).toUpperCase());
-  const image = getImageURL(picture);
-
-  if(!image){
-    return `<div class="${extraClass}">${initial}</div>`;
-  }
-
-  return `
-    <div class="${extraClass}">
-      <img
-        src="${esc(image)}"
-        alt="${esc(name)}"
-        referrerpolicy="no-referrer"
-        onerror="this.parentElement.innerHTML='${initial}'"
-      >
-    </div>
-  `;
-}
-
-async function apiGet(url){
-  const response = await fetch(url,{
-    method:"GET",
-    cache:"no-store"
-  });
-
-  if(!response.ok){
-    throw new Error("API request failed: " + response.status);
-  }
-
-  return await response.json();
-}
-
-
-async function apiPost(payload){
-  const response = await fetch(PAYMENT_API,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(payload)
-  });
-  if(!response.ok) throw new Error("API request failed: " + response.status);
-  const result = await response.json();
-  if(result.success === false) throw new Error(result.message || "Request failed.");
-  return result;
-}
-
-function showToast(message){
-  const toast = $("phToast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toast.classList.remove("show"),3200);
-}
-
-function getPaymentId(h){
-  return String(getValue(h,["paymentId","Payment ID"],"")).trim();
-}
-
-function findCurrentPayment(paymentId){
-  // Edit must update the existing row in USER PAYMENT only.
-  // Never use a DELETE HISTORY row as the source for an edit.
-  const id = String(paymentId || "").trim();
-  if(!id) return null;
-
-  return allPayments.find(p =>
-    String(p.paymentId || p["Payment ID"] || "").trim() === id
-  ) || null;
-}
-
-function activePaymentExists(paymentId){
-  const id = String(paymentId || "").trim();
-  return !!id && allPayments.some(p =>
-    String(p.paymentId || p["Payment ID"] || "").trim() === id
-  );
-}
-
-function optionHTML(items, valueKey, labelFn, selected){
-  return items.map(item=>{
-    const value = String(item[valueKey] ?? "");
-    return `<option value="${esc(value)}" ${value===String(selected ?? "") ? "selected" : ""}>${esc(labelFn(item))}</option>`;
-  }).join("");
-}
-
-
-/* LOAD DATA */
-
-async function loadPaymentHistory(){
-  $("phHistoryList").innerHTML = `<div class="ph-loading">Loading payment history...</div>`;
-  $("phHistoryCount").textContent = "Loading...";
-  try{
-    const [historyResponse,allResponse,userResponse] = await Promise.all([
-      apiGet(PAYMENT_API + "?api=history&t=" + Date.now()),
-      apiGet(PAYMENT_API + "?api=all&t=" + Date.now()),
-      apiGet(USER_API + "?api=active&t=" + Date.now()).catch(()=>({users:[]}))
-    ]);
-    if(historyResponse.success === false) throw new Error(historyResponse.message || "Payment history loading failed.");
-    if(allResponse.success === false) throw new Error(allResponse.message || "Payment data loading failed.");
-
-    const historyData = historyResponse.history || historyResponse.data || historyResponse.entries || [];
-    paymentHistory = Array.isArray(historyData) ? historyData : [];
-    allPayments = Array.isArray(allResponse.payments) ? allResponse.payments : [];
-    deletedPayments = Array.isArray(allResponse.deletedPayments) ? allResponse.deletedPayments : [];
-    allCurrencies = Array.isArray(allResponse.currencies) ? allResponse.currencies : [];
-    allMethods = Array.isArray(allResponse.methods) ? allResponse.methods : [];
-    allUsers = Array.isArray(allResponse.users) ? allResponse.users : [];
-
-    const extraUsers = userResponse.users || userResponse.data || [];
-    buildProfiles(allUsers.concat(Array.isArray(extraUsers) ? extraUsers : []));
-    updateSummary();
-    renderProfileDropdown();
-    renderHistory();
-  }catch(error){
-    console.error(error);
-    $("phHistoryList").innerHTML = `<div class="ph-empty"><div class="ph-empty-icon">⚠️</div><b>Unable to load payment history</b><p>${esc(error.message)}</p></div>`;
-    $("phHistoryCount").textContent = "Loading failed";
-  }
-}
-
-/* BUILD UNIQUE PROFILES */
-
-function buildProfiles(users){
-
-  const profileMap = new Map();
-
-  paymentHistory.forEach(h=>{
-
-    const userId = getUserId(h);
-
-    if(!userId) return;
-
-    profileMap.set(userId,{
-      userId,
-      userName:getUserName(h),
-      profilePicture:getProfilePicture(h),
-      count:0
+    const query = new URLSearchParams({
+      ...params,
+      callback:callbackName,
+      _:String(Date.now())
     });
 
-  });
-
-  (Array.isArray(users) ? users : []).forEach(user=>{
-
-    const userId = getUserId(user);
-
-    if(!userId) return;
-
-    const existing = profileMap.get(userId);
-
-    if(existing){
-
-      existing.userName = getUserName(user) || existing.userName;
-
-      existing.profilePicture =
-        getProfilePicture(user) ||
-        existing.profilePicture;
-
-    }
-
-  });
-
-  paymentHistory.forEach(h=>{
-
-    const userId = getUserId(h);
-
-    const profile = profileMap.get(userId);
-
-    if(profile){
-      profile.count++;
-    }
-
-  });
-
-  allProfiles = Array.from(profileMap.values());
-
-  allProfiles.sort((a,b)=>
-    a.userName.localeCompare(b.userName)
-  );
-}
-
-
-/* SUMMARY */
-
-function updateSummary(){
-
-  const total = paymentHistory.length;
-
-  const totalUsers = allProfiles.length;
-
-  const totalAmount = paymentHistory.reduce((sum,h)=>{
-    return sum + Number(
-      getValue(h,["amount","Amount","paymentAmount"],0)
-    );
-  },0);
-
-  $("phTotalHistory").textContent =
-    total.toLocaleString("en-BD");
-
-  $("phTotalUsers").textContent =
-    totalUsers.toLocaleString("en-BD");
-
-  $("phTotalAmount").textContent = money(totalAmount);
-
-  updateSelectedCount();
-}
-
-function updateSelectedCount(){
-
-  if(!selectedUserId){
-    $("phSelectedRecords").textContent = "All";
-    return;
-  }
-
-  const count = paymentHistory.filter(h=>
-    getUserId(h) === selectedUserId
-  ).length;
-
-  $("phSelectedRecords").textContent = count;
-}
-
-
-/* PROFILE DROPDOWN */
-
-function renderProfileDropdown(){
-
-  const search = $("phProfileSearch").value
-    .trim()
-    .toLowerCase();
-
-  const profiles = allProfiles.filter(p=>
-    p.userName.toLowerCase().includes(search) ||
-    p.userId.toLowerCase().includes(search)
-  );
-
-  let html = `
-    <div class="ph-profile-option ${!selectedUserId ? "active" : ""}"
-         data-user-id="">
-      <div class="ph-avatar">ALL</div>
-      <div class="ph-profile-info">
-        <div class="ph-profile-name">All Profiles</div>
-        <div class="ph-profile-id">Show all payment history</div>
-      </div>
-      <div class="ph-profile-count">${paymentHistory.length}</div>
-    </div>
-  `;
-
-  profiles.forEach(profile=>{
-
-    html += `
-      <div class="ph-profile-option ${
-        selectedUserId === profile.userId ? "active" : ""
-      }"
-      data-user-id="${esc(profile.userId)}">
-
-        ${avatarHTML(
-          profile.userName,
-          profile.profilePicture,
-          "ph-avatar"
-        )}
-
-        <div class="ph-profile-info">
-          <div class="ph-profile-name">
-            ${esc(profile.userName)}
-          </div>
-
-          <div class="ph-profile-id">
-            ${esc(profile.userId)}
-          </div>
-        </div>
-
-        <div class="ph-profile-count">
-          ${profile.count} Payments
-        </div>
-
-      </div>
-    `;
-
-  });
-
-  if(!profiles.length && search){
-    html += `
-      <div class="ph-dropdown-empty">
-        No matching profile found.
-      </div>
-    `;
-  }
-
-  if(!allProfiles.length){
-    html += `
-      <div class="ph-dropdown-empty">
-        No profiles found in payment history.
-      </div>
-    `;
-  }
-
-  $("phProfileOptions").innerHTML = html;
-
-  $("phProfileOptions")
-    .querySelectorAll("[data-user-id]")
-    .forEach(item=>{
-
-      item.addEventListener("click",()=>{
-
-        selectProfile(item.dataset.userId);
-
-      });
-
-    });
-}
-
-function toggleDropdown(force){
-
-  isDropdownOpen =
-    typeof force === "boolean" ? force : !isDropdownOpen;
-
-  $("phProfileDropdown").classList.toggle(
-    "show",
-    isDropdownOpen
-  );
-
-  if(isDropdownOpen){
-    renderProfileDropdown();
-    $("phProfileSearch").focus();
-  }
-}
-
-function selectProfile(userId){
-
-  selectedUserId = String(userId || "");
-
-  toggleDropdown(false);
-
-  if(selectedUserId){
-
-    const profile = allProfiles.find(p=>
-      p.userId === selectedUserId
-    );
-
-    if(profile){
-
-      $("phSelectedProfile").classList.add("show");
-
-      $("phSelectedAvatar").innerHTML =
-        avatarHTML(
-          profile.userName,
-          profile.profilePicture,
-          "ph-avatar"
-        );
-
-      $("phSelectedName").textContent =
-        profile.userName;
-
-      $("phSelectedId").textContent =
-        "User ID: " + profile.userId;
-
-      $("phProfileSearch").value = profile.userName;
-
-      $("phSelectButton").innerHTML =
-        "Change Profile <span>⌄</span>";
-
-    }
-
-  }else{
-
-    $("phSelectedProfile").classList.remove("show");
-
-    $("phProfileSearch").value = "";
-
-    $("phSelectButton").innerHTML =
-      "Select Profile <span>⌄</span>";
+    const script = document.createElement("script");
+    let finished = false;
+
+    const cleanup = ()=>{
+      if(finished) return;
+      finished = true;
+      clearTimeout(timer);
+      delete window[callbackName];
+      script.remove();
+    };
+
+    const timer = setTimeout(()=>{
+      cleanup();
+      reject(new Error(
+        "Server response timeout. Check the Apps Script deployment and try refreshing."
+      ));
+    },45000);
+
+    window[callbackName] = data=>{
+      cleanup();
+      if(data && data.success === true){
+        resolve(data);
+      }else{
+        reject(new Error(
+          data && data.message ? data.message : "Request failed."
+        ));
       }
+    };
 
-  updateSelectedCount();
+    script.onerror = ()=>{
+      cleanup();
+      reject(new Error("Could not connect to Payment API."));
+    };
 
-  renderProfileDropdown();
-
-  renderHistory();
+    script.src = PAYMENT_API + "?" + query.toString();
+    document.body.appendChild(script);
+  });
 }
 
+/* ================= LOAD DATA ================= */
 
-/* RENDER PAYMENT HISTORY */
+async function loadPayments(){
+  const data = await apiRequest({api:"payments"});
+  payments = Array.isArray(data.payments) ? data.payments : [];
+}
 
-function renderHistory(){
+async function loadUsers(){
+  const data = await apiRequest({api:"users"});
+  users = Array.isArray(data.users) ? data.users : [];
+}
 
-  let list = paymentHistory.slice();
+async function loadCurrencies(){
+  const data = await apiRequest({api:"currencies"});
+  currencies = Array.isArray(data.currencies) ? data.currencies : [];
+}
 
-  if(selectedUserId){
+async function loadMethods(){
+  const data = await apiRequest({api:"methods"});
+  methods = Array.isArray(data.methods) ? data.methods : [];
+}
 
-    list = list.filter(h=>
-      getUserId(h) === selectedUserId
-    );
+async function refreshData(){
+  if(busy) return;
+  busy = true;
+  setLoading(true,"Loading payment history...");
 
+  try{
+    await Promise.all([
+      loadPayments(),
+      loadUsers(),
+      loadCurrencies(),
+      loadMethods()
+    ]);
+
+    renderCurrencyFilters();
+    renderEditOptions();
+    currentPage = 1;
+    renderPayments();
+  }catch(err){
+    toast(err.message || "Could not load payment history.");
+    $("tableBody").innerHTML =
+      `<tr><td colspan="6" class="empty">${escapeHTML(err.message)}</td></tr>`;
+  }finally{
+    setLoading(false);
+    busy = false;
   }
+}
 
-  list.sort((a,b)=>{
+/* ================= DATA HELPERS ================= */
 
-    const da = new Date(
-      getValue(a,["actionDate","createdAt","timestamp","date","paymentDate"],0)
-    ).getTime() || 0;
+function getUser(payment){
+  return users.find(u=>String(u.userId)===String(payment.userId)) || {
+    userId:payment.userId || "",
+    userName:payment.userName || "Unknown User"
+  };
+}
 
-    const db = new Date(
-      getValue(b,["actionDate","createdAt","timestamp","date","paymentDate"],0)
-    ).getTime() || 0;
+function currencyLabel(p){
+  return p.currencyCode || p.currencyName || "";
+}
 
-    return db - da;
+function renderCurrencyFilters(){
+  const select = $("currencyFilter");
+  const old = select.value;
 
-  });
+  select.innerHTML =
+    '<option value="">All Currencies</option>' +
+    currencies.map(c=>
+      `<option value="${escapeHTML(c.code)}">${escapeHTML(c.code)} - ${escapeHTML(c.name)}</option>`
+    ).join("");
 
-  $("phHistoryCount").textContent =
-    list.length + " record(s) found";
+  if([...select.options].some(o=>o.value===old)) select.value=old;
+}
 
-  if(!list.length){
+function renderEditOptions(){
+  $("editUser").innerHTML =
+    '<option value="">Select User</option>' +
+    users.map(u=>
+      `<option value="${escapeHTML(u.userId)}">${escapeHTML(u.userName)} (${escapeHTML(u.userId)})</option>`
+    ).join("");
 
-    $("phHistoryList").innerHTML = `
-      <div class="ph-empty">
-        <div class="ph-empty-icon">📭</div>
-        <b>No Payment History Found</b>
-        <p>There are no payment records for this selection.</p>
-      </div>
-    `;
+  $("editCurrency").innerHTML =
+    '<option value="">Select Currency</option>' +
+    currencies.map(c=>
+      `<option value="${escapeHTML(c.id)}">${escapeHTML(c.code)} - ${escapeHTML(c.name)}</option>`
+    ).join("");
 
+  $("editMethod").innerHTML =
+    '<option value="">Select Method</option>' +
+    methods.map(m=>
+      `<option value="${escapeHTML(m.id)}">${escapeHTML(m.name)}</option>`
+    ).join("");
+}
+
+/* ================= STATS ================= */
+
+function renderStats(){
+  const total = payments.reduce((s,p)=>s+Number(p.amount||0),0);
+  const todayTotal = payments
+    .filter(p=>String(p.paymentDate||"").slice(0,10)===today())
+    .reduce((s,p)=>s+Number(p.amount||0),0);
+
+  $("totalCount").textContent = payments.length;
+  $("totalAmount").textContent = money(total);
+  $("todayAmount").textContent = money(todayTotal);
+}
+
+/* ================= FILTER + TABLE ================= */
+
+function filteredPayments(){
+  const q = $("searchInput").value.trim().toLowerCase();
+  const currency = $("currencyFilter").value;
+
+  return payments.filter(p=>{
+    const text = [
+      p.paymentId,p.userId,p.userName,p.transactionId,
+      p.paymentMethod,p.currencyCode,p.currencyName,p.comment
+    ].join(" ").toLowerCase();
+
+    const currencyMatch =
+      !currency || String(p.currencyCode||"")===currency;
+
+    return (!q || text.includes(q)) && currencyMatch;
+  }).sort((a,b)=>
+    String(b.paymentDate||"").localeCompare(String(a.paymentDate||""))
+  );
+}
+
+function renderPayments(){
+  renderStats();
+
+  const list = filteredPayments();
+  const pages = Math.max(1,Math.ceil(list.length/pageSize));
+  currentPage = Math.min(currentPage,pages);
+
+  const start = (currentPage-1)*pageSize;
+  const visible = list.slice(start,start+pageSize);
+
+  $("pageInfo").textContent = list.length
+    ? `Showing ${start+1}-${Math.min(start+pageSize,list.length)} of ${list.length}`
+    : "Showing 0 records";
+
+  $("prevBtn").disabled = currentPage<=1;
+  $("nextBtn").disabled = currentPage>=pages;
+
+  if(!visible.length){
+    $("tableBody").innerHTML =
+      '<tr><td colspan="6" class="empty">No payment records found.</td></tr>';
     return;
   }
 
-  $("phHistoryList").innerHTML = list.map((h,index)=>{
-
-    const userId = getUserId(h);
-
-    const profile = allProfiles.find(p=>
-      p.userId === userId
-    );
-
-    const userName = profile?.userName || getUserName(h);
-
-    const picture =
-      profile?.profilePicture ||
-      getProfilePicture(h);
-
-    const amount = getValue(
-      h,["amount","Amount","paymentAmount"],0
-    );
-
-    const method = getValue(
-      h,["paymentMethod","method","Method"],"—"
-    );
-
-    const transactionId = getValue(
-      h,["transactionId","Transaction ID","trxId"],"—"
-    );
-
-    const paymentDate = getValue(
-      h,["paymentDate","date","Date"],""
-    );
-
-    const historyDate = getValue(
-      h,["actionDate","createdAt","timestamp","Created At"],""
-    );
-
-    const paymentId = getValue(
-      h,["paymentId","Payment ID","historyId","entryId"],"—"
-    );
+  $("tableBody").innerHTML = visible.map(p=>{
+    const u = getUser(p);
 
     return `
-
-      <div class="ph-history-card">
-
-        <div class="ph-card-user">
-
-          ${avatarHTML(
-            userName,
-            picture,
-            "ph-avatar"
-          )}
-
-          <div class="ph-card-user-info">
-            <div class="ph-card-user-name">
-              ${esc(userName)}
-            </div>
-
-            <div class="ph-card-user-id">
-              User ID: ${esc(userId)}
-            </div>
-            <span class="ph-action-label">${esc(getValue(h,["action","Action"],"PAYMENT"))}</span>
+      <tr>
+        <td>
+          <div class="user-name">${escapeHTML(u.userName)}</div>
+          <div class="user-id">${escapeHTML(u.userId)}</div>
+        </td>
+        <td class="amount">${escapeHTML(currencyLabel(p))} ${money(p.amount)}</td>
+        <td>${escapeHTML(p.paymentMethod||"—")}</td>
+        <td>${escapeHTML(p.transactionId||"—")}</td>
+        <td>${formatDate(p.paymentDate)}</td>
+        <td>
+          <div class="actions">
+            <button class="action-btn" data-action="view"
+              data-id="${escapeHTML(p.paymentId)}">View</button>
+            <button class="action-btn" data-action="edit"
+              data-id="${escapeHTML(p.paymentId)}">Edit</button>
+            <button class="action-btn delete" data-action="delete"
+              data-id="${escapeHTML(p.paymentId)}">Delete</button>
           </div>
-
-          <div class="ph-amount">
-            ${money(amount)}
-          </div>
-
-        </div>
-
-        <div class="ph-details">
-
-          <div>
-            <div class="ph-detail-label">Payment Method</div>
-            <div class="ph-detail-value">${esc(method)}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Transaction ID</div>
-            <div class="ph-detail-value">${esc(transactionId)}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Payment Date</div>
-            <div class="ph-detail-value">${esc(formatDate(paymentDate))}</div>
-          </div>
-
-          <div>
-            <div class="ph-detail-label">Payment ID</div>
-            <div class="ph-detail-value">${esc(paymentId)}</div>
-          </div>
-
-        </div>
-
-        <div class="ph-card-footer">
-
-          <div class="ph-date">
-            History: ${esc(formatDate(historyDate))}
-          </div>
-
-          <div class="ph-action-row">
-            <button class="ph-action-btn ph-view-btn" type="button" data-view-index="${index}">View</button>
-            <button class="ph-action-btn ph-edit-btn" type="button" data-edit-index="${index}" ${(!findCurrentPayment(paymentId) ? "disabled" : "")}>Edit</button>
-            <button class="ph-action-btn ph-delete-btn" type="button" data-delete-index="${index}" ${(!activePaymentExists(paymentId) ? "disabled" : "")}>Delete</button>
-          </div>
-
-        </div>
-
-      </div>
-
+        </td>
+      </tr>
     `;
-
   }).join("");
-
-  $("phHistoryList").querySelectorAll("[data-view-index]").forEach(button=>{
-    button.addEventListener("click",()=>openPaymentDetails(list[Number(button.dataset.viewIndex)]));
-  });
-
-  $("phHistoryList").querySelectorAll("[data-edit-index]").forEach(button=>{
-    button.addEventListener("click",()=>openEditPayment(list[Number(button.dataset.editIndex)]));
-  });
-
-  $("phHistoryList").querySelectorAll("[data-delete-index]").forEach(button=>{
-    button.addEventListener("click",()=>deleteHistoryPayment(list[Number(button.dataset.deleteIndex)]));
-  });
 }
 
-
-/* EDIT PAYMENT */
-function openEditPayment(historyItem){
-  const paymentId = getPaymentId(historyItem);
-  if(!paymentId){showToast("Payment ID is missing.");return;}
-
-  // Always load the current payment row by its original Payment ID.
-  // Saving uses editPayment (not addPayment), so it updates that same row.
-  const payment = findCurrentPayment(paymentId);
-  if(!payment){
-    showToast("This payment is not active in USER PAYMENT. Restore it before editing.");
-    return;
-  }
-
-  const users = allUsers.length ? allUsers : allProfiles;
-  $("phEditPaymentId").value = paymentId;
-  $("phEditUser").innerHTML = optionHTML(users,"userId",u=>`${u.userName || u.name || u.userId} (${u.userId})`,payment.userId);
-  $("phEditAmount").value = payment.amount ?? "";
-  $("phEditDate").value = String(payment.paymentDate || "").slice(0,10);
-  $("phEditCurrency").innerHTML = optionHTML(allCurrencies,"id",c=>`${c.code || c.name} — ${c.name || c.code}`,payment.currencyId);
-  $("phEditMethod").innerHTML = optionHTML(allMethods,"id",m=>m.name,m.methodId);
-  $("phEditMethod").value = String(payment.methodId || "");
-  $("phEditTransaction").value = payment.transactionId || "";
-  $("phEditComment").value = payment.comment || "";
-  $("phEditModal").classList.add("show");
+function changePage(step){
+  const pages = Math.max(1,Math.ceil(filteredPayments().length/pageSize));
+  currentPage = Math.max(1,Math.min(pages,currentPage+step));
+  renderPayments();
 }
 
-function closeEditPayment(){
-  $("phEditModal").classList.remove("show");
-}
+/* ================= VIEW ================= */
 
-async function submitEditPayment(event){
-  event.preventDefault();
-  const button = $("phEditSave");
-  const payload = {
-    action:"editPayment",
-    paymentId:$("phEditPaymentId").value,
-    userId:$("phEditUser").value,
-    amount:$("phEditAmount").value,
-    paymentDate:$("phEditDate").value,
-    currencyId:$("phEditCurrency").value,
-    methodId:$("phEditMethod").value,
-    transactionId:$("phEditTransaction").value,
-    comment:$("phEditComment").value
-  };
-  if(!payload.userId || !payload.currencyId || !payload.methodId){showToast("Please complete all required fields.");return;}
-  button.disabled = true;
-  button.textContent = "Saving...";
-  try{
-    await apiPost(payload);
-    closeEditPayment();
-    showToast("Payment updated successfully.");
-    await loadPaymentHistory();
-  }catch(error){
-    console.error(error);
-    showToast(error.message || "Payment update failed.");
-  }finally{
-    button.disabled = false;
-    button.textContent = "Save Changes";
-  }
-}
+function viewPayment(id){
+  const p = payments.find(x=>String(x.paymentId)===String(id));
+  if(!p) return toast("Payment record not found.");
 
+  const u = getUser(p);
 
-/* DELETE PAYMENT FROM HISTORY VIEW */
-async function deleteHistoryPayment(historyItem){
-  const paymentId = getPaymentId(historyItem);
-  if(!paymentId){showToast("Payment ID is missing.");return;}
-  if(!activePaymentExists(paymentId)){
-    showToast("This payment is not in USER PAYMENT. It may already be deleted.");
-    return;
-  }
-  const userName = getUserName(historyItem);
-  if(!confirm(`Delete payment of ${userName}?\n\nThe payment will move from USER PAYMENT to DELETE HISTORY.`)) return;
-  try{
-    await apiPost({action:"deletePayment",paymentId:paymentId});
-    showToast("Payment moved to Deleted Payment.");
-    await loadPaymentHistory();
-  }catch(error){
-    console.error(error);
-    showToast(error.message || "Payment delete failed.");
-  }
-}
-
-
-/* PAYMENT DETAILS POPUP */
-
-function openPaymentDetails(h){
-
-  const userId = getUserId(h);
-
-  const profile = allProfiles.find(p=>
-    p.userId === userId
-  );
-
-  const userName = profile?.userName || getUserName(h);
-
-  const picture =
-    profile?.profilePicture ||
-    getProfilePicture(h);
-
-  const amount = getValue(
-    h,["amount","Amount","paymentAmount"],0
-  );
-
-  $("phModalAvatar").innerHTML =
-    avatarHTML(
-      userName,
-      picture,
-      "ph-modal-avatar"
-    );
-
-  $("phModalName").textContent = userName;
-
-  $("phModalUserId").textContent =
-    "User ID: " + userId;
-
-  $("phModalAmount").textContent = money(amount);
-
-  const details = [
-
-    ["Payment ID",getValue(
-      h,["paymentId","Payment ID"],"—"
-    )],
-
-    ["Action",getValue(h,["action","Action"],"—")],
-
-    ["History ID",getValue(h,["historyId","History ID"],"—")],
-
-    ["Payment Method",getValue(
-      h,["paymentMethod","method","Method"],"—"
-    )],
-
-    ["Transaction ID",getValue(
-      h,["transactionId","Transaction ID","trxId"],"—"
-    )],
-
-    ["Payment Date",formatDate(getValue(
-      h,["paymentDate","date","Date"],""
-    ))],
-
-    ["History Date",formatDate(getValue(
-      h,["actionDate","createdAt","timestamp","Created At"],""
-    ))],
-
-    ["Currency",getValue(
-      h,["currencyName","currencyCode"],"BDT"
-    )],
-
-    ["Description",getValue(
-      h,["comment","description","note","Description"],"—"
-    )]
-
+  const fields = [
+    ["Payment ID",p.paymentId],
+    ["User Name",u.userName],
+    ["User ID",u.userId],
+    ["Payment Amount",currencyLabel(p)+" "+money(p.amount)],
+    ["Currency",p.currencyName||p.currencyCode],
+    ["Payment Method",p.paymentMethod],
+    ["Transaction ID",p.transactionId],
+    ["Payment Date",formatDate(p.paymentDate)],
+    ["Created At",p.createdAt],
+    ["Updated At",p.updatedAt]
   ];
 
-  $("phModalDetails").innerHTML = details.map(item=>`
-
-    <div class="ph-modal-item">
-      <div class="ph-modal-label">${esc(item[0])}</div>
-      <div class="ph-modal-value">${esc(item[1])}</div>
+  $("viewContent").innerHTML = `
+    <div class="detail-grid">
+      ${fields.map(([label,value])=>`
+        <div class="detail">
+          <small>${escapeHTML(label)}</small>
+          <strong>${escapeHTML(value||"—")}</strong>
+        </div>
+      `).join("")}
+      <div class="detail" style="grid-column:1/-1">
+        <small>Comment</small>
+        <strong>${escapeHTML(p.comment||"No comment")}</strong>
+      </div>
     </div>
+  `;
 
-  `).join("");
-
-  $("phViewModal").classList.add("show");
+  $("viewModal").classList.add("show");
 }
 
-function closePaymentModal(){
-  $("phViewModal").classList.remove("show");
+/* ================= EDIT ================= */
+
+function editPayment(id){
+  const p = payments.find(x=>String(x.paymentId)===String(id));
+  if(!p) return toast("Payment record not found.");
+
+  editingPaymentId = String(p.paymentId);
+
+  $("editUser").value = String(p.userId||"");
+  $("editAmount").value = p.amount ?? "";
+  $("editCurrency").value = String(p.currencyId||"");
+  $("editMethod").value = String(p.methodId||"");
+  $("editTransaction").value = p.transactionId||"";
+  $("editDate").value = String(p.paymentDate||"").slice(0,10);
+  $("editComment").value = p.comment||"";
+
+  $("editModal").classList.add("show");
 }
 
+$("editForm").addEventListener("submit",async e=>{
+  e.preventDefault();
 
-/* EVENTS */
+  if(busy || !editingPaymentId) return;
 
-$("phSelectButton").addEventListener("click",()=>{
+  const amount = Number($("editAmount").value);
+  const userId = $("editUser").value;
+  const currencyId = $("editCurrency").value;
+  const methodId = $("editMethod").value;
+  const paymentDate = $("editDate").value;
 
-  toggleDropdown();
+  if(!userId) return toast("Please select a user.");
+  if(!Number.isFinite(amount)||amount<=0)
+    return toast("Payment amount must be greater than zero.");
+  if(!currencyId) return toast("Please select a currency.");
+  if(!methodId) return toast("Please select a payment method.");
+  if(!paymentDate) return toast("Please select payment date.");
 
-});
+  const btn = $("saveEditBtn");
+  const payload = {
+    action:"editPayment",
+    requestId:"EDIT-"+editingPaymentId+"-"+Date.now(),
+    paymentId:editingPaymentId,
+    userId,
+    amount,
+    currencyId,
+    methodId,
+    transactionId:$("editTransaction").value.trim(),
+    paymentDate,
+    comment:$("editComment").value.trim()
+  };
 
-$("phProfileSearch").addEventListener("focus",()=>{
+  busy = true;
+  btn.disabled = true;
+  btn.textContent = "Updating...";
+  closeModal("editModal");
+  setLoading(true,"Updating payment record...");
 
-  if(!isDropdownOpen){
-    toggleDropdown(true);
+  try{
+    const result = await apiRequest(payload);
+
+    await loadPayments();
+    renderPayments();
+
+    editingPaymentId = "";
+    toast(result.message || "Payment updated successfully.");
+  }catch(err){
+    toast(err.message || "Payment update failed.");
+  }finally{
+    setLoading(false);
+    busy = false;
+    btn.disabled = false;
+    btn.textContent = "Save Changes";
   }
-
 });
 
-$("phProfileSearch").addEventListener("input",()=>{
+/* ================= DELETE ================= */
 
-  if(!isDropdownOpen){
-    toggleDropdown(true);
+async function deletePayment(id){
+  const p = payments.find(x=>String(x.paymentId)===String(id));
+  if(!p) return toast("Payment record not found.");
+
+  const confirmed = confirm(
+    "Are you sure you want to delete this payment?\n\n" +
+    "Payment ID: "+p.paymentId+"\n" +
+    "User: "+p.userName+"\n" +
+    "Amount: "+currencyLabel(p)+" "+money(p.amount)+"\n\n" +
+    "This record will be moved to DELETE HISTORY. It will not be permanently deleted."
+  );
+
+  if(!confirmed || busy) return;
+
+  busy = true;
+  setLoading(true,"Moving payment to DELETE HISTORY...");
+
+  try{
+    const result = await apiRequest({
+      action:"deletePayment",
+      requestId:"DELETE-"+id+"-"+Date.now(),
+      paymentId:id
+    });
+
+    await loadPayments();
+    renderPayments();
+
+    toast(result.message || "Payment moved to DELETE HISTORY.");
+  }catch(err){
+    toast(err.message || "Delete failed.");
+  }finally{
+    setLoading(false);
+    busy = false;
   }
+}
 
-  renderProfileDropdown();
+/* ================= TABLE EVENTS ================= */
 
+$("tableBody").addEventListener("click",e=>{
+  const btn = e.target.closest("[data-action]");
+  if(!btn) return;
+
+  const action = btn.dataset.action;
+  const id = btn.dataset.id;
+
+  if(action==="view") viewPayment(id);
+  if(action==="edit") editPayment(id);
+  if(action==="delete") deletePayment(id);
 });
 
-$("phClearProfile").addEventListener("click",()=>{
-
-  selectProfile("");
-
+$("searchInput").addEventListener("input",()=>{
+  currentPage=1;
+  renderPayments();
 });
 
-$("phRefresh").addEventListener("click",()=>{
-
-  loadPaymentHistory();
-
+$("currencyFilter").addEventListener("change",()=>{
+  currentPage=1;
+  renderPayments();
 });
 
-$("phModalClose").addEventListener("click",closePaymentModal);
+/* ================= START ================= */
 
-$("phModalDone").addEventListener("click",closePaymentModal);
-
-$("phViewModal").addEventListener("click",event=>{
-
-  if(event.target === $("phViewModal")){
-    closePaymentModal();
-  }
-
-});
-
-document.addEventListener("click",event=>{
-
-  const dropdown = $("phProfileDropdown");
-  const searchWrap = document.querySelector(".ph-search-wrap");
-  const selectButton = $("phSelectButton");
-
-  if(
-    isDropdownOpen &&
-    !dropdown.contains(event.target) &&
-    !searchWrap.contains(event.target) &&
-    !selectButton.contains(event.target)
-  ){
-    toggleDropdown(false);
-  }
-
-});
-
-document.addEventListener("keydown",event=>{
-
-  if(event.key === "Escape"){
-
-    toggleDropdown(false);
-    closePaymentModal();
-    closeEditPayment();
-
-  }
-
-});
-
-
-$("phEditClose").addEventListener("click",closeEditPayment);
-$("phEditCancel").addEventListener("click",closeEditPayment);
-$("phEditForm").addEventListener("submit",submitEditPayment);
-$("phEditModal").addEventListener("click",event=>{
-  if(event.target === $("phEditModal")) closeEditPayment();
-});
-
-
-/* INITIAL LOAD */
-
-loadPaymentHistory();
+refreshData();
 
 </script>
-
 </body>
 </html>
