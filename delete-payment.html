@@ -93,6 +93,8 @@ button,input,select,textarea{font:inherit}
   font-weight:700;
 }
 
+.ph-refresh:disabled{opacity:.6;cursor:wait}
+
 .ph-stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -749,11 +751,10 @@ button,input,select,textarea{font:inherit}
 
 /* =========================================
    API CONFIGURATION
-   SAME PAYMENT API AS PAYMENT HISTORY PAGE
 ========================================= */
 
-const PAYMENT_API =
-"https://script.google.com/macros/s/AKfycbwTP0v21FArPYP3SN2Ch2gTBXTplbkRDDu49iAp4C5mSEN0BAxxmtlAPJxGXRSIaF-p/exec";
+const DELETE_API =
+"https://script.google.com/macros/s/AKfycbzAK1k0nKZvBcjhanKsr5yaSyn7r5IO8O0Y_VWpO3IorAsGPGEcsXCwrzWF_3WnSmLS9w/exec";
 
 const USER_API =
 "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
@@ -767,6 +768,7 @@ let allUsers = [];
 let selectedUserId = "";
 let isDropdownOpen = false;
 let historyPage = 1;
+let isLoading = false;
 
 const PAGE_SIZE = 25;
 const $ = id => document.getElementById(id);
@@ -808,23 +810,6 @@ function getProfilePicture(x){
 
 function getPaymentId(x){
   return String(getValue(x,["paymentId","Payment ID"],"")).trim();
-}
-
-/*
-  The backend should return the original deleted sheet row.
-  Supported property names are included as fallbacks.
-*/
-function getDeletedRow(x){
-  return getValue(x,[
-    "deletedRow",
-    "Deleted Row",
-    "rowNumber",
-    "Row Number",
-    "sheetRow",
-    "Sheet Row",
-    "row",
-    "Row"
-  ],"");
 }
 
 function money(value){
@@ -885,12 +870,15 @@ function avatarHTML(name,picture,extraClass=""){
   return `<div class="${extraClass}">
     <img src="${esc(image)}"
       alt="${esc(name)}"
+      loading="lazy"
       referrerpolicy="no-referrer"
       onerror="this.parentElement.innerHTML='${initial}'">
   </div>`;
 }
 
-/* JSONP API */
+/* =========================================
+   JSONP API REQUEST
+========================================= */
 
 function apiGet(url,timeout=20000){
 
@@ -949,32 +937,27 @@ function apiGet(url,timeout=20000){
   });
 }
 
-/* API ACTION */
+/* =========================================
+   API ACTION - DELETE HISTORY
+========================================= */
 
 async function apiAction(payload){
 
-  const data = {
-    ...payload,
-    requestId:payload.requestId ||
-      ("dh_" + Date.now() + "_" +
-      Math.random().toString(36).slice(2))
-  };
-
   const query = new URLSearchParams();
 
-  Object.entries(data).forEach(([key,value])=>{
+  Object.entries(payload).forEach(([key,value])=>{
     if(value !== undefined && value !== null){
       query.set(key,String(value));
     }
   });
 
   const result = await apiGet(
-    PAYMENT_API + "?" + query.toString(),
+    DELETE_API + "?" + query.toString(),
     25000
   );
 
-  if(result && result.success === false){
-    throw new Error(result.message || "Request failed.");
+  if(!result || result.success !== true){
+    throw new Error(result?.message || "Request failed.");
   }
 
   return result;
@@ -997,9 +980,14 @@ function showToast(message){
   },3200);
 }
 
-/* LOAD DELETE HISTORY */
+/* =========================================
+   LOAD DELETE HISTORY
+========================================= */
 
 async function loadDeleteHistory(){
+
+  if(isLoading) return;
+  isLoading = true;
 
   $("phRefresh").disabled = true;
   $("phRefresh").textContent = "Loading...";
@@ -1012,60 +1000,35 @@ async function loadDeleteHistory(){
   try{
 
     const historyResponse = await apiGet(
-      PAYMENT_API + "?api=deletedPayments",
+      DELETE_API + "?api=deletedPayments",
       25000
     );
 
-    if(historyResponse?.success === false){
+    if(!historyResponse || historyResponse.success !== true){
       throw new Error(
-        historyResponse.message || "Delete history loading failed."
+        historyResponse?.message || "Delete history loading failed."
       );
     }
 
-    const records =
+    deletedPayments =
       historyResponse.deletedPayments ||
-      historyResponse.deleted ||
-      historyResponse.data ||
-      historyResponse.entries ||
+      historyResponse.payments ||
       [];
 
-    if(!Array.isArray(records)){
-      throw new Error("Invalid delete history response.");
+    if(!Array.isArray(deletedPayments)){
+      deletedPayments = [];
     }
 
-    deletedPayments = records;
+    /* Show history immediately without waiting for User API */
 
     buildProfiles([]);
     updateSummary();
     renderProfileDropdown();
     renderHistory();
 
-    /* Load user list for profile pictures and names */
+    /* Load profile information in background */
 
-    try{
-
-      const userResponse = await apiGet(
-        USER_API + "?api=active",
-        20000
-      );
-
-      allUsers =
-        userResponse.users ||
-        userResponse.data ||
-        [];
-
-      if(!Array.isArray(allUsers)){
-        allUsers = [];
-      }
-
-      buildProfiles(allUsers);
-      updateSummary();
-      renderProfileDropdown();
-      renderHistory();
-
-    }catch(userError){
-      console.warn("User profile loading:",userError);
-    }
+    loadUserProfiles();
 
   }catch(error){
 
@@ -1085,6 +1048,39 @@ async function loadDeleteHistory(){
 
     $("phRefresh").disabled = false;
     $("phRefresh").textContent = "↻ Refresh";
+    isLoading = false;
+
+  }
+}
+
+/* LOAD USERS IN BACKGROUND */
+
+async function loadUserProfiles(){
+
+  try{
+
+    const userResponse = await apiGet(
+      USER_API + "?api=active",
+      20000
+    );
+
+    allUsers =
+      userResponse.users ||
+      userResponse.data ||
+      [];
+
+    if(!Array.isArray(allUsers)){
+      allUsers = [];
+    }
+
+    buildProfiles(allUsers);
+    updateSummary();
+    renderProfileDropdown();
+    renderHistory();
+
+  }catch(error){
+
+    console.warn("User profile loading:",error);
 
   }
 }
@@ -1337,7 +1333,9 @@ function selectProfile(userId){
   renderHistory();
 }
 
-/* RENDER DELETE HISTORY */
+/* =========================================
+   RENDER DELETE HISTORY
+========================================= */
 
 function renderHistory(){
 
@@ -1429,6 +1427,7 @@ function renderHistory(){
 
       const method = getValue(record,[
         "paymentMethod",
+        "Payment Method",
         "method",
         "Method"
       ],"—");
@@ -1451,13 +1450,6 @@ function renderHistory(){
         "deletedAt",
         "Deleted At"
       ],"");
-
-      const deletedRow = getDeletedRow(record);
-
-      const hasRow =
-        deletedRow !== "" &&
-        deletedRow !== null &&
-        deletedRow !== undefined;
 
       return `
         <div class="ph-history-card">
@@ -1533,7 +1525,7 @@ function renderHistory(){
                 class="ph-action-btn ph-restore-btn"
                 type="button"
                 data-restore="${index}"
-                ${!hasRow ? "disabled" : ""}>
+                ${!paymentId ? "disabled" : ""}>
                 Restore
               </button>
 
@@ -1541,7 +1533,7 @@ function renderHistory(){
                 class="ph-action-btn ph-delete-btn"
                 type="button"
                 data-permanent="${index}"
-                ${!hasRow ? "disabled" : ""}>
+                ${!paymentId ? "disabled" : ""}>
                 Permanent Delete
               </button>
 
@@ -1685,7 +1677,7 @@ function openPaymentDetails(record){
 
     [
       "Payment Method",
-      getValue(record,["paymentMethod","method","Method"],"—")
+      getValue(record,["paymentMethod","Payment Method","method","Method"],"—")
     ],
 
     [
@@ -1767,15 +1759,17 @@ function closePaymentModal(){
   $("phViewModal").classList.remove("show");
 }
 
-/* RESTORE PAYMENT */
+/* =========================================
+   RESTORE PAYMENT
+   DELETE HISTORY -> PAYMENT HISTORY
+========================================= */
 
 async function restorePayment(record){
 
   const paymentId = getPaymentId(record);
-  const deletedRow = getDeletedRow(record);
 
-  if(deletedRow === "" || deletedRow === null || deletedRow === undefined){
-    showToast("Deleted row information is missing. Check the API response.");
+  if(!paymentId){
+    showToast("Payment ID is missing.");
     return;
   }
 
@@ -1801,19 +1795,23 @@ async function restorePayment(record){
 
     const result = await apiAction({
       action:"restorePayment",
-      deletedRow:deletedRow,
       paymentId:paymentId
     });
 
-    if(result?.success === false){
-      throw new Error(
-        result.message || "Payment restore failed."
-      );
+    if(result.success !== true){
+      throw new Error(result.message || "Payment restore failed.");
     }
 
     showToast("Payment restored successfully.");
 
-    await loadDeleteHistory();
+    deletedPayments = deletedPayments.filter(
+      item=>getPaymentId(item)!==paymentId
+    );
+
+    buildProfiles(allUsers);
+    updateSummary();
+    renderProfileDropdown();
+    renderHistory();
 
   }catch(error){
 
@@ -1826,15 +1824,16 @@ async function restorePayment(record){
   }
 }
 
-/* PERMANENT DELETE */
+/* =========================================
+   PERMANENT DELETE
+========================================= */
 
 async function permanentDeletePayment(record){
 
   const paymentId = getPaymentId(record);
-  const deletedRow = getDeletedRow(record);
 
-  if(deletedRow === "" || deletedRow === null || deletedRow === undefined){
-    showToast("Deleted row information is missing. Check the API response.");
+  if(!paymentId){
+    showToast("Payment ID is missing.");
     return;
   }
 
@@ -1860,19 +1859,23 @@ async function permanentDeletePayment(record){
 
     const result = await apiAction({
       action:"permanentDeletePayment",
-      deletedRow:deletedRow,
       paymentId:paymentId
     });
 
-    if(result?.success === false){
-      throw new Error(
-        result.message || "Permanent delete failed."
-      );
+    if(result.success !== true){
+      throw new Error(result.message || "Permanent delete failed.");
     }
 
     showToast("Payment permanently deleted.");
 
-    await loadDeleteHistory();
+    deletedPayments = deletedPayments.filter(
+      item=>getPaymentId(item)!==paymentId
+    );
+
+    buildProfiles(allUsers);
+    updateSummary();
+    renderProfileDropdown();
+    renderHistory();
 
   }catch(error){
 
