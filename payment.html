@@ -567,6 +567,7 @@ let currentPage=1;
 let pageSize=10;
 let editSaving=false;
 let addSaving=false;
+let deleteSaving=false;
 
 const $=id=>document.getElementById(id);
 
@@ -622,6 +623,68 @@ function formatDate(value){
   const d=new Date(value);
   if(isNaN(d.getTime())) return String(value);
   return d.toLocaleDateString();
+}
+
+/* ================= DATA HELPERS ================= */
+
+function pick(obj,keys,fallback=""){
+  for(const key of keys){
+    if(obj && obj[key]!==undefined && obj[key]!==null && obj[key]!==""){
+      return obj[key];
+    }
+  }
+  return fallback;
+}
+
+function normalizePayment(p){
+  return {
+    ...p,
+    paymentId:String(pick(p,["paymentId","Payment ID","id"],"")),
+    userId:String(pick(p,["userId","user_id","User ID"],"")),
+    userName:String(pick(p,["userName","user_name","User Name"],"")),
+    amount:Number(pick(p,["paymentAmount","amount","Payment Amount"],0)),
+    currencyId:String(pick(p,["currencyId","currency_id","Currency ID"],"")),
+    currencyCode:String(pick(p,["currencyCode","currency_code","Currency Code"],"")),
+    currencyName:String(pick(p,["currencyName","currency_name","Currency Name"],"")),
+    methodId:String(pick(p,["paymentMethodId","methodId","payment_method_id","Payment Method ID"],"")),
+    paymentMethod:String(pick(p,["paymentMethod","method","Payment Method"],"")),
+    transactionId:String(pick(p,["transactionId","transaction_id","Transaction ID"],"")),
+    paymentDate:pick(p,["paymentDate","payment_date","Payment Date"],""),
+    comment:String(pick(p,["comment","Comment"],""))
+  };
+}
+
+function getCurrencyById(id){
+  return currencies.find(c=>
+    String(pick(c,["id","ID","currencyId","Currency ID"],""))===String(id)
+  );
+}
+
+function getMethodById(id){
+  return methods.find(m=>
+    String(pick(m,["id","ID","methodId","Method ID","Payment Method ID"],""))===String(id)
+  );
+}
+
+function getUserById(id){
+  return users.find(u=>String(u.userId)===String(id));
+}
+
+function getCurrencyFields(id){
+  const c=getCurrencyById(id)||{};
+  return {
+    currencyId:String(pick(c,["id","ID","currencyId","Currency ID"],id)),
+    currencyCode:String(pick(c,["code","Code","currencyCode","Currency Code"],"")),
+    currencyName:String(pick(c,["name","Name","currencyName","Currency Name"],""))
+  };
+}
+
+function getMethodFields(id){
+  const m=getMethodById(id)||{};
+  return {
+    paymentMethodId:String(pick(m,["id","ID","methodId","Method ID","Payment Method ID"],id)),
+    paymentMethod:String(pick(m,["name","Name","method","Method","paymentMethod","Payment Method"],""))
+  };
 }
 
 /* ================= PROCESSING POPUP ================= */
@@ -710,10 +773,11 @@ async function getJSON(url){
 }
 
 /*
- * Apps Script ContentService POST responses can be blocked by CORS.
- * Use JSONP GET for write actions.
+ * Apps Script write actions use JSONP GET.
+ * Delete may call the separate DELETE HISTORY API on the server.
+ * A longer timeout is used for that operation.
  */
-async function postJSON(payload){
+async function postJSON(payload,timeout=90000){
   const requestId=payload.requestId ||
     ("REQ-"+Date.now()+"-"+Math.random().toString(36).slice(2,10));
 
@@ -742,9 +806,9 @@ async function postJSON(payload){
     const timer=setTimeout(()=>{
       cleanup();
       reject(new Error(
-        "Payment server response timeout. Please check PAYMENT HISTORY before submitting again."
+        "Payment server response timeout. Please refresh and check the payment record before retrying."
       ));
-    },45000);
+    },timeout);
 
     window[callback]=(data)=>{
       cleanup();
@@ -785,17 +849,14 @@ async function postJSON(payload){
 async function loadUsers(){
   const data=await getJSON(USER_API+"?api=active");
 
-  if(!Array.isArray(data.users)){
-    throw new Error(
-      "User API response does not contain users array."
-    );
-  }
+  const list=Array.isArray(data.users)?data.users:
+    Array.isArray(data.data)?data.data:[];
 
-  users=data.users.map(u=>({
-    userId:String(u.userId||u.id||""),
-    userName:String(u.userName||u.name||""),
-    phone:u.phone||"",
-    gmail:u.gmail||"",
+  users=list.map(u=>({
+    userId:String(u.userId||u.id||u["User ID"]||""),
+    userName:String(u.userName||u.name||u["User Name"]||""),
+    phone:u.phone||u["Phone"]||"",
+    gmail:u.gmail||u.email||"",
     area:u.area||"",
     status:u.status||"",
     profilePicture:u.profilePicture||u.profilePic||u.photo||""
@@ -818,7 +879,7 @@ async function loadMethods(){
 
 async function loadPayments(){
   const data=await getJSON(PAYMENT_API+"?api=payments");
-  payments=Array.isArray(data.payments)?data.payments:[];
+  payments=(Array.isArray(data.payments)?data.payments:[]).map(normalizePayment);
 }
 
 /* ================= USER PICKER ================= */
@@ -909,22 +970,31 @@ function renderCurrencies(){
   );
 
   const currencyHTML='<option value="">Select currency</option>'+
-    options.map(c=>`
-      <option value="${escapeHTML(c.id)}">
-        ${escapeHTML(c.code||c.name||c.id)}${c.symbol?" ("+escapeHTML(c.symbol)+")":""}
-      </option>
-    `).join("");
+    options.map(c=>{
+      const id=pick(c,["id","ID","currencyId","Currency ID"],"");
+      const code=pick(c,["code","Code","currencyCode","Currency Code"],"");
+      const name=pick(c,["name","Name","currencyName","Currency Name"],"");
+      const symbol=pick(c,["symbol","Symbol"],"");
+
+      return `<option value="${escapeHTML(id)}">
+        ${escapeHTML(code||name||id)}${symbol?" ("+escapeHTML(symbol)+")":""}
+      </option>`;
+    }).join("");
 
   $("upCurrency").innerHTML=currencyHTML;
   $("upEditCurrency").innerHTML=currencyHTML;
 
   $("upCurrencyFilter").innerHTML=
     '<option value="">All Currencies</option>'+
-    currencies.map(c=>`
-      <option value="${escapeHTML(c.code||c.id)}">
-        ${escapeHTML(c.code||c.name||c.id)}
-      </option>
-    `).join("");
+    currencies.map(c=>{
+      const id=pick(c,["id","ID","currencyId","Currency ID"],"");
+      const code=pick(c,["code","Code","currencyCode","Currency Code"],"");
+      const name=pick(c,["name","Name","currencyName","Currency Name"],"");
+
+      return `<option value="${escapeHTML(code||id)}">
+        ${escapeHTML(code||name||id)}
+      </option>`;
+    }).join("");
 }
 
 function renderMethods(){
@@ -933,11 +1003,11 @@ function renderMethods(){
   );
 
   const html='<option value="">Select payment method</option>'+
-    options.map(m=>`
-      <option value="${escapeHTML(m.id)}">
-        ${escapeHTML(m.name||m.id)}
-      </option>
-    `).join("");
+    options.map(m=>{
+      const id=pick(m,["id","ID","methodId","Method ID","Payment Method ID"],"");
+      const name=pick(m,["name","Name","method","Method","paymentMethod","Payment Method"],"");
+      return `<option value="${escapeHTML(id)}">${escapeHTML(name||id)}</option>`;
+    }).join("");
 
   $("upMethod").innerHTML=html;
   $("upEditMethod").innerHTML=html;
@@ -1055,6 +1125,7 @@ function renderPayments(){
         <div class="up-row-actions">
           <button class="up-icon-btn" data-action="view" data-id="${escapeHTML(p.paymentId)}">View</button>
           <button class="up-icon-btn" data-action="edit" data-id="${escapeHTML(p.paymentId)}">Edit</button>
+          <button class="up-icon-btn delete" data-action="delete" data-id="${escapeHTML(p.paymentId)}">Delete</button>
         </div>
       </td>
     </tr>`;
@@ -1085,6 +1156,7 @@ function renderPayments(){
       <div class="up-row-actions">
         <button class="up-icon-btn" data-action="view" data-id="${escapeHTML(p.paymentId)}">View</button>
         <button class="up-icon-btn" data-action="edit" data-id="${escapeHTML(p.paymentId)}">Edit</button>
+        <button class="up-icon-btn delete" data-action="delete" data-id="${escapeHTML(p.paymentId)}">Delete</button>
       </div>
     </div>`;
   }).join("");
@@ -1116,11 +1188,18 @@ function getAddPayload(){
   if(!methodId) throw new Error("Please select payment method.");
   if(!$("upDate").value) throw new Error("Please select payment date.");
 
+  const currencyFields=getCurrencyFields(currencyId);
+  const methodFields=getMethodFields(methodId);
+
   return {
     userId:selectedUser.userId,
+    userName:selectedUser.userName,
     amount:amount,
+    paymentAmount:amount,
     currencyId:currencyId,
+    ...currencyFields,
     methodId:methodId,
+    ...methodFields,
     transactionId:$("upTransaction").value.trim(),
     paymentDate:$("upDate").value,
     comment:$("upComment").value.trim()
@@ -1147,9 +1226,7 @@ $("upPaymentForm").addEventListener("submit",async e=>{
   addSaving=true;
   setProcessing(btn,true,normalText);
 
-  showProcessing(
-    "Please wait. Your payment is being added."
-  );
+  showProcessing("Please wait. Your payment is being added.");
 
   try{
     payload.action="addPayment";
@@ -1170,10 +1247,7 @@ $("upPaymentForm").addEventListener("submit",async e=>{
 
   }catch(err){
     hideProcessing();
-
-    showError(
-      err.message||"Payment could not be saved."
-    );
+    showError(err.message||"Payment could not be saved.");
 
   }finally{
     addSaving=false;
@@ -1229,27 +1303,39 @@ $("upEditForm").addEventListener("submit",async e=>{
 
   try{
     const amount=Number($("upEditAmount").value);
+    const userId=$("upEditUser").value;
+    const currencyId=$("upEditCurrency").value;
+    const methodId=$("upEditMethod").value;
+    const paymentDate=$("upEditDate").value;
 
     if(!Number.isFinite(amount)||amount<=0){
       throw new Error("Enter a valid payment amount.");
     }
 
+    if(!userId) throw new Error("Please select a user.");
+    if(!currencyId) throw new Error("Please select currency.");
+    if(!methodId) throw new Error("Please select payment method.");
+    if(!paymentDate) throw new Error("Please select payment date.");
+
+    const user=getUserById(userId)||{};
+    const currencyFields=getCurrencyFields(currencyId);
+    const methodFields=getMethodFields(methodId);
+
     payload={
       action:"editPayment",
       paymentId:editingPaymentId,
-      userId:$("upEditUser").value,
+      userId:userId,
+      userName:user.userName||"",
       amount:amount,
-      currencyId:$("upEditCurrency").value,
-      methodId:$("upEditMethod").value,
+      paymentAmount:amount,
+      currencyId:currencyId,
+      ...currencyFields,
+      methodId:methodId,
+      ...methodFields,
       transactionId:$("upEditTransaction").value.trim(),
-      paymentDate:$("upEditDate").value,
+      paymentDate:paymentDate,
       comment:$("upEditComment").value.trim()
     };
-
-    if(!payload.userId) throw new Error("Please select a user.");
-    if(!payload.currencyId) throw new Error("Please select currency.");
-    if(!payload.methodId) throw new Error("Please select payment method.");
-    if(!payload.paymentDate) throw new Error("Please select payment date.");
 
   }catch(err){
     showError(err.message);
@@ -1263,9 +1349,7 @@ $("upEditForm").addEventListener("submit",async e=>{
 
   closeModal("upEditModal");
 
-  showProcessing(
-    "Please wait. Your payment is being updated."
-  );
+  showProcessing("Please wait. Your payment is being updated.");
 
   try{
     const result=await postJSON(payload);
@@ -1285,10 +1369,7 @@ $("upEditForm").addEventListener("submit",async e=>{
 
   }catch(err){
     hideProcessing();
-
-    showError(
-      err.message||"Payment update failed. Please try again."
-    );
+    showError(err.message||"Payment update failed. Please try again.");
 
   }finally{
     editSaving=false;
@@ -1339,6 +1420,77 @@ function viewPayment(paymentId){
   $("upViewModal").classList.add("show");
 }
 
+/* ================= DELETE PAYMENT ================= */
+
+/*
+ * The PAYMENT HISTORY backend handles the transfer:
+ * PAYMENT HISTORY -> DELETE HISTORY.
+ * The frontend does not delete spreadsheet rows directly.
+ */
+async function deletePayment(paymentId){
+  if(deleteSaving) return;
+
+  const p=payments.find(
+    x=>String(x.paymentId)===String(paymentId)
+  );
+
+  if(!p){
+    showError("Payment record not found.");
+    return;
+  }
+
+  const confirmed=window.confirm(
+    "Are you sure you want to delete this payment?\n\n"+
+    "Payment ID: "+p.paymentId+"\n"+
+    "User: "+(p.userName||p.userId)+"\n"+
+    "Amount: "+(p.currencyCode||"")+" "+money(p.amount)+
+    "\n\nThis payment will be moved to DELETE HISTORY."
+  );
+
+  if(!confirmed) return;
+
+  deleteSaving=true;
+
+  const buttons=ROOT.querySelectorAll(
+    '[data-action="delete"][data-id="'+CSS.escape(String(paymentId))+'"]'
+  );
+
+  buttons.forEach(b=>b.disabled=true);
+
+  showProcessing(
+    "Please wait. Payment is being moved to DELETE HISTORY."
+  );
+
+  try{
+    const result=await postJSON({
+      action:"deletePayment",
+      paymentId:String(paymentId)
+    },120000);
+
+    await loadPayments();
+    renderPayments();
+
+    hideProcessing();
+
+    showSuccess(
+      result.message||"Payment moved to DELETE HISTORY successfully.",
+      "Payment Deleted"
+    );
+
+  }catch(err){
+    hideProcessing();
+
+    showError(
+      err.message||
+      "Payment could not be deleted. Refresh and check the record before retrying."
+    );
+
+  }finally{
+    deleteSaving=false;
+    buttons.forEach(b=>b.disabled=false);
+  }
+}
+
 /* ================= EVENT HANDLERS ================= */
 
 function handlePaymentAction(e){
@@ -1350,6 +1502,7 @@ function handlePaymentAction(e){
 
   if(action==="view") viewPayment(id);
   if(action==="edit") editPayment(id);
+  if(action==="delete") deletePayment(id);
 }
 
 $("upTableBody").addEventListener("click",handlePaymentAction);
