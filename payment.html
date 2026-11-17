@@ -555,7 +555,6 @@ const PAYMENT_API=
 const USER_API=
 "https://script.google.com/macros/s/AKfycbzlabjyglodpoiPmupmA2buZqMyFiSPScIrTPm0T8Il7Z7bKtAkZglsfDk9WZAFOHgk/exec";
 
-/* Currency এবং Payment Method-এর আলাদা Settings Spreadsheet API */
 const SETTINGS_API=
 "https://script.google.com/macros/s/AKfycbygdxmo_sur5KYs3XhYHnyaMGQQ_G5_Prc9NUozP9dxRVhrwVmezX2ozhkhqQ4KeWKxPQ/exec";
 
@@ -640,7 +639,43 @@ function pick(obj,keys,fallback=""){
   return fallback;
 }
 
+/* Sheet-এর A কলাম Method ID, B কলাম Method Name */
+function normalizeMethod(m){
+  if(Array.isArray(m)){
+    return {
+      ...m,
+      methodId:String(m[0]||"").trim(),
+      name:String(m[1]||"").trim(),
+      status:String(m[2]||"Active")
+    };
+  }
+
+  return {
+    ...m,
+    methodId:String(pick(m,[
+      "methodId","method_id","id","ID",
+      "Method ID","Payment Method ID","A","0"
+    ],"")).trim(),
+
+    name:String(pick(m,[
+      "methodName","method_name","name","Name",
+      "Method Name","method","Method",
+      "paymentMethod","paymentMethodName",
+      "Payment Method","B","1"
+    ],"")).trim(),
+
+    status:String(pick(m,[
+      "status","Status","C","2"
+    ],"Active"))
+  };
+}
+
 function normalizePayment(p){
+  const methodId=String(pick(p,[
+    "paymentMethodId","methodId","payment_method_id",
+    "Payment Method ID","method_id"
+  ],""));
+
   return {
     ...p,
     paymentId:String(pick(p,["paymentId","Payment ID","id"],"")),
@@ -650,8 +685,12 @@ function normalizePayment(p){
     currencyId:String(pick(p,["currencyId","currency_id","Currency ID"],"")),
     currencyCode:String(pick(p,["currencyCode","currency_code","Currency Code"],"")),
     currencyName:String(pick(p,["currencyName","currency_name","Currency Name"],"")),
-    methodId:String(pick(p,["paymentMethodId","methodId","payment_method_id","Payment Method ID"],"")),
-    paymentMethod:String(pick(p,["paymentMethod","method","Payment Method"],"")),
+    methodId:methodId,
+    paymentMethodId:methodId,
+    paymentMethod:String(pick(p,[
+      "paymentMethod","methodName","method_name",
+      "method","Payment Method","Method Name"
+    ],"")),
     transactionId:String(pick(p,["transactionId","transaction_id","Transaction ID"],"")),
     paymentDate:pick(p,["paymentDate","payment_date","Payment Date"],""),
     comment:String(pick(p,["comment","Comment"],""))
@@ -666,7 +705,7 @@ function getCurrencyById(id){
 
 function getMethodById(id){
   return methods.find(m=>
-    String(pick(m,["methodId","id","ID","Method ID","Payment Method ID"],""))===String(id)
+    String(m.methodId)===String(id)
   );
 }
 
@@ -678,18 +717,52 @@ function getCurrencyFields(id){
   const c=getCurrencyById(id)||{};
   return {
     currencyId:String(pick(c,["currencyId","id","ID","Currency ID"],id)),
-    currencyCode:String(pick(c,["code","currencyCode","Code","Currency Code"],"")),
-    currencyName:String(pick(c,["name","currencyName","Name","Currency Name"],""))
+    currencyCode:String(pick(c,[
+      "code","currencyCode","Code","Currency Code"
+    ],"")),
+    currencyName:String(pick(c,[
+      "name","currencyName","Name","Currency Name"
+    ],""))
   };
 }
 
+/* ID backend-এ যাবে, Name frontend ও backend-এ যাবে */
 function getMethodFields(id){
-  const m=getMethodById(id)||{};
+  const m=getMethodById(id);
+
   return {
-    paymentMethodId:String(pick(m,["methodId","id","ID","Method ID","Payment Method ID"],id)),
-    methodId:String(pick(m,["methodId","id","ID","Method ID","Payment Method ID"],id)),
-    paymentMethod:String(pick(m,["name","method","Name","Method","paymentMethod","Payment Method"],""))
+    paymentMethodId:String(id),
+    methodId:String(id),
+    paymentMethod:m ? m.name : ""
   };
+}
+
+/* Payment record থেকে আসল Method Name বের করবে */
+function getPaymentMethodName(payment){
+  const id=String(
+    payment.methodId||
+    payment.paymentMethodId||
+    ""
+  );
+
+  const method=getMethodById(id);
+  if(method && method.name) return method.name;
+
+  const savedName=String(payment.paymentMethod||"").trim();
+
+  /* পুরোনো record-এ paymentMethod field-এ ID থাকলে ID দেখাবে না */
+  const savedIsId=methods.some(m=>
+    String(m.methodId)===savedName
+  );
+
+  if(savedIsId){
+    const matched=methods.find(m=>
+      String(m.methodId)===savedName
+    );
+    return matched ? matched.name : "—";
+  }
+
+  return savedName||"—";
 }
 
 /* ================= PROCESSING POPUP ================= */
@@ -777,10 +850,6 @@ async function getJSON(url){
   return data;
 }
 
-/*
- * Apps Script write actions use JSONP GET.
- * Delete can call the separate DELETE HISTORY API on the server.
- */
 async function postJSON(payload,timeout=90000){
   const requestId=payload.requestId ||
     ("REQ-"+Date.now()+"-"+Math.random().toString(36).slice(2,10));
@@ -871,60 +940,62 @@ async function loadUsers(){
 
 /* ================= LOAD PAYMENT DATA ================= */
 
-/*
- * Currency এবং Method আলাদা Settings Spreadsheet থেকে আসবে।
- * Payment records আগের PAYMENT_API থেকেই লোড হবে।
- */
-
 async function loadCurrencies(){
   const data=await getJSON(SETTINGS_API+"?api=currencies");
 
   const list=Array.isArray(data.currencies)?data.currencies:
     Array.isArray(data.data)?data.data:[];
 
-  currencies=list.map(c=>({
-    ...c,
-    currencyId:String(pick(c,[
-      "currencyId","id","ID","Currency ID"
-    ],"")),
-    code:String(pick(c,[
-      "code","currencyCode","Currency Code"
-    ],"")),
-    name:String(pick(c,[
-      "name","currencyName","Currency Name"
-    ],"")),
-    symbol:String(pick(c,[
-      "symbol","currencySymbol","Currency Symbol"
-    ],"")),
-    status:String(pick(c,[
-      "status","Status"
-    ],"Active"))
-  })).filter(c=>c.currencyId);
+  currencies=list.map(c=>{
+    if(Array.isArray(c)){
+      return {
+        currencyId:String(c[0]||""),
+        code:String(c[1]||""),
+        name:String(c[2]||""),
+        symbol:String(c[3]||""),
+        status:String(c[4]||"Active")
+      };
+    }
+
+    return {
+      ...c,
+      currencyId:String(pick(c,[
+        "currencyId","id","ID","Currency ID","A","0"
+      ],"")),
+      code:String(pick(c,[
+        "code","currencyCode","Currency Code","Code","B","1"
+      ],"")),
+      name:String(pick(c,[
+        "name","currencyName","Currency Name","Name","C","2"
+      ],"")),
+      symbol:String(pick(c,[
+        "symbol","currencySymbol","Currency Symbol","Symbol","D","3"
+      ],"")),
+      status:String(pick(c,[
+        "status","Status","E","4"
+      ],"Active"))
+    };
+  }).filter(c=>c.currencyId);
 }
 
+/* Method Name সরাসরি B কলাম/Method Name property থেকে নেবে */
 async function loadMethods(){
   const data=await getJSON(SETTINGS_API+"?api=methods");
 
   const list=Array.isArray(data.methods)?data.methods:
     Array.isArray(data.data)?data.data:[];
 
-  methods=list.map(m=>({
-    ...m,
-    methodId:String(pick(m,[
-      "methodId","id","ID","Method ID","Payment Method ID"
-    ],"")),
-    name:String(pick(m,[
-      "name","method","Method Name","Name","Payment Method"
-    ],"")),
-    status:String(pick(m,[
-      "status","Status"
-    ],"Active"))
-  })).filter(m=>m.methodId);
+  methods=list.map(normalizeMethod)
+    .filter(m=>m.methodId);
 }
 
 async function loadPayments(){
   const data=await getJSON(PAYMENT_API+"?api=payments");
-  payments=(Array.isArray(data.payments)?data.payments:[]).map(normalizePayment);
+
+  const list=Array.isArray(data.payments)?data.payments:
+    Array.isArray(data.data)?data.data:[];
+
+  payments=list.map(normalizePayment);
 }
 
 /* ================= USER PICKER ================= */
@@ -1050,9 +1121,9 @@ function renderMethods(){
 
   const html='<option value="">Select payment method</option>'+
     options.map(m=>{
-      const id=pick(m,["methodId","id","ID","Method ID","Payment Method ID"],"");
-      const name=pick(m,["name","Name","method","Method","paymentMethod","Payment Method","Method Name"],"");
-      return `<option value="${escapeHTML(id)}">${escapeHTML(name||id)}</option>`;
+      return `<option value="${escapeHTML(m.methodId)}">
+        ${escapeHTML(m.name)}
+      </option>`;
     }).join("");
 
   $("upMethod").innerHTML=html;
@@ -1094,9 +1165,11 @@ function filteredPayments(){
   const currency=$("upCurrencyFilter").value;
 
   return payments.filter(p=>{
+    const methodName=getPaymentMethodName(p);
+
     const text=[
       p.paymentId,p.userId,p.userName,p.transactionId,
-      p.paymentMethod,p.currencyCode,p.currencyName,p.comment
+      methodName,p.currencyCode,p.currencyName,p.comment
     ].join(" ").toLowerCase();
 
     const currencyMatch=!currency||
@@ -1152,6 +1225,7 @@ function renderPayments(){
 
   $("upTableBody").innerHTML=visible.map(p=>{
     const user=paymentUser(p);
+    const methodName=getPaymentMethodName(p);
 
     return `<tr>
       <td>
@@ -1164,7 +1238,7 @@ function renderPayments(){
         </div>
       </td>
       <td><strong>${escapeHTML(p.currencyCode||p.currencyName||"")} ${money(p.amount)}</strong></td>
-      <td>${escapeHTML(p.paymentMethod||p.methodId||"—")}</td>
+      <td>${escapeHTML(methodName)}</td>
       <td>${escapeHTML(p.transactionId||"—")}</td>
       <td>${escapeHTML(formatDate(p.paymentDate))}</td>
       <td>
@@ -1179,6 +1253,7 @@ function renderPayments(){
 
   $("upMobileList").innerHTML=visible.map(p=>{
     const user=paymentUser(p);
+    const methodName=getPaymentMethodName(p);
 
     return `<div class="up-mobile-card">
       <div class="up-mobile-top">
@@ -1193,7 +1268,7 @@ function renderPayments(){
       </div>
 
       <div class="up-mobile-details">
-        <div><span>Method</span><strong>${escapeHTML(p.paymentMethod||"—")}</strong></div>
+        <div><span>Method</span><strong>${escapeHTML(methodName)}</strong></div>
         <div><span>Date</span><strong>${escapeHTML(formatDate(p.paymentDate))}</strong></div>
         <div><span>Transaction ID</span><strong>${escapeHTML(p.transactionId||"—")}</strong></div>
         <div><span>Payment ID</span><strong>${escapeHTML(p.paymentId||"—")}</strong></div>
@@ -1434,6 +1509,7 @@ function viewPayment(paymentId){
   if(!p) return;
 
   const user=paymentUser(p);
+  const methodName=getPaymentMethodName(p);
 
   $("upViewContent").innerHTML=`
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
@@ -1450,7 +1526,7 @@ function viewPayment(paymentId){
       <div><span>Payment ID</span><strong>${escapeHTML(p.paymentId)}</strong></div>
       <div><span>Amount</span><strong>${escapeHTML(p.currencyCode||"")} ${money(p.amount)}</strong></div>
       <div><span>Currency</span><strong>${escapeHTML(p.currencyName||p.currencyCode||"—")}</strong></div>
-      <div><span>Payment Method</span><strong>${escapeHTML(p.paymentMethod||"—")}</strong></div>
+      <div><span>Payment Method</span><strong>${escapeHTML(methodName)}</strong></div>
       <div><span>Transaction ID</span><strong>${escapeHTML(p.transactionId||"—")}</strong></div>
       <div><span>Payment Date</span><strong>${escapeHTML(formatDate(p.paymentDate))}</strong></div>
     </div>
@@ -1468,11 +1544,6 @@ function viewPayment(paymentId){
 
 /* ================= DELETE PAYMENT ================= */
 
-/*
- * PAYMENT HISTORY backend transfer করবে:
- * PAYMENT HISTORY -> DELETE HISTORY.
- * Frontend থেকে সরাসরি spreadsheet row delete করা হয় না।
- */
 async function deletePayment(paymentId){
   if(deleteSaving) return;
 
@@ -1659,15 +1730,18 @@ async function refreshAll(){
   try{
     await loadUsers();
 
+    /* আগে Settings load, তারপর Payment records */
     await Promise.all([
       loadCurrencies(),
-      loadMethods(),
-      loadPayments()
+      loadMethods()
     ]);
 
-    renderUserOptions();
     renderCurrencies();
     renderMethods();
+
+    await loadPayments();
+
+    renderUserOptions();
     renderEditUsers();
     renderPayments();
 
