@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -639,34 +638,58 @@ function pick(obj,keys,fallback=""){
   return fallback;
 }
 
-/* Sheet-এর A কলাম Method ID, B কলাম Method Name */
+/* Flexible field reader for Settings API response */
+function readField(obj,aliases,fallback=""){
+  if(!obj || typeof obj!=="object") return fallback;
+
+  const normalizeKey=value=>
+    String(value).toLowerCase().replace(/[^a-z0-9]/g,"");
+
+  const wanted=new Set(aliases.map(normalizeKey));
+
+  for(const key of Object.keys(obj)){
+    if(wanted.has(normalizeKey(key))){
+      const value=obj[key];
+      if(value!==undefined && value!==null && value!==""){
+        return value;
+      }
+    }
+  }
+
+  return fallback;
+}
+
+/* Method sheet: A = Method ID, B = Method Name, C = Status */
 function normalizeMethod(m){
   if(Array.isArray(m)){
     return {
-      ...m,
-      methodId:String(m[0]||"").trim(),
-      name:String(m[1]||"").trim(),
-      status:String(m[2]||"Active")
+      methodId:String(m[0]??"").trim(),
+      name:String(m[1]??"").trim(),
+      status:String(m[2]??"Active").trim()
     };
   }
 
+  const id=readField(m,[
+    "methodId","method_id","id","ID",
+    "Method ID","Payment Method ID","A","0"
+  ],"");
+
+  const name=readField(m,[
+    "methodName","method_name","name","Name",
+    "Method Name","method","Method",
+    "paymentMethod","paymentMethodName",
+    "Payment Method","B","1"
+  ],"");
+
+  const status=readField(m,[
+    "status","Status","C","2"
+  ],"Active");
+
   return {
     ...m,
-    methodId:String(pick(m,[
-      "methodId","method_id","id","ID",
-      "Method ID","Payment Method ID","A","0"
-    ],"")).trim(),
-
-    name:String(pick(m,[
-      "methodName","method_name","name","Name",
-      "Method Name","method","Method",
-      "paymentMethod","paymentMethodName",
-      "Payment Method","B","1"
-    ],"")).trim(),
-
-    status:String(pick(m,[
-      "status","Status","C","2"
-    ],"Active"))
+    methodId:String(id).trim(),
+    name:String(name).trim(),
+    status:String(status).trim()
   };
 }
 
@@ -703,10 +726,14 @@ function getCurrencyById(id){
   );
 }
 
+/* Method ID matching - trim and case insensitive */
 function getMethodById(id){
+  const searchId=String(id??"").trim();
+  if(!searchId) return null;
+
   return methods.find(m=>
-    String(m.methodId)===String(id)
-  );
+    String(m.methodId??"").trim()===searchId
+  )||null;
 }
 
 function getUserById(id){
@@ -726,41 +753,43 @@ function getCurrencyFields(id){
   };
 }
 
-/* ID backend-এ যাবে, Name frontend ও backend-এ যাবে */
+/* Send both Method ID and Method Name to backend */
 function getMethodFields(id){
-  const m=getMethodById(id);
+  const method=getMethodById(id);
+  const methodId=String(method?.methodId||id||"").trim();
+  const methodName=String(method?.name||"").trim();
 
   return {
-    paymentMethodId:String(id),
-    methodId:String(id),
-    paymentMethod:m ? m.name : ""
+    paymentMethodId:methodId,
+    methodId:methodId,
+    paymentMethod:methodName
   };
 }
 
-/* Payment record থেকে আসল Method Name বের করবে */
+/* Resolve Method Name for old and new payment records */
 function getPaymentMethodName(payment){
-  const id=String(
+  const savedName=String(payment.paymentMethod||"").trim();
+
+  const methodId=String(
     payment.methodId||
     payment.paymentMethodId||
     ""
-  );
+  ).trim();
 
-  const method=getMethodById(id);
+  let method=getMethodById(methodId);
   if(method && method.name) return method.name;
 
-  const savedName=String(payment.paymentMethod||"").trim();
+  /* Older records may have stored the ID inside Payment Method */
+  method=getMethodById(savedName);
+  if(method && method.name) return method.name;
 
-  /* পুরোনো record-এ paymentMethod field-এ ID থাকলে ID দেখাবে না */
-  const savedIsId=methods.some(m=>
-    String(m.methodId)===savedName
-  );
+  /* Try alternate ID values from the original record */
+  const rawId=String(readField(payment,[
+    "Payment Method ID","Method ID","payment_method_id","method_id"
+  ],"")).trim();
 
-  if(savedIsId){
-    const matched=methods.find(m=>
-      String(m.methodId)===savedName
-    );
-    return matched ? matched.name : "—";
-  }
+  method=getMethodById(rawId);
+  if(method && method.name) return method.name;
 
   return savedName||"—";
 }
@@ -940,6 +969,7 @@ async function loadUsers(){
 
 /* ================= LOAD PAYMENT DATA ================= */
 
+/* Currency loading kept as your original working function */
 async function loadCurrencies(){
   const data=await getJSON(SETTINGS_API+"?api=currencies");
 
@@ -978,15 +1008,42 @@ async function loadCurrencies(){
   }).filter(c=>c.currencyId);
 }
 
-/* Method Name সরাসরি B কলাম/Method Name property থেকে নেবে */
+/* Robust method list extraction */
+function extractMethodList(data){
+  if(Array.isArray(data)) return data;
+
+  const possibleLists=[
+    data?.methods,
+    data?.data,
+    data?.paymentMethods,
+    data?.payment_methods,
+    data?.methodList,
+    data?.method_list,
+    data?.records,
+    data?.rows
+  ];
+
+  for(const list of possibleLists){
+    if(Array.isArray(list)) return list;
+  }
+
+  /* Some APIs return one object containing a single method */
+  if(data && typeof data==="object"){
+    const single=normalizeMethod(data);
+    if(single.methodId && single.name) return [data];
+  }
+
+  return [];
+}
+
 async function loadMethods(){
   const data=await getJSON(SETTINGS_API+"?api=methods");
 
-  const list=Array.isArray(data.methods)?data.methods:
-    Array.isArray(data.data)?data.data:[];
+  const list=extractMethodList(data);
 
-  methods=list.map(normalizeMethod)
-    .filter(m=>m.methodId);
+  methods=list
+    .map(normalizeMethod)
+    .filter(m=>m.methodId && m.name);
 }
 
 async function loadPayments(){
@@ -1155,7 +1212,6 @@ function updateStats(){
   $("upTotalAmount").textContent=money(total);
   $("upTodayAmount").textContent=money(todayTotal);
   $("upUserCount").textContent=users.length;
-  $("upRecordCount").textContent=payments.length+" RECORDS";
 }
 
 /* ================= PAYMENT TABLE ================= */
@@ -1401,7 +1457,18 @@ function editPayment(paymentId){
   $("upEditUser").value=String(p.userId||"");
   $("upEditAmount").value=p.amount??"";
   $("upEditCurrency").value=String(p.currencyId||"");
-  $("upEditMethod").value=String(p.methodId||"");
+
+  const methodId=String(
+    p.methodId||p.paymentMethodId||""
+  );
+
+  const matchedMethod=getMethodById(methodId)||
+    methods.find(m=>m.name===String(p.paymentMethod||"").trim());
+
+  $("upEditMethod").value=matchedMethod
+    ?String(matchedMethod.methodId)
+    :"";
+
   $("upEditTransaction").value=p.transactionId||"";
   $("upEditDate").value=String(p.paymentDate||"").slice(0,10);
   $("upEditComment").value=p.comment||"";
@@ -1730,7 +1797,6 @@ async function refreshAll(){
   try{
     await loadUsers();
 
-    /* আগে Settings load, তারপর Payment records */
     await Promise.all([
       loadCurrencies(),
       loadMethods()
